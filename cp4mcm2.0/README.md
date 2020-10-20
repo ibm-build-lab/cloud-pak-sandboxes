@@ -18,7 +18,7 @@ Launch a cloud shell by clicking on the terminal icon a the top right area onced
 
 Clone this directory using https:
 
-`https://github.com/ibm-pett/cloud-pak-sandboxes.git`
+`git clone https://github.com/ibm-pett/cloud-pak-sandboxes.git`
 
 # Script Instructions
 
