@@ -74,11 +74,11 @@ then
     echo "What data center (defaults to dal10)?"
     read ZONE
     ZONE="${ZONE:-dal10}"
-    echo "Run command 'ibmcloud sl vlan list -d $ZONE' to see available VLANS for your data center."
-    echo "Enter private VLAN id:"
+    ibmcloud sl vlan list -d $ZONE 
+    echo "Enter private VLAN id for $ZONE:"
     read PVLAN
 #    PVLAN="${PVLAN:-2832804}"
-    echo "Enter public VLAN id:"
+    echo "Enter public VLAN id for $ZONE:"
     read PBVLAN
 #    PBVLAN="${PBVLAN:-2832802}"
     echo "Creating Cluster"
