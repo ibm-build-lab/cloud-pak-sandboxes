@@ -12,16 +12,24 @@ installation.yaml: contains yaml to create the installation
 
 Note, the `ibmc-block-retain-gold` storage class is used.  If you want to use a different storage class, change it in the installation.yaml file.
 
-# Syntax
+# Running from Cloud Shell on IBM Cloud
+
+Launch a cloud shell by clicking on the terminal icon a the top right area onced you have logged into IBM Cloud.
+
+Clone this directory using https:
+
+`https://github.com/ibm-pett/cloud-pak-sandboxes.git`
+
+# Script Instructions
 
 ```
+cd cd cloud-pak-sandboxes/cp4mcm2.0
 chmod +x install.sh
 ./install.sh
 ```
 
 # Details
-- User is prompted to log into the IBM Cloud
-- User is prompted to provide existing OCP Cluster or create one
+- User is prompted for entitlement key, email, and to provide existing OCP Cluster or create one
 - If creating 
 
   - user is prompted for cluster name, flavor, number of nodes, zone, private vlan and public vlan details
