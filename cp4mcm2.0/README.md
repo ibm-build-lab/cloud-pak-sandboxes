@@ -36,4 +36,7 @@ chmod +x install.sh
   - User is prompted to locate their entitlement key and their docker email address to be used to connect to the docker registry
   - Cluster is provisioned
   
-- When cluster is complete, operator resources are installed and invoked to install MCM 2.0
+When cluster is complete, operator resources are installed and invoked to install MCM 2.0
+
+Note: Cloud Shell may sometimes time out if it doesn't have activity happening. If the script dies before starting the MCM installation, you may need to restart a cloud shell, clone the repo again, then restart the script and add the newly created cluster name to use to install on.
+  
