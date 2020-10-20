@@ -71,15 +71,16 @@ then
 #    echo "How many worker nodes (defaults to 5)?"
 #    read NUM_NODES
     NUM_NODES="${NUM_NODES:-5}"
-#    echo "What data center (defaults to dal10)?"
-#    read ZONE
+    echo "What data center (defaults to dal10)?"
+    read ZONE
     ZONE="${ZONE:-dal10}"
-#    echo "Enter private VLAN id (defaults to 2832804)?"
-#    read PVLAN
-    PVLAN="${PVLAN:-2832804}"
-#    echo "Enter public VLAN id (defaults to 2832802)?"
-#    read PBVLAN
-    PBVLAN="${PBVLAN:-2832802}"
+    echo "Run command 'ibmcloud sl vlan list -d $ZONE' to see available VLANS for your data center."
+    echo "Enter private VLAN id:"
+    read PVLAN
+#    PVLAN="${PVLAN:-2832804}"
+    echo "Enter public VLAN id:"
+    read PBVLAN
+#    PBVLAN="${PBVLAN:-2832802}"
     echo "Creating Cluster"
     echo "ibmcloud oc cluster create classic --name ${CLUSTER_NAME} --version ${OCP_VERSION}_openshift --zone ${ZONE} --flavor ${OCP_FLAVOR} --workers ${NUM_NODES} --entitlement cloud_pak --private-vlan ${PVLAN} --public-vlan ${PBVLAN}"
     ibmcloud oc cluster create classic --name ${CLUSTER_NAME} --version ${OCP_VERSION}_openshift --zone ${ZONE} --flavor ${OCP_FLAVOR} --workers ${NUM_NODES} --entitlement cloud_pak --private-vlan ${PVLAN} --public-vlan ${PBVLAN}
