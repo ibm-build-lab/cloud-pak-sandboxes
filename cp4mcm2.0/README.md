@@ -39,4 +39,24 @@ chmod +x install.sh
 When cluster is complete, operator resources are installed and invoked to install MCM 2.0
 
 Note: Cloud Shell may sometimes time out if it doesn't have activity happening. If the script dies before starting the MCM installation, you may need to restart a cloud shell, clone the repo again, then restart the script and add the newly created cluster name to use to install on.
+
+# Retrieving the MCM Console information
+To monitor progress:
+`kubectl get pods -A | grep -Ev "Completed|1/1|2/2|3/3|4/4|5/5|6/6|7/7"`
+
+This should not return anything when MCM is up and running
+
+To get the URL to get to the Multicloud Management Console:
+```
+ibmcloud oc cluster config -c cp4mcm-script-test --admin
+kubectl get route -n ibm-common-services cp-console -o jsonpath=‘{.spec.host}’ && echo
+```
+To get default login id:
+```
+kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_username}\' | base64 -D && echo
+```
+To get default Password:
+```
+kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -D && echo
+```
   
