@@ -54,33 +54,31 @@ read EMAIL_ADDR
 # Create or get details of OCP Cluster
 echo "Do you already have an OpenShift cluster? ('y','n')"
 read yn
-#select yn in "y" "n"; do
-#  case $yn in
-#  n)
-if [[ $yn -eq 'n' ]] 
-then
+select yn in "y" "n"; do
+  case $yn in
+  n)
     echo "Creating OpenShift Cluster on IBM Cloud"
     echo "What is the name of new cluster?"
     read CLUSTER_NAME
-#    echo "What version of Openshift (defaults to 4.4)?"
-#    read OCP_VERSION
+    #    echo "What version of Openshift (defaults to 4.4)?"
+    #    read OCP_VERSION
     OCP_VERSION="${OCP_VERSION:-4.4}"
-#    echo "What flavor (defaults to c3c.16x32)?"
-#    read OCP_FLAVOR
+    #    echo "What flavor (defaults to c3c.16x32)?"
+    #    read OCP_FLAVOR
     OCP_FLAVOR="${OCP_FLAVOR:-c3c.16x32}"
-#    echo "How many worker nodes (defaults to 5)?"
-#    read NUM_NODES
+    #    echo "How many worker nodes (defaults to 5)?"
+    #    read NUM_NODES
     NUM_NODES="${NUM_NODES:-5}"
     echo "What data center (defaults to dal10)?"
     read ZONE
     ZONE="${ZONE:-dal10}"
-    ibmcloud sl vlan list -d $ZONE 
+    ibmcloud sl vlan list -d $ZONE
     echo "Enter private VLAN id for $ZONE:"
     read PVLAN
-#    PVLAN="${PVLAN:-2832804}"
+    #    PVLAN="${PVLAN:-2832804}"
     echo "Enter public VLAN id for $ZONE:"
     read PBVLAN
-#    PBVLAN="${PBVLAN:-2832802}"
+    #    PBVLAN="${PBVLAN:-2832802}"
     echo "Creating Cluster"
     echo "ibmcloud oc cluster create classic --name ${CLUSTER_NAME} --version ${OCP_VERSION}_openshift --zone ${ZONE} --flavor ${OCP_FLAVOR} --workers ${NUM_NODES} --entitlement cloud_pak --private-vlan ${PVLAN} --public-vlan ${PBVLAN}"
     ibmcloud oc cluster create classic --name ${CLUSTER_NAME} --version ${OCP_VERSION}_openshift --zone ${ZONE} --flavor ${OCP_FLAVOR} --workers ${NUM_NODES} --entitlement cloud_pak --private-vlan ${PVLAN} --public-vlan ${PBVLAN}
@@ -89,7 +87,7 @@ then
     date
 
     # try command every 5 mintutes 5 times or until it returns success
-    for ((time = 0; time < 5; time++)); do
+    for ((time = 0; time < 10; time++)); do
       echo ibmcloud oc cluster config -c $CLUSTER_NAME --admin
       if ibmcloud oc cluster config -c $CLUSTER_NAME --admin; then
         break
@@ -97,18 +95,16 @@ then
       echo "Trying again in 5 minutes"
       sleep 300
     done
- #   break
- #   ;;
- # y)
- else
+    break
+    ;;
+  y)
     echo What is the name of existing cluster to use?
     read CLUSTER_NAME
     ibmcloud oc cluster config -c $CLUSTER_NAME --admin
-#    break
-#    ;;
-#  esac
-fi
-#done
+    break
+    ;;
+  esac
+done
 
 CLUSTER_URL=$(kubectl cluster-info | sed -n -e 's/^.*at //p')
 echo "Cluster is ready and console can be accessed via $CLUSTER_URL"
@@ -135,7 +131,7 @@ kubectl create secret docker-registry ibm-management-pull-secret --docker-userna
 kubectl --validate=false apply -f ./resources.yaml
 
 echo "Waiting for operators to install"
-while ! kubectl get sub ibm-common-service-operator-stable-v1-opencloud-operators-openshift-marketplace ibm-management-orchestrator operand-deployment-lifecycle-manager-app --namespace openshift-operators; do \
+while ! kubectl get sub ibm-common-service-operator-stable-v1-opencloud-operators-openshift-marketplace ibm-management-orchestrator operand-deployment-lifecycle-manager-app --namespace openshift-operators; do
   sleep 60
 done
 kubectl apply -f ./installation.yaml
