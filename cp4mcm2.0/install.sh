@@ -97,7 +97,7 @@ then
       sleep 300
     done
  #   break
-    ;;
+ #   ;;
  # y)
  else
     echo What is the name of existing cluster to use?
