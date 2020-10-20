@@ -23,7 +23,7 @@ Clone this directory using https:
 # Script Instructions
 
 ```
-cd cd cloud-pak-sandboxes/cp4mcm2.0
+cd cloud-pak-sandboxes/cp4mcm2.0
 chmod +x install.sh
 ./install.sh
 ```
