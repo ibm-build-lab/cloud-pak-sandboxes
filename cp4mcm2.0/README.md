@@ -32,6 +32,11 @@ Note: Cloud shell may sometimes time out during this process. If the script dies
 # Verify that MCM installed
 Note: it can take up to an hour for all pods to start up.  During the installation process, you will see pods starting and stopping until they all start in the proper order.
 
+To monitor progress, from Cloud Shell:
+```
+ibmcloud oc cluster config -c <cluster-name> --admin
+kubectl get pods -A | grep -Ev "Completed|1/1|2/2|3/3|4/4|5/5|6/6|7/7"
+```
 To verify that MCM installed properly:
 1) log into IBM Cloud
 2) set to the correct account
@@ -41,11 +46,9 @@ To verify that MCM installed properly:
 6) launch the OpenShift Web Console from botton at the top
 7) on OpenShift Console, under "Operators", "Installed Operators", there should be an entry for "IBM Cloud Pak for Multicloud Manager".  Open this and under "Installations" you should see "ibm-management" running.
 8) under "Workloads", "Pods" look to see that there aren't any in Pending, Terminating, CrashLoopBackOff state.  
-# Retrieving the MCM Console information
-To monitor progress:
-`kubectl get pods -A | grep -Ev "Completed|1/1|2/2|3/3|4/4|5/5|6/6|7/7"`
 
 This should not return anything when MCM is up and running
+# Retrieving the MCM Console information
 
 To get the Multicloud Management Console URL, open a Cloud Shell and issue the following commands:
 ```
