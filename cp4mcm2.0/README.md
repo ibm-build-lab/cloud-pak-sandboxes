@@ -53,17 +53,17 @@ To monitor progress:
 
 This should not return anything when MCM is up and running
 
-To get the URL to get to the Multicloud Management Console:
+To get the Multicloud Management Console URL, open a Cloud Shell and issue the following commands:
 ```
-ibmcloud oc cluster config -c cp4mcm-script-test --admin
+ibmcloud oc cluster config -c <cluster-name> --admin
 kubectl get route -n ibm-common-services cp-console -o jsonpath=‘{.spec.host}’ && echo
 ```
 To get default login id:
 ```
-kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_username}\' | base64 -D && echo
+kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_username}\' | base64 -di && echo
 ```
 To get default Password:
 ```
-kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -D && echo
+kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -di && echo
 ```
   
