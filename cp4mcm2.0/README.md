@@ -26,13 +26,13 @@ chmod +x install.sh
 ./install.sh
 ```
 # Details
-- User is prompted for entitlement key, email, and to provide existing OCP Cluster or create one
+- User is prompted for entitlement key, email, and to provide existing OCP Cluster name or create one
 - If creating a cluster
 
   - User is prompted for cluster name, zone, private vlan and public vlan details
-  - User is prompted to locate their entitlement key and their email address to be used to connect to the docker registry
   - Cluster is provisioned
-  - When cluster is complete, operator resources are installed and invoked to install MCM 2.0
+  
+- MCM operator resources are installed and invoked
 
 Note: Cloud shell may sometimes time out during this process. If the script dies before starting the MCM installation, you may need to restart a cloud shell, clone the repo again, then restart the script and add the newly created cluster name to use to install on.
 # Verify that MCM installed
