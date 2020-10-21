@@ -27,7 +27,6 @@ cd cloud-pak-sandboxes/cp4mcm2.0
 chmod +x install.sh
 ./install.sh
 ```
-
 # Details
 - User is prompted for entitlement key, email, and to provide existing OCP Cluster or create one
 - If creating 
@@ -39,7 +38,18 @@ chmod +x install.sh
 When cluster is complete, operator resources are installed and invoked to install MCM 2.0
 
 Note: Cloud Shell may sometimes time out if it doesn't have activity happening. If the script dies before starting the MCM installation, you may need to restart a cloud shell, clone the repo again, then restart the script and add the newly created cluster name to use to install on.
+# Verify that MCM installed
+Note: it can take up to an hour for all pods to start up.  During the installation process, you will see pods starting and stopping until they all start in the proper order.
 
+To verify that MCM installed properly:
+1) log into IBM Cloud
+2) set to the correct account
+3) open the resource list from top menu
+4) find the OpenShift cluster you created
+5) open the cluster information
+6) launch the OpenShift Web Console from botton at the top
+7) on OpenShift Console, under "Operators", "Installed Operators", there should be an entry for "IBM Cloud Pak for Multicloud Manager".  Open this and under "Installations" you should see "ibm-management" running.
+8) under "Workloads", "Pods" look to see that there aren't any in Pending, Terminating, CrashLoopBackOff state.  
 # Retrieving the MCM Console information
 To monitor progress:
 `kubectl get pods -A | grep -Ev "Completed|1/1|2/2|3/3|4/4|5/5|6/6|7/7"`
