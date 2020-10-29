@@ -64,10 +64,10 @@ kubectl get route -n ibm-common-services cp-console -o jsonpath=â€˜{.spec.host}â
 ```
 To get default login id:
 ```
-kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_username}\' | base64 -di && echo
+kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_username}\' | base64 -d && echo
 ```
 To get default Password:
 ```
-kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -di && echo
+kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -d && echo
 ```
   
