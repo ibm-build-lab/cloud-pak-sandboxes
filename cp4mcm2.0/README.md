@@ -27,6 +27,13 @@ chmod +x install.sh
   - Cluster is provisioned
   
 - MCM operator resources are installed and invoked
+  - NOTE: You will like see this message several times as these resources get created.  Just ignore it:
+  ```
+  NAME                          PACKAGE                       SOURCE                        CHANNEL
+  ibm-management-orchestrator   ibm-management-orchestrator   ibm-management-orchestrator   2.0-stable
+  Error from server (NotFound): subscriptions.operators.coreos.com "ibm-common-service-operator-stable-v1-opencloud-operators-openshift-marketplace" not found
+  Error from server (NotFound): subscriptions.operators.coreos.com "operand-deployment-lifecycle-manager-app" not found
+  ```
 
 Note: Cloud shell may sometimes time out during this process. If the script dies before starting the MCM installation, you may need to restart a cloud shell, clone the repo again, then restart the script and add the newly created cluster name to use to install on.
 # Verify that MCM installed
