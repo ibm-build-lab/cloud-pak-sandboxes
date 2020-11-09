@@ -1,18 +1,32 @@
+# Credentials or sensitive information files used by Terraform to ignore
+credentials*.properties
+credentials*.sh
+.terraform_key*.json
+.token
+*.key
+
+# Output files from Terraform and modules to ignore
+**/.kube
+**/.cp4app_data
+**/.helm
+
 # Local .terraform directories
-**/.terraform/*
+**/.terraform
 
-# .tfstate files
-*.tfstate
-*.tfstate.*
-
-# Crash log files
+# Terraform & Schematics files
+*.tfstate*
 crash.log
+.temp/
+tmp/
+/workspace
+dist/
+workspace.json
+.terraform.d/
 
 # Ignore any .tfvars files that are generated automatically for each Terraform run. Most
 # .tfvars files are managed as part of configuration and so should be included in
 # version control.
-#
-# example.tfvars
+my_variables.tfvars
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
@@ -27,3 +41,12 @@ override.tf.json
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
+
+# Catalog Product files to ignore
+*.token
+*.tgz
+product
+product_tmp
+
+# macOS files
+.DS_Store
