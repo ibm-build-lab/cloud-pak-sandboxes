@@ -17,7 +17,7 @@ This documentation includes instructions to provision the sandbox using makefile
     - [Using the IBM Cloud Web Console to create the Schematics workspace](#using-the-ibm-cloud-web-console-to-create-the-schematics-workspace)
     - [Using CLI to create the Schematics workspace](#using-cli-to-create-the-schematics-workspace)
     - [Cleanup](#cleanup)
-  - [Provisioning a sandbox with IBM Cloud CLI](#provisioning-a-sandbox-with-ibm-cloud-cli)
+  - [Provisioning a sandbox using IBM Cloud CLI](#provisioning-a-sandbox-using-ibm-cloud-cli)
   - [Validation](#validation)
   - [Input Variables for ROKS cluster creation](#input-variables-for-roks-cluster-creation)
   - [Output Variables from ROKS cluster creation](#output-variables-from-roks-cluster-creation)
@@ -323,7 +323,7 @@ ibmcloud schematics workspace delete --id $WORKSPACE_ID
 ibmcloud schematics workspace list
 ```
 
-## Provisioning a sandbox with IBM Cloud CLI
+## Provisioning a sandbox using IBM Cloud CLI
 
 The creation of the cluster using the IBM Cloud CLI may not be the best option but you can use it if there is a problem with Terraform or Schematics.
 
