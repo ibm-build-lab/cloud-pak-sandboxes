@@ -56,7 +56,7 @@ locals {
   infra                      = "classic"
   flavors                    = ["c3c.16x32"]
   workers_count              = [5]
-  roks_version               = "4.4"
+  roks_version               = "4.5"
   kubeconfig_dir             = "./.kube/config"
   entitled_registry_key_file = "./entitlement.key"
 }
