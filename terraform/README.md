@@ -12,12 +12,12 @@ This documentation includes instructions to provision the sandbox using makefile
     - [Provisioning a ROKS cluster with Classic Infrastructure](#provisioning-a-roks-cluster-with-classic-infrastructure)
       - [Helpful Cloud commands to determine specific options](#helpful-cloud-commands-to-determine-specific-options)
     - [Installing CP4MCM and/or CP4Apps](#installing-cp4mcm-andor-cp4apps)
-  - [Provisioning the sandbox using local Terraform](#provisioning-the-sandbox-using-local-terraform)
-  - [Provisioning the sandbox using Schematics](#provisioning-the-sandbox-using-schematics)
+  - [Provisioning a sandbox using local Terraform](#provisioning-a-sandbox-using-local-terraform)
+  - [Provisioning a sandbox using Schematics](#provisioning-a-sandbox-using-schematics)
     - [Using the IBM Cloud Web Console to create the Schematics workspace](#using-the-ibm-cloud-web-console-to-create-the-schematics-workspace)
     - [Using CLI to create the Schematics workspace](#using-cli-to-create-the-schematics-workspace)
     - [Cleanup](#cleanup)
-  - [Provisioning the sandbox with IBM Cloud CLI](#provisioning-the-sandbox-with-ibm-cloud-cli)
+  - [Provisioning a sandbox with IBM Cloud CLI](#provisioning-a-sandbox-with-ibm-cloud-cli)
   - [Validation](#validation)
   - [Input Variables for ROKS cluster creation](#input-variables-for-roks-cluster-creation)
   - [Output Variables from ROKS cluster creation](#output-variables-from-roks-cluster-creation)
@@ -222,7 +222,7 @@ If CP4APP was enabled, ...
 
 **TODO**: Provide instructions to access CP4APP
 
-## Provisioning the sandbox using local Terraform
+## Provisioning a sandbox using local Terraform
 
 You can use Terraform to execute the code locally for testing or if you are the only administrator of this infrastructure. After install or setup all the requirements and set the desired values to the [Input Variables](#input-variables), just like explained in the [Getting Started with Terraform](#getting-started-with-terraform), execute the following commands:
 
@@ -242,7 +242,7 @@ terraform destroy
 
 The cluster destruction should finish in about **10 minutes**.
 
-## Provisioning the sandbox using Schematics
+## Provisioning a sandbox using Schematics
 
 For group development and testing it is recommended to use Schematics to provision the OpenShift cluster. The Terraform state of the cluster is shared with the team and the management of the cluster can be done in the IBM Web Console by any team member.
 
@@ -323,7 +323,7 @@ ibmcloud schematics workspace delete --id $WORKSPACE_ID
 ibmcloud schematics workspace list
 ```
 
-## Provisioning the sandbox with IBM Cloud CLI
+## Provisioning a sandbox with IBM Cloud CLI
 
 The creation of the cluster using the IBM Cloud CLI may not be the best option but you can use it if there is a problem with Terraform or Schematics.
 
