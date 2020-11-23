@@ -12,8 +12,8 @@ This documentation includes instructions to provision the sandbox using makefile
     - [Provisioning a ROKS cluster with Classic Infrastructure](#provisioning-a-roks-cluster-with-classic-infrastructure)
       - [Helpful Cloud commands to determine specific options:](#helpful-cloud-commands-to-determine-specific-options)
     - [Installing CP4MCM and/or CP4Apps](#installing-cp4mcm-andor-cp4apps)
-  - [Input Variables](#input-variables)
-  - [Output Variables](#output-variables)
+  - [Input Variables for ROKS cluster creation](#input-variables-for-roks-cluster-creation)
+  - [Output Variables from ROKS cluster creation](#output-variables-from-roks-cluster-creation)
   - [Provisioning the sandbox using local Terraform](#provisioning-the-sandbox-using-local-terraform)
   - [Provisioning the sandbox using Schematics](#provisioning-the-sandbox-using-schematics)
     - [Using the IBM Cloud Web Console to create the Schematics workspace](#using-the-ibm-cloud-web-console-to-create-the-schematics-workspace)
@@ -157,9 +157,9 @@ ibmcloud ks vlan ls --zone {datacenter}
 
 -  To install on an existing cluster, set the following environment variable with the cluster id
 ```
-export TF_VAR_cluster_id=""
+export TF_VAR_cluster_id="************"
 ```
-- To install on a freshly provisioned ROKS cluster, make sure the options specified in the `./cloud-paks/terraform.tfvars` in the [ Provisioning a ROKS cluster using Terraform](#provisioning-a-roks-cluster-using-terraform) section are set.
+- To provision a fresh ROKS cluster with MCM or Apps installed, make sure the options specified in the `./cloud-paks/terraform.tfvars` in the [Provisioning a sandbox using Makefiles](#provisioning-a-sandbox-using-makefiles) section are set.
 
 All cloud paks require an entitlement key located here: https://myibm.ibm.com/products-services/containerlibrary. Save the key to the file `./entitlement.key`. 
 
@@ -168,21 +168,7 @@ Ensure the following defaults are set in `./cloud-paks/terraform.tfvars`.
 // Set the entitled_registry_user_email with the docker email address to login to the registry
 entitled_registry_user_email = "first.last_name@ibm.com"
 ```
-Cloud Pak for MCM options:
-```
-with_cp4mcm = true
-
-// Additional MCM modules, set to true to install the module
-install_infr_mgt_module      = false
-install_monitoring_module    = false
-install_security_svcs_module = false
-install_operations_module    = false
-install_tech_prev_module     = false
-```
-Cloud Pak for Applications options:
-```
-with_cp4app = true
-```
+Set the defaults in `./cloud-paks/terraform.tfvars` according to [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm) and [Cloud Pak for Applications (CP4Apps)](#cloud-pak-for-applications-cp4apps) for the input variables required to install  Cloud Paks.
 
 After setting all the input parameters execute the following commands to create the cluster
 
@@ -232,7 +218,7 @@ If CP4APP was enabled, ...
 **TODO**: Provide instructions to access CP4APP
 
 
-## Input Variables
+## Input Variables for ROKS cluster creation
 
 Besides the access credentials the Terraform script requires the following input parameters, for some variables are instructions to get the possible values using `ibmcloud`.
 
@@ -257,7 +243,7 @@ export TF_VAR_infra=vpc
 
 The environment variables have preference over the variables in the `terraform.tfvars` file. Also, there is no need to set the value if you are ok with the variable default value.
 
-## Output Variables
+## Output Variables from ROKS cluster creation
 
 The module return the following output parameters.
 
