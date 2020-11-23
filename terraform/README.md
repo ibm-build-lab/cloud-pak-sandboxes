@@ -18,10 +18,11 @@ This documentation includes instructions to provision the sandbox using makefile
     - [Using CLI to create the Schematics workspace](#using-cli-to-create-the-schematics-workspace)
     - [Cleanup](#cleanup)
   - [Provisioning a sandbox using IBM Cloud CLI](#provisioning-a-sandbox-using-ibm-cloud-cli)
-  - [Validation](#validation)
+  - [Private Catalog Deployment](#private-catalog-deployment)
   - [Input Variables for ROKS cluster creation](#input-variables-for-roks-cluster-creation)
   - [Output Variables from ROKS cluster creation](#output-variables-from-roks-cluster-creation)
-  - [Input/Output variables for Cloud Paks](#inputoutput-variables-for-cloud-paks)
+  - [ROKS Cluster Validation](#roks-cluster-validation)
+  - [Input/Output/Validation for Cloud Paks](#inputoutputvalidation-for-cloud-paks)
     - [Cloud Pak Entitlement Key](#cloud-pak-entitlement-key)
     - [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm)
     - [CP4MCM Input Variables](#cp4mcm-input-variables)
@@ -31,7 +32,6 @@ This documentation includes instructions to provision the sandbox using makefile
     - [CP4APP Input Variables](#cp4app-input-variables)
     - [CP4APP Output Variables](#cp4app-output-variables)
     - [CP4Apps Validation](#cp4apps-validation)
-  - [Private Catalog Deployment](#private-catalog-deployment)
 
 ## Requirements
 
@@ -120,7 +120,7 @@ Additionally, you can append the `export` commands in your shell profile or conf
 
 The following instructions are to provision a sandbox using [makefiles which invoke Terraform](#provisioning-a-sandbox-using-makefiles).
 
-Check the other sections to know how to get the cluster using [Terraform](#provisioning-a-sandbox-using-local-terraform) directly, [Schematics](#provisioning-a-sandbox-using-schematics), the [IBM Cloud CLI](#provisioning-a-sandbox-using-ibm-cloud-cli) or the [Private Catalog](./CATALOG.md)
+Check the other sections to know how to get the cluster using [Terraform](#provisioning-a-sandbox-using-local-terraform) directly, [Schematics](#provisioning-a-sandbox-using-schematics), the [IBM Cloud CLI](#provisioning-a-sandbox-using-ibm-cloud-cli) or the [Private Catalog](#private-catalog-deployment)
 
 Make sure you have all the [Requirements](#requirements), including [Configure Access to IBM Cloud](#configure-access-to-ibm-cloud). This section sets the input variables in the `./cloud-paks/terraform.tfvars` file but you can also set them using environment variables.
 
@@ -420,28 +420,42 @@ ibmcloud is subnet-delete $SUBNET_ID
 ibmcloud is vpc-delete $VPC_ID
 ```
 
-## Validation
+## Private Catalog Deployment
 
-If you have not setup `kubectl` to access the cluster, execute:
-
-```bash
-# If created with Terraform:
-ibmcloud ks cluster config --cluster $(terraform output cluster_id)
-
-# If created with Schematics:
-ibmcloud ks cluster config --cluster $(ibmcloud schematics workspace output --id $WORKSPACE_ID --json | jq -r '.[].output_values[].cluster_id.value')
-
-# If created with IBM Cloud CLI:
-ibmcloud ks cluster config --cluster $CLUSTER_NAME
-```
-
-Verify the cluster is up and running executing these commands:
+To release a new version of the Private Catalog execute the `make` command to create the file `product/CPS-MCM-1.x.y.tgz` file with all the code required for the Catalog Product.
 
 ```bash
-kubectl cluster-info
-kubectl get nodes
-kubectl get pods --all-namespaces
+make
 ```
+
+Then, follow these instructions on the IBM Cloud Web Console:
+
+1. Create a [release](https://github.com/ibm-hcbt/cloud-pak-sandboxes/releases) in GitHub, assign a version and upload the created `.tgz` to the attached binaries.
+2. Copy the binary URL
+3. Go to **IBM Cloud Console** > **Manage** > **Catalogs** > **Private catalogs**, create or select the catalog "_Cloud Pak Cluster Sandbox_", then go to **Private products**
+4. Add a product, select **Private repository**, and paste the release binary link previously copied
+5. Add **ALL** the Deployment values, except the followings:
+   1. **flavors**
+   2. **vpc_zone_names**
+   3. **workers_count**
+6. **Edit** the parameters for the following Deployment values:
+   1. **TF_VERSION**: Hidden
+   2. **infra**: Required
+   3. **owner**: Required
+   4. **project_name**: Required
+7. Click on **Update** and go to **Validate product**, enter the values for the parameters:
+   1. **resource group** (at the header and in section **Parameters with default values**): example: `cloud-pak-sandbox`
+   2. **owner**, **project_name**: example: `johandry` and `cp-sandbox`
+   3. **infra**: enter either `classic` or `vpc`
+8. Double check the other deployment values, use the `ibmcloud` commands in the description if required.
+9. Click on **Validate** and wait. It's recommended to check the logs (click on **View logs** link) in the created Schematics workspace
+10. Once validated, you can **Publish to account** the Catalog, then to staging and production. (so far just to account until it's validated by the team and ready to be released)
+
+_NOTE_: All these manual process will be automated by a CI/CD pipeline
+
+**TODO**: Complete the instructions to install CP4App
+
+
 
 ## Input Variables for ROKS cluster creation
 
@@ -479,8 +493,29 @@ The module return the following output parameters.
 | `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
 
 Check the sections [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm) and [Cloud Pak for Applications (CP4Apps)](#cloud-pak-for-applications-cp4apps) for the output variables result of the installation such Cloud Paks.
+## ROKS Cluster Validation
 
-## Input/Output variables for Cloud Paks
+If you have not setup `kubectl` to access the cluster, execute:
+
+```bash
+# If created with Terraform:
+ibmcloud ks cluster config --cluster $(terraform output cluster_id)
+
+# If created with Schematics:
+ibmcloud ks cluster config --cluster $(ibmcloud schematics workspace output --id $WORKSPACE_ID --json | jq -r '.[].output_values[].cluster_id.value')
+
+# If created with IBM Cloud CLI:
+ibmcloud ks cluster config --cluster $CLUSTER_NAME
+```
+
+Verify the cluster is up and running executing these commands:
+
+```bash
+kubectl cluster-info
+kubectl get nodes
+kubectl get pods --all-namespaces
+```
+## Input/Output/Validation for Cloud Paks
 ### Cloud Pak Entitlement Key
 
 Each Cloud Pak requires an Entitlement Key. It can be retreived from https://myibm.ibm.com/products-services/containerlibrary and copied into the variable `entitled_registry_key` or save into a file (i.e. `entitlement.key`) and set the file path into the variable `entitled_registry_key_file`. Edit the `./cloud-paks/terraform.tfvars` file with the following lines. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key into this variable.
@@ -624,37 +659,3 @@ kubectl cluster-info
 kubectl get namespaces $(terraform output cp4app_namespace)
 ```
 
-## Private Catalog Deployment
-
-To release a new version of the Private Catalog execute the `make` command to create the file `product/CPS-MCM-1.x.y.tgz` file with all the code required for the Catalog Product.
-
-```bash
-make
-```
-
-Then, follow these instructions on the IBM Cloud Web Console:
-
-1. Create a [release](https://github.com/ibm-hcbt/cloud-pak-sandboxes/releases) in GitHub, assign a version and upload the created `.tgz` to the attached binaries.
-2. Copy the binary URL
-3. Go to **IBM Cloud Console** > **Manage** > **Catalogs** > **Private catalogs**, create or select the catalog "_Cloud Pak Cluster Sandbox_", then go to **Private products**
-4. Add a product, select **Private repository**, and paste the release binary link previously copied
-5. Add **ALL** the Deployment values, except the followings:
-   1. **flavors**
-   2. **vpc_zone_names**
-   3. **workers_count**
-6. **Edit** the parameters for the following Deployment values:
-   1. **TF_VERSION**: Hidden
-   2. **infra**: Required
-   3. **owner**: Required
-   4. **project_name**: Required
-7. Click on **Update** and go to **Validate product**, enter the values for the parameters:
-   1. **resource group** (at the header and in section **Parameters with default values**): example: `cloud-pak-sandbox`
-   2. **owner**, **project_name**: example: `johandry` and `cp-sandbox`
-   3. **infra**: enter either `classic` or `vpc`
-8. Double check the other deployment values, use the `ibmcloud` commands in the description if required.
-9. Click on **Validate** and wait. It's recommended to check the logs (click on **View logs** link) in the created Schematics workspace
-10. Once validated, you can **Publish to account** the Catalog, then to staging and production. (so far just to account until it's validated by the team and ready to be released)
-
-_NOTE_: All these manual process will be automated by a CI/CD pipeline
-
-**TODO**: Complete the instructions to install CP4App
