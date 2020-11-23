@@ -10,10 +10,8 @@ This documentation includes instructions to provision the sandbox using makefile
     - [Create an IBM Cloud Classic Infrastructure API Key](#create-an-ibm-cloud-classic-infrastructure-api-key)
   - [Provisioning a sandbox using Makefiles](#provisioning-a-sandbox-using-makefiles)
     - [Provisioning a ROKS cluster with Classic Infrastructure](#provisioning-a-roks-cluster-with-classic-infrastructure)
-      - [Helpful Cloud commands to determine specific options:](#helpful-cloud-commands-to-determine-specific-options)
+      - [Helpful Cloud commands to determine specific options](#helpful-cloud-commands-to-determine-specific-options)
     - [Installing CP4MCM and/or CP4Apps](#installing-cp4mcm-andor-cp4apps)
-  - [Input Variables for ROKS cluster creation](#input-variables-for-roks-cluster-creation)
-  - [Output Variables from ROKS cluster creation](#output-variables-from-roks-cluster-creation)
   - [Provisioning the sandbox using local Terraform](#provisioning-the-sandbox-using-local-terraform)
   - [Provisioning the sandbox using Schematics](#provisioning-the-sandbox-using-schematics)
     - [Using the IBM Cloud Web Console to create the Schematics workspace](#using-the-ibm-cloud-web-console-to-create-the-schematics-workspace)
@@ -21,12 +19,15 @@ This documentation includes instructions to provision the sandbox using makefile
     - [Cleanup](#cleanup)
   - [Provisioning the sandbox with IBM Cloud CLI](#provisioning-the-sandbox-with-ibm-cloud-cli)
   - [Validation](#validation)
-  - [Cloud Pak Entitlement Key](#cloud-pak-entitlement-key)
-  - [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm)
+  - [Input Variables for ROKS cluster creation](#input-variables-for-roks-cluster-creation)
+  - [Output Variables from ROKS cluster creation](#output-variables-from-roks-cluster-creation)
+  - [Input/Output variables for Cloud Paks](#inputoutput-variables-for-cloud-paks)
+    - [Cloud Pak Entitlement Key](#cloud-pak-entitlement-key)
+    - [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm)
     - [CP4MCM Input Variables](#cp4mcm-input-variables)
     - [CP4MCM Output Variables](#cp4mcm-output-variables)
     - [CP4MCM Validation](#cp4mcm-validation)
-  - [Cloud Pak for Applications (CP4Apps)](#cloud-pak-for-applications-cp4apps)
+    - [Cloud Pak for Applications (CP4Apps)](#cloud-pak-for-applications-cp4apps)
     - [CP4APP Input Variables](#cp4app-input-variables)
     - [CP4APP Output Variables](#cp4app-output-variables)
     - [CP4Apps Validation](#cp4apps-validation)
@@ -128,6 +129,10 @@ Clone this repo on your local machine and
 cd <cloned repo>/terraform
 ```
 ### Provisioning a ROKS cluster with Classic Infrastructure
+
+
+To see what inputs are required/optional to provision a ROKS cluster go to [Input Variables for ROKS cluster creation](#input-variables-for-roks-cluster-creation)
+
 By default a cluster is created with these values. To change them, edit the file `./cloud-paks/terraform.tfvars`:
 ```hcl
 infra               = "classic"
@@ -144,7 +149,7 @@ flavor              = "c3c.16x32"
 private_vlan_number = ""
 public_vlan_number  = ""
 ```
-#### Helpful Cloud commands to determine specific options:
+#### Helpful Cloud commands to determine specific options
 ```
 ibmcloud ls regions
 ibmcloud ks versions | grep _OpenShift
@@ -216,44 +221,6 @@ open "http://$(terraform output cp4mcm_endpoint)"
 If CP4APP was enabled, ...
 
 **TODO**: Provide instructions to access CP4APP
-
-
-## Input Variables for ROKS cluster creation
-
-Besides the access credentials the Terraform script requires the following input parameters, for some variables are instructions to get the possible values using `ibmcloud`.
-
-| Name             | Description                                                                                                                                                                                                             | Default    | Required |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------- |
-| `infra`          | IBM Cloud infrastructure to install the cluster. The available options are `classic` or `vpc`                                                                                                                           | `classic`  | Yes      |
-| `project_name`   | The project name is used to name the cluster with the environment name. It's also used to label the cluster and other resources                                                                                         |            | Yes      |
-| `owner`          | Use your user name or team name. The owner is used to label the cluster and other resources                                                                                                                             |            | Yes      |
-| `environment`    | The environment name is used to label the cluster and other resources                                                                                                                                                   | `dev`      | No       |
-| `region`         | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`                                                                                                                              | `us-south` | No       |
-| `resource_group` | Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`                                                                                                 | `Default`  | No       |
-| `roks_version`   | OpenShift version to install. List all available versions: `ibmcloud ks versions`, make sure it ends with `_OpenShift` otherwise you'll be installing an IKS cluster. Compare versions at: https://ibm.biz/iks-versions | `4.4`      | No       |
-| `datacenter`     | On IBM Cloud Classic this is the datacenter or Zone in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`                                                     | `dal10`    | No       |
-
-Check the sections [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm) and [Cloud Pak for Applications (CP4Apps)](#cloud-pak-for-applications-cp4apps) for the input variables required to install such Cloud Paks.
-
-To set the input parameters you can export the environment variables with the prefix `TF_VARS_`, like in the following example:
-
-```bash
-export TF_VAR_infra=vpc
-```
-
-The environment variables have preference over the variables in the `terraform.tfvars` file. Also, there is no need to set the value if you are ok with the variable default value.
-
-## Output Variables from ROKS cluster creation
-
-The module return the following output parameters.
-
-| Name               | Description                                                                                                                         |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `cluster_endpoint` | The URL of the public service endpoint for your cluster                                                                             |
-| `cluster_id`       | The unique identifier of the cluster.                                                                                               |
-| `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
-
-Check the sections [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm) and [Cloud Pak for Applications (CP4Apps)](#cloud-pak-for-applications-cp4apps) for the output variables result of the installation such Cloud Paks.
 
 ## Provisioning the sandbox using local Terraform
 
@@ -476,7 +443,45 @@ kubectl get nodes
 kubectl get pods --all-namespaces
 ```
 
-## Cloud Pak Entitlement Key
+## Input Variables for ROKS cluster creation
+
+Besides the access credentials the Terraform script requires the following input parameters, for some variables are instructions to get the possible values using `ibmcloud`.
+
+| Name             | Description   | Default    | Required |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------- |
+| `infra`          | IBM Cloud infrastructure to install the cluster. The available options are `classic` or `vpc`                                                                                                                           | `classic`  | Yes      |
+| `project_name`   | The project name is used to name the cluster with the environment name. It's also used to label the cluster and other resources                                                                                         |            | Yes      |
+| `owner`          | Use your user name or team name. The owner is used to label the cluster and other resources                                                                                                                             |            | Yes      |
+| `environment`    | The environment name is used to label the cluster and other resources                                                                                                                                                   | `dev`      | No       |
+| `region`         | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`                                                                                                                              | `us-south` | No       |
+| `resource_group` | Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`                                                                                                 | `Default`  | No       |
+| `roks_version`   | OpenShift version to install. List all available versions: `ibmcloud ks versions`, make sure it ends with `_OpenShift` otherwise you'll be installing an IKS cluster. Compare versions at: https://ibm.biz/iks-versions | `4.4`      | No       |
+| `datacenter`     | On IBM Cloud Classic this is the datacenter or Zone in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`                                                     | `dal10`    | No       |
+
+Check the sections [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm) and [Cloud Pak for Applications (CP4Apps)](#cloud-pak-for-applications-cp4apps) for the input variables required to install such Cloud Paks.
+
+To set the input parameters you can export the environment variables with the prefix `TF_VARS_`, like in the following example:
+
+```bash
+export TF_VAR_infra=vpc
+```
+
+The environment variables have preference over the variables in the `terraform.tfvars` file. Also, there is no need to set the value if you are ok with the variable default value.
+
+## Output Variables from ROKS cluster creation
+
+The module return the following output parameters.
+
+| Name               | Description                                                                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `cluster_endpoint` | The URL of the public service endpoint for your cluster                                                                             |
+| `cluster_id`       | The unique identifier of the cluster.                                                                                               |
+| `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
+
+Check the sections [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm) and [Cloud Pak for Applications (CP4Apps)](#cloud-pak-for-applications-cp4apps) for the output variables result of the installation such Cloud Paks.
+
+## Input/Output variables for Cloud Paks
+### Cloud Pak Entitlement Key
 
 Each Cloud Pak requires an Entitlement Key. It can be retreived from https://myibm.ibm.com/products-services/containerlibrary and copied into the variable `entitled_registry_key` or save into a file (i.e. `entitlement.key`) and set the file path into the variable `entitled_registry_key_file`. Edit the `./cloud-paks/terraform.tfvars` file with the following lines. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key into this variable.
 
@@ -492,7 +497,7 @@ entitled_registry_key_file   = "./entitlement.key"
 
 **IMPORTANT**: Make sure to not commit the Entitlement Key file or content to the github repository.
 
-## Cloud Pak for Multi Cloud Management (CP4MCM)
+### Cloud Pak for Multi Cloud Management (CP4MCM)
 
 Cloud Pak for Multi Cloud Management is disabled by default, if you want to install it, set the variable `with_cp4mcm` to `true`, like this in the `./cloud-paks/terraform.tfvars`.
 
@@ -582,7 +587,7 @@ kubectl delete namespace cp4mcm
 
 **Note**: The uninstall/cleanup up process is a work in progress at this time, we are identifying the objects that needs to be deleted in order to have a successfully re-installation.
 
-## Cloud Pak for Applications (CP4Apps)
+### Cloud Pak for Applications (CP4Apps)
 
 CloudPak for Applications is disabled by default, if you want to install it, set the variable `with_cp4app` to `true`, like this in the `./cloud-paks/terraform.tfvars`.
 
