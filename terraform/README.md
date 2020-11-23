@@ -119,7 +119,7 @@ Additionally, you can append the `export` commands in your shell profile or conf
 
 The following instructions are to provision a sandbox using [makefiles which invoke Terraform](#provisioning-a-sandbox-using-makefiles).
 
-Check the other sections to know how to get the cluster using [Terraform](#provisioning-with-terraform) directly, [Schematics](#provisioning-with-schematics), the [IBM Cloud CLI](#provisioning-with-ibm-cloud-cli) or the [Private Catalog](./CATALOG.md)
+Check the other sections to know how to get the cluster using [Terraform](#provisioning-a-sandbox-using-local-terraform) directly, [Schematics](#provisioning-a-sandbox-using-schematics), the [IBM Cloud CLI](#provisioning-a-sandbox-using-ibm-cloud-cli) or the [Private Catalog](./CATALOG.md)
 
 Make sure you have all the [Requirements](#requirements), including [Configure Access to IBM Cloud](#configure-access-to-ibm-cloud). This section sets the input variables in the `./cloud-paks/terraform.tfvars` file but you can also set them using environment variables.
 
