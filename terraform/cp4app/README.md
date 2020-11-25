@@ -1,10 +1,10 @@
-# Development of the Private Catalog to create a Cloud Pack Sandbox
+# Development of the Private Catalog to create a Cloud Pak Sandbox
 
 This folder contain the Infrastructure as Code or Terraform code to create an IBM Cloud Catalog to create a **Sandbox** with an **Openshift** (ROKS) cluster on IBM Cloud **Classic** or **VPC** Gen 2, with **Multi Cloud Management Cloud Pak** (CP4MCM) or **Applications Cloud Pak** (CP4App)
 
 The sandbox Openshift cluster with CP4MCM or CP4App is provisioned using the Private Catalog on IBM Cloud Web Console, however this documentation include instructions to get the cluster on the CLI using Terraform, Schematics or the IBM Cloud CLI.
 
-- [Development of the Private Catalog to create a Cloud Pack Sandbox](#development-of-the-private-catalog-to-create-a-cloud-pack-sandbox)
+- [Development of the Private Catalog to create a Cloud Pak Sandbox](#development-of-the-private-catalog-to-create-a-cloud-pak-sandbox)
   - [Private Catalog Deployment](#private-catalog-deployment)
   - [Getting Started with Terraform](#getting-started-with-terraform)
   - [Requirements](#requirements)
@@ -685,7 +685,7 @@ kubectl get pods --all-namespaces
 
 ## Cloud Pak Entitlement Key
 
-CloudPack requires to have an Entitlement Key, get it from https://myibm.ibm.com/products-services/containerlibrary and copy the content of the key into the variable `entitled_registry_key` or download the key into a file (i.e. `entitlement.key`) and set the file path into the variable `entitled_registry_key_file`. Edit the `terraform.tfvars` with either of the following lines. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key into this variable.
+CloudPak requires to have an Entitlement Key, get it from https://myibm.ibm.com/products-services/containerlibrary and copy the content of the key into the variable `entitled_registry_key` or download the key into a file (i.e. `entitlement.key`) and set the file path into the variable `entitled_registry_key_file`. Edit the `terraform.tfvars` with either of the following lines. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key into this variable.
 
 For example:
 
