@@ -19,9 +19,10 @@ This documentation includes instructions to provision the sandbox using makefile
     - [Cleanup](#cleanup)
   - [Provisioning a sandbox using IBM Cloud CLI](#provisioning-a-sandbox-using-ibm-cloud-cli)
   - [Private Catalog Deployment](#private-catalog-deployment)
-  - [Input Variables for ROKS cluster creation](#input-variables-for-roks-cluster-creation)
-  - [Output Variables from ROKS cluster creation](#output-variables-from-roks-cluster-creation)
-  - [ROKS Cluster Validation](#roks-cluster-validation)
+  - [Input/Output/Validation for ROKS Cluster](#inputoutputvalidation-for-roks-cluster)
+    - [ROKS Input Variables](#roks-input-variables)
+    - [ROKS Output Variables](#roks-output-variables)
+    - [ROKS Cluster Validation](#roks-cluster-validation)
   - [Input/Output/Validation for Cloud Paks](#inputoutputvalidation-for-cloud-paks)
     - [Cloud Pak Entitlement Key](#cloud-pak-entitlement-key)
     - [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm)
@@ -224,7 +225,7 @@ If CP4APP was enabled, ...
 
 ## Provisioning a sandbox using local Terraform
 
-You can use Terraform to execute the code locally for testing or if you are the only administrator of this infrastructure. After install or setup all the requirements and set the desired values to the [Input Variables](#input-variables), just like explained in the [Getting Started with Terraform](#getting-started-with-terraform), execute the following commands:
+You can use Terraform commands directly to execute the code locally for testing or if you are the only administrator of this infrastructure. After setting up desired input values according to [ROKS Input Variables](#roks-input-variables), execute the following commands:
 
 ```bash
 terraform init
@@ -457,7 +458,9 @@ _NOTE_: All these manual process will be automated by a CI/CD pipeline
 
 
 
-## Input Variables for ROKS cluster creation
+## Input/Output/Validation for ROKS Cluster
+
+### ROKS Input Variables 
 
 Besides the access credentials the Terraform script requires the following input parameters, for some variables are instructions to get the possible values using `ibmcloud`.
 
@@ -482,7 +485,7 @@ export TF_VAR_infra=vpc
 
 The environment variables have preference over the variables in the `terraform.tfvars` file. Also, there is no need to set the value if you are ok with the variable default value.
 
-## Output Variables from ROKS cluster creation
+### ROKS Output Variables
 
 The module return the following output parameters.
 
@@ -493,7 +496,7 @@ The module return the following output parameters.
 | `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
 
 Check the sections [Cloud Pak for Multi Cloud Management (CP4MCM)](#cloud-pak-for-multi-cloud-management-cp4mcm) and [Cloud Pak for Applications (CP4Apps)](#cloud-pak-for-applications-cp4apps) for the output variables result of the installation such Cloud Paks.
-## ROKS Cluster Validation
+### ROKS Cluster Validation
 
 If you have not setup `kubectl` to access the cluster, execute:
 
