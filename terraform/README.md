@@ -222,7 +222,14 @@ If CP4APP was enabled, ...
 
 ## Provisioning a sandbox using local Terraform
 
-You can use Terraform commands directly to execute the code locally for testing or if you are the only administrator of this infrastructure. After setting up desired input values according to [ROKS Input Variables](#roks-input-variables), execute the following commands:
+You can use Terraform commands directly to execute the code locally for testing or if you are the only administrator of this infrastructure. 
+
+1. Ensure that Terraform is set up on your local system according to [Requirements](#requirements).
+
+2. Update the file `./cloud-paks/terraform.tfvars` according to 
+desired input values listed in [ROKS Input Variables](#roks-input-variables)
+
+3. Execute the following commands:
 
 ```bash
 terraform init
@@ -232,7 +239,7 @@ terraform apply
 
 The cluster should be available in about **20 to 30 minutes**. Then execute the validation commands or actions documented in the [Validation](#validation) section below.
 
-Finally, when you finish using the infrastructure, cleanup everything you created with the execution of:
+4. Finally, when you finish using the infrastructure, cleanup everything you created with the execution of:
 
 ```bash
 terraform destroy
