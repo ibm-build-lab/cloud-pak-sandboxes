@@ -17,7 +17,6 @@ This documentation includes instructions to provision the sandbox using makefile
   - [Provisioning a sandbox using Schematics](#provisioning-a-sandbox-using-schematics)
     - [Using IBM Cloud CLI](#using-ibm-cloud-cli)
     - [Using IBM Cloud Web Console](#using-ibm-cloud-web-console)
-    - [Cleanup](#cleanup)
   - [Provisioning a sandbox using IBM Cloud CLI](#provisioning-a-sandbox-using-ibm-cloud-cli)
   - [Private Catalog Deployment](#private-catalog-deployment)
   - [Input/Output/Validation for ROKS Cluster](#inputoutputvalidation-for-roks-cluster)
@@ -306,19 +305,7 @@ ibmcloud schematics logs --id $WORKSPACE_ID --act-id Activity_ID
 ibmcloud schematics apply --id $WORKSPACE_ID # Identify the Activity_ID
 ibmcloud schematics logs  --id $WORKSPACE_ID --act-id Activity_ID
 ```
-### Using IBM Cloud Web Console
-
-1. In the IBM Cloud Web Console go to: **Navigation Menu** (_top left corner_) > **Schematics**. Click **Create Workspace** in upper right corner of list of workspaces
-2. Provide a name, tags, location. Choose **schematics** resource group
-3. Once workspace is created, add **https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform** as the github URL
-4. Leave **Personal access token** blank
-5. Change **Terraform version** to 0.12
-6. Click **Save template information**
-7. Click on **Generate plan** button at the top, then click on **View log** link and wait until it's completed.
-8. Click on the **Apply plan** button, then click on the **View log** link.
-9. On the left side menu check the **Resources** item, to see all the resources created or modified from the workspace.
-
-### Cleanup
+4. Cleanup
 
 To destroy the Schematics created resources and the workspace execute the following commands:
 
@@ -331,6 +318,19 @@ ibmcloud schematics logs  --id $WORKSPACE_ID --act-id Activity_ID
 ibmcloud schematics workspace delete --id $WORKSPACE_ID
 ibmcloud schematics workspace list
 ```
+### Using IBM Cloud Web Console
+
+1. In the IBM Cloud Web Console go to: **Navigation Menu** (_top left corner_) > **Schematics**. Click **Create Workspace** in upper right corner of list of workspaces
+2. Provide a name, tags, location. Choose **schematics** resource group
+3. Once workspace is created, add **https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform** as the github URL
+4. Leave **Personal access token** blank
+5. Change **Terraform version** to 0.12
+6. Click **Save template information**
+7. Click on **Generate plan** button at the top, then click on **View log** link and wait until it's completed.
+8. Click on the **Apply plan** button, then click on the **View log** link.
+9. On the left side menu check the **Resources** item, to see all the resources created or modified from the workspace.
+
+
 
 ## Provisioning a sandbox using IBM Cloud CLI
 
