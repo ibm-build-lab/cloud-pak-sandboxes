@@ -330,8 +330,6 @@ ibmcloud schematics workspace list
 8. Click on the **Apply plan** button, then click on the **View log** link.
 9. On the left side menu check the **Resources** item, to see all the resources created or modified from the workspace.
 
-
-
 ## Provisioning a sandbox using IBM Cloud CLI
 
 The creation of the cluster using the IBM Cloud CLI may not be the best option but you can use it if there is a problem with Terraform or Schematics.
