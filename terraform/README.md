@@ -8,6 +8,7 @@ This documentation includes instructions to provision the sandbox using makefile
   - [Configure Access to IBM Cloud](#configure-access-to-ibm-cloud)
     - [Create an IBM Cloud API Key](#create-an-ibm-cloud-api-key)
     - [Create an IBM Cloud Classic Infrastructure API Key](#create-an-ibm-cloud-classic-infrastructure-api-key)
+    - [Export the following environment variables to let the IBM Provider to retrieve the credentials.](#export-the-following-environment-variables-to-let-the-ibm-provider-to-retrieve-the-credentials)
   - [Provisioning a sandbox using Makefiles](#provisioning-a-sandbox-using-makefiles)
     - [Provisioning a ROKS cluster with Classic Infrastructure](#provisioning-a-roks-cluster-with-classic-infrastructure)
       - [Helpful Cloud commands to determine specific options](#helpful-cloud-commands-to-determine-specific-options)
@@ -96,10 +97,8 @@ Follow these instructions to get the **Username** and **API Key** to access **IB
 2. Click Create a classic infrastructure key. If you don't see this option, check to see if you already have a classic infrastructure API key that is created because you're only allowed to have one in the account per user.
 3. Go to the actions menu (3 vertical dots) to select **Details**, then **Copy** the API Key.
 4. Go to **Manage** > **Access (IAM)** > **Users**, then search and click on your user's name. Select **Details** at the right top corner to copy the **User ID** from the users info (it may be your email address).
-5. The IBM Cloud Classic credentials also requires the IBM Cloud API, check the following section ([Setup Access to IBM Cloud VPC](#setup-access-to-ibm-cloud-vpc)) to set it.
-6. Export the following environment variables to let the IBM Provider to retrieve the credentials.
 
-Execute in a terminal:
+### Export the following environment variables to let the IBM Provider to retrieve the credentials.
 
 ```bash
 export IAAS_CLASSIC_USERNAME="< Your IBM Cloud Username/Email here >"
@@ -131,8 +130,7 @@ cd <cloned repo>/terraform
 ```
 ### Provisioning a ROKS cluster with Classic Infrastructure
 
-
-To see what inputs are required/optional to provision a ROKS cluster go to [Input Variables for ROKS cluster creation](#input-variables-for-roks-cluster-creation)
+To see what inputs are required/optional to provision a ROKS cluster go to [ROKS Input Variables](#roks-input-variables)
 
 By default a cluster is created with these values. To change them, edit the file `./cloud-paks/terraform.tfvars`:
 ```hcl
