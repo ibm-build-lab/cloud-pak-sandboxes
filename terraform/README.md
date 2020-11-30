@@ -15,8 +15,8 @@ This documentation includes instructions to provision the sandbox using makefile
     - [Installing CP4MCM and/or CP4Apps](#installing-cp4mcm-andor-cp4apps)
   - [Provisioning a sandbox using local Terraform](#provisioning-a-sandbox-using-local-terraform)
   - [Provisioning a sandbox using Schematics](#provisioning-a-sandbox-using-schematics)
-    - [Using the IBM Cloud Web Console to create the Schematics workspace](#using-the-ibm-cloud-web-console-to-create-the-schematics-workspace)
-    - [Using CLI to create the Schematics workspace](#using-cli-to-create-the-schematics-workspace)
+    - [Using IBM Cloud CLI](#using-ibm-cloud-cli)
+    - [Using IBM Cloud Web Console](#using-ibm-cloud-web-console)
     - [Cleanup](#cleanup)
   - [Provisioning a sandbox using IBM Cloud CLI](#provisioning-a-sandbox-using-ibm-cloud-cli)
   - [Private Catalog Deployment](#private-catalog-deployment)
@@ -245,17 +245,21 @@ The cluster destruction should finish in about **10 minutes**.
 
 For group development and testing it is recommended to use Schematics to provision the OpenShift cluster. The Terraform state of the cluster is shared with the team and the management of the cluster can be done in the IBM Web Console by any team member.
 
-There are two ways to execute the Schematics workspace, using IBM Cloud Web Console or CLI. However, to automate the process and facilitate maintenance it is recommended to use the CLI for the creation of the workspace.
+There are two ways to create and execute the Schematics workspace, using [IBM Cloud Web Console](#using-ibm-cloud-web-console) or [IBM Cloud CLI](#using-ibm-cloud-cli). However, to automate the process and facilitate maintenance it is recommended to use the CLI for the creation of the workspace.
 
-To create the Schematics workspace set the following required values (`OWNER`, `PROJECT`, `ENV`, `ENTITLED_KEY` and `ENTITLED_KEY_EMAIL`) in the the `workspace.tmpl.json` file and rename it `workspace.json`:
+### Using IBM Cloud CLI
+
+1. set the following required values (`OWNER`, `PROJECT`, `ENV`, `ENTITLED_KEY` and `ENTITLED_KEY_EMAIL`) in the the `workspace.tmpl.json` file and rename it `workspace.json`:
 
 ```bash
 PROJECT=cp-mcm
 OWNER=$USER
 ENV=sandbox
-ENTITLED_KEY_EMAIL=< The Email Address owner of the Entitled Key >
+ENTITLED_KEY_EMAIL=<Email Address owner of the Entitled Key >
 ENTITLED_KEY=< Your Entitled Key >
-# Or:
+```
+  or
+```bash
 ENTITLED_KEY=$(cat entitlement.key)
 
 sed \
@@ -267,11 +271,11 @@ sed \
   workspace.tmpl.json > workspace.json
 ```
 
-Also modify (if needed) the value of the parameters located in `.template_data[].variablestore[]`. Use the `ibmcloud` command to identify the values, as explained in the [Input Variables](#input-variables) section and on each variable description.
+Also modify (if needed) the value of the parameters located in `.template_data[].variablestore[]`. Use the `ibmcloud` command to identify the values, as explained in the [ROKS Input Variables](#roks-input-variables) section and on each variable description.
 
-Confirm in the `workspace.json` file the GitHub URL to the Terraform code in `.template_repo.url`. This URL could be in a the master branch, a different branch, tag or folder.
+Confirm the GitHub URL to the Terraform code in `.template_repo.url` in the `workspace.json` file. This URL could be in a the master branch, a different branch, tag or folder.
 
-Create the workspace executing the following commands:
+2. Create the workspace executing the following commands:
 
 ```bash
 ibmcloud schematics workspace list
@@ -285,21 +289,16 @@ Wait until the workspace status is set to **INACTIVE**. If something goes wrong 
 ibmcloud schematics workspace delete --id WORKSPACE_ID
 ```
 
-Once the workspace is created and with status **INACTIVE**, it's ready to apply the terraform code, either by using the IBM Cloud Web Console (recommended) or the CLI.
+3. Once the workspace is created and with status **INACTIVE**, it's ready to apply the terraform code
 
-### Using the IBM Cloud Web Console to create the Schematics workspace
-
-1. In the IBM Cloud Web Console go to: **Navigation Menu** (_top left corner_) > **Schematics**. Click on the workspace named **roks_cluster_PROJECT**
-2. Click on **Generate plan** button, then click on **View log** link and wait until it's completed.
-3. Click on the **Apply plan** button, then click on the **View log** link.
-4. On the left side menu check the **Resources** item, to see all the resources created or modified from the workspace.
-
-### Using CLI to create the Schematics workspace
 ```bash
-ibmcloud schematics workspace list           # Identify the WORKSPACE_ID
-WORKSPACE_ID=
+# Get list of workspaces
+ibmcloud schematics workspace list  
 
-# (Optional) Planing:
+# Set the WORKSPACE_ID
+export WORKSPACE_ID=<name of workspace>
+
+# (Optional) Plan:
 ibmcloud schematics plan --id $WORKSPACE_ID  # Identify the Activity_ID
 ibmcloud schematics logs --id $WORKSPACE_ID --act-id Activity_ID
 
@@ -307,6 +306,17 @@ ibmcloud schematics logs --id $WORKSPACE_ID --act-id Activity_ID
 ibmcloud schematics apply --id $WORKSPACE_ID # Identify the Activity_ID
 ibmcloud schematics logs  --id $WORKSPACE_ID --act-id Activity_ID
 ```
+### Using IBM Cloud Web Console
+
+1. In the IBM Cloud Web Console go to: **Navigation Menu** (_top left corner_) > **Schematics**. Click **Create Workspace** in upper right corner of list of workspaces
+2. Provide a name, tags, location. Choose **schematics** resource group
+3. Once workspace is created, add **https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform** as the github URL
+4. Leave **Personal access token** blank
+5. Change **Terraform version** to 0.12
+6. Click **Save template information**
+7. Click on **Generate plan** button at the top, then click on **View log** link and wait until it's completed.
+8. Click on the **Apply plan** button, then click on the **View log** link.
+9. On the left side menu check the **Resources** item, to see all the resources created or modified from the workspace.
 
 ### Cleanup
 
