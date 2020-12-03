@@ -1,7 +1,7 @@
 
 # Table of Contents
 
-* [What the Installer does](#Cloud Pak Sandbox Installer)
+* [What the Installer does](#Cloud-Pak-Sandbox-Installer)
 * [Install with IBM Cloud Shell](#install-with-ibm-cloud-shell)
   * [Get Registry Key](#get-registry-key)
   * [Download](#download)
