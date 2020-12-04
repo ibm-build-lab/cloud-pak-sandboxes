@@ -3,7 +3,7 @@ Assets to create and manage Cloud Pak Sandboxes
 
 installer: 
 
-Contains bash script and support files to interact with the schematics service on IBM Public Cloud.  This script can be run either from an IBM Cloud Shell window, or locally on your machine (assuming you have the IBM Cloud cli setup).
+Contains bash script and support files to interact with the Schematics service on IBM Public Cloud.  This script can be run either from an IBM Cloud Shell window, or locally on your machine (assuming you have the IBM Cloud cli setup).
 
 terraform: 
 
