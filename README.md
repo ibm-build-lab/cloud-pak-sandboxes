@@ -9,4 +9,8 @@ terraform:
 
 Terraform scripts to install ROKS, Cloud Pak for Applications, Multicloud Management and Data
 
+scripts:
+
+Additional scripts created to do installations and support the sandbox environment
+
 
