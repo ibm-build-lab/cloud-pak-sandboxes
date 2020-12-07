@@ -53,13 +53,13 @@ Login into your cloud environment and click the IBM Cloud Shell in the upper rig
 
 To use this Installer you will need to download the create-schematic.sh and the workspace-configuration-sample.json:
 
-     git clone https://github.ibm.com/hcbt/cloud-pak-sandboxes.git
+     git clone https://github.com/ibm-hcbt/cloud-pak-sandboxes
 
 ### Run Installer
 
 To run the installer, do the following:
 
-    cd cloud-pak-sandboxes/client-end-scripts/cp4mcm/
+    cd cloud-pak-sandboxes/installer
     chmod +x create-schematic.sh
     ./create-schematic.sh
 
