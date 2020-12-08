@@ -33,6 +33,10 @@ This documentation includes instructions to provision the sandbox using makefile
     - [CP4APP Input Variables](#cp4app-input-variables)
     - [CP4APP Output Variables](#cp4app-output-variables)
     - [CP4Apps Validation](#cp4apps-validation)
+    - [Cloud Pak for Data (CP4Data)](#cloud-pak-for-data-cp4data)
+    - [CP4APP Input Variables](#cp4data-input-variables)
+    - [CP4APP Output Variables](#cp4data-output-variables)
+    - [CP4Apps Validation](#cp4data-validation)
 
 ## Requirements
 
@@ -558,16 +562,6 @@ with_cp4mcm = true
 
 Make sure you have the [Cloud Pak Entitlement Key](#cloud-pak-entitlement-key) variables with the correct value.
 
-Other set of variables to assign values are the MCM modules to enable or disable. Set `true` or `false` to the following MCM modules variables:
-
-```hcl
-infr_mgt_install      = false
-monitoring_install    = false
-security_svcs_install = false
-operations_install    = false
-tech_prev_install     = false
-```
-
 The following table contain the input variables required to install CP4MCM:
 
 ### CP4MCM Input Variables
@@ -648,15 +642,15 @@ with_cp4app = true
 
 Make sure you have the [Cloud Pak Entitlement Key](#cloud-pak-entitlement-key) variables with the correct value.
 
-### CP4APP Input Variables
+### CP4Apps Input Variables
 
 | Name          | Description                                                                   | Default | Required |
 | ------------- | ----------------------------------------------------------------------------- | ------- | -------- |
 | `with_cp4app` | If false, do not install CP4APP on the ROKS cluster. By default it's disabled | `false` | No       |
 
-### CP4APP Output Variables
+### CP4Apps Output Variables
 
-Once the Terraform code finish (either using Terraform, Schematics or the Catalog) use the following output variables to use CP4APP:
+Once the Terraform code finish (either using Terraform, Schematics or the Catalog) use the following output variables to use CP4Apps:
 
 | Name                 | Description    |
 | -------------------- | -------------- |
@@ -664,7 +658,7 @@ Once the Terraform code finish (either using Terraform, Schematics or the Catalo
 
 ### CP4Apps Validation
 
-Execute the following commands to validate MCM:
+Execute the following commands to validate Apps:
 
 ```bash
 export KUBECONFIG=$(terraform output config_file_path)
@@ -674,4 +668,67 @@ kubectl cluster-info
 # Namespace
 kubectl get namespaces $(terraform output cp4app_namespace)
 ```
+### Cloud Pak for Data (CP4Data)
 
+### CP4Data Input Variables
+
+| Name                           | Description                                                                                                                                                      | Default              | Required |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | -------- |
+| `with_cp4data`                 | If false, do not install CP4DATA on the ROKS cluster. By default it's disabled                                                                                   | `false`              | No       |
+| `entitled_registry_key`        | Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable                                  |                      | No       |
+| `entitled_registry_key_file`   | Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, save the key to a file and enter the relative file path to this variable | `./entitlement.key"` | No       |
+| `entitled_registry_user_email` | Email address of the user owner of the Entitled Registry Key                                                                                                     |                      | Yes      |
+
+**TODO**: Update the CP4DATA modules names if needed. Provide more information about them or a link with their description.
+
+If you are using Schematics or the Catalog, the variable to use is only `entitled_registry_key` with the content of the Entitlement Key, the variable `entitled_registry_key_file` is not available.
+
+### CP4Data Output Variables
+
+Once the Terraform code finish (either using Terraform, Schematics or the Catalog) use the following output variables to access CP4DATA Dashboard:
+
+| Name                | Description                                                      |
+| ------------------- | ---------------------------------------------------------------- |
+| `cp4data_endpoint`  | URL of the CP4DATA dashboard                                     |
+| `cp4data_user`      | Username to login to the CP4DATA dashboard                       |
+| `cp4data_password`  | Password to login to the CP4DATA dashboard                       |
+| `cp4data_namespace` | Kubernetes namespace where all the CP4DATA objects are installed |
+
+### CP4Data Validation
+
+Execute the following commands to validate this Cloud Pak:
+
+```bash
+export KUBECONFIG=$(terraform output config_file_path)
+
+kubectl cluster-info
+
+# Namespace
+kubectl get namespaces $(terraform output cp4data_namespace)
+
+# All resources
+kubectl get all --namespace $(terraform output cp4data_namespace)
+```
+
+Using the following credentials:
+
+```bash
+terraform output cp4data_user
+terraform output cp4data_password
+```
+
+Open the following URL:
+
+```bash
+open "http://$(terraform output cp4data_endpoint)"
+```
+
+To clean up or remove CP4DATA and its dependencies from a cluster, execute the following commands:
+
+```bash
+kubectl delete -n openshift-operators subscription.operators.coreos.com ibm-management-orchestrator
+kubectl delete -n openshift-marketplace catalogsource.operators.coreos.com ibm-management-orchestrator opencloud-operators
+kubectl delete namespace cp4data
+```
+
+**Note**: The uninstall/cleanup up process is a work in progress at this time, we are identifying the objects that needs to be deleted in order to have a successfully re-installation.
