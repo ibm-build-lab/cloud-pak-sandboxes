@@ -12,9 +12,9 @@ project_name   = "cloud-pack"
 owner          = "anonymous"
 environment    = "sandbox"
 region         = "us-south"
-resource_group = "cloud-pak-sandbox"
-# If using Humio account, 
-# resource_group = "cloud-pak-sandbox-ibm"
+// Using Humio account:, 
+resource_group = "cloud-pak-sandbox-ibm"
+// If using a standard partner account, resource_group = "cloud-pak-sandbox"
 datacenter     = "dal10"
 
 // VLAN's numbers on datacenter 'dal10' on Humio account. They are here until the
