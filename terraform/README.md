@@ -30,13 +30,13 @@ This documentation includes instructions to provision the sandbox using makefile
     - [CP4MCM Output Variables](#cp4mcm-output-variables)
     - [CP4MCM Validation](#cp4mcm-validation)
     - [Cloud Pak for Applications (CP4Apps)](#cloud-pak-for-applications-cp4apps)
-    - [CP4APP Input Variables](#cp4app-input-variables)
-    - [CP4APP Output Variables](#cp4app-output-variables)
+    - [CP4Apps Input Variables](#cp4app-input-variables)
+    - [CP4Apps Output Variables](#cp4app-output-variables)
     - [CP4Apps Validation](#cp4apps-validation)
     - [Cloud Pak for Data (CP4Data)](#cloud-pak-for-data-cp4data)
-    - [CP4APP Input Variables](#cp4data-input-variables)
-    - [CP4APP Output Variables](#cp4data-output-variables)
-    - [CP4Apps Validation](#cp4data-validation)
+    - [CP4Data Input Variables](#cp4data-input-variables)
+    - [CP4Data Output Variables](#cp4data-output-variables)
+    - [CP4Dataa Validation](#cp4data-validation)
 
 ## Requirements
 
