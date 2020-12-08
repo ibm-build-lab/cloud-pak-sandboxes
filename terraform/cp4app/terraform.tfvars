@@ -2,17 +2,21 @@
 // ----------------------------
 
 // Use cluster_id if there is a cluster to install the Cloud Pak, example:
-// cluster_id = "btc48ogd09bdonhm4mrg"
+// cluster_id = "*****************"
 
 // RECOMMENDED: to set the cluster_id using an external input, like this:
-// export TF_VAR_cluster_id="btc48ogd09bdonhm4mrg"
+// export TF_VAR_cluster_id="*****************"
 
 // Otherwise, create a cluster based on values below
 project_name   = "cloud-pack"
 owner          = "anonymous"
 environment    = "sandbox"
 region         = "us-south"
+// If using Humio account
 resource_group = "cloud-pak-sandbox-ibm"
+// If using standard partner account
+// resource_group = "cloud-pak-sandbox"
+
 datacenter     = "dal10"
 
 // VLAN's numbers on datacenter 'dal10' on Humio account. They are here until the
