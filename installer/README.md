@@ -14,7 +14,7 @@
 
 ## What does this installer do?
 
-The Cloud Pak Sandbox Installer is an easy to use script that allows you to start up a ROKS cluster and install from a list of IBM Cloud Paks using the IBM cloud shell or your personal computer.
+The Cloud Pak Sandbox Installer is an easy to use script that allows you to provision a ROKS cluster and install from a list of IBM Cloud Paks using the IBM Cloud Shell or your personal computer. This script creates a Schematics workspace that then executes Terraform scripts to create the necessary resources.
 
 Currently you can run the script to install:
 
