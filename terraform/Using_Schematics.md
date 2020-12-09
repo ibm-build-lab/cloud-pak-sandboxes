@@ -1,6 +1,6 @@
 # Provisioning a Cloud Pak Sandbox using Schematics
 
-The Makefile contain all the commands to provision a Cloud Pak using IBM Cloud Schematics, however if you'd like to do it manually, follow these instructions.
+The Makefile contains all the commands to provision a Cloud Pak using IBM Cloud Schematics, however if you'd like to do it manually, follow these instructions.
 
 For group development and testing it is recommended to use Schematics to provision the OpenShift cluster. The Terraform state of the cluster is shared with the team and the management of the cluster can be done in the IBM Web Console by any team member.
 
@@ -8,7 +8,9 @@ There are two ways to create and execute the Schematics workspace, using [IBM Cl
 
 ## Using IBM Cloud CLI
 
-1. set the following required values (`OWNER`, `PROJECT`, `ENV`, `ENTITLED_KEY` and `ENTITLED_KEY_EMAIL`) in the the `workspace.tmpl.json` file and rename it `workspace.json`:
+1. Ensure you are logged in to IBM Cloud.  Refer to [requirements](./README.md#requirements) for more information.
+   
+2. Set the following required values (`OWNER`, `PROJECT`, `ENV`, `ENTITLED_KEY` and `ENTITLED_KEY_EMAIL`) in the the `workspace.tmpl.json` file and rename it `workspace.json`:
 
    ```bash
    PROJECT=cp-mcm
@@ -36,7 +38,7 @@ There are two ways to create and execute the Schematics workspace, using [IBM Cl
 
    Confirm the GitHub URL to the Terraform code in `.template_repo.url` in the `workspace.json` file. This URL could be in a the master branch, a different branch, tag or folder.
 
-2. Create the workspace executing the following commands:
+3. Create the workspace executing the following commands:
 
    ```bash
    ibmcloud schematics workspace list
@@ -50,7 +52,7 @@ There are two ways to create and execute the Schematics workspace, using [IBM Cl
    ibmcloud schematics workspace delete --id WORKSPACE_ID
    ```
 
-3. Once the workspace is created and with status **INACTIVE**, it's ready to apply the terraform code
+4. Once the workspace is created and shows status as **INACTIVE**, it's ready to apply the terraform code
 
    ```bash
    # Get list of workspaces
@@ -68,7 +70,7 @@ There are two ways to create and execute the Schematics workspace, using [IBM Cl
    ibmcloud schematics logs  --id $WORKSPACE_ID --act-id Activity_ID
    ```
 
-4. Cleanup
+5. Cleanup
 
    To destroy the Schematics created resources and the workspace execute the following commands:
 
@@ -84,12 +86,35 @@ There are two ways to create and execute the Schematics workspace, using [IBM Cl
 
 ## Using IBM Cloud Web Console
 
-1. In the IBM Cloud Web Console go to: **Navigation Menu** (_top left corner_) > **Schematics**. Click **Create Workspace** in upper right corner of list of workspaces
-2. Provide a name, tags, location. Choose **schematics** resource group
-3. Once workspace is created, add **https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform** as the github URL
-4. Leave **Personal access token** blank
-5. Change **Terraform version** to 0.12
-6. Click **Save template information**
-7. Click on **Generate plan** button at the top, then click on **View log** link and wait until it's completed.
-8. Click on the **Apply plan** button, then click on the **View log** link.
-9. On the left side menu check the **Resources** item, to see all the resources created or modified from the workspace.
+1. Got to cloud.ibm.com and log in
+
+2. In the IBM Cloud Web Console go to: **Navigation Menu** (_top left corner_) > **Schematics**. Click **Create Workspace** in upper right corner of list of workspaces
+
+3. Provide a name, tags, location. Choose **schematics** resource group
+
+4. Once workspace is created, add **https://github.com/ibm-hcbt/cloud-pak-sandboxes/terraform** as the github URL
+
+5. Leave **Personal access token** blank
+
+6. Change **Terraform version** to 0.12
+
+7. Click **Save template information**
+
+8. Click on **Generate plan** button at the top, then click on **View log** link and wait until it's completed
+
+9.  Click on the **Apply plan** button, then click on the **View log** link
+
+10. On the left side menu check the **Resources** item, to see all the resources created or modified from the workspace
+
+
+## Viewing the Schematics logs
+
+To follow the progress and ultimately see the Terraform outputs, open the log.  Do so by:
+
+1. Go to cloud.ibm.com.  Log in
+
+2. In the IBM Cloud Web Console go to: **Navigation Menu** (_top left corner_) > **Schematics** and choose the workspace you created
+
+3. Select "Activity" from the left menu
+
+4. Take the "View Log" link on the right of the desired step  
