@@ -1,18 +1,18 @@
 
-# Table of Contents
+# Cloud Pak Sandbox User Installation Script
 
-* [What the Installer does](#Cloud-Pak-Sandbox-Installer)
-* [Install with IBM Cloud Shell](#install-with-ibm-cloud-shell)
-  * [Get Registry Key](#get-registry-key)
-  * [Download](#download)
-  * [Run Installer](#run-installer)
-    * [Sample](#Sample-Output)
-  * [Checking Workspaces](#checking-workspaces)
-* [Install with Personal Device](#Install-with-Personal_Device)
-* [Additional Information](#additional-information)
-  * [RedHat OpenShift Kubernetes Service (ROKS)](#redhat-openshift-kubernetes-service)
+- [Cloud Pak Sandbox User Installation Script](#cloud-pak-sandbox-user-installation-script)
+  - [What does this installer do?](#what-does-this-installer-do)
+  - [Install with IBM Cloud Shell](#install-with-ibm-cloud-shell)
+    - [Get Registry Key](#get-registry-key)
+    - [Download](#download)
+    - [Run Installer](#run-installer)
+      - [Sample Output](#sample-output)
+    - [Checking your Workspace](#checking-your-workspace)
+  - [Install with Personal Device (for advanced users)](#install-with-personal-device-for-advanced-users)
+  - [Additional Information](#additional-information)
 
-# Cloud Pak Sandbox Installer
+## What does this installer do?
 
 The Cloud Pak Sandbox Installer is an easy to use script that allows you to start up a ROKS cluster and install from a list of IBM Cloud Paks using the IBM cloud shell or your personal computer.
 
@@ -23,35 +23,26 @@ Currently you can run the script to install:
 * Cloud Pak for Data (under development)
 * Cloud Pak for Integration (under development)
 
-For more information view these links:
-[IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli)
-[RedHat OpenShift Kubernetes Services/(ROCKS)](https://developer.ibm.com/recipes/tutorials/planning-redhat-openshift-deployment-on-ibm-cloud/)
-[Cloud Pak for Multicloud Management](https://www.ibm.com/cloud/cloud-pak-for-management)
-[Cloud Pak for Applications](https://www.ibm.com/cloud/cloud-pak-for-applications)
-[Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data)
-[Cloud Pak for Integration](https://www.ibm.com/cloud/cloud-pak-for-integration)
-[IBM Cloud Shell](https://www.ibm.com/cloud/cloud-shell)
-
 ## Install with IBM Cloud Shell
 
-[Understanding the User Interface](https://cloud.ibm.com/docs/overview?topic=overview-ui)
+[Understanding the IBM Cloud User Interface](https://cloud.ibm.com/docs/overview?topic=overview-ui)
 
 ### Get Registry Key
 
-First you will need your cloud pak registry key. The script will require a registry key and the email associated with the key to install any of the Cloud Paks.
+Each Cloud Pak requires an entitlement key. The script will prompt for this key and the email associated with it to install any of the Cloud Paks.
 
-If you do not have the key visit this link to generate a key:
-[Generate Cloud Pak Registry Key](https://myibm.ibm.com/products-services/containerlibrary)
+If you do not have the key visit this link to generate one:
+[Generate Cloud Pak Entitlement Key](https://myibm.ibm.com/products-services/containerlibrary)
 
 * For Cloud Pak for Data you will also need your docker credentials if you will be installing the Guardium External Strap module
 
 ### Download
 
-Login into your cloud environment and click the IBM Cloud Shell in the upper right corner of IBM Cloud console
+Log into your cloud environment and click the IBM Cloud Shell in the upper right corner of IBM Cloud console
 
 ![bash-button](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/installer/samples/bash-symbol.png)
 
-To use this Installer you will need to download the create-schematic.sh and the workspace-configuration-sample.json:
+To use this Installer you will need to download the `create-schematic.sh` and the `workspace-configuration-sample.json`:
 
      git clone https://github.com/ibm-hcbt/cloud-pak-sandboxes
 
@@ -63,7 +54,7 @@ To run the installer, do the following:
     chmod +x create-schematic.sh
     ./create-schematic.sh
 
-From here the installer will ask you a set of questions pretaining to the cluster you wish to create. Here is a sample of CP4MCM output:
+From here the Installer will ask you a set of questions pretaining to the cluster you wish to create. Here is a sample of CP4MCM output:
 
 ![script-sample](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/installer/samples/sample-script.png)
 
@@ -183,4 +174,16 @@ Go to your working directory and follow the same instructions for running in IBM
 
 Here is some additional information pretaining to the various technologies involved with the Sandbox environment
 
-### RedHat OpenShift Kubernetes Service (ROKS)
+[IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli)
+
+[RedHat OpenShift Kubernetes Services/(ROCKS)](https://developer.ibm.com/recipes/tutorials/planning-redhat-openshift-deployment-on-ibm-cloud/)
+
+[Cloud Pak for Multicloud Management](https://www.ibm.com/cloud/cloud-pak-for-management)
+
+[Cloud Pak for Applications](https://www.ibm.com/cloud/cloud-pak-for-applications)
+
+[Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data)
+
+[Cloud Pak for Integration](https://www.ibm.com/cloud/cloud-pak-for-integration)
+
+[IBM Cloud Shell](https://www.ibm.com/cloud/cloud-shell)
