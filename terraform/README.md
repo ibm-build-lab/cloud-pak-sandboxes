@@ -10,7 +10,7 @@ NOTE: that this documentation is **<u>only for developers or advanced users</u>*
 
 Sandbox **users** please refer to [Installer Script](../installer/README.md) documentation.
 
-Everything is automated Makefiles. However, instructions to get the same results manually are provided.
+Everything is automated with Makefiles. However, instructions to get the same results manually are provided.
 
 - [Creation of a Cloud Pak Sandbox (for Developers)](#creation-of-a-cloud-pak-sandbox-for-developers)
   - [Requirements](#requirements)
