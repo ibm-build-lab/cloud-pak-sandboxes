@@ -174,16 +174,27 @@ Go to your working directory and follow the same instructions for running in IBM
 
 Here is some additional information pretaining to the various technologies involved with the Sandbox environment
 
+[Cloud Pak for Applications](https://www.ibm.com/cloud/cloud-pak-for-applications) Documentation
+
+[Cloud Pak for Applications](./terraform/cp4app/README.md) Sandbox Inputs/Outputs and Vaidation
+
+[Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data) Documenetation
+
+[Cloud Pak for Data](./terraform/cp4data/README.md) Sandbox Inputs/Outputs and Vaidation
+
+[Cloud Pak for Integration](https://www.ibm.com/cloud/cloud-pak-for-integration) Documentation
+
+[Cloud Pak for Integration](./terraform/cp4int/README.md) Sandbox Inputs/Outputs and Vaidation
+
+[Cloud Pak for Multicloud Management](https://www.ibm.com/cloud/cloud-pak-for-management) Documentation
+
+[Cloud Pak for Multicloud Management](./terraform/cp4mcm/README.md) Sandbox Inputs/Outputs and Vaidation
+
+[Terraform modules for the Cloud Pak Sandbox environment](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak)
+
 [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli)
 
 [RedHat OpenShift Kubernetes Services/(ROCKS)](https://developer.ibm.com/recipes/tutorials/planning-redhat-openshift-deployment-on-ibm-cloud/)
 
-[Cloud Pak for Multicloud Management](https://www.ibm.com/cloud/cloud-pak-for-management)
-
-[Cloud Pak for Applications](https://www.ibm.com/cloud/cloud-pak-for-applications)
-
-[Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data)
-
-[Cloud Pak for Integration](https://www.ibm.com/cloud/cloud-pak-for-integration)
 
 [IBM Cloud Shell](https://www.ibm.com/cloud/cloud-shell)
