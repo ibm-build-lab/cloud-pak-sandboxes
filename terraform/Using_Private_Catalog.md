@@ -1,6 +1,31 @@
-# Cloud Pak Sandbox Private Catalog
+# Provisioning a Cloud Pak Sandbox using a Private Catalog
 
-This Private Catalog creates an Openshift (ROKS) cluster on IBM Cloud Classic or VPC Gen 2 with Cloud Pak for Multi-Cloud-Management or for Applications or both.
+To release a new version of the Private Catalog execute the `make` command to create the file `product/CPS-MCM-1.x.y.tgz` file with all the code required for the Catalog Product.
+
+```bash
+make build
+```
+
+Then, follow these instructions on the IBM Cloud Web Console:
+
+1. Create a [release](https://github.com/ibm-hcbt/cloud-pak-sandboxes/releases) in GitHub, assign a version and upload the created `.tgz` to the attached binaries.
+2. Copy the binary URL
+3. Go to **IBM Cloud Console** > **Manage** > **Catalogs** > **Private catalogs**, create or select the catalog "_Cloud Pak Cluster Sandbox_", then go to **Private products**
+4. Add a product, select **Private repository**, and paste the release binary link previously copied
+5. Add **ALL** the Deployment values
+6. **Edit** the parameters for the following Deployment values:
+   1. **owner**: Required
+   2. **project_name**: Required
+7. Click on **Update** and go to **Validate product**, enter the values for the parameters:
+   1. **resource group** (at the header and in section **Parameters with default values**): example: `cloud-pak-sandbox`
+   2. **owner**, **project_name**: example: `johandry` and `cp-sandbox`
+8. Double check the other deployment values, use the `ibmcloud` commands in the description if required.
+9. Click on **Validate** and wait. It's recommended to check the logs (click on **View logs** link) in the created Schematics workspace
+10. Once validated, you can **Publish to account** the Catalog, then to staging and production. (so far just to account until it's validated by the team and ready to be released)
+
+## Use the Private Catalog
+
+This Private Catalog creates an Openshift (ROKS) cluster on IBM Cloud Classic with a Cloud Pak.
 
 Follow these instruction to open the Private Catalog:
 

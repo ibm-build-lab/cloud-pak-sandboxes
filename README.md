@@ -1,18 +1,17 @@
-# cloud-pak-sandboxes
-Assets to create and manage Cloud Pak Sandboxes
+# Cloud Pak Sandboxes
 
-installer: 
+This project contain the assets to create and manage Cloud Pak Sandboxes on IBM Cloud Classic.
 
-Contains bash script and support files to interact with the Schematics service on IBM Public Cloud.  This script can be run either from an IBM Cloud Shell window, or locally on your machine (assuming you have the IBM Cloud cli setup). It makes use of the Terraform scripts located in the "terraform" subdirectory.
+## Installer
 
-scripts:
+The [installer/](./installer) directory contains a bash script for the users to install any Cloud Pak on IBM Cloud Classic. This script can be run either from an IBM Cloud Shell window, or locally on your machine if you have all the requirements.
 
-Additional scripts created to do installations and support the sandbox environment
+The bash script and support files interact with the Schematics service on IBM Public Cloud using the Terraform scripts located in the [terraform/](./terraform) directory.
 
-terraform: 
+## Scripts
 
-Terraform scripts to install ROKS, Cloud Pak for Applications, Multicloud Management and Data
+The [scripts/](./scripts) directory contain additional scripts created to do installations and support the sandbox environment. They are created for the developers and the Sandbox administrators.
 
+## Terraform
 
-
-
+The [terraform/](./terraform) directory has all the Terraform scripts to install multiple Cloud Paks on an OpenShift cluster on IBM Cloud Classic. This directory is only for developers or advance users that would like to execute the code locally or remotely using IBM Cloud Schematics, either for development, testing or get a custom Cloud Pak in an advance way. The code can be executed using `make` with a set of Makefiles.
