@@ -13,7 +13,7 @@ owner          = "anonymous"
 environment    = "sandbox"
 region         = "us-south"
 // Using Humio account by default.  This resource group exists only on this account
-resource_group = "cloud-pak-sandbox-ibm"
+resource_group = "cloud-pak-sandbox"
 // resource_group = "cloud-pak-sandbox"
 datacenter     = "dal10"
 

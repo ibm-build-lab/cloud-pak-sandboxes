@@ -13,7 +13,7 @@ owner          = "anonymous"
 environment    = "sandbox"
 region         = "us-south"
 // If using Humio account
-resource_group = "cloud-pak-sandbox-ibm"
+resource_group = "cloud-pak-sandbox"
 // If using standard partner account
 // resource_group = "cloud-pak-sandbox"
 

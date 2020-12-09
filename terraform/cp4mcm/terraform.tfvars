@@ -12,8 +12,8 @@ project_name   = "cloud-pack"
 owner          = "anonymous"
 environment    = "sandbox"
 region         = "us-south"
-// Using Humio account:, 
-resource_group = "cloud-pak-sandbox-ibm"
+// Using Humio account:,
+resource_group = "cloud-pak-sandbox"
 // If using a standard partner account, resource_group = "cloud-pak-sandbox"
 datacenter     = "dal10"
 
