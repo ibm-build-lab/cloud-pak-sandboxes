@@ -2,9 +2,9 @@
 
 ## Cloud Pak Entitlement Key
 
-This Cloud Pak requires an Entitlement Key. It can be retrieved from https://myibm.ibm.com/products-services/containerlibrary and copied into the variable `entitled_registry_key` or save into the file `entitlement.key`.
+This Cloud Pak requires an Entitlement Key. It can be retrieved from https://myibm.ibm.com/products-services/containerlibrary.
 
-Edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` if the entitlement key is not in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key into this variable.
+Edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` or save the entitlement key in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key.
 
 For example:
 
@@ -81,7 +81,7 @@ kubectl get nodes
 kubectl get pods --all-namespaces
 ```
 
-Execute the following commands to validate MCM:
+Execute the following commands to validate this Cloud Pak:
 
 ```bash
 export KUBECONFIG=$(terraform output config_file_path)
@@ -118,4 +118,4 @@ kubectl delete -n openshift-marketplace catalogsource.operators.coreos.com ibm-m
 kubectl delete namespace cp4mcm
 ```
 
-**Note**: The uninstall/cleanup up process is a work in progress at this time, we are identifying the objects that needs to be deleted in order to have a successfully re-installation.
+**Note**: The uninstall/cleanup process is a work in progress at this time, we are identifying the objects that need to be deleted in order to have a successful re-installation.

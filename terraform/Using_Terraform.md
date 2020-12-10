@@ -1,10 +1,10 @@
 # Provisioning a Cloud Pak Sandbox using Terraform
 
-The Makefile contain all the commands to use the Terraform, however if you'd like to do it manually, follow these instructions:
+The Makefile contains all the commands to use Terraform, however if you'd like to do it manually, follow these instructions:
 
-1. Make sure you have all the [requirements](#requirements) set. (Terraform, IBM Cloud CLI, IBM Cloud credentials, etc...)
+1. Make sure you have all the [requirements](./README.md#requirements) set. (Terraform, IBM Cloud CLI, IBM Cloud credentials, etc...)
 
-2. Move to the directory of the Cloud Pak to install, for example, if you'd like to install CP4MCM execute:
+2. Move to the directory of the desired Cloud Pak to install, for example, if you'd like to install CP4MCM:
 
    ```bash
    cd cp4mcm
@@ -13,20 +13,20 @@ The Makefile contain all the commands to use the Terraform, however if you'd lik
 3. Create the file `my_variables.auto.tfvars` with the following Terraform input variables using your own specific values:
 
    ```hcl
-   owner                        = "johandry"
+   owner                        = "bob"
    project_name                 = "cloud-pak-app"
-   entitled_registry_user_email = "Johandry.Amador@ibm.com"
+   entitled_registry_user_email = "bob@email.com"
    ```
 
-   Append the input variable `cluster_id` if you have an existing Openshift cluster to install the Cloud Pak, like so:
+   Append the input variable `cluster_id` if you have an existing Openshift cluster to install the Cloud Pak on, like so:
 
    ```hcl
-   cluster_id                   = "bupkhgbd00id2uu15cjg"
+   cluster_id                   = "xxxxxxxxxxxxxxxxxxxxx"
    ```
 
-   Open the file `terraform.tfvars` or `variables.tf` and feel free to overwrite the input default values for any of the existing variables.
+   Open the file `terraform.tfvars` or `variables.tf` to verify or overwrite the input default values for any of the existing variables. For more information on each Cloud Pak's specific inputs go to [cp4mcm](cp4mcm/README.md), [cp4app](cp4app/README.md) or [cp4data](cp4data/README.md).
 
-4. Until the permissions issue is not solved you need to provide the VLANs. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and write them down in the `terraform.tfvars` file. Example:
+   NOTE: Until the permissions issue is solved you need to provide the VLANs. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and store them in the `terraform.tfvars` file. Example:
 
    ```bash
    ❯ ibmcloud ks vlan ls --zone dal10
@@ -43,7 +43,7 @@ The Makefile contain all the commands to use the Terraform, however if you'd lik
    public_vlan_number  = "2979230"
    ```
 
-5. Execute the following Terraform commands:
+4. Issue the following commands to prime the Terraform code:
 
    ```bash
    terraform init
@@ -57,7 +57,7 @@ The Makefile contain all the commands to use the Terraform, however if you'd lik
    terraform plan
    ```
 
-6. Execute the following command to execute the Terraform code:
+5. Issue the following command to execute the Terraform code:
 
    ```bash
    terraform apply -auto-approve
@@ -67,7 +67,7 @@ The Makefile contain all the commands to use the Terraform, however if you'd lik
 
    If something fails, it should be safe to execute the `terraform apply` command again.
 
-7. To get the output parameters again or validate them, execute:
+6. To get the output parameters again or validate them, execute:
 
    ```bash
    terraform output
@@ -81,7 +81,7 @@ The Makefile contain all the commands to use the Terraform, however if you'd lik
    oc cluster-info
    ```
 
-8. Finally, when you finish using the infrastructure, cleanup everything you created with the execution of:
+7. Finally, when you finish using the infrastructure, cleanup everything you created with the execution of:
 
    ```bash
    terraform destroy

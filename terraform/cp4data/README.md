@@ -2,9 +2,9 @@
 
 ## Cloud Pak Entitlement Key
 
-This Cloud Pak requires an Entitlement Key. It can be retrieved from https://myibm.ibm.com/products-services/containerlibrary and copied into the variable `entitled_registry_key` or save into the file `entitlement.key`.
+This Cloud Pak requires an Entitlement Key. It can be retrieved from https://myibm.ibm.com/products-services/containerlibrary.
 
-Edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` if the entitlement key is not in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key into this variable.
+Edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` or save the entitlement key in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key.
 
 For example:
 
@@ -19,7 +19,7 @@ entitled_registry_key        = "< Your Entitled Key here >"
 
 ## Input Parameters
 
-Besides the access credentials the Terraform code requires the following input parameters, for some variables are instructions to get the possible values using `ibmcloud`.
+In addition, the Terraform code requires the following input parameters, for some variables are instructions to get the possible values using `ibmcloud`.
 
 | Name                                             | Description                                                                                                                                                                                                                                                                                                                  | Default             | Required |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | -------- |
@@ -51,17 +51,17 @@ If you are using Schematics directly or the Private Catalog, set the variable `e
 
 The Terraform code return the following output parameters.
 
-| Name               | Description                                                                                                                         |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `cluster_endpoint` | The URL of the public service endpoint for your cluster                                                                             |
-| `cluster_id`       | The unique identifier of the cluster.                                                                                               |
-| `cluster_name`     | The cluster name which should be: `{project_name}-{environment}-cluster`                                                            |
-| `resource_group`   | Resource group where the OpenShift cluster is created                                                                               |
-| `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
-| `cp4data_endpoint` | URL of the CP4Data dashboard                                                                                                        |
-| `cp4mcm_user`      | Username to login to the CP4Data dashboard                                                                                          |
-| `cp4mcm_password`  | Password to login to the CP4Data dashboard                                                                                          |
-| `cp4mcm_namespace` | Kubernetes namespace where all the CP4Data objects are installed                                                                    |
+| Name                | Description                                                                                                                         |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `cluster_endpoint`  | The URL of the public service endpoint for your cluster                                                                             |
+| `cluster_id`        | The unique identifier of the cluster.                                                                                               |
+| `cluster_name`      | The cluster name which should be: `{project_name}-{environment}-cluster`                                                            |
+| `resource_group`    | Resource group where the OpenShift cluster is created                                                                               |
+| `kubeconfig`        | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
+| `cp4data_endpoint`  | URL of the CP4Data dashboard                                                                                                        |
+| `cp4data_user`      | Username to login to the CP4Data dashboard                                                                                          |
+| `cp4data_password`  | Password to login to the CP4Data dashboard                                                                                          |
+| `cp4data_namespace` | Kubernetes namespace where all the CP4Data objects are installed                                                                    |
 
 ## Validations
 
@@ -86,7 +86,7 @@ kubectl get nodes
 kubectl get pods --all-namespaces
 ```
 
-Execute the following commands to validate MCM:
+Execute the following commands to validate this cloud pak:
 
 ```bash
 export KUBECONFIG=$(terraform output config_file_path)
@@ -94,10 +94,10 @@ export KUBECONFIG=$(terraform output config_file_path)
 kubectl cluster-info
 
 # Namespace
-kubectl get namespaces $(terraform output cp4mcm_namespace)
+kubectl get namespaces $(terraform output cp4data_namespace)
 
 # All resources
-kubectl get all --namespace $(terraform output cp4mcm_namespace)
+kubectl get all --namespace $(terraform output cp4data_namespace)
 ```
 
 Using the following credentials:
@@ -115,4 +115,4 @@ open $(terraform output cp4data_endpoint)
 
 ## Uninstall
 
-**Note**: The uninstall/cleanup up process is a work in progress at this time, we are identifying the objects that needs to be deleted in order to have a successfully re-installation.
+**Note**: The uninstall/cleanup process is a work in progress at this time, we are identifying the objects that need to be deleted in order to have a successful re-installation.
