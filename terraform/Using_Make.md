@@ -130,7 +130,7 @@ Make sure everything that provisioning the Cloud Pak using Schematics works befo
 
 2. Go to the displayed link to edit or validate the variables in the workspace. By default the cluster is created on `us-south` region and datacenter `dal10`. If you would like to change any of these parameters, edit the variables at the workspace settings.
 
-3. NOTE: Until the permissions issue is solved the VLANs need to be provided. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and write them down in the variables at the workspace settings. In this example, you can select the VLANs `2979232` (as private) and `2979230` (as public):
+3. Until the permissions issue is solved the VLANs need to be provided. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and write them down in the variables at the workspace settings. In this example, you can select the VLANs `2979232` (as private) and `2979230` (as public):
 
 ```bash
 ❯ ibmcloud ks vlan ls --zone dal10
