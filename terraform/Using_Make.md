@@ -4,7 +4,7 @@ You can use `make` to get the Cloud Pak using Terraform locally from your comput
 
 Either option you choose, you need first to complete the following steps, then go to the section [Using Terraform](#using-terraform-local-execution) or [Using Schematics](#using-schematics-remote-execution).
 
-1. Clone the repo https://github.com/ibm-hcbt/cloud-pak-sandboxes (if you have not yet) and change to the `terraform/` directory
+1. Clone the repo [ibm-hcbt/cloud-pak-sandboxes](https://github.com/ibm-hcbt/cloud-pak-sandboxes) (if you have not yet) and change to the `terraform/` directory
 
    ```bash
    cd terraform
@@ -16,8 +16,8 @@ Either option you choose, you need first to complete the following steps, then g
    export TF_VAR_entitled_registry_user_email="Johandry.Amador@ibm.com"
    ```
 
-3. Store the Entitlement Key in the file `entitlement.key`. Go to 
-https://myibm.ibm.com/products-services/containerlibrary to retrieve the key.
+3. Store the Entitlement Key in the file `entitlement.key`. Go to
+   [myibm.ibm.com/products-services/containerlibrary](https://myibm.ibm.com/products-services/containerlibrary) to retrieve the key.
 
 4. Make sure to have your IBM Cloud credentials exported. Read the section **[Configure Access to IBM Cloud](./README.md#configure-access-to-ibm-cloud)** for more information.
 
@@ -27,7 +27,7 @@ https://myibm.ibm.com/products-services/containerlibrary to retrieve the key.
    export IC_API_KEY="..............."
    ```
 
-5. The `ibmcloud` and the **Schematics** plugins are required, see [Requirements](./README.md#requirements)** for more information. Verify by executing:
+5. The `ibmcloud` and the **Schematics** plugins are required, see [Requirements](./README.md#requirements)\*\* for more information. Verify by executing:
 
    ```bash
    ibmcloud schematics version
@@ -53,7 +53,7 @@ https://myibm.ibm.com/products-services/containerlibrary to retrieve the key.
 
 The Makefile will make sure that all these required parameters are set. If one is missing it will produce an error. If you get an error, provide the requested input parameter or requirement, then execute `make` again.
 
-You can also verify all the requirements are set by executing `make check` or - if you plan to use **Schematics** - `make check-sch`.
+You can also verify all the requirements are set by executing `make check` or - if you plan to use **Schematics** - `make check check-sch`.
 
 Some systems have a long name for the username (i.e your email address). Identify your username executing `echo $USER`, if it has more than 10 characters, export the variable `BY` with the desired username to identify the owner of the Cloud Pak, like so: `export BY=john-smith`. This username or owner is used to tag and name most of the resources provisioned.
 
@@ -96,23 +96,23 @@ public_vlan_number  = "2979230"
 
    The Terraform output will also display the Cloud Pak entrypoint and credentials.
 
-2.  To print again the output parameters to access the Cloud Pak, execute:
+2. To print again the output parameters to access the Cloud Pak, execute:
 
-    ```bash
-    make output-tf
-    ```
+   ```bash
+   make output-tf
+   ```
 
-3.  To destroy the cluster, execute:
+3. To destroy the cluster, execute:
 
-    ```bash
-    make  destroy-tf
-    ```
+   ```bash
+   make  destroy-tf
+   ```
 
-4.  Cleanup everything executing:
+4. Cleanup everything executing:
 
-    ```bash
-    make clean-tf
-    ```
+   ```bash
+   make clean-tf
+   ```
 
 **IMPORTANT**: Do not execute `clean-tf` before executing `destroy-tf` or you'll have to delete the cluster manually.
 
@@ -129,7 +129,7 @@ Make sure everything that provisioning the Cloud Pak using Schematics works befo
    ```
 
 2. Go to the displayed link to edit or validate the variables in the workspace. By default the cluster is created on `us-south` region and datacenter `dal10`. If you would like to change any of these parameters, edit the variables at the workspace settings.
-    
+
 3. NOTE: Until the permissions issue is solved the VLANs need to be provided. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and write them down in the variables at the workspace settings. In this example, you can select the VLANs `2979232` (as private) and `2979230` (as public):
 
 ```bash
@@ -172,25 +172,25 @@ If any input variable is modified in the workspace settings section, make sure t
     make output-sch
     ```
 
-4.  At this moment you can execute the tests to verify the cluster and the Cloud Pak are ready. Execute:
+7.  At this moment you can execute the tests to verify the cluster and the Cloud Pak are ready. Execute:
 
     ```bash
     make test-sch
     ```
 
-5.  To destroy the cluster, execute:
+8.  To destroy the cluster, execute:
 
     ```bash
     make  destroy-sch
     ```
 
-6.  To delete the workspace, execute:
+9.  To delete the workspace, execute:
 
     ```bash
     make  delete-sch
     ```
 
-7.  Cleanup all the created files, executing:
+10. Cleanup all the created files, executing:
 
     ```bash
     make clean-sch

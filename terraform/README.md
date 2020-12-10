@@ -1,4 +1,6 @@
-# Creation of a Cloud Pak Sandbox (for Developers)
+# Creation of a Cloud Pak Sandbox
+
+That this documentation is **<u>only for developers or advanced users</u>**. Sandbox **users** please refer to [Installer Script](../installer/README.md) documentation.
 
 This folder contains the Infrastructure as Code or Terraform code to create a **Sandbox** with an **Openshift** (ROKS) cluster on IBM Cloud Classic with a Cloud Pak. At this time the supported Cloud Paks are:
 
@@ -6,18 +8,14 @@ This folder contains the Infrastructure as Code or Terraform code to create a **
 - Cloud Pak for Applications (CP4A)
 - Cloud Pak for Data (CP4D)
 
-NOTE: that this documentation is **<u>only for developers or advanced users</u>**. 
-
-Sandbox **users** please refer to [Installer Script](../installer/README.md) documentation.
-
 Everything is automated with Makefiles. However, instructions to get the same results manually are provided.
 
-- [Creation of a Cloud Pak Sandbox (for Developers)](#creation-of-a-cloud-pak-sandbox-for-developers)
+- [Creation of a Cloud Pak Sandbox](#creation-of-a-cloud-pak-sandbox)
   - [Requirements](#requirements)
   - [Configure Access to IBM Cloud](#configure-access-to-ibm-cloud)
     - [Create an IBM Cloud API Key](#create-an-ibm-cloud-api-key)
     - [Create an IBM Cloud Classic Infrastructure API Key](#create-an-ibm-cloud-classic-infrastructure-api-key)
-    - [Exporting the credentials](#exporting-the-credentials)
+    - [Create the credentials file](#create-the-credentials-file)
   - [Provisioning the Cloud Pak Sandbox](#provisioning-the-cloud-pak-sandbox)
   - [Cloud Pak Inputs/Outputs and Validation](#cloud-pak-inputsoutputs-and-validation)
   - [Cloud Pak External Terraform Modules](#cloud-pak-external-terraform-modules)
@@ -88,7 +86,7 @@ Follow these instructions to get the **Username** and **API Key** to access **IB
 3. Go to the actions menu (3 vertical dots) to select **Details**, then **Copy** the API Key.
 4. Go to **Manage** > **Access (IAM)** > **Users**, then search and click on your user's name. Select **Details** at the right top corner to copy the **User ID** from the users info (it may be your email address).
 
-### Exporting the credentials
+### Create the credentials file
 
 In the terminal window, export the following environment variables to let the IBM Provider to retrieve the credentials.
 
@@ -112,13 +110,13 @@ Additionally, you can append the above `export` commands in your shell profile o
 
 ## Provisioning the Cloud Pak Sandbox
 
- To build the Sandbox with a selected Cloud Pak on IBM Cloud Classic the available methods are:
+To build the Sandbox with a selected Cloud Pak on IBM Cloud Classic the available methods are:
 
-- **[Using Make](./Using_Make.md)**: With the use of `make` and the existing `Makefiles` it is possible to provision the Cloud Pak locally with Terraform, or remotely with Schematics. Make is the recommended way if this is your first time or to get things done quickly. Instructions for using `make` are [here](./Using_Make.md).
-- **[Using Terraform](./Using_Terraform.md)**: The Makefile contains all the Terraform actions/commands to run, however you can execute them manually whenever you want, even after using `make` initially. This option allows you to customize the input parameters and offers more control of the process. Instructions for using Terraform directly are [here](./Using_Terraform.md).
-- **[Using Schematics](./Using_Schematics.md)**: The Makefile contains all the commands to provision a Cloud Pak using IBM Cloud Schematics, however you can do it manually using `ibmcloud` cli or the IBM Cloud Web Console to create and manage a Schematics workspace. Consider using `make` to - at least - create the workspace, it can save you some time. Instructions for using Schematics are [here](./Using_Schematics.md).
-- **[Using IBM Cloud CLI](./Using_IBMCloud_CLI.md)**: The existing Terraform code provisions an OpenShift cluster then installs the requested Cloud Pak on it. With the IBM Cloud CLI you cannot install a Cloud Pak but you can provision an OpenShift cluster to install the Cloud Pak on using any of the above methods. Instructions to provision an OpenShift cluster are [here](./Using_IBMCloud_CLI.md).
-- **[Using a Private Catalog](./Using_Private_Catalog.md)**: (Deprecated) It's possible to have a Private Catalog as a user interface with the Schematics and Terraform code, however this option may be more complex than creating a Schematics workspace. This option is not supported anymore. Instructions to create a Private Catalog are [here](./Using_Private_Catalog.md).
+- **[Using Make](./Using_Make.md)**: With the use of `make` and the existing `Makefiles` it is possible to provision the Cloud Pak locally with Terraform, or remotely with Schematics. Make is the recommended way if this is your first time or to get things done quickly. Refer to [Using Make](./Using_Make.md) for instructions.
+- **[Using Terraform](./Using_Terraform.md)**: The Makefile contains all the Terraform actions/commands to run, however you can execute them manually whenever you want, even after using `make` initially. This option allows you to customize the input parameters and offers more control of the process. Refer to [Using Terraform](./Using_Terraform.md) for instructions.
+- **[Using Schematics](./Using_Schematics.md)**: The Makefile contains all the commands to provision a Cloud Pak using IBM Cloud Schematics, however you can do it manually using `ibmcloud` cli or the IBM Cloud Web Console to create and manage a Schematics workspace. Consider using `make` to - at least - create the workspace, it can save you some time. Refer to [Using Schematics](./Using_Schematics.md) for instructions.
+- **[Using IBM Cloud CLI](./Using_IBMCloud_CLI.md)**: The existing Terraform code provisions an OpenShift cluster then installs the requested Cloud Pak on it. With the IBM Cloud CLI you cannot install a Cloud Pak but you can provision an OpenShift cluster to install the Cloud Pak on using any of the above methods. Instructions to provision an OpenShift cluster using the CLI are in the [Using IBM Cloud CLI](./Using_IBMCloud_CLI.md) document.
+- **[Using a Private Catalog](./Using_Private_Catalog.md)**: (Deprecated) It's possible to have a Private Catalog as a user interface with the Schematics and Terraform code, however this option may be more complex than creating a Schematics workspace. This option is not supported anymore. Instructions to create a Private Catalog are in the [Using Private Catalog](./Using_Private_Catalog.md) document.
 
 ## Cloud Pak Inputs/Outputs and Validation
 
@@ -126,11 +124,8 @@ Additionally, you can append the above `export` commands in your shell profile o
 
 [Cloud Pak for Data](./cp4data/README.md)
 
-[Cloud Pak for Multicloud Management](./cp4mcm/README.md)
+[Cloud Pak for Multi Cloud Management](./cp4mcm/README.md)
 
 ## Cloud Pak External Terraform Modules
 
 [Terraform modules for the Cloud Pak Sandbox environment](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak)
-
-
-

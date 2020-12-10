@@ -24,9 +24,9 @@ The Makefile contains all the commands to use Terraform, however if you'd like t
    cluster_id                   = "xxxxxxxxxxxxxxxxxxxxx"
    ```
 
-   Open the file `cp4xxx/terraform.tfvars` or `variables.tf` to verify or overwrite the input default values for any of the existing variables. For more information on each Cloud Pak's specific inputs go to [cp4mcm](cp4mcm/README.md), [cp4app](cp4app/README.md) or [cp4data](cp4data/README.md).
+   Open the file `terraform.tfvars` or `variables.tf` to verify or overwrite the input default values for any of the existing variables. For more information on each Cloud Pak's specific inputs go to [cp4mcm](cp4mcm/README.md), [cp4app](cp4app/README.md) or [cp4data](cp4data/README.md).
 
-   NOTE: Until the permissions issue is solved you need to provide the VLANs. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and store them in the `cp4xxx/terraform.tfvars` file. Example:
+   NOTE: Until the permissions issue is solved you need to provide the VLANs. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and store them in the `terraform.tfvars` file. Example:
 
    ```bash
    ❯ ibmcloud ks vlan ls --zone dal10

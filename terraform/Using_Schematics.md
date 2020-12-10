@@ -8,8 +8,8 @@ There are two ways to create and execute the Schematics workspace, using [IBM Cl
 
 ## Using IBM Cloud CLI
 
-1. Ensure you are logged in to IBM Cloud.  Refer to [requirements](./README.md#requirements) for more information.
-   
+1. Ensure you are logged in to IBM Cloud. Refer to [requirements](./README.md#requirements) for more information.
+
 2. Set the following required values (`OWNER`, `PROJECT`, `ENV`, `ENTITLED_KEY` and `ENTITLED_KEY_EMAIL`) in the the `workspace.tmpl.json` file and rename it `workspace.json`:
 
    ```bash
@@ -102,19 +102,18 @@ There are two ways to create and execute the Schematics workspace, using [IBM Cl
 
 8. Click on **Generate plan** button at the top, then click on **View log** link and wait until it's completed
 
-9.  Click on the **Apply plan** button, then click on the **View log** link
+9. Click on the **Apply plan** button, then click on the **View log** link
 
 10. On the left side menu check the **Resources** item, to see all the resources created or modified from the workspace
 
-
 ## Viewing the Schematics logs
 
-To follow the progress and ultimately see the Terraform outputs, open the log.  Do so by:
+To follow the progress and ultimately see the Terraform outputs, open the log. Do so by:
 
-1. Go to cloud.ibm.com.  Log in
+1. Go to cloud.ibm.com. Log in
 
 2. In the IBM Cloud Web Console go to: **Navigation Menu** (_top left corner_) > **Schematics** and choose the workspace you created
 
 3. Select "Activity" from the left menu
 
-4. Take the "View Log" link on the right of the desired step  
+4. Take the "View Log" link on the right of the desired step

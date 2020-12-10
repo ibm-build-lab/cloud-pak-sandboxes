@@ -4,7 +4,7 @@
 
 This Cloud Pak requires an Entitlement Key. It can be retrieved from https://myibm.ibm.com/products-services/containerlibrary.
 
-Edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` of save the entitlement key in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key.
+Edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` or save the entitlement key in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key.
 
 For example:
 
@@ -51,14 +51,14 @@ If you are using Schematics directly or the Private Catalog, set the variable `e
 
 The Terraform code return the following output parameters.
 
-| Name               | Description                                                                                                                         |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `cluster_endpoint` | The URL of the public service endpoint for your cluster                                                                             |
-| `cluster_id`       | The unique identifier of the cluster.                                                                                               |
-| `cluster_name`     | The cluster name which should be: `{project_name}-{environment}-cluster`                                                            |
-| `resource_group`   | Resource group where the OpenShift cluster is created                                                                               |
-| `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
-| `cp4data_endpoint` | URL of the CP4Data dashboard                                                                                                        |
+| Name                | Description                                                                                                                         |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `cluster_endpoint`  | The URL of the public service endpoint for your cluster                                                                             |
+| `cluster_id`        | The unique identifier of the cluster.                                                                                               |
+| `cluster_name`      | The cluster name which should be: `{project_name}-{environment}-cluster`                                                            |
+| `resource_group`    | Resource group where the OpenShift cluster is created                                                                               |
+| `kubeconfig`        | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
+| `cp4data_endpoint`  | URL of the CP4Data dashboard                                                                                                        |
 | `cp4data_user`      | Username to login to the CP4Data dashboard                                                                                          |
 | `cp4data_password`  | Password to login to the CP4Data dashboard                                                                                          |
 | `cp4data_namespace` | Kubernetes namespace where all the CP4Data objects are installed                                                                    |
