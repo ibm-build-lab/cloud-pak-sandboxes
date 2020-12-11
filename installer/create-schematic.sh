@@ -587,7 +587,7 @@ apply_workspace_plan() {
     ibmcloud schematics apply --id $WORKSPACE_ID --force 
     echo "${bold}Applied ${green}$WORKSPACE_NAME${normal}"
     echo "${bold}To see progress, login to cloud.ibm.com and go to: ${green}https://cloud.ibm.com/schematics/workspaces/$WORKSPACE_ID${normal}"
-    echo "${bold}Once there click '${green}Activity${bold}' on the left, then select ${green}View Log${bold} from the 'Applying Plan' activity${normal}"
+    echo "${bold}Once there click '${green}Activity${bold}' on the left, then select ${green}View Log${bold} from the '${green}Applying Plan${bold}' activity${normal}"
 }
 
 # clean the entitled registry key values and replace with SENSITIVE_DATA
@@ -632,20 +632,20 @@ if $CP4MCM
 then
     echo "${bold} For MCM installs the credentials can be retrieved from the 'Plan applied' log${normal}"
 
-    echo "It will take approximately 40 minutes for software to install. The time is currently"
+    echo "${bold}MCM will take approximately 40 minutes for software to install. The time is currently${green}"
     date
     echo
-    echo "To monitor progress: 'kubectl get pods -A | grep -Ev \"Completed|1/1|2/2|3/3|4/4|5/5|6/6|7/7\"'"
-    echo Should not return anything when MCM is up and running
+    echo "${bold}To monitor progress: ${green}'kubectl get pods -A | grep -Ev \"Completed|1/1|2/2|3/3|4/4|5/5|6/6|7/7\"'${bold}"
+    echo "Should not return anything when MCM is up and running"
     echo
-    echo To get the URL to get to the Multicloud Management Console:
-    echo ibmcloud oc cluster config -c $CLUSTER_NAME --admin
+    echo "To get the URL to get to the Multicloud Management Console:"
+    echo "${green}ibmcloud oc cluster config -c $CLUSTER_NAME --admin"
     echo "kubectl get route -n ibm-common-services cp-console -o jsonpath=‘{.spec.host}’ && echo"
     echo
-    echo To get default login id:
+    echo "${bold}To get default login id:${green}"
     echo "kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_username}\' | base64 -d && echo"
     echo
-    echo To get default Password:
-    echo "kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -d && echo"
+    echo "${bold}To get default Password:${green}"
+    echo "kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -d && echo${normal}"
 fi
 
