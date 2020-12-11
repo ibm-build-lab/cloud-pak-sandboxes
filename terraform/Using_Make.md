@@ -146,49 +146,49 @@ ID        Name                 Number   Type      Router         Supports Virtua
 
 If any input variable is modified in the workspace settings section, make sure to click on "**Save changes**" button.
 
-4.  When ready click on "**Generate plan**" or execute: `make plan-sch`, you will get the link to the plan output/log
+4. When ready click on "**Generate plan**" or execute: `make plan-sch`, you will get the link to the plan output/log
 
-    ```bash
-    make plan-sch
-    ```
+   ```bash
+   make plan-sch
+   ```
 
-5.  When the plan successfully finish, click on "**Apply plan**" or execute: `make apply-sch`, you will get the link to the plan output/log.
+5. When the plan successfully finish, click on "**Apply plan**" or execute: `make apply-sch`, you will get the link to the plan output/log.
 
-    ```bash
-    make apply-sch
-    ```
+   ```bash
+   make apply-sch
+   ```
 
-    When the process is over the Openshift cluster is up and running with the requested Cloud Pak, so you can configure `kubectl` or `oc` to access the cluster execute the following `ibmcloud` command:
+   When the process is over the Openshift cluster is up and running with the requested Cloud Pak, so you can configure `kubectl` or `oc` to access the cluster execute the following `ibmcloud` command:
 
-    ```bash
-    ibmcloud ks cluster config -cluster <CLUSTER_ID>
-    ```
+   ```bash
+   ibmcloud ks cluster config -cluster <CLUSTER_ID>
+   ```
 
-    The output of Apply action also displays the Cloud Pak entrypoint and credentials.
+   The output of Apply action also displays the Cloud Pak entrypoint and credentials.
 
-6.  When the application is completed, you'll see the output parameters to access the Cloud Pak at the end of the logs. Or execute: `make output-sch`.
+6. When the application is completed, you'll see the output parameters to access the Cloud Pak at the end of the logs. Or execute: `make output-sch`.
 
-    ```bash
-    make output-sch
-    ```
+   ```bash
+   make output-sch
+   ```
 
-7.  At this moment you can execute the tests to verify the cluster and the Cloud Pak are ready. Execute:
+7. At this moment you can execute the tests to verify the cluster and the Cloud Pak are ready. Execute:
 
-    ```bash
-    make test-sch
-    ```
+   ```bash
+   make test-sch
+   ```
 
-8.  To destroy the cluster, execute:
+8. To destroy the cluster, execute:
 
-    ```bash
-    make  destroy-sch
-    ```
+   ```bash
+   make  destroy-sch
+   ```
 
-9.  To delete the workspace, execute:
+9. To delete the workspace, execute:
 
-    ```bash
-    make  delete-sch
-    ```
+   ```bash
+   make  delete-sch
+   ```
 
 10. Cleanup all the created files, executing:
 
