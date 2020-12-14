@@ -1,6 +1,6 @@
 # Creation of a Cloud Pak Sandbox
 
-That this documentation is **<u>only for developers or advanced users</u>**. Sandbox **users** please refer to [Installer Script](../installer/README.md) documentation.
+This documentation is **<u>only for developers or advanced users</u>**. Sandbox **users** please refer to [Installer Script](../installer/README.md) documentation.
 
 This folder contains the Infrastructure as Code or Terraform code to create a **Sandbox** with an **Openshift** (ROKS) cluster on IBM Cloud Classic with a Cloud Pak. At this time the supported Cloud Paks are:
 
@@ -120,7 +120,7 @@ To build the Sandbox with a selected Cloud Pak on IBM Cloud Classic the availabl
 
 ## Cloud Pak Design
 
-The code in this section is all Terraform HCL code, you'll find the code to provision a Cloud Pak in the directory assigned to the specific Cloud Pak. All of them have almost the same design, input and output parameters and very similar basic validation.
+The code here is the Terraform HCL code. The code to provision each specific Cloud Pak is located in a separate subdirectory. They each have almost the same design, input and output parameters and very similar basic validation.
 
 Each Cloud Pak subdirectory contains the following files:
 
