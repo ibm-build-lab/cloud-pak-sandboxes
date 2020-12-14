@@ -1,4 +1,4 @@
-# Cloud Pak for Applications Parameters
+# Cloud Pak for Applications Parameters and Installation Validation
 
 ## Cloud Pak Entitlement Key
 
