@@ -1,6 +1,6 @@
 # Cloud Pak Sandboxes
 
-This project contain the assets to create and manage Cloud Pak Sandboxes on IBM Cloud Classic.
+This project contains assets to create and manage Cloud Pak Sandboxes on IBM Cloud Classic.
 
 ## Installer
 
