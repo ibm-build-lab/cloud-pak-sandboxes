@@ -163,7 +163,7 @@ You can follow this link for more instructions:
 You will also need to install the "schematics" plug-in
 [IBM Schematics Plug-in](https://cloud.ibm.com/docs/schematics?topic=schematics-setup-cli)
 
-Go to your working directory and follow the same instructions for running in IBM cloud bash
+Go to your working directory and follow the same instructions for running in IBM Cloud Shell
 
 - [Get Registry Key](#get-registry-key)
 - [Download](#download)
@@ -171,7 +171,7 @@ Go to your working directory and follow the same instructions for running in IBM
 
 ## Additional Information
 
-Here is some additional information pertaining to the various technologies involved with the Sandbox environment
+Here is some additional documentation pertaining to the various technologies involved with the Sandbox environment
 
 [Cloud Pak for Applications](https://www.ibm.com/cloud/cloud-pak-for-applications) Documentation
 
