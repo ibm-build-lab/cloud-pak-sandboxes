@@ -5,8 +5,8 @@ That this documentation is **<u>only for developers or advanced users</u>**. San
 This folder contains the Infrastructure as Code or Terraform code to create a **Sandbox** with an **Openshift** (ROKS) cluster on IBM Cloud Classic with a Cloud Pak. At this time the supported Cloud Paks are:
 
 - Cloud Pak for Multi Cloud Management (CP4MCM)
-- Cloud Pak for Applications (CP4A)
-- Cloud Pak for Data (CP4D)
+- Cloud Pak for Applications (CP4App)
+- Cloud Pak for Data (CP4Data)
 
 Everything is automated with Makefiles. However, instructions to get the same results manually are provided.
 
