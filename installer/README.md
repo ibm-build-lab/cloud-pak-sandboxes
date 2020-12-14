@@ -175,19 +175,19 @@ Here is some additional documentation pertaining to the various technologies inv
 
 [Cloud Pak for Applications](https://www.ibm.com/cloud/cloud-pak-for-applications) Documentation
 
-[Cloud Pak for Applications](./terraform/cp4app/README.md) Sandbox Inputs/Outputs and Validation
+[Cloud Pak for Applications](../terraform/cp4app/README.md) Sandbox Inputs/Outputs and Validation
 
 [Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data) Documentation
 
-[Cloud Pak for Data](./terraform/cp4data/README.md) Sandbox Inputs/Outputs and Validation
+[Cloud Pak for Data](../terraform/cp4data/README.md) Sandbox Inputs/Outputs and Validation
 
 [Cloud Pak for Integration](https://www.ibm.com/cloud/cloud-pak-for-integration) Documentation
 
-[Cloud Pak for Integration](./terraform/cp4int/README.md) Sandbox Inputs/Outputs and Validation
+[Cloud Pak for Integration](../terraform/cp4int/README.md) Sandbox Inputs/Outputs and Validation
 
 [Cloud Pak for Multi Cloud Management](https://www.ibm.com/cloud/cloud-pak-for-management) Documentation
 
-[Cloud Pak for Multi Cloud Management](./terraform/cp4mcm/README.md) Sandbox Inputs/Outputs and Validation
+[Cloud Pak for Multi Cloud Management](../terraform/cp4mcm/README.md) Sandbox Inputs/Outputs and Validation
 
 [Terraform modules for the Cloud Pak Sandbox environment](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak)
 
