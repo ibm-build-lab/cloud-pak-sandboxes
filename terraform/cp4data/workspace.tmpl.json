@@ -63,7 +63,7 @@
           "type": "string"
         },
         {
-          "name": "version",
+          "name": "install_version",
           "value": "3.0",
           "type": "string"
         },
