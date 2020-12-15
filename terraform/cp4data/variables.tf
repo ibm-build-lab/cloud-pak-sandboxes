@@ -52,6 +52,11 @@ variable "entitled_registry_user_email" {
   description = "Email address of the user owner of the Entitled Registry Key"
 }
 
+variable "version" {
+  default     = "3.0"
+  description = "version of Cloud Pak for Data to install. Available versions: 3.0, 3.5"
+}
+
 variable "install_guardium_external_stap" {
   default     = false
   type        = bool

@@ -70,6 +70,7 @@ module "cp4data" {
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
   entitled_registry_user_email = var.entitled_registry_user_email
 
+  version                                        = var.version
   docker_id                                      = var.docker_id
   docker_access_token                            = var.docker_access_token
   install_guardium_external_stap                 = var.install_guardium_external_stap

@@ -63,6 +63,11 @@
           "type": "string"
         },
         {
+          "name": "version",
+          "value": "3.0",
+          "type": "string"
+        },
+        {
           "name": "entitled_registry_key",
           "value": "{{ ENTITLED_KEY }}",
           "type": "string",
