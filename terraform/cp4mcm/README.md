@@ -1,4 +1,4 @@
-# Cloud Pak for Multi Cloud Management Parameters
+# Cloud Pak for Multi Cloud Management Parameters and Installation Validation
 
 ## Cloud Pak Entitlement Key
 

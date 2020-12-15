@@ -1,12 +1,12 @@
 # Creation of a Cloud Pak Sandbox
 
-That this documentation is **<u>only for developers or advanced users</u>**. Sandbox **users** please refer to [Installer Script](../installer/README.md) documentation.
+This documentation is **<u>only for developers or advanced users</u>**. Sandbox **users** please refer to [Installer Script](../installer/README.md) documentation.
 
 This folder contains the Infrastructure as Code or Terraform code to create a **Sandbox** with an **Openshift** (ROKS) cluster on IBM Cloud Classic with a Cloud Pak. At this time the supported Cloud Paks are:
 
 - Cloud Pak for Multi Cloud Management (CP4MCM)
-- Cloud Pak for Applications (CP4A)
-- Cloud Pak for Data (CP4D)
+- Cloud Pak for Applications (CP4App)
+- Cloud Pak for Data (CP4Data)
 
 Everything is automated with Makefiles. However, instructions to get the same results manually are provided.
 
@@ -120,15 +120,15 @@ To build the Sandbox with a selected Cloud Pak on IBM Cloud Classic the availabl
 
 ## Cloud Pak Design
 
-The code in this section is all Terraform HCL code, you'll find the code to provision a Cloud Pak in the directory assigned to the specific Cloud Pak. All of them have almost the same design, input and output parameters and very similar basic validation.
+The code here is the Terraform HCL code. The code to provision each specific Cloud Pak is located in a separate subdirectory. They each have almost the same design, input and output parameters and very similar basic validation.
 
-Each Cloud Pak contain the following files:
+Each Cloud Pak subdirectory contains the following files:
 
-- `main.tf`: contain the code provision the Cloud Pak, you should start here to know what Terraform does. They uses basically two modules: the ROKS module and the Cloud Pak module. The ROKS module is used to provision an OpenShift cluster where the Cloud Pak will be installed. Then the Cloud Pak module is applied to install the Cloud Pak. To know more about these Terraform modules refer to the following section.
-- `variables.tf`: contain all the input parameters. The input parameters are explained below but also you can get information about them in the README of each Cloud Pak directory.
-- `outputs.tf`: contain all the output parameters. The output parameters are explained below but also you can get information about them in the README of each Cloud Pak directory.
-- `terraform.tfvars`: although the `variables.tf` defines the input variables and the default values, the `terraform.tfvars` contain also default values easily to access and modify. If you'd like to custom your resources try to modify the values in this file first.
-- `workspace.tmpl.json`: this is a template file used by the `terraform/Schematics.mk` makefile to generate the `workspace.json` file, used to create the IBM Cloud Schematics workspace. The template contain, among other data, the URL of the repository where the Terraform is located and the input parameters with default values. The generated JSON file contain the entitlement key, that's why it is not in the repo and it's ignored by GitHub including it in the `.gitignore` file.
+- `main.tf`: contains the code provision the Cloud Pak, you should start here to know what Terraform does. This uses two Terraform modules: the ROKS module and a Cloud Pak module. The ROKS module is used to provision an OpenShift cluster where the Cloud Pak will be installed. Then the Cloud Pak module is applied to install the Cloud Pak. To know more about these Terraform modules refer to the following section [Cloud Pak External Terraform Modules](#cloud-pak-external-terraform-modules).
+- `variables.tf`: contains all the input parameters. The input parameters are explained below but you can get additional information about them in the README of each Cloud Pak directory.
+- `outputs.tf`: contains all the output parameters. The output parameters are explained below but you can get additional information about them in the README of each Cloud Pak directory.
+- `terraform.tfvars`: although the `variables.tf` defines the input variables and the default values, the `terraform.tfvars` also contains default values to access and modify. If you'd like to customize your resources try to modify the values in this file first.
+- `workspace.tmpl.json`: this is a template file used by the `terraform/Schematics.mk` makefile to generate the `workspace.json` file which is used to create the IBM Cloud Schematics workspace. The template contains, among other data, the URL of the repository where the Terraform is located and the input parameters with default values. The generated JSON file contains the entitlement key. This fiel is not included in the repo and is ignored by GitHub (listed it in the `.gitignore` file).
 - `Makefile`: most of the Makefile logic is located in the `terraform/` makefiles (`Makefile` and `*.mk` files) however some specific actions for the Cloud Pak are required, for example, the Cloud Pak validations. All these specific actions are in this `Makefile`.
 
 The Input and Output parameters, as well as basic validations and uninstall process can be found in the README of each Cloud Pak, refer to the following links of each Cloud Pak:
@@ -137,14 +137,14 @@ The Input and Output parameters, as well as basic validations and uninstall proc
 - [Cloud Pak for Data](./cp4data/README.md)
 - [Cloud Pak for Multi Cloud Management](./cp4mcm/README.md)
 
-The Makefiles in the `terraform/` directory helps you to do the provisioning of the desired Cloud Pak, they also helps to document the process in case you'd like to do everything manually. The instructions about how to use the Makefile is in the document [Using Make](./Using_Make.md).
+The Makefiles in the `terraform/` directory help you to do the provisioning of the desired Cloud Pak, they also helps to document the process in case you'd like to do everything manually. The instructions about how to use the Makefile is in the document [Using Make](./Using_Make.md).
 
-In a nutshell what the Makefiles do is to provisioning the CP either using your local Terraform or the remote Schematics service. The former should be used or is recommended when you are developing or modifying the Terraform code., the later when you are ready to deploy the code and want to verify everything will work for the Installer script.
+In a nutshell the Makefiles provision a Cloud Pak either using your local Terraform or the remote Schematics service. The former is recommended when you are developing or modifying the Terraform code. Use the later when you are ready to deploy the code and want to verify everything will work for the Installer script.
 
 Both processes will create a set of files to facilitate the provisioning. The Terraform process creates the `my_variables.auto.tfvars` with automatically generated variables such as the owner, entitlement key and cluster id if you have one. The Schematics process creates the `workspace.json` file from the template to generate the Schematics workspace. The Schematics process is the most similar to what the Installer will do but step by step, so you, as developer or advance user, can validate and debug the entire process.
 
 ### Cloud Pak External Terraform Modules
 
-As mentioned above the `main.tf` file in each Cloud Pak directory uses two Terraform modules: the ROKS and the Cloud Pak module. To know more about these modules refer to their [GitHub repository](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak).
+As mentioned above, the `main.tf` file in each Cloud Pak subdirectory uses two Terraform modules: the ROKS and the Cloud Pak module. To know more about these modules refer to their [GitHub repository](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak).
 
 Note: All these modules will be registered in the Terraform Registry so they will be easy to access. This will be part of a future release that will include the Terraform 0.13/0.14 upgrade.

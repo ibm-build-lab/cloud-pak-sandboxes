@@ -163,7 +163,7 @@ You can follow this link for more instructions:
 You will also need to install the "schematics" plug-in
 [IBM Schematics Plug-in](https://cloud.ibm.com/docs/schematics?topic=schematics-setup-cli)
 
-Go to your working directory and follow the same instructions for running in IBM cloud bash
+Go to your working directory and follow the same instructions for running in IBM Cloud Shell
 
 - [Get Registry Key](#get-registry-key)
 - [Download](#download)
@@ -171,23 +171,23 @@ Go to your working directory and follow the same instructions for running in IBM
 
 ## Additional Information
 
-Here is some additional information pertaining to the various technologies involved with the Sandbox environment
+Here is some additional documentation pertaining to the various technologies involved with the Sandbox environment
 
-[Cloud Pak for Applications](https://www.ibm.com/cloud/cloud-pak-for-applications) Documentation
+Cloud Pak for Applications [Documentation](https://www.ibm.com/cloud/cloud-pak-for-applications) 
 
-[Cloud Pak for Applications](./terraform/cp4app/README.md) Sandbox Inputs/Outputs and Validation
+Cloud Pak for Applications [Sandbox Inputs/Outputs and Validation](../terraform/cp4app/README.md) 
 
-[Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data) Documentation
+Cloud Pak for Data [Documentation](https://www.ibm.com/products/cloud-pak-for-data) 
 
-[Cloud Pak for Data](./terraform/cp4data/README.md) Sandbox Inputs/Outputs and Validation
+Cloud Pak for Data [Sandbox Inputs/Outputs and Validation](../terraform/cp4data/README.md) 
 
-[Cloud Pak for Integration](https://www.ibm.com/cloud/cloud-pak-for-integration) Documentation
+Cloud Pak for Integration [Documentation](https://www.ibm.com/cloud/cloud-pak-for-integration) 
 
-[Cloud Pak for Integration](./terraform/cp4int/README.md) Sandbox Inputs/Outputs and Validation
+Cloud Pak for Integration [Sandbox Inputs/Outputs and Validation](../terraform/cp4int/README.md) 
 
-[Cloud Pak for Multi Cloud Management](https://www.ibm.com/cloud/cloud-pak-for-management) Documentation
+Cloud Pak for Multi Cloud Management [Documentation](https://www.ibm.com/cloud/cloud-pak-for-management) 
 
-[Cloud Pak for Multi Cloud Management](./terraform/cp4mcm/README.md) Sandbox Inputs/Outputs and Validation
+Cloud Pak for Multi Cloud Management [Sandbox Inputs/Outputs and Validation](../terraform/cp4mcm/README.md) 
 
 [Terraform modules for the Cloud Pak Sandbox environment](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak)
 
