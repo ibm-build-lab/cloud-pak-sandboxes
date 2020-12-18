@@ -14,7 +14,7 @@ _installation.yaml_: contains yaml to create the installation
 
 Launch a cloud shell by clicking on the terminal icon at the top right area on IBM Cloud console once you have logged into IBM Cloud. Run these commands:
 ```
-git clone https://github.com/ibm-pett/cloud-pak-sandboxes.git
+git clone https://github.com/ibm-hcbt/cloud-pak-sandboxes.git
 cd cloud-pak-sandboxes/cp4mcm2.0
 chmod +x install.sh
 ./install.sh
