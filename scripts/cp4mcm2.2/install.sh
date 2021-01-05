@@ -85,8 +85,8 @@ select yn in "y" "n"; do
     echo "Waiting for cluster to come up..."
     date
 
-    # try command every 5 mintutes 5 times or until it returns success
-    for ((time = 0; time < 10; time++)); do
+    # try command every 5 minutes for an hour or until it returns success
+    for ((time = 0; time < 12; time++)); do
       echo ibmcloud oc cluster config -c $CLUSTER_NAME --admin
       if ibmcloud oc cluster config -c $CLUSTER_NAME --admin; then
         break
@@ -110,10 +110,6 @@ echo "Cluster is ready and console can be accessed via $CLUSTER_URL"
 # create namespace to install mcm
 kubectl create namespace cp4mcm
 kubectl config set-context --current --namespace=cp4mcm
-
-# Designate ibmc-block-retain-gold as default storage class
-#kubectl patch storageclass ibmc-block-retain-gold -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-#kubectl patch storageclass ibmc-block-gold -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 
 # Ensure that the image registry has a valid route for IBM Cloud Pak for Multicloud Management images
 kubectl patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"defaultRoute":true}}'
@@ -148,11 +144,7 @@ done
 echo "The CommonService CustomResource has been created; modifying it and creating remaining resources"
 kubectl apply -f ./resources2.yaml
 
-#echo "Waiting for operators to install"
-#while ! kubectl get sub ibm-common-service-operator-stable-v1-opencloud-operators-openshift-marketplace ibm-management-orchestrator operand-deployment-lifecycle-manager-app --namespace openshift-operators; do
-#  sleep 60
-#done
-
+sleep 60
 echo "Installing..."
 kubectl apply -f ./installation.yaml
 
