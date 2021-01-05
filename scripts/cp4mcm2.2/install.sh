@@ -37,11 +37,11 @@
 # PBVlan: 2832802
 
 # Log in to IBM Cloud
-# ibmcloud login -sso
-# echo "What Resource Group (defaults to cloud-pak-sandbox)?"
-# read RESOURCE_GROUP
-# RESOURCE_GROUP="${RESOURCE_GROUP:-cloud-pak-sandbox}"
-RESOURCE_GROUP='cloud-pak-sandbox'
+ibmcloud login -sso
+echo "What Resource Group (defaults to cloud-pak-sandbox)?"
+read RESOURCE_GROUP
+RESOURCE_GROUP="${RESOURCE_GROUP:-cloud-pak-sandbox}"
+#RESOURCE_GROUP='cloud-pak-sandbox'
 ibmcloud target -g $RESOURCE_GROUP
 
 # Get entitlement key, https://myibm.ibm.com/products-services/containerlibrary
@@ -52,17 +52,16 @@ echo What is your IBM email address?
 read EMAIL_ADDR
 
 # Create or get details of OCP Cluster
-echo "Do you already have an OpenShift cluster? ('y','n')"
-read yn
+echo "Do you already have an OpenShift cluster?"
 select yn in "y" "n"; do
   case $yn in
   n)
     echo "Creating OpenShift Cluster on IBM Cloud"
     echo "What is the name of new cluster?"
     read CLUSTER_NAME
-    #    echo "What version of Openshift (defaults to 4.4)?"
+    #    echo "What version of Openshift (defaults to 4.5)?"
     #    read OCP_VERSION
-    OCP_VERSION="${OCP_VERSION:-4.4}"
+    OCP_VERSION="${OCP_VERSION:-4.5}"
     #    echo "What flavor (defaults to c3c.16x32)?"
     #    read OCP_FLAVOR
     OCP_FLAVOR="${OCP_FLAVOR:-c3c.16x32}"
@@ -128,12 +127,33 @@ echo "kubectl create secret docker-registry ibm-management-pull-secret --docker-
 kubectl create secret docker-registry ibm-management-pull-secret --docker-username=$ENTITLED_REGISTRY_USER --docker-password=$ENTITLED_REGISTRY_KEY --docker-email=$ENTITLED_REGISTRY_USER_EMAIL --docker-server=$ENTITLED_REGISTRY -n cp4mcm
 
 # Create the CP4MCM Operator catalog source, subscriptions and installion
-kubectl --validate=false apply -f ./resources.yaml
+kubectl apply -f ./resources1.yaml
 
-echo "Waiting for operators to install"
-while ! kubectl get sub ibm-common-service-operator-stable-v1-opencloud-operators-openshift-marketplace ibm-management-orchestrator operand-deployment-lifecycle-manager-app --namespace openshift-operators; do
-  sleep 60
+kubectl get CommonService common-service -n ibm-common-services > /dev/null 2>&1
+result=$?
+counter=0
+while [[ "${result}" -ne 0 ]]
+do
+    if [[ $counter -gt 36 ]]; then
+        echo "The CommonService CustomResource was not created within three minutes; please attempt to install the product again."
+        exit 1
+    fi
+    counter=$((counter + 1))
+    echo "The CommonService CustomResource has not been created yet; delaying modification"
+    sleep 5s
+    oc get CommonService common-service -n ibm-common-services > /dev/null 2>&1
+    result=$?
 done
+
+echo "The CommonService CustomResource has been created; modifying it and creating remaining resources"
+kubectl apply -f ./resources2.yaml
+
+#echo "Waiting for operators to install"
+#while ! kubectl get sub ibm-common-service-operator-stable-v1-opencloud-operators-openshift-marketplace ibm-management-orchestrator operand-deployment-lifecycle-manager-app --namespace openshift-operators; do
+#  sleep 60
+#done
+
+echo "Installing..."
 kubectl apply -f ./installation.yaml
 
 echo "It will take approximately 40 minutes for software to install. The time is currently"
@@ -151,4 +171,3 @@ echo "kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o
 echo
 echo To get default Password:
 echo "kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -d && echo"
-

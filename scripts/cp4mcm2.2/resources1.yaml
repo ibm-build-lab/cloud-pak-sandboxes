@@ -1,20 +1,6 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
-  name: ibm-management-orchestrator
-  namespace: openshift-marketplace
-spec:
-  displayName: IBM Management Orchestrator Catalog
-  publisher: IBM
-  sourceType: grpc
-  image: quay.io/cp4mcm/cp4mcm-orchestrator-catalog:2.0.0
-  updateStrategy:
-    registryPoll:
-      interval: 45m
----
-apiVersion: operators.coreos.com/v1alpha1
-kind: CatalogSource
-metadata:
   name: opencloud-operators
   namespace: openshift-marketplace
 spec:
@@ -29,12 +15,11 @@ spec:
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: ibm-management-orchestrator
+  name: ibm-common-service-operator
   namespace: openshift-operators
 spec:
-  channel: 2.0-stable
+  channel: stable-v1
   installPlanApproval: Automatic
-  name: ibm-management-orchestrator
-  source: ibm-management-orchestrator
+  name: ibm-common-service-operator
+  source: opencloud-operators
   sourceNamespace: openshift-marketplace
-
