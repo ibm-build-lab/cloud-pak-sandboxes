@@ -8,13 +8,14 @@
 // export TF_VAR_cluster_id="****************"
 
 // Otherwise, create a cluster based on values below
-project_name   = "cloud-pack"
-owner          = "anonymous"
-environment    = "sandbox"
-region         = "us-south"
-// Using Humio account:,
+project_name = "cloud-pack"
+owner        = "anonymous"
+environment  = "sandbox"
+region       = "us-south"
+// Using Humio account:
+// resource_group = "cloud-pak-sandbox-ibm"
+// If using a standard partner account
 resource_group = "cloud-pak-sandbox"
-// If using a standard partner account, resource_group = "cloud-pak-sandbox"
 datacenter     = "dal10"
 
 // VLAN's numbers on datacenter 'dal10' on Humio account. They are here until the
