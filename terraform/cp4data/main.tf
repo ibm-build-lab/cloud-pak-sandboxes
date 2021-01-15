@@ -59,8 +59,9 @@ data "ibm_container_cluster_config" "cluster_config" {
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4data" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4data"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4data"
-  enable = true
+  source          = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4data"
+  enable          = true
+  install_version = var.install_version
 
   // ROKS cluster parameters:
   openshift_version   = local.roks_version
@@ -70,7 +71,7 @@ module "cp4data" {
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
   entitled_registry_user_email = var.entitled_registry_user_email
 
-  install_version                                = var.install_version
+  // Parameters for v3.0 modules
   docker_id                                      = var.docker_id
   docker_access_token                            = var.docker_access_token
   install_guardium_external_stap                 = var.install_guardium_external_stap
@@ -81,4 +82,18 @@ module "cp4data" {
   install_watson_language_translator             = var.install_watson_language_translator
   install_watson_speech_text                     = var.install_watson_speech_text
   install_edge_analytics                         = var.install_edge_analytics
+
+  // Parameters for v3.5 modules
+  install_watson_knowledge_catalog = var.install_watson_knowledge_catalog
+  install_watson_studio            = var.install_watson_studio
+  install_watson_machine_learning  = var.install_watson_machine_learning
+  install_watson_open_scale        = var.install_watson_open_scale
+  install_data_virtualization      = var.install_data_virtualization
+  install_streams                  = var.install_streams
+  install_analytics_dashboard      = var.install_analytics_dashboard
+  install_spark                    = var.install_spark
+  install_db2_warehouse            = var.install_db2_warehouse
+  install_db2_data_gate            = var.install_db2_data_gate
+  install_rstudio                  = var.install_rstudio
+  install_db2_data_management      = var.install_db2_data_management
 }
