@@ -57,30 +57,39 @@ You can also verify all the requirements are set by executing `make check` or - 
 
 Some systems have a long name for the username (i.e your email address). Identify your username executing `echo $USER`, if it has more than 10 characters, export the variable `BY` with the desired username to identify the owner of the Cloud Pak, like so: `export BY=john-smith`. This username or owner is used to tag and name most of the resources provisioned.
 
+When all these instructions are done, there are two possible ways to get the Cloud Pak Sandbox:
+
+- [Using Terraform](#using-terraform-local-execution): The execution is locally, it's recommended when you are developing and testing.
+- [Using Schematics](#using-schematics-remote-execution): The execution is remote, allowing others to review the results. It's recommended to share your results, peer reviews and validate the final product.
+
 ## Using Terraform (local execution)
 
 This option is suggested when you are developing or modifying the Terraform code. Make sure to execute or test using **Schematics** way before releasing the code or if you'd like to test what the user will use.
 
-By default the cluster is created in `us-south` region and datacenter `dal10`. If you would like to change any of these parameters, edit the file `terraform.tfvars`.
+1. Make custom modifications to default input parameters, when required.
 
-NOTE: Until the permissions issue is solved the VLANs need to be provided. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and save them in the `terraform.tfvars` file located in the cloud pak subdirectory. Example:
+   By default the cluster is created in `us-south` region and datacenter `dal10`. If you would like to change any of these parameters, edit the file `terraform.tfvars`.
 
-```bash
-❯ ibmcloud ks vlan ls --zone dal10
-OK
-ID        Name                 Number   Type      Router         Supports Virtual Workers
-2953608                        2737     private   bcr01a.dal10   true
-2832804                        2124     private   bcr02a.dal10   true
-2979296                        1420     private   bcr03a.dal10   true
-2953606                        2299     public    fcr01a.dal10   true
-2832802                        1926     public    fcr02a.dal10   true
-2979294                        1384     public    fcr03a.dal10   true
-❯ grep vlan cp4mcm/terraform.tfvars
-private_vlan_number = "2979232"
-public_vlan_number  = "2979230"
-```
+   Some Cloud Paks have multiple versions to install. Unless you want to install the default version, select the version to install modifying the input variable `install_version` in the file `terraform.tfvars` in the directory of the selected Cloud Pak. If the variable is not there, there is just one version available to install.
 
-1. Execute `make`. This command will generate all the input parameters, generate the plan and apply it. When complete, the output parameters to access the Cloud Pak are printed out and some tests are executed.
+   NOTE: Until the permissions issue is solved the VLANs need to be provided. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and save them in the `terraform.tfvars` file located in the cloud pak subdirectory. Example:
+
+   ```bash
+   ❯ ibmcloud ks vlan ls --zone dal10
+   OK
+   ID        Name                 Number   Type      Router         Supports Virtual Workers
+   2953608                        2737     private   bcr01a.dal10   true
+   2832804                        2124     private   bcr02a.dal10   true
+   2979296                        1420     private   bcr03a.dal10   true
+   2953606                        2299     public    fcr01a.dal10   true
+   2832802                        1926     public    fcr02a.dal10   true
+   2979294                        1384     public    fcr03a.dal10   true
+   ❯ grep vlan cp4mcm/terraform.tfvars
+   private_vlan_number = "2979232"
+   public_vlan_number  = "2979230"
+   ```
+
+2. Execute `make`. This command will generate all the input parameters, generate the plan and apply it. When complete, the output parameters to access the Cloud Pak are printed out and some tests are executed.
 
    ```bash
    make
@@ -96,19 +105,19 @@ public_vlan_number  = "2979230"
 
    The Terraform output will also display the Cloud Pak entrypoint and credentials.
 
-2. To print again the output parameters to access the Cloud Pak, execute:
+3. To print again the output parameters to access the Cloud Pak, execute:
 
    ```bash
    make output-tf
    ```
 
-3. To destroy the cluster, execute:
+4. To destroy the cluster, execute:
 
    ```bash
    make  destroy-tf
    ```
 
-4. Cleanup everything executing:
+5. Cleanup everything executing:
 
    ```bash
    make clean-tf
@@ -120,7 +129,7 @@ public_vlan_number  = "2979230"
 
 This is the recommended option to follow when the Terraform code is working correctly or if you are doing changes in any of the the `cp4*/workspace.tmpl.json` files.
 
-Make sure everything that provisioning the Cloud Pak using Schematics works before releasing.
+**IMPORTANT**: Make sure everything that provisioning the Cloud Pak using Schematics works before releasing.
 
 1. Execute this command to create the Schematics workspace:
 
@@ -130,29 +139,31 @@ Make sure everything that provisioning the Cloud Pak using Schematics works befo
 
 2. Go to the displayed link to edit or validate the variables in the workspace. By default the cluster is created on `us-south` region and datacenter `dal10`. If you would like to change any of these parameters, edit the variables at the workspace settings.
 
-3. Until the permissions issue is solved the VLANs need to be provided. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and write them down in the variables at the workspace settings. In this example, you can select the VLANs `2979232` (as private) and `2979230` (as public):
+   Some Cloud Paks have multiple versions to install. Unless you want to install the default version, select the version to install modifying the workspace variable `install_version`. If the variable is not there, then there is just one version available to install.
 
-```bash
-❯ ibmcloud ks vlan ls --zone dal10
-OK
-ID        Name                 Number   Type      Router         Supports Virtual Workers
-2953608                        2737     private   bcr01a.dal10   true
-2832804                        2124     private   bcr02a.dal10   true
-2979296                        1420     private   bcr03a.dal10   true
-2953606                        2299     public    fcr01a.dal10   true
-2832802                        1926     public    fcr02a.dal10   true
-2979294                        1384     public    fcr03a.dal10   true
-```
+   NOTE: Until the permissions issue is solved the VLANs need to be provided. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and write them down in the variables at the workspace settings. In this example, you can select the VLANs `2979232` (as private) and `2979230` (as public):
 
-If any input variable is modified in the workspace settings section, make sure to click on "**Save changes**" button.
+   ```bash
+   ❯ ibmcloud ks vlan ls --zone dal10
+   OK
+   ID        Name                 Number   Type      Router         Supports Virtual Workers
+   2953608                        2737     private   bcr01a.dal10   true
+   2832804                        2124     private   bcr02a.dal10   true
+   2979296                        1420     private   bcr03a.dal10   true
+   2953606                        2299     public    fcr01a.dal10   true
+   2832802                        1926     public    fcr02a.dal10   true
+   2979294                        1384     public    fcr03a.dal10   true
+   ```
 
-4. When ready click on "**Generate plan**" or execute: `make plan-sch`, you will get the link to the plan output/log
+   If any input variable is modified in the workspace settings section, make sure to click on "**Save changes**" button.
+
+3. When ready click on "**Generate plan**" or execute: `make plan-sch`, you will get the link to the plan output/log
 
    ```bash
    make plan-sch
    ```
 
-5. When the plan successfully finish, click on "**Apply plan**" or execute: `make apply-sch`, you will get the link to the plan output/log.
+4. When the plan successfully finish, click on "**Apply plan**" or execute: `make apply-sch`, you will get the link to the plan output/log.
 
    ```bash
    make apply-sch
@@ -166,35 +177,35 @@ If any input variable is modified in the workspace settings section, make sure t
 
    The output of Apply action also displays the Cloud Pak entrypoint and credentials.
 
-6. When the application is completed, you'll see the output parameters to access the Cloud Pak at the end of the logs. Or execute: `make output-sch`.
+5. When the application is completed, you'll see the output parameters to access the Cloud Pak at the end of the logs. Or execute: `make output-sch`.
 
    ```bash
    make output-sch
    ```
 
-7. At this moment you can execute the tests to verify the cluster and the Cloud Pak are ready. Execute:
+6. At this moment you can execute the tests to verify the cluster and the Cloud Pak are ready. Execute:
 
    ```bash
    make test-sch
    ```
 
-8. To destroy the cluster, execute:
+7. To destroy the cluster, execute:
 
    ```bash
    make  destroy-sch
    ```
 
-9. To delete the workspace, execute:
+8. To delete the workspace, execute:
 
    ```bash
    make  delete-sch
    ```
 
-10. Cleanup all the created files, executing:
+9. Cleanup all the created files, executing:
 
-    ```bash
-    make clean-sch
-    ```
+   ```bash
+   make clean-sch
+   ```
 
 **IMPORTANT**:
 
