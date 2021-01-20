@@ -7,14 +7,16 @@
 // RECOMMENDED: to set the cluster_id using an external input, like this:
 // export TF_VAR_cluster_id="*********************"
 
+// The available Cloud Pak for Data versions are: 3.0 and 3.5
+install_version = 3.5
+
 // Otherwise, create a cluster based on values below
-project_name = "cloud-pack"
-owner        = "anonymous"
-environment  = "sandbox"
-region       = "us-south"
-// Using Humio account by default.  This resource group exists only on this account
+project_name   = "cloud-pack"
+owner          = "anonymous"
+environment    = "sandbox"
+region         = "us-south"
 resource_group = "cloud-pak-sandbox"
-// resource_group = "cloud-pak-sandbox"
+// resource_group = "cloud-pak-sandbox-ibm"
 datacenter = "dal10"
 
 // VLAN's numbers on datacenter 'dal10' on Humio account. They are here until the
@@ -38,8 +40,13 @@ public_vlan_number  = "2979230"
 // RECOMMENDED: to set the entitled_registry_user_email using an external input, like this:
 // export TF_VAR_entitled_registry_user_email="johandry.amador@ibm.com"
 
-// CP4DATA Modules installation parameters
-// --------------------------------------
+// CP4DATA Parametrers:
+// --------------------
+
+storage_class_name = "ibmc-file-custom-gold-gid"
+
+// CP4DATA Modules installation parameters for version 3.0
+// -------------------------------------------------------
 
 docker_id                                      = ""
 docker_access_token                            = ""
@@ -51,3 +58,20 @@ install_watson_knowledge_studio                = false
 install_watson_language_translator             = false
 install_watson_speech_text                     = false
 install_edge_analytics                         = false
+
+
+// CP4DATA Modules installation parameters for version 3.5
+// -------------------------------------------------------
+
+install_watson_knowledge_catalog = false
+install_watson_studio            = false
+install_watson_machine_learning  = false
+install_watson_open_scale        = false
+install_data_virtualization      = false
+install_streams                  = false
+install_analytics_dashboard      = false
+install_spark                    = false
+install_db2_warehouse            = false
+install_db2_data_gate            = false
+install_rstudio                  = false
+install_db2_data_management      = false

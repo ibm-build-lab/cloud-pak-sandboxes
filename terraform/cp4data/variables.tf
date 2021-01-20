@@ -44,6 +44,16 @@ variable "public_vlan_number" {
 //   description = "Command to execute by the cp4data installer, the most common are: install, uninstall, check, upgrade"
 // }
 
+variable "install_version" {
+  default     = "3.5"
+  description = "version of Cloud Pak for Data to install. Available versions: 3.0, 3.5 (default)"
+}
+
+variable "storage_class_name" {
+  default     = "ibmc-file-custom-gold-gid"
+  description = "Storage Class name to use. Supported Storage Classes: ibmc-file-custom-gold-gid, portworx-shared-gp3"
+}
+
 variable "entitled_registry_key" {
   default     = ""
   description = "Cloud Pak Entitlement Key. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable"
@@ -52,10 +62,7 @@ variable "entitled_registry_user_email" {
   description = "Email address of the user owner of the Entitled Registry Key"
 }
 
-variable "install_version" {
-  default     = "3.0"
-  description = "version of Cloud Pak for Data to install. Available versions: 3.0, 3.5"
-}
+// Modules available to install on CP4D v3.0
 
 variable "install_guardium_external_stap" {
   default     = false
@@ -104,6 +111,69 @@ variable "install_edge_analytics" {
   default     = false
   type        = bool
   description = "Install Edge Analytics module"
+}
+
+// Modules available to install on CP4D v3.5
+
+variable "install_watson_knowledge_catalog" {
+  default     = false
+  type        = bool
+  description = "Install Watson Knowledge Catalog module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_watson_studio" {
+  default     = false
+  type        = bool
+  description = "Install Watson Studio module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_watson_machine_learning" {
+  default     = false
+  type        = bool
+  description = "Install Watson Machine Learning module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_watson_open_scale" {
+  default     = false
+  type        = bool
+  description = "Install Watson Open Scale module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_data_virtualization" {
+  default     = false
+  type        = bool
+  description = "Install Data Virtualization module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_streams" {
+  default     = false
+  type        = bool
+  description = "Install Streams module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_analytics_dashboard" {
+  default     = false
+  type        = bool
+  description = "Install Analytics Dashboard module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_spark" {
+  default     = false
+  type        = bool
+  description = "Install Analytics Engine powered by Apache Spark module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_db2_warehouse" {
+  default     = false
+  type        = bool
+  description = "Install DB2 Warehouse module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_db2_data_gate" {
+  default     = false
+  type        = bool
+  description = "Install DB2 Data_Gate module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_rstudio" {
+  default     = false
+  type        = bool
+  description = "Install RStudio module. Only for Cloud Pak for Data v3.5"
+}
+variable "install_db2_data_management" {
+  default     = false
+  type        = bool
+  description = "Install DB2 Data Management module. Only for Cloud Pak for Data v3.5"
 }
 
 // ROKS Module : Local Variables and constansts
