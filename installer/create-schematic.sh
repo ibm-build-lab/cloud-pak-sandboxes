@@ -21,6 +21,7 @@ CP4MCM="false"
 CP4APP="false"
 CP4I="false"
 CP4D="false"
+EXISTING_CLUSTER="false"
 
 # Creats a spinning cursor for user to know program is running
 update_cursor() {
@@ -126,7 +127,6 @@ get_meta_data() {
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
-    read -p "${bold}Enter Cluster ID ${green}(Leave blank for new clusters)${bold}: ${normal}" -e CLUSTER_ID
 }
 
 # writes metadata to workspace-configuration.json and temp.json these need to be cleaned up later
@@ -161,158 +161,250 @@ write_meta_data() {
 
 # writes cp4mcm module values if needed
 cp4mcm_modules() {
-    if $CP4MCM
-    then
-        read -p "${bold}Install Infrastructure Management Module? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_infr_mgt_module") | .value) |= "true"' temp.json > workspace-configuration.json
+    
+    echo "${bold}Install Infrastructure Management Module? ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_infr_mgt_module") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_infr_mgt_module") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_infr_mgt_module") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
+    echo "${bold}Install Monitoring Module? ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_monitoring_module") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_monitoring_module") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 
-        read -p "${bold}Install Monitoring Module? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_monitoring_module") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_monitoring_module") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
 
-        read -p "${bold}Install Security Services Module? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_security_svcs_module") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_security_svcs_module") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
+    echo "${bold}Install Security Services Module? ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_security_svcs_module") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_security_svcs_module") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 
-        read -p "${bold}Install Operations Module? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_operations_module") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_operations_module") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
+    echo "${bold}Install Operations Module?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_operations_module") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_operations_module") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 
-        read -p "${bold}Install Tech Preview Module? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_tech_prev_module") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_tech_prev_module") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
-    fi
+    echo "${bold}Install Tech Preview Module?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_tech_prev_module") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_tech_prev_module") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 }
 
+# writes cp4d module data
 cp4d_modules() {
-    if $CP4D
-    then
-        read -p "${bold}Install Guardium external Stap? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_guardium_external_stap") | .value) |= "true"' temp.json > workspace-configuration.json
+    echo "${bold}Install watson assistant? ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_guardium_external_stap") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
+    echo "${bold}Install watson assistant for voice interaction? ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant_for_voice_interaction") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant_for_voice_interaction") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 
-        read -p "${bold}Install watson assistant ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
+    echo "${bold}Install watson discovery?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_discovery") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_discovery") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 
-        read -p "${bold}Install watson assistant for voice interaction? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant_for_voice_interaction") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant_for_voice_interaction") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
+    echo "${bold}Install watson knowledge studio?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_knowledge_studio") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_knowledge_studio") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 
-        read -p "${bold}Install watson discovery? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_discovery") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_discovery") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
+    echo "${bold}Install watson language translator?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_language_translator") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_language_translator") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 
-        read -p "${bold}Install watson knowledge studio? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_knowledge_studio") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_knowledge_studio") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
+    echo "${bold}Install Watson speech text?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_speech_text") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_speech_text") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 
-        read -p "${bold}Install watson language translator? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_language_translator") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_language_translator") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
+    echo "${bold}Install edge analytics?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_edge_analytics") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_edge_analytics") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+}
 
-        read -p "${bold}Install watson speech text? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_speech_text") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_speech_text") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
+# Sets cluster id to user input or null
 
-        read -p "${bold}Install edge analytics? ${green}Y/y for yes${normal}: " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] 
-        then
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_edge_analytics") | .value) |= "true"' temp.json > workspace-configuration.json
-        else
-            cp ./workspace-configuration.json temp.json
-            jq -r '(.template_data[] | .variablestore[] | select(.name == "install_edge_analytics") | .value) |= "false"' temp.json > workspace-configuration.json
-        fi
-    fi
+get_cluster_info() {
+    echo "${bold}Do you have a Pre-existing cluster to install cloud paks to?${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+                echo "${bold}Please give cluster ID of existing cluster"
+                EXISTING_CLUSTER="true"
+                read -p "${bold}Enter Cluster ID ${green}(Leave blank for new clusters)${bold}: ${normal}" -e CLUSTER_ID
+                break
+                ;;
+            "No")
+                echo "${bold}Createing new cluster"
+                EXISTING_CLUSTER="false"
+                CLUSTER_ID=""
+                break
+                ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 }
 
 #displays all the possible regions to be selected
@@ -610,13 +702,20 @@ get_cloud_pak_install
 get_workspace_name
 get_meta_data
 write_meta_data
+get_cluster_info
+write_meta_data
+if ! $EXISTING_CLUSTER
+    then select_region
+fi
+
+
 if $CP4MCM
     then cp4mcm_modules
 fi
 if $CP4D
     then cp4d_modules
 fi
-select_region
+
 
 # clean up temp
 cp ./workspace-configuration.json ./logs/$WORKSPACE_NAME-input.json
