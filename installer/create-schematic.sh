@@ -381,6 +381,224 @@ cp4d_modules() {
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
     done
+
+    echo "${bold}Install Watson knoweledge catalog?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_knowledge_catalog") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_knowledge_catalog") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    echo "${bold}Install Watson studio?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_studio") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_studio") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    echo "${bold}Install Watson machine learning?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_machine_learning") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_machine_learning") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    echo "${bold}Install Watson open scale?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_open_scale") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_open_scale") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    echo "${bold}Install data virtualization?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_data_virtualization") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_data_virtualization") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+
+    echo "${bold}Install streams?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_streams") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_streams") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    echo "${bold}Install analytics dashboard?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_analytics_dashboard") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_analytics_dashboard") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    echo "${bold}Install Spark?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_spark") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_spark") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+
+    echo "${bold}Install DB2 warehouse?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_warehouse") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_warehouse") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    echo "${bold}Install DB2 data gate?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_data_gate") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_data_gate") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    echo "${bold}Install rstudio?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_rstudio") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_rstudio") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    echo "${bold}Install DB2 data management?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_data_management") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_data_management") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 }
 
 # Sets cluster id to user input or null
