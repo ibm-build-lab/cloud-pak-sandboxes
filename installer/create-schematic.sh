@@ -38,7 +38,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("Cloud Pak for Multicloud Management" "Cloud Pak for Applications" "Cloud Pak for Integration" "Cloud Pak for Data")
+    cloudPaks=("Cloud Pak for Multicloud Management" "Cloud Pak for Applications" "Cloud Pak for Data")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             "Cloud Pak for Multicloud Management")
@@ -57,16 +57,6 @@ get_cloud_pak_install() {
                 cp ./cp4a-workspace-configuration.json workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4app\"" temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
-                break
-                ;;
-            "Cloud Pak for Integration")
-                echo "${bold}Selected: Cloud Pak for Integration"
-                CP4I="true"
-                cp ./cp4a-workspace-configuration.json workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4i\"" temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
