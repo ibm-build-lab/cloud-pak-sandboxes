@@ -59,9 +59,10 @@ data "ibm_container_cluster_config" "cluster_config" {
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4data" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4data"
-  source          = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4data"
-  enable          = true
-  install_version = var.install_version
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4data"
+  enable = true
+  // force  = true
+
 
   // ROKS cluster parameters:
   openshift_version   = local.roks_version
@@ -71,19 +72,7 @@ module "cp4data" {
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
   entitled_registry_user_email = var.entitled_registry_user_email
 
-  // Parameters for v3.0 modules
-  docker_id                                      = var.docker_id
-  docker_access_token                            = var.docker_access_token
-  install_guardium_external_stap                 = var.install_guardium_external_stap
-  install_watson_assistant                       = var.install_watson_assistant
-  install_watson_assistant_for_voice_interaction = var.install_watson_assistant_for_voice_interaction
-  install_watson_discovery                       = var.install_watson_discovery
-  install_watson_knowledge_studio                = var.install_watson_knowledge_studio
-  install_watson_language_translator             = var.install_watson_language_translator
-  install_watson_speech_text                     = var.install_watson_speech_text
-  install_edge_analytics                         = var.install_edge_analytics
-
-  // Parameters for v3.5 modules
+  // Parameters to install CPD modules
   install_watson_knowledge_catalog = var.install_watson_knowledge_catalog
   install_watson_studio            = var.install_watson_studio
   install_watson_machine_learning  = var.install_watson_machine_learning
