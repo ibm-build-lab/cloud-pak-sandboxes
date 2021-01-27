@@ -63,11 +63,6 @@
           "type": "string"
         },
         {
-          "name": "install_version",
-          "value": "3.5",
-          "type": "string"
-        },
-        {
           "name": "storage_class_name",
           "value": "ibmc-file-custom-gold-gid",
           "type": "string"
@@ -82,56 +77,6 @@
           "name": "entitled_registry_user_email",
           "value": "{{ ENTITLED_KEY_EMAIL }}",
           "type": "string"
-        },
-        {
-          "name": "install_guardium_external_stap",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "docker_id",
-          "value": "",
-          "type": "string"
-        },
-        {
-          "name": "docker_access_token",
-          "value": "",
-          "type": "string"
-        },
-        {
-          "name": "install_watson_assistant",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_watson_assistant_for_voice_interaction",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_watson_discovery",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_watson_knowledge_studio",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_watson_language_translator",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_watson_speech_text",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_edge_analytics",
-          "value": "false",
-          "type": "bool"
         },
         {
           "name": "install_watson_knowledge_catalog",

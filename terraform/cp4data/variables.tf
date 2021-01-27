@@ -13,7 +13,7 @@ variable "environment" {
   description = "The environment is combined with project_name to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'env:{environment}'"
 }
 variable "resource_group" {
-  default     = "default"
+  default     = "cloud-pak-sandbox"
   description = "Resource Group in your account to host the cluster. List all available resource groups with: ibmcloud resource groups"
 }
 variable "cluster_id" {
@@ -62,62 +62,62 @@ variable "entitled_registry_user_email" {
 variable "install_watson_knowledge_catalog" {
   default     = false
   type        = bool
-  description = "Install Watson Knowledge Catalog module. Only for Cloud Pak for Data v3.5"
+  description = "Install Watson Knowledge Catalog module"
 }
 variable "install_watson_studio" {
   default     = false
   type        = bool
-  description = "Install Watson Studio module. Only for Cloud Pak for Data v3.5"
+  description = "Install Watson Studio module"
 }
 variable "install_watson_machine_learning" {
   default     = false
   type        = bool
-  description = "Install Watson Machine Learning module. Only for Cloud Pak for Data v3.5"
+  description = "Install Watson Machine Learning module"
 }
 variable "install_watson_open_scale" {
   default     = false
   type        = bool
-  description = "Install Watson Open Scale module. Only for Cloud Pak for Data v3.5"
+  description = "Install Watson Open Scale module"
 }
 variable "install_data_virtualization" {
   default     = false
   type        = bool
-  description = "Install Data Virtualization module. Only for Cloud Pak for Data v3.5"
+  description = "Install Data Virtualization module"
 }
 variable "install_streams" {
   default     = false
   type        = bool
-  description = "Install Streams module. Only for Cloud Pak for Data v3.5"
+  description = "Install Streams module"
 }
 variable "install_analytics_dashboard" {
   default     = false
   type        = bool
-  description = "Install Analytics Dashboard module. Only for Cloud Pak for Data v3.5"
+  description = "Install Analytics Dashboard module"
 }
 variable "install_spark" {
   default     = false
   type        = bool
-  description = "Install Analytics Engine powered by Apache Spark module. Only for Cloud Pak for Data v3.5"
+  description = "Install Analytics Engine powered by Apache Spark module"
 }
 variable "install_db2_warehouse" {
   default     = false
   type        = bool
-  description = "Install DB2 Warehouse module. Only for Cloud Pak for Data v3.5"
+  description = "Install DB2 Warehouse module"
 }
 variable "install_db2_data_gate" {
   default     = false
   type        = bool
-  description = "Install DB2 Data_Gate module. Only for Cloud Pak for Data v3.5"
+  description = "Install DB2 Data_Gate module"
 }
 variable "install_rstudio" {
   default     = false
   type        = bool
-  description = "Install RStudio module. Only for Cloud Pak for Data v3.5"
+  description = "Install RStudio module"
 }
 variable "install_db2_data_management" {
   default     = false
   type        = bool
-  description = "Install DB2 Data Management module. Only for Cloud Pak for Data v3.5"
+  description = "Install DB2 Data Management module"
 }
 
 // ROKS Module : Local Variables and constansts
