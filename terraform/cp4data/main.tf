@@ -61,7 +61,7 @@ module "cp4data" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4data"
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4data"
   enable = true
-  // force  = true
+  force  = true
 
 
   // ROKS cluster parameters:
