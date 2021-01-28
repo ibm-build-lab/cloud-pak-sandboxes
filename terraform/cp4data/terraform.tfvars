@@ -7,17 +7,14 @@
 // RECOMMENDED: to set the cluster_id using an external input, like this:
 // export TF_VAR_cluster_id="*********************"
 
-// The available Cloud Pak for Data versions are: 3.0 and 3.5
-install_version = 3.5
-
 // Otherwise, create a cluster based on values below
-project_name   = "cloud-pack"
-owner          = "anonymous"
-environment    = "sandbox"
-region         = "us-south"
+project_name = "cloud-pack"
+owner        = "anonymous"
+environment  = "sandbox"
+region       = "us-south"
 resource_group = "cloud-pak-sandbox"
 // resource_group = "cloud-pak-sandbox-ibm"
-datacenter = "dal10"
+datacenter     = "dal10"
 
 // VLAN's numbers on datacenter 'dal10' on Humio account. They are here until the
 // permissions issues is fixed on Humio account
@@ -45,23 +42,8 @@ public_vlan_number  = "2979230"
 
 storage_class_name = "ibmc-file-custom-gold-gid"
 
-// CP4DATA Modules installation parameters for version 3.0
-// -------------------------------------------------------
-
-docker_id                                      = ""
-docker_access_token                            = ""
-install_guardium_external_stap                 = false
-install_watson_assistant                       = false
-install_watson_assistant_for_voice_interaction = false
-install_watson_discovery                       = false
-install_watson_knowledge_studio                = false
-install_watson_language_translator             = false
-install_watson_speech_text                     = false
-install_edge_analytics                         = false
-
-
-// CP4DATA Modules installation parameters for version 3.5
-// -------------------------------------------------------
+// CP4DATA Modules installation parameters
+// ---------------------------------------
 
 install_watson_knowledge_catalog = false
 install_watson_studio            = false
