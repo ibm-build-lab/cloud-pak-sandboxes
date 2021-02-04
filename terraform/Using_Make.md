@@ -70,8 +70,6 @@ This option is suggested when you are developing or modifying the Terraform code
 
    By default the cluster is created in `us-south` region and datacenter `dal10`. If you would like to change any of these parameters, edit the file `terraform.tfvars`.
 
-   Some Cloud Paks have multiple versions to install. Unless you want to install the default version, select the version to install modifying the input variable `install_version` in the file `terraform.tfvars` in the directory of the selected Cloud Pak. If the variable is not there, there is just one version available to install.
-
    NOTE: Until the permissions issue is solved the VLANs need to be provided. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and save them in the `terraform.tfvars` file located in the cloud pak subdirectory. Example:
 
    ```bash
@@ -138,8 +136,6 @@ This is the recommended option to follow when the Terraform code is working corr
    ```
 
 2. Go to the displayed link to edit or validate the variables in the workspace. By default the cluster is created on `us-south` region and datacenter `dal10`. If you would like to change any of these parameters, edit the variables at the workspace settings.
-
-   Some Cloud Paks have multiple versions to install. Unless you want to install the default version, select the version to install modifying the workspace variable `install_version`. If the variable is not there, then there is just one version available to install.
 
    NOTE: Until the permissions issue is solved the VLANs need to be provided. Execute the command `ibmcloud ks vlan ls --zone {datacenter}`, get a private and public VLAN, and write them down in the variables at the workspace settings. In this example, you can select the VLANs `2979232` (as private) and `2979230` (as public):
 
