@@ -8,13 +8,13 @@
 // export TF_VAR_cluster_id="*********************"
 
 // Otherwise, create a cluster based on values below
-project_name = "cloud-pack"
-owner        = "anonymous"
-environment  = "sandbox"
-region       = "us-south"
+project_name   = "cloud-pack"
+owner          = "anonymous"
+environment    = "sandbox"
+region         = "us-south"
 resource_group = "cloud-pak-sandbox"
 // resource_group = "cloud-pak-sandbox-ibm"
-datacenter     = "dal10"
+datacenter = "dal10"
 
 // VLAN's numbers on datacenter 'dal10' on Humio account. They are here until the
 // permissions issues is fixed on Humio account
@@ -40,20 +40,16 @@ public_vlan_number  = "2979230"
 // CP4DATA Parametrers:
 // --------------------
 
-storage_class_name = "ibmc-file-custom-gold-gid"
-
 // CP4DATA Modules installation parameters
-// ---------------------------------------
+// -------------------------------------------------------
 
-install_watson_knowledge_catalog = false
-install_watson_studio            = false
-install_watson_machine_learning  = false
-install_watson_open_scale        = false
-install_data_virtualization      = false
-install_streams                  = false
-install_analytics_dashboard      = false
-install_spark                    = false
-install_db2_warehouse            = false
-install_db2_data_gate            = false
-install_rstudio                  = false
-install_db2_data_management      = false
+docker_id                                      = ""
+docker_access_token                            = ""
+install_guardium_external_stap                 = false
+install_watson_assistant                       = false
+install_watson_assistant_for_voice_interaction = false
+install_watson_discovery                       = false
+install_watson_knowledge_studio                = false
+install_watson_language_translator             = false
+install_watson_speech_text                     = false
+install_edge_analytics                         = false

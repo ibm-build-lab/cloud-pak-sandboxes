@@ -3,7 +3,7 @@
   "type": [
     "terraform_v0.12"
   ],
-  "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Data on IBM Cloud Classic",
+  "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Data v3.0 on IBM Cloud Classic",
   "tags": [
     "owner:{{ OWNER }}",
     "env:{{ ENV }}",
@@ -63,11 +63,6 @@
           "type": "string"
         },
         {
-          "name": "storage_class_name",
-          "value": "ibmc-file-custom-gold-gid",
-          "type": "string"
-        },
-        {
           "name": "entitled_registry_key",
           "value": "{{ ENTITLED_KEY }}",
           "type": "string",
@@ -79,62 +74,52 @@
           "type": "string"
         },
         {
-          "name": "install_watson_knowledge_catalog",
+          "name": "install_guardium_external_stap",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_watson_studio",
+          "name": "docker_id",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "docker_access_token",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "install_watson_assistant",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_watson_machine_learning",
+          "name": "install_watson_assistant_for_voice_interaction",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_watson_open_scale",
+          "name": "install_watson_discovery",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_data_virtualization",
+          "name": "install_watson_knowledge_studio",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_streams",
+          "name": "install_watson_language_translator",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_analytics_dashboard",
+          "name": "install_watson_speech_text",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_spark",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_db2_warehouse",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_db2_data_gate",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_rstudio",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_db2_data_management",
+          "name": "install_edge_analytics",
           "value": "false",
           "type": "bool"
         }
