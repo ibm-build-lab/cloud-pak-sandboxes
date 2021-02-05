@@ -38,10 +38,10 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("Cloud Pak for Multicloud Management" "Cloud Pak for Applications" "Cloud Pak for Data")
+    cloudPaks=("Cloud Pak for Multicloud Management 2.2" "Cloud Pak for Applications 4.2" "Cloud Pak for Data 3.5" "Cloud Pak for Data 3.0")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
-            "Cloud Pak for Multicloud Management")
+            "Cloud Pak for Multicloud Management 2.2")
                 echo "${bold}Selected: Cloud Pak for Multicloud Management"
                 CP4MCM="true"
                 cp ./cpmcm-workspace-configuration.json workspace-configuration.json
@@ -51,7 +51,7 @@ get_cloud_pak_install() {
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;
-            "Cloud Pak for Applications")
+            "Cloud Pak for Applications 4.2")
                 echo "${bold}Selected: Cloud Pak for Applications"
                 CP4APP="true"
                 cp ./cp4a-workspace-configuration.json workspace-configuration.json
@@ -61,7 +61,7 @@ get_cloud_pak_install() {
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;
-            "Cloud Pak for Data")
+            "Cloud Pak for Data 3.5")
                 echo "${bold}Selected: Cloud Pak for Data"
                 CP4D="true"
                 cp ./cp4d-workspace-configuration.json workspace-configuration.json
@@ -71,6 +71,16 @@ get_cloud_pak_install() {
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;
+            "Cloud Pak for Data 3.0")
+                echo "${bold}Selected: Cloud Pak for Data"
+                CP4D="true"
+                cp ./cp4d-workspace-configuration.json workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data\"" temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;    
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
     done
