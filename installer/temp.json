@@ -1,17 +1,17 @@
 {
-  "name": "j-cp4data-sandbox",
+  "name": "1-cp4data-sandbox",
   "type": [
     "terraform_v0.12"
   ],
-  "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Data on IBM Cloud Classic",
+  "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Data v3.0 on IBM Cloud Classic",
   "tags": [
-    "owner:j",
-    "env:j",
-    "project:j"
+    "owner:1",
+    "env:1",
+    "project:1"
   ],
   "resource_group": "schematics",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data",
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_3.0",
     "branch": "master"
   },
   "template_data": [
@@ -21,22 +21,22 @@
       "variablestore": [
         {
           "name": "region",
-          "value": "us-south",
+          "value": "us-east",
           "type": "string"
         },
         {
           "name": "project_name",
-          "value": "j",
+          "value": "1",
           "type": "string"
         },
         {
           "name": "owner",
-          "value": "j",
+          "value": "1",
           "type": "string"
         },
         {
           "name": "environment",
-          "value": "j",
+          "value": "1",
           "type": "string"
         },
         {
@@ -51,7 +51,7 @@
         },
         {
           "name": "datacenter",
-          "value": "dal10",
+          "value": "wdc04",
           "type": "string"
         },
         {
@@ -63,24 +63,14 @@
           "type": "string"
         },
         {
-          "name": "install_version",
-          "value": "3.5",
-          "type": "string"
-        },
-        {
-          "name": "storage_class_name",
-          "value": "ibmc-file-custom-gold-gid",
-          "type": "string"
-        },
-        {
           "name": "entitled_registry_key",
-          "value": "j",
+          "value": "1",
           "type": "string",
           "secure": true
         },
         {
           "name": "entitled_registry_user_email",
-          "value": "j",
+          "value": "1",
           "type": "string"
         },
         {
@@ -100,7 +90,7 @@
         },
         {
           "name": "install_watson_assistant",
-          "value": "false",
+          "value": "true",
           "type": "bool"
         },
         {
@@ -130,66 +120,6 @@
         },
         {
           "name": "install_edge_analytics",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_watson_knowledge_catalog",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_watson_studio",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_watson_machine_learning",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_watson_open_scale",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_data_virtualization",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_streams",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_analytics_dashboard",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_spark",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_db2_warehouse",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_db2_data_gate",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_rstudio",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_db2_data_management",
           "value": "false",
           "type": "bool"
         }
