@@ -167,7 +167,6 @@ write_meta_data() {
     jq -r --arg v "$ENTITLED_KEY" '(.template_data[] | .variablestore[] | select(.name == "entitled_registry_key") | .value) |= $v' temp.json > workspace-configuration.json
     cp workspace-configuration.json temp.json
     jq -r --arg v "$CLUSTER_ID" '(.template_data[] | .variablestore[] | select(.name == "cluster_id") | .value) |= $v' temp.json > workspace-configuration.json
-
 }
 
 # writes cp4mcm module values if needed
@@ -489,6 +488,32 @@ cp4d35_modules() {
 
 # wites cp4d_3.0 module data
 cp4d30_modules() {
+
+    echo "${bold}Install guardium external? ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_guardium_external_stap") | .value) |= "true"' temp.json > workspace-configuration.json
+               read -p "${bold}Enter Docker ID:${normal} " -e DOCKER_ID
+               read -p "${bold}Enter Docker Access Token:${normal} " -e DOCKER_ACCESS
+               cp workspace-configuration.json temp.json
+               jq -r --arg v "$DOCKER_ID" '(.template_data[] | .variablestore[] | select(.name == "docker_id") | .value) |= $v' temp.json > workspace-configuration.json
+               cp workspace-configuration.json temp.json
+               jq -r --arg v "$DOCKER_ACCESS" '(.template_data[] | .variablestore[] | select(.name == "docker_access_token") | .value) |= $v' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_guardium_external_stap") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+
     echo "${bold}Install watson assistant? ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
