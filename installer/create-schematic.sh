@@ -119,7 +119,13 @@ get_workspace_name() {
         WORKSPACE_NAME=$WORKSPACE_NAME"-cp4i-sandbox"
     fi
 
-    if $CP4D
+    if $CP4D35
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4data-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4data-sandbox"
+    fi
+
+    if $CP4D30
     then
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4data-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-cp4data-sandbox"
@@ -976,9 +982,6 @@ if $CP4D35
 fi
 if $CP4D30
     then cp4d30_modules
-fi
-if $CP4I
-    then echo "${bold} Selecting Modules${normal}"
 fi
 
 
