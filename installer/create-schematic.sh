@@ -1022,7 +1022,9 @@ then
     date
     echo
     echo "${bold}When the installation is finished Platform Navigator run the below command in OpenShift Cli to get the dashboard ${green}"
-    echo "oc describe PlatformNavigator cp4i-navigator --namespace=cp4i ${normal}"
+    echo " oc describe PlatformNavigator cp4i-navigator --namespace=cp4i | grep https://cp4i-navigator ${normal}"
+    echo "${bold}or run this and look for endpoint.uri ${green}"
+    echo " oc describe PlatformNavigator cp4i-navigator --namespace=cp4i${normal}"
     echo
     echo "${bold}To get the default login credentials go to: ${green} https://www.ibm.com/support/knowledgecenter/SSGT7J_20.3/install/initial_admin_password.html"
     echo "${bold}or run: ${green} oc get secrets -n ibm-common-services platform-auth-idp-credentials -ojsonpath='{.data.admin_password}' | base64 --decode && echo ""  ${normal}"
