@@ -273,7 +273,7 @@ cp4mcm_modules() {
 # writes cp4d 3.5 module data
 cp4d35_modules() {
 
-    echo "${bold}Install Watson knoweledge catalog?  ${green}"
+    echo "${bold}Install Watson knowledge catalog?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
         case $response in
