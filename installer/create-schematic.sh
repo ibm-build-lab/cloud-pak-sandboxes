@@ -22,6 +22,7 @@ CP4APP="false"
 CP4I="false"
 CP4D35="false"
 CP4D30="false"
+CP4AUTO="false"
 EXISTING_CLUSTER="false"
 
 # Creats a spinning cursor for user to know program is running
@@ -39,7 +40,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("Cloud Pak for Multicloud Management 2.2" "Cloud Pak for Applications 4.2" "Cloud Pak for Data 3.5" "Cloud Pak for Data 3.0" "Cloud Pak for Integration 1.0")
+    cloudPaks=("Cloud Pak for Multicloud Management 2.2" "Cloud Pak for Applications 4.2" "Cloud Pak for Data 3.5" "Cloud Pak for Data 3.0" "Cloud Pak for Integration 2020.3" "Cloud Pak for Automation 20.0")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             "Cloud Pak for Multicloud Management 2.2")
@@ -82,12 +83,22 @@ get_cloud_pak_install() {
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;    
-            "Cloud Pak for Integration 1.0")
-                echo "${bold}Selected: Cloud Pak for Integration 1.0"
+            "Cloud Pak for Integration 2020.3")
+                echo "${bold}Selected: Cloud Pak for Integration 2020.3"
                 CP4I="true"
                 cp ./cp4i-workspace-configuration.json workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4i\"" temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;
+            "Cloud Pak for Automation 20.0")
+                echo "${bold}Selected: Cloud Pak for Automation 20.0"
+                CP4AUTO="true"
+                cp ./cp4auto-workspace-configuration.json workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4auto\"" temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
@@ -121,15 +132,21 @@ get_workspace_name() {
 
     if $CP4D35
     then
-        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4data-sandbox${bold}):${normal} " -e WORKSPACE_NAME
-        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4data-sandbox"
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4data35-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4data35-sandbox"
     fi
 
     if $CP4D30
     then
-        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4data-sandbox${bold}):${normal} " -e WORKSPACE_NAME
-        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4data-sandbox"
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4data30-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4data30-sandbox"
     fi
+
+    if $CP4AUTO
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4auto-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4auto-sandbox"
+    fi    
 }
 
 # get project metadata (name, owner, env, etc...)
@@ -1028,4 +1045,10 @@ then
     echo
     echo "${bold}To get the default login credentials go to: ${green} https://www.ibm.com/support/knowledgecenter/SSGT7J_20.3/install/initial_admin_password.html"
     echo "${bold}or run: ${green} oc get secrets -n ibm-common-services platform-auth-idp-credentials -ojsonpath='{.data.admin_password}' | base64 --decode && echo ""  ${normal}"
+fi
+
+
+if $CP4AUTO
+then
+    echo "${bold}Cloud Pak for Automation will be available in about 30 minutes.${green}"
 fi
