@@ -22,15 +22,3 @@ output "kubeconfig" {
 // }
 
 // CP4DATA output parameters
-output "cp4data_endpoint" {
-  value = module.cp4data.endpoint
-}
-output "cp4data_user" {
-  value = module.cp4data.user
-}
-output "cp4data_password" {
-  value = module.cp4data.password
-}
-output "cp4data_namespace" {
-  value = module.cp4data.namespace
-}
