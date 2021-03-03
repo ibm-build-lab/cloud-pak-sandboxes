@@ -37,6 +37,7 @@ get_cloud_pak_install() {
     
     
     # check existing workspace list
+    # updates .template_repo.url and .template_repo.branch based off of the choice made. Defaults to master branch
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
@@ -110,6 +111,7 @@ get_cloud_pak_install() {
 }
 
 # get workspace name from user, appends with appropriant cloud pak name
+# defines the workspace name for future use
 get_workspace_name() {
 
     if $CP4MCM
@@ -164,37 +166,45 @@ get_meta_data() {
 }
 
 # writes metadata to workspace-configuration.json and temp.json these need to be cleaned up later
+# also writes the cluster_id value which decides on new clusters or existing ones
 write_meta_data() {
+    # updates workspace-configuration.json  .name
     cp workspace-configuration.json temp.json
     jq -r ".name |= \"$WORKSPACE_NAME\"" temp.json > workspace-configuration.json
-    # updates workspace-configuration.json line 7 & 34
+    # updates workspace-configuration.json  .tags[owner]
     cp workspace-configuration.json temp.json
     jq -r ".tags[0] |= \"$PROJECT_OWNER_NAME_TAG\"" temp.json > workspace-configuration.json
+    # updates workspace-configuration.json .template_data[.varialbestore.owner]
     cp workspace-configuration.json temp.json
     jq -r --arg v "$PROJECT_OWNER_NAME" '(.template_data[] | .variablestore[] | select(.name == "owner") | .value) |= $v' temp.json > workspace-configuration.json
-    # updates workspace-configuration.json line 7 & 41
+    # updates workspace-configuration.json .tags[env]
     cp workspace-configuration.json temp.json
     jq -r ".tags[1] |= \"$ENV_NAME_TAG\"" temp.json > workspace-configuration.json
+    # updates workspace-configuration.json .template_data[.varialbestore.enviorment]
     cp workspace-configuration.json temp.json
     jq -r --arg v "$ENV_NAME" '(.template_data[] | .variablestore[] | select(.name == "environment") | .value) |= $v' temp.json > workspace-configuration.json
-    # updates workspace-configuration.json line 2 & 29
+    # updates workspace-configuration.json .tags[project]
     cp workspace-configuration.json temp.json
     jq -r ".tags[2] |= \"$PROJECT_NAME_TAG\"" temp.json > workspace-configuration.json
+    # updates workspace-configuration.json .template_data[.varialbestore.project_name]
     cp workspace-configuration.json temp.json
     jq -r --arg v "$PROJECT_NAME" '(.template_data[] | .variablestore[] | select(.name == "project_name") | .value) |= $v' temp.json > workspace-configuration.json
-    # updates workspace-configuration.json line 65
+    # updates workspace-configuration.json .template_data[.varialbestore.entitled_registry_user_email]
     cp workspace-configuration.json temp.json
     jq -r --arg v "$ENTITLED_EMAIL" '(.template_data[] | .variablestore[] | select(.name == "entitled_registry_user_email") | .value) |= $v' temp.json > workspace-configuration.json
-    # updates workspace-configuration.json line 72
+    # updates workspace-configuration.json .template_data[.varialbestore.entitled_registry_key]
     cp workspace-configuration.json temp.json
     jq -r --arg v "$ENTITLED_KEY" '(.template_data[] | .variablestore[] | select(.name == "entitled_registry_key") | .value) |= $v' temp.json > workspace-configuration.json
+    # updates workspace-configuration.json .template_data[.varialbestore.cluster_id]
     cp workspace-configuration.json temp.json
     jq -r --arg v "$CLUSTER_ID" '(.template_data[] | .variablestore[] | select(.name == "cluster_id") | .value) |= $v' temp.json > workspace-configuration.json
 }
 
 # writes cp4mcm module values if needed
+# updates the values across the respective workspace-configuration values.
 cp4mcm_modules() {
     
+    # updates workspace-configuration.json .template_data[.varialbestore.install_infr_mgt_module]
     echo "${bold}Install Infrastructure Management Module? ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -213,6 +223,7 @@ cp4mcm_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.installing_monitoring_module]
     echo "${bold}Install Monitoring Module? ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -231,7 +242,7 @@ cp4mcm_modules() {
         esac
     done
 
-
+    # updates workspace-configuration.json .template_data[.varialbestore.install_security_svcs_module]
     echo "${bold}Install Security Services Module? ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -250,6 +261,7 @@ cp4mcm_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_operations_module]
     echo "${bold}Install Operations Module?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -268,6 +280,7 @@ cp4mcm_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_tech_prev_module]
     echo "${bold}Install Tech Preview Module?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -288,8 +301,10 @@ cp4mcm_modules() {
 }
 
 # writes cp4d 3.5 module data
+# updates the values across the respective workspace_configuration values
 cp4d35_modules() {
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_knowledge_catalog]
     echo "${bold}Install Watson knowledge catalog?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -308,6 +323,7 @@ cp4d35_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_studio]
     echo "${bold}Install Watson studio?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -326,6 +342,7 @@ cp4d35_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_machine_learning]
     echo "${bold}Install Watson machine learning?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -344,6 +361,7 @@ cp4d35_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_open_scale]
     echo "${bold}Install Watson open scale?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -362,6 +380,7 @@ cp4d35_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_data_virtualization]
     echo "${bold}Install data virtualization?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -380,7 +399,7 @@ cp4d35_modules() {
         esac
     done
 
-
+    # updates workspace-configuration.json .template_data[.varialbestore.install_streams]
     echo "${bold}Install streams?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -399,6 +418,7 @@ cp4d35_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_analytics_dashboard]
     echo "${bold}Install analytics dashboard?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -417,6 +437,7 @@ cp4d35_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_spark]
     echo "${bold}Install Spark?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -435,7 +456,7 @@ cp4d35_modules() {
         esac
     done
 
-
+    # updates workspace-configuration.json .template_data[.varialbestore.install_db2_warehouse]
     echo "${bold}Install DB2 warehouse?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -454,6 +475,7 @@ cp4d35_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_db2_data_gate]
     echo "${bold}Install DB2 data gate?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -472,6 +494,7 @@ cp4d35_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_rstudio]
     echo "${bold}Install rstudio?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -490,6 +513,7 @@ cp4d35_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_db2_data_management]
     echo "${bold}Install DB2 data management?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -510,8 +534,12 @@ cp4d35_modules() {
 }
 
 # wites cp4d_3.0 module data
+# updates the value across the respective workspace_configuration values
 cp4d30_modules() {
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_guardium_external_stap]
+    # updates workspace-configuration.json .template_data[.varialbestore.docker_id]
+    # updates workspace-configuration.json .template_data[.varialbestore.docker_access_token]
     echo "${bold}Install guardium external? ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -536,7 +564,7 @@ cp4d30_modules() {
         esac
     done
 
-
+    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_assistant]
     echo "${bold}Install watson assistant? ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -555,6 +583,7 @@ cp4d30_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_assistant_for_voice_interaction]
     echo "${bold}Install watson assistant for voice interaction? ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -573,6 +602,7 @@ cp4d30_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_discovery]
     echo "${bold}Install watson discovery?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -591,6 +621,7 @@ cp4d30_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_knowledge_studio]
     echo "${bold}Install watson knowledge studio?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -609,6 +640,7 @@ cp4d30_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_language_translator]
     echo "${bold}Install watson language translator?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -627,6 +659,7 @@ cp4d30_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_speech_text]
     echo "${bold}Install Watson speech text?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -645,6 +678,7 @@ cp4d30_modules() {
         esac
     done
 
+    # updates workspace-configuration.json .template_data[.varialbestore.install_edge_analytics]
     echo "${bold}Install edge analytics?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -666,7 +700,7 @@ cp4d30_modules() {
 }
 
 # Sets cluster id to user input or null
-
+# user input will use existing cluster for cloud pak install, null will create new cluster.
 get_cluster_info() {
     echo "${bold}Do you have a Pre-existing cluster to install cloud paks to?${green}"
     yesno=("Yes" "No")
@@ -690,6 +724,7 @@ get_cluster_info() {
 }
 
 #displays all the possible regions to be selected
+#information given will be used for creating new clusters
 select_region() {
     # pick region and datacenter
     echo "${bold}Choose your cluster region: ${green}"
@@ -944,6 +979,7 @@ generate_workspace_plan() {
     ibmcloud schematics plan --id $WORKSPACE_ID 
 
     echo "${bold}Schematics plan in progress...${green}"
+    # creates a graphic on commond line for users to follow script is still running
     while (( x < 150 ))
     do
         update_cursor
@@ -1012,6 +1048,7 @@ create_workspace
 generate_workspace_plan
 apply_workspace_plan
 
+# A post install set of messages for users to complete any remaining steps.
 if $CP4MCM
 then
     echo "${bold} For MCM installs the credentials can be retrieved from the 'Plan applied' log${normal}"
@@ -1050,5 +1087,5 @@ fi
 
 if $CP4AUTO
 then
-    echo "${bold}Cloud Pak for Automation will be available in about 30 minutes.${green}"
+    echo "${bold}Cloud Pak for Integrations will be available in about 30 minutes.${green}"
 fi
