@@ -50,10 +50,12 @@
         },
         {
           "name": "private_vlan_number",
+          "value": "",
           "type": "string"
         },
         {
           "name": "public_vlan_number",
+          "value": "",
           "type": "string"
         },
         {
