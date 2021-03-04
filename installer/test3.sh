@@ -1,6 +1,6 @@
 
 
-#ibmcloud sl vlan list --output json > vlan.json
+ibmcloud sl vlan list --output json > vlan.json
 DATACENTER=dal13
 VLAN_PRIVATE_OPTION="0"
 VLAN_OPTION="0"
@@ -32,7 +32,7 @@ get_private_vlan() {
     do
         for (( c=1; c<=$LENGTH; c++))
         do 
-            TEMP=$(jq -c ".[$c] | {id: .id, name: .name, vlanNumber: .vlanNumber, datacenter: .primaryRouter.datacenter.name}" vlan-private.json )
+            TEMP=$(jq -c ".[$c-1] | {id: .id, name: .name, vlanNumber: .vlanNumber, datacenter: .primaryRouter.datacenter.name}" vlan-private.json )
             echo $c". "$TEMP
         done
         echo $c".  Create your new private vlan"
@@ -71,7 +71,7 @@ get_public_vlan() {
     do
         for (( c=1; c<=$LENGTH; c++))
         do 
-            TEMP=$(jq -c ".[$c] | {id: .id, vlanNumber: .vlanNumber, datacenter: .primaryRouter.datacenter.name}" vlan-public.json )
+            TEMP=$(jq -c ".[$c-1] | {id: .id, vlanNumber: .vlanNumber, datacenter: .primaryRouter.datacenter.name}" vlan-public.json )
             echo $c". "$TEMP
         done
         echo $c".  Create your new public vlan"
@@ -108,6 +108,9 @@ else
 fi
 
 
+rm vlan.json
+rm vlan-private.json
+rm vlan-public.json
 
 #if   
 #    ibmcloud sl vlan create -t public -d $DATACENTER -n sandbox-$DATACENTER-public -f --output json > vlan-public-$WORKSPACE_NAME.json
