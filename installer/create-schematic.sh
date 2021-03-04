@@ -1011,6 +1011,54 @@ clean_entitled_key() {
     rm temp.json    
 }
 
+# select two vlans (private, public) based off of region selected
+# if no vlans are found new ones will be created
+select_vlans() {
+    echo "Gathering list of Availble Vlans"
+    ibmcloud sl vlan list --output json > vlan.json
+    echo "Gathering Selected Region"
+    DATACENTER=$(jq -r '(.template_data[] | .variablestore[] | select(.name == "datacenter") | .value)' workspace-configuration.json)
+    REGION=$(jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value)' workspace-configuration.json)
+
+    echo $DATACENTER
+    echo $REGION
+
+    echo "Comparing vlans with regions"
+    jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PUBLIC"))]' vlan.json > vlan-public.json
+    jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PRIVATE"))]' vlan.json > vlan-private.json
+
+    jq -c "[.[] | {id: .id, vlanNumber: .vlanNumber, datacenter: .primaryRouter.datacenter.name}]" vlan-public.json 
+    jq -c "[.[] | {id: .id, vlanNumber: .vlanNumber, datacenter: .primaryRouter.datacenter.name}]" vlan-private.json 
+
+    PUBLIC=$(jq -r ".[0] | .id" vlan-public.json)
+    PRIVATE=$(jq -r ".[0] | .id" vlan-private.json)
+
+    if (($PUBLIC))
+    then 
+        echo "Public VLAN available"
+        echo $PUBLIC
+    else
+        ibmcloud sl vlan create -t public -d $DATACENTER -n sandbox-$DATACENTER-public -f --output json > vlan-public-$WORKSPACE_NAME.json
+        ibmcloud sl vlan list -d $DATACENTER --sortby number > vlan-public.json
+        PUBLIC=$(jq -r ".[0] | .id" vlan-public.json)
+    fi
+    cp ./workspace-configuration.json temp.json
+    jq -r --arg v "$PUBLIC" '(.template_data[] | .variablestore[] | select(.name == "public_vlan_number") | .value) |= "$v"' temp.json > workspace-configuration.json
+    
+    if (($PRIVATE))
+    then 
+        echo "Private VLAN availble"
+        echo $PRIVATE
+    else
+        ibmcloud sl vlan create -t private -d $DATACENTER -n sandbox-$DATACENTER-private -f --output json > vlan-private-$WORKSPACE_NAME.json
+        ibmcloud sl vlan list -d $DATACENTER --sortby number > vlan_private.json
+        PRIVATE=$(jq -r ".[0] | .id" vlan-private.json)
+    fi
+    cp ./workspace-configuration.json temp.json
+    jq -r --arg v "$PRIVATE"'(.template_data[] | .variablestore[] | select(.name == "private_vlan_number") | .value) |= "$v"' temp.json > workspace-configuration.json
+
+
+}
 
 if [ ! -d "./logs" ] 
 then mkdir logs
