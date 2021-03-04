@@ -1071,7 +1071,9 @@ write_meta_data
 get_cluster_info
 write_meta_data
 if ! $EXISTING_CLUSTER
-    then select_region
+    then 
+        select_region
+        select_vlans
 fi
 
 
