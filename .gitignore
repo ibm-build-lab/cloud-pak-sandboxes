@@ -50,3 +50,9 @@ product_tmp
 
 # macOS files
 .DS_Store
+installer/test3.sh
+installer/vlan-public-jah-test01-mcm-sandbox.json
+installer/vlan-public-jah-test1-mcm-sandbox.json
+installer/vlan-public-jah-test12-mcm-sandbox.json
+installer/test3.sh
+installer/test3.sh
