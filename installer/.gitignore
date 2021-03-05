@@ -1,3 +1,7 @@
 logs
 temp.json
 workspace-configuration.json
+vlan.json
+vlan-purchase.json
+vlan-public.json
+vlan-private.json

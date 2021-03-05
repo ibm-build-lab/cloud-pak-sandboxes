@@ -18,8 +18,8 @@ datacenter = "dal10"
 
 // VLAN's numbers on datacenter 'dal10' on Humio account. They are here until the
 // permissions issues is fixed on Humio account
-private_vlan_number = "2979232"
-public_vlan_number  = "2979230"
+//private_vlan_number = "2979232"
+//public_vlan_number  = "2979230"
 
 // RECOMMENDED: to set the owner variable from $USER, like this:
 // export TF_VAR_owner=$USER
