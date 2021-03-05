@@ -774,7 +774,7 @@ get_private_vlan() {
 
 create_public_vlan() {
     echo "${bold}creating public vlan${normal}"
-    ibmcloud sl vlan create -t public -d $DATACENTER -n sandbox-public -f --output json > vlan-public-$WORKSPACE_NAME.json
+    ibmcloud sl vlan create -t public -d $DATACENTER -n sandbox-public -f --output json > logs/vlan-public-$WORKSPACE_NAME.json
     echo "${bold}Public Vlan creation started, this process may take some time.${normal}"
     echo "${bold}You may continue to refresh the vlan list until it appears, cancel this current sandbox creation, or choose another vlan${normal}"
     echo "${bold}The VLAN confirmation can be foudn in ${green}logs/vlan-public-$WORKSPACE_NAME${normal}"
@@ -1087,6 +1087,9 @@ select_region() {
     then manage_vlan
     fi
     if $CP4I
+    then manage_vlan
+    fi
+    if $CP4D35
     then manage_vlan
     fi
 
