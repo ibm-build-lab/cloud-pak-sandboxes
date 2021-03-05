@@ -723,6 +723,135 @@ get_cluster_info() {
     done
 }
 
+# select two vlans (private, public) based off of region selected
+# if no vlans are found new ones will be created
+create_private_vlan() {
+    echo "${bold}Creating private VLAN${normal}"
+    ibmcloud sl vlan create -t private -d $DATACENTER -n sandbox-private -f --output json > logs/vlan-private-$WORKSPACE_NAME.json
+    echo "${bold}Private VLAN creation started, this process may take some time.${normal}"
+    echo "${bold}You may continue to refresh the VLAN list until it appears, cancel this current sandbox creation, or choose another vlan${normal}"
+    echo "${bold}The VLAN confirmation can be found in ${green}logs/vlan-private-$WORKSPACE_NAME${normal}"
+    ibmcloud sl vlan list --output json > vlan.json
+    jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PRIVATE"))]' vlan.json > vlan-private.json
+}
+
+get_private_vlan() {
+    VLAN_PRIVATE_OPTION="0"
+    #echo "$VLAN_PRIVATE_OPTION"
+    echo "${green}"
+    while true;
+    do
+        for (( c=1; c<=$LENGTH; c++))
+        do 
+            TEMP=$(jq -c ".[$c-1] | {id: .id, name: .name, vlanNumber: .vlanNumber, datacenter: .primaryRouter.datacenter.name}" vlan-private.json )
+            echo $c". "$TEMP
+        done
+        echo $c".  Create your new private vlan${normal}"
+        echo "${bold}Type 0 to refresh available vlans${normal}"
+        read -p "${bold}Choose a private vlan option:${normal} " -e VLAN_PRIVATE_OPTION
+
+        if (($VLAN_PRIVATE_OPTION == $c))
+        then create_private_vlan
+        elif (($VLAN_PRIVATE_OPTION>0)) && (($VLAN_PRIVATE_OPTION<=$LENGTH))
+        then echo "${bold}writing private vlan${normal}"
+             VLAN_PRIVATE_OPTION=$VLAN_PRIVATE_OPTION-1
+             PRIVATE=$(jq .[$VLAN_PRIVATE_OPTION].id vlan-private.json)
+             jq -r --arg v "$PRIVATE" '(.template_data[] | .variablestore[] | select(.name == "private_vlan_number") | .value) |= "$v"' temp.json > workspace-configuration.json
+             break
+        elif (($VLAN_PRIVATE_OPTION == 0))
+        then echo "${bold}Refrehing Private Vlans...${normal}"
+                ibmcloud sl vlan list --output json > vlan.json
+                jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PRIVATE"))]' vlan.json > vlan-private.json
+        else echo "${bold}PLEASE TRY AGAIN${normal}"
+                ibmcloud sl vlan list --output json > vlan.json
+                jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PRIVATE"))]' vlan.json > vlan-private.json
+        fi
+    done    
+}
+
+create_public_vlan() {
+    echo "${bold}creating public vlan${normal}"
+    ibmcloud sl vlan create -t public -d $DATACENTER -n sandbox-public -f --output json > vlan-public-$WORKSPACE_NAME.json
+    echo "${bold}Public Vlan creation started, this process may take some time.${normal}"
+    echo "${bold}You may continue to refresh the vlan list until it appears, cancel this current sandbox creation, or choose another vlan${normal}"
+    echo "${bold}The VLAN confirmation can be foudn in ${green}logs/vlan-public-$WORKSPACE_NAME${normal}"
+    ibmcloud sl vlan list --output json > vlan.json
+    jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PUBLIC"))]' vlan.json > vlan-public.json
+}
+
+get_public_vlan() {
+    VLAN_PUBLIC_OPTION="0"
+    echo "${green}"
+    while true;
+    do
+        for (( c=1; c<=$LENGTH; c++))
+        do 
+            TEMP=$(jq -c ".[$c-1] | {id: .id, name: .name, vlanNumber: .vlanNumber, datacenter: .primaryRouter.datacenter.name}" vlan-public.json )
+            echo $c". "$TEMP
+        done
+        echo $c".  Create your new public VLAN${normal}"
+        echo "${bold}Type 0 to refresh available VLANs${normal}"
+        read -p "${bold}Choose a public VLAN option:${normal} " -e VLAN_PUBLIC_OPTION
+
+        if (($VLAN_PUBLIC_OPTION == $c))
+        then create_public_vlan
+        elif (($VLAN_PUBLIC_OPTION>0)) && (($VLAN_PUBLIC_OPTION<=$LENGTH))
+        then echo "${bold}writing public VLAN${normal}"
+             VLAN_PUBLIC_OPTION=$VLAN_PUBLIC_OPTION-1
+             PUBLIC=$(jq .[$VLAN_PUBLIC_OPTION].id vlan-public.json)
+             jq -r --arg v "$PUBLIC" '(.template_data[] | .variablestore[] | select(.name == "public_vlan_number") | .value) |= "$v"' temp.json > workspace-configuration.json
+             break
+        elif (($VLAN_PUBLIC_OPTION == 0))
+        then echo "${bold}Refrehing Public VLANs...${normal}"
+                ibmcloud sl vlan list --output json > vlan.json
+                jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PUBLIC"))]' vlan.json > vlan-public.json
+        else echo "${bold}PLEASE TRY AGAIN${normal}"
+                ibmcloud sl vlan list --output json > vlan.json
+                jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PUBLIC"))]' vlan.json > vlan-public.json
+        fi
+    done    
+}
+
+manage_vlan() {
+    ibmcloud sl vlan list --output json > vlan.json
+    DATACENTER=$(jq -r '(.template_data[] | .variablestore[] | select(.name == "datacenter") | .value) ' workspace-configuration.json)
+    VLAN_PRIVATE_OPTION="0"
+    VLAN_OPTION="0"
+    LENGTH="0"
+
+    echo "${green}VLAN data center set to: $DATACENTER${normal}"
+    echo "${bold}Searching for VLAN's for ${green}$DATACENTER${normal}"
+    echo "${bold}Public VLANs found${normal}"
+    jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PUBLIC"))]' vlan.json > vlan-public.json
+    echo "${bold}Private VLANs found${normal}"
+    jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PRIVATE"))]' vlan.json > vlan-private.json
+
+    LENGTH=$(jq length vlan-private.json)
+    if (($LENGTH))
+    then
+        #echo "length is not empty"
+        get_private_vlan
+    else
+        #echo "length is  empty"
+        create_private_vlan
+    fi
+
+    LENGTH=$(jq length vlan-public.json)
+    if (($LENGTH))
+    then
+        #echo "length is not empty"
+        get_public_vlan
+    else
+        #echo "length is  empty"
+        create_public_vlan
+    fi
+
+    rm vlan.json
+    rm vlan-public.json
+    rm vlan-private.json
+}
+
+
 #displays all the possible regions to be selected
 #information given will be used for creating new clusters
 select_region() {
@@ -944,6 +1073,11 @@ select_region() {
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
     done
+
+    if $CP4MCM
+    then manage_vlan
+    fi
+
 }
 
 # create workspace, keeps a copy of the input and stores in $WORKSPACE_NAME-input.json and a copy of the ouptput in $WORKSPACE_NAME-config.json
@@ -1009,55 +1143,6 @@ clean_entitled_key() {
     cp ./logs/$WORKSPACE_NAME-config.json temp.json
     jq -r ".template_data[0].variablestore[9].value |= \"SENSITIVE_DATA\"" temp.json > ./logs/$WORKSPACE_NAME-config.json
     rm temp.json    
-}
-
-# select two vlans (private, public) based off of region selected
-# if no vlans are found new ones will be created
-select_vlans() {
-    echo "Gathering list of Availble Vlans"
-    ibmcloud sl vlan list --output json > vlan.json
-    echo "Gathering Selected Region"
-    DATACENTER=$(jq -r '(.template_data[] | .variablestore[] | select(.name == "datacenter") | .value)' workspace-configuration.json)
-    REGION=$(jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value)' workspace-configuration.json)
-
-    echo $DATACENTER
-    echo $REGION
-
-    echo "Comparing vlans with regions"
-    jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PUBLIC"))]' vlan.json > vlan-public.json
-    jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PRIVATE"))]' vlan.json > vlan-private.json
-
-    jq -c "[.[] | {id: .id, vlanNumber: .vlanNumber, datacenter: .primaryRouter.datacenter.name}]" vlan-public.json 
-    jq -c "[.[] | {id: .id, vlanNumber: .vlanNumber, datacenter: .primaryRouter.datacenter.name}]" vlan-private.json 
-
-    PUBLIC=$(jq -r ".[0] | .id" vlan-public.json)
-    PRIVATE=$(jq -r ".[0] | .id" vlan-private.json)
-
-    if (($PUBLIC))
-    then 
-        echo "Public VLAN available"
-        echo $PUBLIC
-    else
-        ibmcloud sl vlan create -t public -d $DATACENTER -n sandbox-$DATACENTER-public -f --output json > vlan-public-$WORKSPACE_NAME.json
-        ibmcloud sl vlan list -d $DATACENTER --sortby number > vlan-public.json
-        PUBLIC=$(jq -r ".[0] | .id" vlan-public.json)
-    fi
-    cp ./workspace-configuration.json temp.json
-    jq -r --arg v "$PUBLIC" '(.template_data[] | .variablestore[] | select(.name == "public_vlan_number") | .value) |= "$v"' temp.json > workspace-configuration.json
-    
-    if (($PRIVATE))
-    then 
-        echo "Private VLAN availble"
-        echo $PRIVATE
-    else
-        ibmcloud sl vlan create -t private -d $DATACENTER -n sandbox-$DATACENTER-private -f --output json > vlan-private-$WORKSPACE_NAME.json
-        ibmcloud sl vlan list -d $DATACENTER --sortby number > vlan_private.json
-        PRIVATE=$(jq -r ".[0] | .id" vlan-private.json)
-    fi
-    cp ./workspace-configuration.json temp.json
-    jq -r --arg v "$PRIVATE"'(.template_data[] | .variablestore[] | select(.name == "private_vlan_number") | .value) |= "$v"' temp.json > workspace-configuration.json
-
-
 }
 
 if [ ! -d "./logs" ] 
