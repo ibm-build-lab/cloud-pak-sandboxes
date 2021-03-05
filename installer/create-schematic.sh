@@ -1083,15 +1083,7 @@ select_region() {
         esac
     done
 
-    if $CP4MCM
-    then manage_vlan
-    fi
-    if $CP4I
-    then manage_vlan
-    fi
-    if $CP4D35
-    then manage_vlan
-    fi
+    manage_vlan
 
 }
 
