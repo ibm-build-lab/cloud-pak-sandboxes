@@ -19,7 +19,7 @@ Currently you can run the script to install:
 - Cloud Pak for Multi Cloud Management
 - Cloud Pak for Application
 - Cloud Pak for Data (under development)
-- Cloud Pak for Integration 
+- Cloud Pak for Integration
 - Cloud Pak for Automation (under development)
 - WatsonAIOps (under development)
 
@@ -58,6 +58,14 @@ From here the Installer will ask you a set of questions pertaining to the cluste
 Here is a sample of CP4MCM output:
 
 ![script-sample](./images/sample-script.png)
+
+#### VLAN USAGE
+
+In order for the Installer to create a ROKS cluster there must be a public and private VLAN available to the Datacenters you plan to build to.  No worries if you do not know how to manage VLANS becuase the installer script will handle that for you.  
+
+While running the installer you will be engaged with information on selecting a region and datacenter. Once you have done this the installer will automatically check your available VLANs for use.  If you do not have any VLANs available or would like to create a new one will can be created.  For lack of any VLANs the new one will be created automatically otherwise you will be promted with an option if you want one.
+
+Finally once a VLAN is created it will take some time until the VLAN is ready for use, this time varies based of the availablity of resources at the datacenter and can take anywhere from a few seconds to several minutes.  While the installer script does have an option to conintue and refresh the prompt it may be a worth exiting the script and simple coming back to it when some time has passed.  Both options are available to you based of your urgency.
 
 ### Checking your Workspace
 
