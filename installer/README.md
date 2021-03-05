@@ -19,7 +19,9 @@ Currently you can run the script to install:
 - Cloud Pak for Multi Cloud Management
 - Cloud Pak for Application
 - Cloud Pak for Data (under development)
-- Cloud Pak for Integration (under development)
+- Cloud Pak for Integration 
+- Cloud Pak for Automation (under development)
+- WatsonAIOps (under development)
 
 ## **Install with IBM Cloud Shell**
 
