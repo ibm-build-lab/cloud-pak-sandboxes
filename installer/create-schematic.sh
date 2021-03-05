@@ -836,11 +836,11 @@ manage_vlan() {
     if (($LENGTH))
     then
         echo "${bold}Private VLANs found${normal}"
-        #echo "length is not empty"
+        
         get_private_vlan
     else
         echo "${bold}Private VLANs not found, creating new vlan:${normal}"
-        #echo "length is  empty"
+        
         create_private_vlan
     fi
 
@@ -1084,6 +1084,9 @@ select_region() {
     done
 
     if $CP4MCM
+    then manage_vlan
+    fi
+    if $CP4I
     then manage_vlan
     fi
 
