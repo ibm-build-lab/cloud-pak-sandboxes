@@ -303,7 +303,7 @@ cp4mcm_modules() {
 # writes cp4d 3.5 module data
 # updates the values across the respective workspace_configuration values
 cp4d35_modules() {
-
+    isEmptyList=true
     # updates workspace-configuration.json .template_data[.varialbestore.install_watson_knowledge_catalog]
     echo "${bold}Install Watson knowledge catalog?  ${green}"
     yesno=("Yes" "No")
@@ -312,6 +312,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_knowledge_catalog") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -331,6 +332,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_studio") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -350,6 +352,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_machine_learning") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -369,6 +372,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_open_scale") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false             
                break
                ;;
             "No")
@@ -388,6 +392,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_data_virtualization") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -407,6 +412,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_streams") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -426,6 +432,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_analytics_dashboard") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -445,6 +452,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_spark") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -464,6 +472,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_warehouse") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -483,6 +492,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_data_gate") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -502,6 +512,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_rstudio") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -521,6 +532,7 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_data_management") | .value) |= "true"' temp.json > workspace-configuration.json
+               isEmptyList=false
                break
                ;;
             "No")
@@ -531,6 +543,10 @@ cp4d35_modules() {
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
     done
+
+    if [ $isEmptyList == false ]; then
+        jq -r '(.template_data[] | .variablestore[] | select(.name == "empty_module_list") | .value) |= "false"' temp.json > workspace-configuration.json
+    fi
 }
 
 # wites cp4d_3.0 module data

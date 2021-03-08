@@ -44,7 +44,7 @@ storage_class_name = "ibmc-file-custom-gold-gid"
 
 // CP4DATA Modules installation parameters
 // ---------------------------------------
-
+empty_module_list                = true
 install_watson_knowledge_catalog = false
 install_watson_studio            = false
 install_watson_machine_learning  = false

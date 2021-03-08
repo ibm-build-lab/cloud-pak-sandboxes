@@ -81,6 +81,11 @@
           "type": "string"
         },
         {
+          "name": "empty_module_list",
+          "value": "true",
+          "type": "bool"
+        },
+        {
           "name": "install_watson_knowledge_catalog",
           "value": "false",
           "type": "bool"

@@ -73,6 +73,7 @@ module "cp4data" {
   entitled_registry_user_email = var.entitled_registry_user_email
 
   // Parameters to install CPD modules
+  empty_module_list                = var.empty_module_list
   install_watson_knowledge_catalog = var.install_watson_knowledge_catalog
   install_watson_studio            = var.install_watson_studio
   install_watson_machine_learning  = var.install_watson_machine_learning
