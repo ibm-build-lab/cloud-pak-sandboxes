@@ -59,38 +59,6 @@ Here is a sample of CP4MCM output:
 
 ![script-sample](./images/sample-script.png)
 
-#### VLAN USAGE
-
-In order for the Installer to create a ROKS cluster there must be a public and private VLAN available to the Datacenters you plan to build to.  No worries if you do not know how to manage VLANS becuase the installer script will handle that for you.  
-
-While running the installer you will be engaged with information on selecting a region and datacenter. Once you have done this the installer will automatically check your available VLANs for use.  If you do not have any VLANs available or would like to create a new one will can be created.  For lack of any VLANs the new one will be created automatically otherwise you will be promted with an option if you want one.
-
-Finally once a VLAN is created it will take some time until the VLAN is ready for use, this time varies based of the availablity of resources at the datacenter and can take anywhere from a few seconds to several minutes.  While the installer script does have an option to conintue and refresh the prompt it may be a worth exiting the script and simple coming back to it when some time has passed.  Both options are available to you based of your urgency.
-
-### Checking your Workspace
-
-To check your workspace:
-
-#### 1. Log in to your [IBM Cloud](http://cloud.ibm.com) account
-#### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
-
-The image below shows the button for the resource list (orange box), as well as the two menu locations to find the cluster (green box) when the workspace finishes, and the workspace (red box) which you can follow while the script runs. 
-
-NOTE: You will need permissions to view workspace schematics.
-
-![resource-list](./images/resource-list.png)
-
-#### 3. Click to open your workspace
-All workspaces and clusters made with this tool will end in "-sandbox"
-
-The workspace will look like this. The "activity" button and the "workspaceid" are marked. You can also view the variables entered when using the script:
-![sample1](./images/activity-location.png)
-
-Within the **Schematic workspace** select **Activity** from left menu. Select **View log** link from **Plan applied** row, as shown in the image below:
-
-![sample2](./images/activity-log.png)
-**NOTE:** the workspace activity plan logs will print out the Cloud Pak console *url*, *username* and *password* once the installation is complete.
-
 ## **Install with Personal Device (for advanced users)**
 
 To run this Installer on your local machine:
@@ -112,6 +80,56 @@ To run this Installer on your local machine:
 - [Get Registry Key](#get-registry-key)
 - [Download the Script](#download-the-script)
 - [Run Installer](#run-installer)
+
+## VLAN USAGE
+
+In order for the Installer to create a ROKS cluster there must be a public and private VLAN available to the Datacenters you plan to build to.  No worries if you do not know how to manage VLANS becuase the installer script will handle that for you.  
+
+While running the installer you will be engaged with information on selecting a region and datacenter. Once you have done this the installer will automatically check your available VLANs for use.  If you do not have any VLANs available or would like to create a new one will can be created.  For lack of any VLANs the new one will be created automatically otherwise you will be promted with an option if you want one.
+
+Finally once a VLAN is created it will take some time until the VLAN is ready for use, this time varies based of the availablity of resources at the datacenter and can take anywhere from a few seconds to several minutes.  While the installer script does have an option to conintue and refresh the prompt it may be a worth exiting the script and simple coming back to it when some time has passed.  Both options are available to you based of your urgency.
+
+## Checking your Workspace
+
+To check your workspace:
+
+### 1. Log in to your [IBM Cloud](http://cloud.ibm.com) account
+### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
+
+The image below shows the button for the resource list (orange box), as well as the two menu locations to find the cluster (green box) when the workspace finishes, and the workspace (red box) which you can follow while the script runs. 
+
+NOTE: You will need permissions to view workspace schematics.
+
+![resource-list](./images/resource-list.png)
+
+### 3. Click to open your workspace
+All workspaces and clusters made with this tool will end in "-sandbox"
+
+The workspace will look like this. The "activity" button and the "workspaceid" are marked. You can also view the variables entered when using the script:
+![sample1](./images/activity-location.png)
+
+Within the **Schematic workspace** select **Activity** from left menu. Select **View log** link from **Plan applied** row, as shown in the image below:
+
+![sample2](./images/activity-log.png)
+**NOTE:** the workspace activity plan logs will print out the Cloud Pak console *url*, *username* and *password* once the installation is complete. Once the cloud pak has been installed and the admin/password credentials are provided, please change the password immediately.  
+
+## Deleting the Cloud Pak resources
+
+### 1. Log in to your [IBM Cloud](http://cloud.ibm.com) account
+### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
+
+The image below shows the button for the resource list (orange box), as well as the two menu locations to find the cluster (green box) when the workspace finishes, and the workspace (red box) which you can follow while the script runs. 
+
+NOTE: You will need permissions to view workspace schematics.
+
+![resource-list](./images/resource-list.png)
+
+### 3. Click "Delete" from the 3 dot menu on the right of your workspace
+All workspaces and clusters made with this tool will end in "-sandbox"
+
+Select "Delete workspace" and "Delete all associated resources" options, type the name of the workspace and select "Delete".  This should issue a "terraform destroy" command to delete all resources that were created by the "terraform apply".  
+
+**NOTE:** If the workspace fails to delete, the Terraform state is out of sync.  Attempt deletion again but only slect "Delete workspace" option.  Resources may need to be manually deleted.
 
 ## Additional Information
 
