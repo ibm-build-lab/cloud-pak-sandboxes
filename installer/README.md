@@ -9,6 +9,7 @@
     - [Install From Personal Device](#install-from-personal-device)
   - [VLAN Usage](#vlan-usage)
   - [Checking Progress](#checking-progress)
+  - [Accessing the Cloud Pak Console](#accessing-the-cloud-pak-console)
   - [Deleting the Workspace and Resources](#deleting-the-workspace-and-resources)
   - [Additional Information](#additional-information)
 
@@ -113,7 +114,12 @@ The workspace will look like this. The "activity" button and the "workspaceid" a
 Within the **Schematic workspace** select **Activity** from left menu. Select **View log** link from **Plan applied** row, as shown in the image below:
 
 ![sample2](./images/activity-log.png)
-**NOTE:** the workspace activity plan logs will print out the Cloud Pak console *url*, *username* and *password* once the installation is complete. Once the cloud pak has been installed and the admin/password credentials are provided, please change the password immediately.  
+
+## Accessing the Cloud Pak Console
+
+The workspace activity plan logs will print out the Cloud Pak console *url*, *username* and *password* once the installation is complete. 
+
+**IMPORTANT:** Once the cloud pak has been installed and the admin/password credentials are provided, please change the password immediately.  
 
 ## Deleting The Workspace and Resources
 
