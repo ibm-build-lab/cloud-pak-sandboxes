@@ -81,24 +81,24 @@ To run this Installer on your local machine:
 - [Download the Script](#download-the-script)
 - [Run Installer](#run-installer)
 
-## VLAN USAGE
+## VLAN usage
 
 In order for the Installer to create a ROKS cluster there must be a public and private VLAN available to the Datacenters you plan to build to.  No worries if you do not know how to manage VLANS becuase the installer script will handle that for you.  
 
-While running the installer you will be engaged with information on selecting a region and datacenter. Once you have done this the installer will automatically check your available VLANs for use.  If you do not have any VLANs available or would like to create a new one will can be created.  For lack of any VLANs the new one will be created automatically otherwise you will be promted with an option if you want one.
+While running the installer you will be prompted for region and datacenter. Once selected the installer will automatically check available VLANs for use.  If there are not existing VLANS, script will prompt to create them.
 
-Finally once a VLAN is created it will take some time until the VLAN is ready for use, this time varies based of the availablity of resources at the datacenter and can take anywhere from a few seconds to several minutes.  While the installer script does have an option to conintue and refresh the prompt it may be a worth exiting the script and simple coming back to it when some time has passed.  Both options are available to you based of your urgency.
+Finally, once a VLAN is created it will take some time until it is ready for use. This time varies based of the availablity of resources at the datacenter and can take anywhere from a few seconds to several minutes.
 
 ## Checking your Workspace
 
-To check your workspace:
+To check the status of the workspace:
 
-### 1. Log in to your [IBM Cloud](http://cloud.ibm.com) account
+### 1. Log in to [IBM Cloud](http://cloud.ibm.com) account
 ### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
 
 The image below shows the button for the resource list (orange box), as well as the two menu locations to find the cluster (green box) when the workspace finishes, and the workspace (red box) which you can follow while the script runs. 
 
-NOTE: You will need permissions to view workspace schematics.
+NOTE: User may need permissions to view workspace schematics. Contact account administrator if restricted.
 
 ![resource-list](./images/resource-list.png)
 
