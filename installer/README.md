@@ -6,11 +6,13 @@
     - [Get Registry Key](#get-registry-key)
     - [Download the Script](#download-the-script)
     - [Run Installer](#run-installer)
-    - [Checking your Workspace](#checking-your-workspace)
-  - [Install with Personal Device (for advanced users)](#install-with-personal-device-for-advanced-users)
+  - [Install From Personal Device](#install-from-personal-device)
+  - [VLAN Usage](#vlan-usage)
+  - [Checking Progress](#checking-progress)
+  - [Deleting the Workspace and Resources](#deleting-the-workspace-and-resources)
   - [Additional Information](#additional-information)
 
-## **Introduction**
+## Introduction
 
 The Cloud Pak Sandbox Installer is an easy to use script that allows you to provision a ROKS cluster and install from a list of IBM Cloud Paks using the IBM Cloud Shell or your personal computer. This script creates a Schematics workspace that then executes Terraform scripts to create the necessary resources.
 
@@ -18,16 +20,16 @@ Currently you can run the script to install:
 
 - Cloud Pak for Multi Cloud Management
 - Cloud Pak for Application
-- Cloud Pak for Data (under development)
+- Cloud Pak for Data
 - Cloud Pak for Integration
 - Cloud Pak for Automation (under development)
 - WatsonAIOps (under development)
 
-## **Install with IBM Cloud Shell**
+## Install Using IBM Cloud Shell
 
 [Understanding the IBM Cloud User Interface](https://cloud.ibm.com/docs/overview?topic=overview-ui)
 
-### Get Registry Key
+### Get registry key
 
 Each Cloud Pak requires an entitlement key. The script will prompt for this key and the email associated with it to install any of the Cloud Paks.
 
@@ -36,7 +38,7 @@ If you do not have the key visit this link to generate one:
 
 NOTE: For Cloud Pak for Data you will also need your docker credentials if installing the Guardium External Strap module
 
-### Download the Script
+### Download the script
 
 Log in to your [IBM Cloud](http://cloud.ibm.com) account and click the terminal icon in the upper right corner of IBM Cloud console to open the **IBM Cloud Shell** 
 
@@ -45,7 +47,7 @@ Within the **IBM Cloud Shell** terminal, clone the following repo:
 
      git clone https://github.com/ibm-hcbt/cloud-pak-sandboxes
 
-### Run Installer
+### Run installer
 
 To run the installer, do the following in the **IBM Cloud Shell** terminal:
 
@@ -59,7 +61,7 @@ Here is a sample of CP4MCM output:
 
 ![script-sample](./images/sample-script.png)
 
-## **Install with Personal Device (for advanced users)**
+## Install From Personal Device
 
 To run this Installer on your local machine:
 
@@ -81,7 +83,7 @@ To run this Installer on your local machine:
 - [Download the Script](#download-the-script)
 - [Run Installer](#run-installer)
 
-## VLAN usage
+## VLAN Usage
 
 In order for the Installer to create a ROKS cluster there must be a public and private VLAN available to the Datacenters you plan to build to.  No worries if you do not know how to manage VLANS becuase the installer script will handle that for you.  
 
@@ -89,7 +91,7 @@ While running the installer you will be prompted for region and datacenter. Once
 
 Finally, once a VLAN is created it will take some time until it is ready for use. This time varies based of the availablity of resources at the datacenter and can take anywhere from a few seconds to several minutes.
 
-## Checking your Workspace
+## Checking Progress
 
 To check the status of the workspace:
 
@@ -113,7 +115,7 @@ Within the **Schematic workspace** select **Activity** from left menu. Select **
 ![sample2](./images/activity-log.png)
 **NOTE:** the workspace activity plan logs will print out the Cloud Pak console *url*, *username* and *password* once the installation is complete. Once the cloud pak has been installed and the admin/password credentials are provided, please change the password immediately.  
 
-## Deleting the Cloud Pak resources
+## Deleting The Workspace and Resources
 
 ### 1. Log in to your [IBM Cloud](http://cloud.ibm.com) account
 ### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
