@@ -129,7 +129,7 @@ All workspaces and clusters made with this tool will end in "-sandbox"
 
 Select "Delete workspace" and "Delete all associated resources" options, type the name of the workspace and select "Delete".  This should issue a "terraform destroy" command to delete all resources that were created by the "terraform apply".  
 
-**NOTE:** If the workspace fails to delete, the Terraform state is out of sync.  Attempt deletion again but only slect "Delete workspace" option.  Resources may need to be manually deleted.
+**NOTE:** If the workspace fails to delete, the Terraform state is out of sync.  Attempt deletion again but only slect "Delete workspace" option.  Resources may then need to be manually deleted.
 
 ## Additional Information
 
