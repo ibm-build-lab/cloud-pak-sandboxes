@@ -57,8 +57,8 @@ variable "entitled_registry_user_email" {
 locals {
   infra                      = "classic"
   flavors                    = ["b3c.16x64"]
-  workers_count              = [4]
-  roks_version               = "4.5"
+  workers_count              = [5]
+  roks_version               = "4.6"
   kubeconfig_dir             = "./.kube/config"
   entitled_registry_key_file = "./entitlement.key"
 }
