@@ -545,6 +545,7 @@ cp4d35_modules() {
     done
 
     if [ $isEmptyList == false ]; then
+        cp ./workspace-configuration.json temp.json
         jq -r '(.template_data[] | .variablestore[] | select(.name == "empty_module_list") | .value) |= "false"' temp.json > workspace-configuration.json
     fi
 }
@@ -729,7 +730,7 @@ get_cluster_info() {
                 break
                 ;;
             "No")
-                echo "${bold}Createing new cluster"
+                echo "${bold}Creating new cluster"
                 EXISTING_CLUSTER="false"
                 CLUSTER_ID=""
                 break
