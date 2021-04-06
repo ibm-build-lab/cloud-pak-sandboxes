@@ -5,6 +5,7 @@
     - [Install with IBM Cloud Shell](#install-with-ibm-cloud-shell)
       - [Get Registry Key](#get-registry-key)
       - [Download the Script](#download-the-script)
+      - [Create a resource group](#create-a-resource-group)
       - [Run Installer](#run-installer)
     - [Install From Personal Device](#install-from-personal-device)
   - [VLAN Usage](#vlan-usage)
@@ -41,12 +42,18 @@ NOTE: For Cloud Pak for Data you will also need your docker credentials if insta
 
 ### Download the script
 
-Log in to your [IBM Cloud](http://cloud.ibm.com) account and click the terminal icon in the upper right corner of IBM Cloud console to open the **IBM Cloud Shell** 
+Log in to your [IBM Cloud](http://cloud.ibm.com) account and click the terminal icon in the upper right corner of IBM Cloud console to open the **IBM Cloud Shell**
 
 ![bash-button](./images/bash-symbol.png)
 Within the **IBM Cloud Shell** terminal, clone the following repo:
 
      git clone https://github.com/ibm-hcbt/cloud-pak-sandboxes
+
+### Create a resource group
+
+In order for the scrip to run it requires a resource group to work out of as well as for the user to have permissions to that group. By default this resource group is ```cloud-pak-sandbox``` so you will need to go to your IBM cloud account and create this resource goup.
+
+If you want to use a personal resource group then you can go to the workspace-configuration.json in with respect to the cloud pak you wish to install and edit the resource group name to your choice.
 
 ### Run installer
 
@@ -67,15 +74,15 @@ Here is a sample of CP4MCM output:
 To run this Installer on your local machine:
 
 1. Ensure that [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli) is installed
-   
+
 2. Ensure that the [IBM Schematics Plug-in](https://cloud.ibm.com/docs/schematics?topic=schematics-setup-cli) is installed
-   
+
    `ibmcloud plugin install schematics`
-3. Log into the ibm cloud 
-   
+3. Log into the ibm cloud
+
    `ibmcloud login -sso`
-4. Ensure that you are in the desired account and resource group 
-   
+4. Ensure that you are in the desired account and resource group
+
    `ibmcloud target`
 
 5. Go to your working directory and follow the same instructions for running in IBM Cloud Shell:
