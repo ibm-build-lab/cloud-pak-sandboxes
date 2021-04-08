@@ -251,7 +251,7 @@ for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ prin
 
 ### 2. Set up Image Mirroring
 
-Image mirroring is required to allow the correct container registry image to be access for the demo cartridge.
+Image mirroring is required to allow the correct container registry image to be accessed to install the demo cartridge.
 
 Execute:
 
