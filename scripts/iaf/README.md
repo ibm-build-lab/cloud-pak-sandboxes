@@ -106,9 +106,7 @@ Use the following:
 - username: `cp`
 - password: [entitlement key](https://myibm.ibm.com/products-services/containerlibrary)
 
-#### Using CLI
-
-Execute
+Update secret and reload workers:
 
 ```bash
 oc extract secret/pull-secret -n openshift-config --confirm --to=.
@@ -116,18 +114,14 @@ jq --arg apikey `echo -n "cp:<password>" | base64` --arg registry "cp.icr.io" '.
 mv .dockerconfigjson-new .dockerconfigjson
 oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson
 rm .dockerconfigjson
+
+for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ print $1 }'); \
+  do echo "reloading worker"; \
+  ibmcloud oc worker reload --cluster $CLUSTER -w $worker -f; \
+  done
+
+echo "Completed setting pull secret and sending command to reload workers..."
 ```
-
-#### Using OpenShift UI
-
-In the OpenShift console, go to the page `Workloads > Secrets` and select the `openshift-config` namespace.
-
-Find the existing `pull-secret` secret.
-
-Select `Edit Secret`.
-
-Click `Add Credentials` to add new entries for the `cp.icr.io ` registry.
-
 ### 4. Prerequisites for installing AI components (optional)
 
 work in progress
@@ -235,22 +229,20 @@ Go [here](https://pages.github.ibm.com/automation-base-pak/abp-playbook/cartridg
 
 ### 1. Add Entitled Registry Pull Secret for staging
 
-In the OpenShift console, go to the page `Workloads > Secrets` and select the `openshift-config` namespace.
-
-Find the existing `pull-secret` secret.
-
-Select `Edit Secret`.
-
-Click `Add Credentials` to add new entries for the `cp.stg.icr.io` registry.
-
 For the entitled registry, enter the `username` and `password`:
 
 - username: `cp`
 - password: [entitlement key](https://wwwpoc.ibm.com/myibm/products-services/containerlibrary)
 
-### 2. Reload workers
+Update secret and reload workers:
 
-```bash
+```
+oc extract secret/pull-secret -n openshift-config --confirm --to=.
+jq --arg apikey `echo -n "cp:<password>" | base64` --arg registry "cp.stg.icr.io" '.auths += {($registry): {"auth":$apikey}}' .dockerconfigjson > .dockerconfigjson-new
+mv .dockerconfigjson-new .dockerconfigjson
+oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson
+rm .dockerconfigjson
+
 for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ print $1 }'); \
   do echo "reloading worker"; \
   ibmcloud oc worker reload --cluster $CLUSTER -w $worker -f; \
