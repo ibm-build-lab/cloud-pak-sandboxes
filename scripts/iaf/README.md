@@ -124,7 +124,7 @@ echo "Completed setting pull secret and sending command to reload workers..."
 ```
 ### 4. Prerequisites for installing AI components (optional)
 
-work in progress
+Go [here](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/prerequisites.html?view=kc#prerequisites-for-installing-ai-components) for details.
 
 ## [Install IAF](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/installing.html)
 
