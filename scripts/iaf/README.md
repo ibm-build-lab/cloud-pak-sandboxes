@@ -1,6 +1,6 @@
-# Revised Installation steps for GA version of IAF
+# Installation steps for GA version of IAF
 
-- [Revised Installation steps for GA version of IAF](#revised-installation-steps-for-ga-version-of-iaf)
+- [Installation steps for GA version of IAF](#installation-steps-for-ga-version-of-iaf)
   - [Log into cloud account](#log-into-cloud-account)
   - [Install Prereqs](#install-prereqs)
     - [1. Enable IBM Operator Catalog](#1-enable-ibm-operator-catalog)
