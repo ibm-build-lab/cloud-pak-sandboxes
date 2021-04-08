@@ -41,7 +41,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("Cloud Pak for Multicloud Management 2.2" "Cloud Pak for Applications 4.2" "Cloud Pak for Data 3.5" "Cloud Pak for Data 3.0" "Cloud Pak for Integration 2020.3" "Cloud Pak for Automation 20.0")
+    cloudPaks=("Cloud Pak for Multicloud Management 2.2" "Cloud Pak for Applications 4.2" "Cloud Pak for Data 3.5" "Cloud Pak for Data 3.0" "Cloud Pak for Integration 2021.1" "Cloud Pak for Automation 20.0")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             "Cloud Pak for Multicloud Management 2.2")
@@ -84,8 +84,8 @@ get_cloud_pak_install() {
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;    
-            "Cloud Pak for Integration 2020.3")
-                echo "${bold}Selected: Cloud Pak for Integration 2020.3"
+            "Cloud Pak for Integration 2021.1")
+                echo "${bold}Selected: Cloud Pak for Integration 2021.1"
                 CP4I="true"
                 cp ./cp4i-workspace-configuration.json workspace-configuration.json
                 cp workspace-configuration.json temp.json
@@ -545,6 +545,7 @@ cp4d35_modules() {
     done
 
     if [ $isEmptyList == false ]; then
+        cp ./workspace-configuration.json temp.json
         jq -r '(.template_data[] | .variablestore[] | select(.name == "empty_module_list") | .value) |= "false"' temp.json > workspace-configuration.json
     fi
 }
@@ -729,7 +730,7 @@ get_cluster_info() {
                 break
                 ;;
             "No")
-                echo "${bold}Createing new cluster"
+                echo "${bold}Creating new cluster"
                 EXISTING_CLUSTER="false"
                 CLUSTER_ID=""
                 break

@@ -2,15 +2,19 @@
 
 - [Cloud Pak Sandbox User Installation Script](#cloud-pak-sandbox-user-installation-script)
   - [Introduction](#introduction)
-  - [Install with IBM Cloud Shell](#install-with-ibm-cloud-shell)
-    - [Get Registry Key](#get-registry-key)
-    - [Download the Script](#download-the-script)
-    - [Run Installer](#run-installer)
-    - [Checking your Workspace](#checking-your-workspace)
-  - [Install with Personal Device (for advanced users)](#install-with-personal-device-for-advanced-users)
+    - [Install with IBM Cloud Shell](#install-with-ibm-cloud-shell)
+      - [Get Registry Key](#get-registry-key)
+      - [Download the Script](#download-the-script)
+      - [Create a resource group](#create-a-resource-group)
+      - [Run Installer](#run-installer)
+    - [Install From Personal Device](#install-from-personal-device)
+  - [VLAN Usage](#vlan-usage)
+  - [Checking Progress](#checking-progress)
+  - [Accessing the Cloud Pak Console](#accessing-the-cloud-pak-console)
+  - [Deleting the Workspace and Resources](#deleting-the-workspace-and-resources)
   - [Additional Information](#additional-information)
 
-## **Introduction**
+## Introduction
 
 The Cloud Pak Sandbox Installer is an easy to use script that allows you to provision a ROKS cluster and install from a list of IBM Cloud Paks using the IBM Cloud Shell or your personal computer. This script creates a Schematics workspace that then executes Terraform scripts to create the necessary resources.
 
@@ -18,16 +22,16 @@ Currently you can run the script to install:
 
 - Cloud Pak for Multi Cloud Management
 - Cloud Pak for Application
-- Cloud Pak for Data (under development)
+- Cloud Pak for Data
 - Cloud Pak for Integration
 - Cloud Pak for Automation (under development)
 - WatsonAIOps (under development)
 
-## **Install with IBM Cloud Shell**
+## Install Using IBM Cloud Shell
 
 [Understanding the IBM Cloud User Interface](https://cloud.ibm.com/docs/overview?topic=overview-ui)
 
-### Get Registry Key
+### Get registry key
 
 Each Cloud Pak requires an entitlement key. The script will prompt for this key and the email associated with it to install any of the Cloud Paks.
 
@@ -36,16 +40,22 @@ If you do not have the key visit this link to generate one:
 
 NOTE: For Cloud Pak for Data you will also need your docker credentials if installing the Guardium External Strap module
 
-### Download the Script
+### Download the script
 
-Log in to your [IBM Cloud](http://cloud.ibm.com) account and click the terminal icon in the upper right corner of IBM Cloud console to open the **IBM Cloud Shell** 
+Log in to your [IBM Cloud](http://cloud.ibm.com) account and click the terminal icon in the upper right corner of IBM Cloud console to open the **IBM Cloud Shell**
 
 ![bash-button](./images/bash-symbol.png)
 Within the **IBM Cloud Shell** terminal, clone the following repo:
 
      git clone https://github.com/ibm-hcbt/cloud-pak-sandboxes
 
-### Run Installer
+### Create a resource group
+
+In order for the scrip to run it requires a resource group to work out of as well as for the user to have permissions to that group. By default this resource group is ```cloud-pak-sandbox``` so you will need to go to your IBM cloud account and create this resource goup.
+
+If you want to use a personal resource group then you can go to the workspace-configuration.json in with respect to the cloud pak you wish to install and edit the resource group name to your choice.
+
+### Run installer
 
 To run the installer, do the following in the **IBM Cloud Shell** terminal:
 
@@ -59,28 +69,50 @@ Here is a sample of CP4MCM output:
 
 ![script-sample](./images/sample-script.png)
 
-#### VLAN USAGE
+## Install From Personal Device
+
+To run this Installer on your local machine:
+
+1. Ensure that [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli) is installed
+
+2. Ensure that the [IBM Schematics Plug-in](https://cloud.ibm.com/docs/schematics?topic=schematics-setup-cli) is installed
+
+   `ibmcloud plugin install schematics`
+3. Log into the ibm cloud
+
+   `ibmcloud login -sso`
+4. Ensure that you are in the desired account and resource group
+
+   `ibmcloud target`
+
+5. Go to your working directory and follow the same instructions for running in IBM Cloud Shell:
+
+- [Get Registry Key](#get-registry-key)
+- [Download the Script](#download-the-script)
+- [Run Installer](#run-installer)
+
+## VLAN Usage
 
 In order for the Installer to create a ROKS cluster there must be a public and private VLAN available to the Datacenters you plan to build to.  No worries if you do not know how to manage VLANS becuase the installer script will handle that for you.  
 
-While running the installer you will be engaged with information on selecting a region and datacenter. Once you have done this the installer will automatically check your available VLANs for use.  If you do not have any VLANs available or would like to create a new one will can be created.  For lack of any VLANs the new one will be created automatically otherwise you will be promted with an option if you want one.
+While running the installer you will be prompted for region and datacenter. Once selected the installer will automatically check available VLANs for use.  If there are not existing VLANS, script will prompt to create them.
 
-Finally once a VLAN is created it will take some time until the VLAN is ready for use, this time varies based of the availablity of resources at the datacenter and can take anywhere from a few seconds to several minutes.  While the installer script does have an option to conintue and refresh the prompt it may be a worth exiting the script and simple coming back to it when some time has passed.  Both options are available to you based of your urgency.
+Finally, once a VLAN is created it will take some time until it is ready for use. This time varies based of the availablity of resources at the datacenter and can take anywhere from a few seconds to several minutes.
 
-### Checking your Workspace
+## Checking Progress
 
-To check your workspace:
+To check the status of the workspace:
 
-#### 1. Log in to your [IBM Cloud](http://cloud.ibm.com) account
-#### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
+### 1. Log in to [IBM Cloud](http://cloud.ibm.com) account
+### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
 
 The image below shows the button for the resource list (orange box), as well as the two menu locations to find the cluster (green box) when the workspace finishes, and the workspace (red box) which you can follow while the script runs. 
 
-NOTE: You will need permissions to view workspace schematics.
+NOTE: User may need permissions to view workspace schematics. Contact account administrator if restricted.
 
 ![resource-list](./images/resource-list.png)
 
-#### 3. Click to open your workspace
+### 3. Click to open your workspace
 All workspaces and clusters made with this tool will end in "-sandbox"
 
 The workspace will look like this. The "activity" button and the "workspaceid" are marked. You can also view the variables entered when using the script:
@@ -89,29 +121,30 @@ The workspace will look like this. The "activity" button and the "workspaceid" a
 Within the **Schematic workspace** select **Activity** from left menu. Select **View log** link from **Plan applied** row, as shown in the image below:
 
 ![sample2](./images/activity-log.png)
-**NOTE:** the workspace activity plan logs will print out the Cloud Pak console *url*, *username* and *password* once the installation is complete.
 
-## **Install with Personal Device (for advanced users)**
+## Accessing the Cloud Pak Console
 
-To run this Installer on your local machine:
+The workspace activity plan logs will print out the Cloud Pak console *url*, *username* and *password* once the installation is complete. 
 
-1. Ensure that [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli) is installed
-   
-2. Ensure that the [IBM Schematics Plug-in](https://cloud.ibm.com/docs/schematics?topic=schematics-setup-cli) is installed
-   
-   `ibmcloud plugin install schematics`
-3. Log into the ibm cloud 
-   
-   `ibmcloud login -sso`
-4. Ensure that you are in the desired account and resource group 
-   
-   `ibmcloud target`
+**IMPORTANT:** Once the cloud pak has been installed and the admin/password credentials are provided, please change the password immediately.  
 
-5. Go to your working directory and follow the same instructions for running in IBM Cloud Shell:
+## Deleting The Workspace and Resources
 
-- [Get Registry Key](#get-registry-key)
-- [Download the Script](#download-the-script)
-- [Run Installer](#run-installer)
+### 1. Log in to your [IBM Cloud](http://cloud.ibm.com) account
+### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
+
+The image below shows the button for the resource list (orange box), as well as the two menu locations to find the cluster (green box) when the workspace finishes, and the workspace (red box) which you can follow while the script runs. 
+
+NOTE: You will need permissions to view workspace schematics.
+
+![resource-list](./images/resource-list.png)
+
+### 3. Click "Delete" from the 3 dot menu on the right of your workspace
+All workspaces and clusters made with this tool will end in "-sandbox"
+
+Select `Delete workspace` and `Delete all associated resources` options, type the name of the workspace and select `Delete`.  This should issue a "terraform destroy" command to delete all resources that were created by the "terraform apply".  
+
+**NOTE:** If the workspace fails to delete, the Terraform state is out of sync.  Attempt deletion again but only select `Delete workspace` option.  Resources may then need to be manually deleted.
 
 ## Additional Information
 
