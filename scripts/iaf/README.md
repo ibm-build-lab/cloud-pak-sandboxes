@@ -257,8 +257,6 @@ Execute:
 
 ```
 oc create -f setimagemirror.yaml -n kube-system
-# TODO - add a check to make sure initContainer has finished
-echo "Waiting for daemonset to update image mirror config for workers"
 sleep 120
 oc get pods -n kube-system | grep iaf-enable-mirrors
 oc delete -f setimagemirror.yaml -n kube-system
