@@ -11,7 +11,7 @@
     - [4. Prerequisites for installing AI components (optional)](#4-prerequisites-for-installing-ai-components-optional)
   - [Install IAF](#install-iaf)
   - [Create Instance of Automation Foundation (Optional)](#create-instance-of-automation-foundation-optional)
-  - [Install Demo Cartridge](#install-demo-cartridge)
+  - [Install Demo Cartridge (Optional)](#install-demo-cartridge-optional)
     - [1. Add Entitled Registry Pull Secret for staging](#1-add-entitled-registry-pull-secret-for-staging)
     - [2. Reload workers](#2-reload-workers)
     - [3. Create Demo Cartridge Catalog Source](#3-create-demo-cartridge-catalog-source)
@@ -223,7 +223,7 @@ See [these](https://pages.github.ibm.com/automation-base-pak/abp-playbook/planni
 
 Go [here](https://pages.github.ibm.com/automation-base-pak/abp-playbook/cartridges/custom-resources/#automationbase) to see the custom resource for `AutomationBase`.
 
-## [Install Demo Cartridge](https://github.ibm.com/automation-base-pak/iaf-internal/blob/main/install-iaf-demo.sh)
+## [Install Demo Cartridge](https://github.ibm.com/automation-base-pak/iaf-internal/blob/main/install-iaf-demo.sh) (Optional)
 
 **NOTE** the Demo cartridge will create the `AutomationBase` instance if it hasn't been provisioned yet.
 
