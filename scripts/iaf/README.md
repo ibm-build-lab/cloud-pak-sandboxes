@@ -249,7 +249,7 @@ for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ prin
   done
 ```
 
-### 3. Set up Image Mirroring
+### 2. Set up Image Mirroring
 
 Image mirroring is required to allow the correct container registry image to be access for the demo cartridge.
 
@@ -273,7 +273,7 @@ echo "Completed setting up registry mirrors, going to sleep for 10 minutes..."
 sleep 600
 ```
 
-### 4. Create Demo Cartridge Catalog Source
+### 3. Create Demo Cartridge Catalog Source
 
 ```bash
 cat << EOF | oc apply -f -
@@ -299,7 +299,7 @@ Verify:
 oc get CatalogSources iaf-demo-cartridge  -n openshift-marketplace
 ```
 
-### 5. Subscribe to Demo Cartridge Operator
+### 4. Subscribe to Demo Cartridge Operator
 
 ```bash
 cat <<EOF | oc apply -f -
