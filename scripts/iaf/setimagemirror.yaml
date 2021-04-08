@@ -1,0 +1,103 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: iaf-mirror-map
+  namespace: kube-system
+data:
+  registries.add: |-
+    
+    [[registry]]
+      location = "cp.icr.io/cp"
+      mirror-by-digest-only = true
+      insecure = false
+      prefix = ""
+
+      [[registry.mirror]]
+        location = "cp.stg.icr.io/cp"
+    
+    [[registry]]
+      location = "docker.io/ibmcom"
+      mirror-by-digest-only = true
+      insecure = false
+      prefix = ""
+
+      [[registry.mirror]]
+        location = "cp.stg.icr.io/cp"
+
+    [[registry]]
+      location = "quay.io/opencloudio"
+      mirror-by-digest-only = true
+      insecure = false
+      prefix = ""
+    
+      [[registry.mirror]]
+        location = "hyc-cloud-private-daily-docker-local.artifactory.swg-devops.com/ibmcom"
+    
+    [[registry]]
+      location = "cp.icr.io/cp/cpd"
+      mirror-by-digest-only = true
+      insecure = false
+      prefix = ""
+    
+      [[registry.mirror]]
+        location = "hyc-cloud-private-daily-docker-local.artifactory.swg-devops.com/ibmcom"
+     
+---
+ apiVersion: apps/v1
+ kind: DaemonSet
+ metadata:
+   name: iaf-enable-mirrors
+   namespace: kube-system
+   labels:
+     tier: management
+     app: iaf-enable-mirrors
+ spec:
+   selector:
+     matchLabels:
+       name: iaf-enable-mirrors
+   template:
+     metadata:
+       labels:
+         name: iaf-enable-mirrors
+     spec:
+       hostNetwork: true
+       hostPID: true
+       hostIPC: true
+       initContainers:
+         - command:
+             - sh
+             - -c
+             - cat /tmp/iaf-mirror/registries.add >> /etc/containers/registries.conf && echo "" >> /etc/containers/registries.conf
+           image: alpine:3.6
+           imagePullPolicy: IfNotPresent
+           name: add-iaf-mirror
+           resources: {}
+           securityContext:
+             privileged: true
+           volumeMounts:
+             - name: modifyetc
+               mountPath: /etc
+             - name: tmp-iaf-registries
+               mountPath: /tmp/iaf-mirror
+       containers:
+         - resources:
+             requests:
+               cpu: 0.01
+           image: alpine:3.6
+           name: sleepforever
+           command: ["/bin/sh", "-c"]
+           args:
+             - >
+               while true; do
+                 sleep 100000;
+               done
+       tolerations:
+       - operator: Exists
+       volumes:
+         - name: modifyetc
+           hostPath:
+             path: /etc
+         - name: tmp-iaf-registries
+           configMap:
+             name: iaf-mirror-map
