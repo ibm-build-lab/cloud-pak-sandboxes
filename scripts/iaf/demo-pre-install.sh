@@ -47,7 +47,7 @@ oc get pods -n kube-system | grep iaf-enable-mirrors
 oc delete -f setimagemirror.yaml -n kube-system
 
 for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ print $1 }'); \
-  do echo "reloading worker"; \
+  do echo "rebooting worker"; \
   ibmcloud oc worker reboot --cluster $CLUSTER -w $worker -f; \
   done
 
