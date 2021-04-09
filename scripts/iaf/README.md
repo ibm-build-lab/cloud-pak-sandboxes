@@ -5,7 +5,7 @@
   - [Install Prereqs](#install-prereqs)
     - [1. Enable IBM Operator Catalog](#1-enable-ibm-operator-catalog)
     - [2. Install Common Services](#2-install-common-services)
-    - [3. Set up Pull Secrets and Image Mirroring to save time (optional)](#3-set-up-pull-secrets-and-image-mirroring-to-save-time-optional)
+    - [3. Run pre-install.sh to save time (optional)](#3-run-pre-installsh-to-save-time-optional)
     - [4. Add Entitled Registry Pull Secret](#4-add-entitled-registry-pull-secret)
     - [5. Prerequisites for installing AI components (optional)](#5-prerequisites-for-installing-ai-components-optional)
   - [Install IAF](#install-iaf)
@@ -14,7 +14,6 @@
     - [1. Add Entitled Registry Pull Secret for staging](#1-add-entitled-registry-pull-secret-for-staging)
     - [2. Set up Image Mirroring](#2-set-up-image-mirroring)
     - [3. Create Demo Cartridge Catalog Source](#3-create-demo-cartridge-catalog-source)
-    - [4. Subscribe to Demo Cartridge Operator](#4-subscribe-to-demo-cartridge-operator)
   - [Additional references](#additional-references)
   
 ## Log into cloud account
@@ -252,7 +251,7 @@ Go [here](https://pages.github.ibm.com/automation-base-pak/abp-playbook/cartridg
 
 ## [Install Demo Cartridge](https://github.ibm.com/automation-base-pak/iaf-internal/blob/main/install-iaf-demo.sh) (Optional)
 
-### 1. Add Entitled Registry Pull Secret for staging 
+### 1. Add Entitled Registry Pull Secret for staging
 
 **NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh)
 
@@ -301,47 +300,7 @@ sleep 600
 
 ### 3. Create Demo Cartridge Catalog Source
 
-```bash
-cat << EOF | oc apply -f -
-apiVersion: operators.coreos.com/v1alpha1
-kind: CatalogSource
-metadata:
-  name: iaf-demo-cartridge
-  namespace: openshift-marketplace  
-spec:
-  displayName: IAF Demo Cartridge
-  publisher: IBM  
-  sourceType: grpc  
-  image: cp.stg.icr.io/cp/iaf-demo-cartridge-catalog:latest
-  updateStrategy:
-    registryPoll:
-     interval: 45m
-EOF
-```
-
-Verify:
-
-```bash
-oc get CatalogSources iaf-demo-cartridge  -n openshift-marketplace
-```
-
-### 4. Subscribe to Demo Cartridge Operator
-
-```bash
-cat <<EOF | oc apply -f -
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  name: iaf-demo-cartridge-operator
-  namespace: ${IAF_PROJECT}
-spec:
-  channel: alpha
-  installPlanApproval: Automatic
-  name: iaf-demo-cartridge
-  source: iaf-demo-cartridge-catalog
-  sourceNamespace: openshift-marketplace
-EOF
-```
+Run the [install-iaf-demo.sh](./install-iaf-demo.sh) script to install the Demo Cartridge
 
 ## Additional references
 
