@@ -111,7 +111,7 @@ oc -n openshift-marketplace get catalogsource opencloud-operators -o jsonpath="{
 
 Should say `READY`.
 
-### 3. Set up Pull Secrets and Image Mirroring to save time (optional)
+### 3. Run pre-install.sh to save time (optional)
 
 If you plan to install the Demo cartridge, do the following steps:
 
