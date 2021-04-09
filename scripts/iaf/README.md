@@ -5,8 +5,9 @@
   - [Install Prereqs](#install-prereqs)
     - [1. Enable IBM Operator Catalog](#1-enable-ibm-operator-catalog)
     - [2. Install Common Services](#2-install-common-services)
-    - [3. Add Entitled Registry Pull Secret](#3-add-entitled-registry-pull-secret)
-    - [4. Prerequisites for installing AI components (optional)](#4-prerequisites-for-installing-ai-components-optional)
+    - [3. Set up Pull Secrets and Image Mirroring to save time (optional)](#3-set-up-pull-secrets-and-image-mirroring-to-save-time-optional)
+    - [4. Add Entitled Registry Pull Secret](#4-add-entitled-registry-pull-secret)
+    - [5. Prerequisites for installing AI components (optional)](#5-prerequisites-for-installing-ai-components-optional)
   - [Install IAF](#install-iaf)
   - [Create Instance of Automation Foundation (Optional)](#create-instance-of-automation-foundation-optional)
   - [Install Demo Cartridge (Optional)](#install-demo-cartridge-optional)
@@ -110,7 +111,17 @@ oc -n openshift-marketplace get catalogsource opencloud-operators -o jsonpath="{
 
 Should say `READY`.
 
-### 3. Add Entitled Registry Pull Secret
+### 3. Set up Pull Secrets and Image Mirroring to save time (optional)
+
+If you plan to install the Demo cartridge, do the following steps:
+
+- Copy the _template-iafenv.config to iafenv.config and set the required values
+
+- Source ./iafenv.config
+
+- Run the [pre-install.sh](./pre-install.sh) script
+  
+### 4. Add Entitled Registry Pull Secret
   
 **NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh)
 
@@ -138,7 +149,7 @@ for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ prin
 echo "Completed setting pull secret and sending command to reload workers..."
 ```
 
-### 4. Prerequisites for installing AI components (optional)
+### 5. Prerequisites for installing AI components (optional)
 
 Go [here](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/prerequisites.html?view=kc#prerequisites-for-installing-ai-components) for details.
 
@@ -241,7 +252,7 @@ Go [here](https://pages.github.ibm.com/automation-base-pak/abp-playbook/cartridg
 
 ## [Install Demo Cartridge](https://github.ibm.com/automation-base-pak/iaf-internal/blob/main/install-iaf-demo.sh) (Optional)
 
-### 1. Add Entitled Registry Pull Secret for staging
+### 1. Add Entitled Registry Pull Secret for staging 
 
 **NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh)
 
