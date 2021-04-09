@@ -6,14 +6,12 @@
     - [1. Enable IBM Operator Catalog](#1-enable-ibm-operator-catalog)
     - [2. Install Common Services](#2-install-common-services)
     - [3. Add Entitled Registry Pull Secret](#3-add-entitled-registry-pull-secret)
-      - [Using CLI](#using-cli)
-      - [Using OpenShift UI](#using-openshift-ui)
     - [4. Prerequisites for installing AI components (optional)](#4-prerequisites-for-installing-ai-components-optional)
   - [Install IAF](#install-iaf)
   - [Create Instance of Automation Foundation (Optional)](#create-instance-of-automation-foundation-optional)
   - [Install Demo Cartridge (Optional)](#install-demo-cartridge-optional)
     - [1. Add Entitled Registry Pull Secret for staging](#1-add-entitled-registry-pull-secret-for-staging)
-    - [2. Reload workers](#2-reload-workers)
+    - [2. Set up Image Mirroring](#2-set-up-image-mirroring)
     - [3. Create Demo Cartridge Catalog Source](#3-create-demo-cartridge-catalog-source)
     - [4. Subscribe to Demo Cartridge Operator](#4-subscribe-to-demo-cartridge-operator)
   - [Additional references](#additional-references)
@@ -25,6 +23,7 @@ In a terminal window, execute:
 ```bash
 ibmcloud login --sso
 ```
+
 or open an IBM Cloud Shell window on the Cloud account and
 
 Target resource group:
@@ -42,6 +41,14 @@ ibmcloud oc cluster config -c <openshift-cluster> --admin
 ## Install Prereqs
 
 ### 1. [Enable IBM Operator Catalog](https://github.com/IBM/cloud-pak/blob/master/reference/operator-catalog-enablement.md)
+
+Cleanup previously installed Catalog Source:
+
+```bash
+oc -n openshift-marketplace delete CatalogSource ibm-operator-catalog --ignore-not-found
+```
+
+Install Catalog Source:
 
 ```bash
 cat << EOF | kubectl apply -n openshift-marketplace -f -
@@ -69,7 +76,13 @@ oc get catalogsource -n openshift-marketplace | grep IBM
 
 ### 2. [Install Common Services](https://www.ibm.com/support/knowledgecenter/SSHKN6/installer/3.x.x/install_cs_cli.html)
 
-Run this command to install Common Services (Bedrock):
+Cleanup previously installed Catalog Source:
+
+```bash
+oc -n openshift-marketplace delete CatalogSource opencloud-operators --ignore-not-found
+```
+
+Install Common Services (Bedrock):
 
 ```bash
 cat << EOF | kubectl apply -n openshift-marketplace -f -
@@ -98,6 +111,8 @@ oc -n openshift-marketplace get catalogsource opencloud-operators -o jsonpath="{
 Should say `READY`.
 
 ### 3. Add Entitled Registry Pull Secret
+  
+**NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh)
 
 Update your OpenShift cluster with global pull secrets for the `cp.icr.io` entitled registry.
 
@@ -122,6 +137,7 @@ for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ prin
 
 echo "Completed setting pull secret and sending command to reload workers..."
 ```
+
 ### 4. Prerequisites for installing AI components (optional)
 
 Go [here](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/prerequisites.html?view=kc#prerequisites-for-installing-ai-components) for details.
@@ -225,9 +241,9 @@ Go [here](https://pages.github.ibm.com/automation-base-pak/abp-playbook/cartridg
 
 ## [Install Demo Cartridge](https://github.ibm.com/automation-base-pak/iaf-internal/blob/main/install-iaf-demo.sh) (Optional)
 
-**NOTE** the Demo cartridge will create the `AutomationBase` instance if it hasn't been provisioned yet.
-
 ### 1. Add Entitled Registry Pull Secret for staging
+
+**NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh)
 
 For the entitled registry, enter the `username` and `password`:
 
@@ -236,7 +252,7 @@ For the entitled registry, enter the `username` and `password`:
 
 Update secret and reload workers:
 
-```
+```bash
 oc extract secret/pull-secret -n openshift-config --confirm --to=.
 jq --arg apikey `echo -n "cp:<password>" | base64` --arg registry "cp.stg.icr.io" '.auths += {($registry): {"auth":$apikey}}' .dockerconfigjson > .dockerconfigjson-new
 mv .dockerconfigjson-new .dockerconfigjson
@@ -251,11 +267,13 @@ for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ prin
 
 ### 2. Set up Image Mirroring
 
+**NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh)
+
 Image mirroring is required to allow the correct container registry image to be accessed to install the demo cartridge.
 
 Execute:
 
-```
+```bash
 oc create -f setimagemirror.yaml -n kube-system
 sleep 120
 oc get pods -n kube-system | grep iaf-enable-mirrors
@@ -267,7 +285,6 @@ for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ prin
   done
 
 # wait 10 minutes for reboots to complete
-echo "Completed setting up registry mirrors, going to sleep for 10 minutes..."
 sleep 600
 ```
 
