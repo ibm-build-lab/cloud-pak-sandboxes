@@ -13,7 +13,7 @@ resource "ibm_container_vpc_cluster" "iac_iks_cluster" {
   worker_count      = var.workers_count[0]
   kube_version      = var.k8s_version
   # entitlement       = "cloud_pak"
-  # cos_instance_crn  = ibm_resource_instance.cos_instance.id
+  cos_instance_crn  = ibm_resource_instance.cos_instance.id
   resource_group_id = data.ibm_resource_group.group.id
   wait_till         = "OneWorkerNodeReady"
   zones {
