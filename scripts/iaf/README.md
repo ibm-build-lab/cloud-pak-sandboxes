@@ -119,10 +119,12 @@ If you plan to install the Demo cartridge, do the following steps:
 - Source ./iafenv.config
 
 - Run the [pre-install.sh](./pre-install.sh) script
+
+Skip step 4 if you ran this script.
   
 ### 4. Add Entitled Registry Pull Secret
   
-**NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh)
+**NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh) in step 3.
 
 Update your OpenShift cluster with global pull secrets for the `cp.icr.io` entitled registry.
 
