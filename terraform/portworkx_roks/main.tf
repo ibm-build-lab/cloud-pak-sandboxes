@@ -1,6 +1,6 @@
 provider "ibm" {
-  generation = 2
-  region     = "us-south"
+  generation = local.infra == "classic" ? 1 : 2
+  region     = var.region
 }
 
 // IBM Cloud Classic
@@ -9,46 +9,36 @@ module "cluster" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//roks"
 
   // General variables:
-  on_vpc         = "false"
-  project_name   = "roks"
-  owner          = "johandry"
-  environment    = "test"
+  on_vpc         = local.infra == "vpc"
+  project_name   = var.project_name
+  owner          = var.owner
+  environment    = var.environment
 
   // Openshift parameters:
-  resource_group       = "default"
-  roks_version         = "4.6"
+  resource_group       = var.resource_group
+  roks_version         = local.roks_version
   force_delete_storage = true
 
   // IBM Cloud Classic variables:
-  datacenter          = "dal10"
-  workers_count       = [1]
-  flavors             = ["b3c.4x16"]
-}
-
-// IBM Cloud VPC Gen 2
-
-module "cluster" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//roks"
-
-  // General variables:
-  on_vpc         = "true"
-  project_name   = "roks"
-  owner          = "johandry"
-  environment    = "test"
-
-  // Openshift parameters:
-  resource_group       = "default"
-  roks_version         = "4.6"
-  force_delete_storage = true
+  datacenter          = local.infra == "classic" ? var.datacenter : ""
 
   // IBM Cloud VPC variables:
-  vpc_zone_names = ["us-south-1"]
-  flavors        = ["mx2.4x32"]
-  workers_count  = [2]
+  vpc_zone_names = local.infra == "vpc" ? var.vpc_zone_names : []
+
+  // General IBM Cloud variables:
+  workers_count       = local.workers_count
+  flavors             = local.flavors
 }
+
 
 // TO_DO
 
 //module "portworks" {
-//  
+# NUM_WORKERS= var.workers_count
+# IAM_TOKEN=
+# RESOURCE_GROUP= var.resource_group
+# VPC_REGION= local.infra == "classic" ? var.datacenter : var.vpc_zone_names
+# CLUSTER= 
+# REGION= var.region
+# STORAGE_CAPACITY= 
 //}
