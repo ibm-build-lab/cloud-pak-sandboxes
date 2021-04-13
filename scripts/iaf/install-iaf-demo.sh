@@ -171,12 +171,12 @@ do
 done
 
 # create Automation UI config for ROKS
-echo "Create Automation UI config with ROKS storageclass"
+echo "Create Automation UI config"
 cat << EOF | oc apply -f -
 apiVersion: core.automation.ibm.com/v1beta1
 kind: AutomationUIConfig
 metadata:
-  name: com.acme.roksautomationuiconfig
+  name: iaf-system
 spec:
   description: automationuiconfig
   license:

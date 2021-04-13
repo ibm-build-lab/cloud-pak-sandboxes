@@ -256,7 +256,7 @@ Go [here](https://pages.github.ibm.com/automation-base-pak/abp-playbook/cartridg
 
 ### 1. Add Entitled Registry Pull Secret for staging
 
-**NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh)
+**NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh) from [IAF Install step 3](#3-run-pre-installsh-to-save-time-optional) above.
 
 For the entitled registry, enter the `username` and `password`:
 
@@ -280,8 +280,6 @@ for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ prin
 
 ### 2. Set up Image Mirroring
 
-**NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh)
-
 Image mirroring is required to allow the correct container registry image to be accessed to install the demo cartridge.
 
 Execute:
@@ -290,7 +288,6 @@ Execute:
 oc create -f setimagemirror.yaml -n kube-system
 sleep 120
 oc get pods -n kube-system | grep iaf-enable-mirrors
-oc delete -f setimagemirror.yaml -n kube-system
 
 for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ print $1 }'); \
   do echo "reloading worker"; \
@@ -344,5 +341,7 @@ In a browser window - paste the URL for the route and accept any improperly sign
 [Installing IAF](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/installing.html)
 
 [Development IAF repo, including Demo Cartridge Installation](https://github.ibm.com/automation-base-pak/iaf-internal/blob/main/README.md)
+
+[Automation Base Pak Planning Issue Repository](https://github.ibm.com/automation-base-pak/abp-planning)
 
 

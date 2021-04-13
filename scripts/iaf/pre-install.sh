@@ -38,19 +38,3 @@ do
     result=$?
 done
 
-oc create -f setimagemirror.yaml -n kube-system
-# TODO - add a check to make sure initContainer has finished
-echo "Waiting for daemonset to update image mirror config for workers"
-sleep 120
-oc get pods -n kube-system | grep iaf-enable-mirrors
-oc delete -f setimagemirror.yaml -n kube-system
-
-for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ print $1 }'); \
-  do echo "rebooting worker"; \
-  ibmcloud oc worker reboot --cluster $CLUSTER -w $worker -f; \
-  done
-
-# wait 10 minutes for reboots to complete
-echo "Completed setting up registry mirrors, going to sleep for 10 minutes..."
-sleep 600
-
