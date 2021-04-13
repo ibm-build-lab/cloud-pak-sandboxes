@@ -14,6 +14,7 @@
     - [1. Add Entitled Registry Pull Secret for staging](#1-add-entitled-registry-pull-secret-for-staging)
     - [2. Set up Image Mirroring](#2-set-up-image-mirroring)
     - [3. Create Demo Cartridge Catalog Source](#3-create-demo-cartridge-catalog-source)
+    - [4. Verify the Zen dashboard](#4-verify-the-zen-dashboard)
   - [Additional references](#additional-references)
   
 ## Log into cloud account
@@ -303,6 +304,30 @@ sleep 600
 ### 3. Create Demo Cartridge Catalog Source
 
 Run the [install-iaf-demo.sh](./install-iaf-demo.sh) script to install the Demo Cartridge
+
+### 4. Verify the Zen dashboard
+
+The dashboard will be available by default as a route in the `ibm-common-services` project. Verify the dashboard by obtaining the route to the instance:
+
+```bash
+oc get route cpd -n $IAF_PROJECT -o jsonpath='{ .spec.host }{"\n"}'
+```
+
+This should produce something like:
+
+```console
+cpd-acme-iaf.iaf-demo-cluster-c0b572361ba41c9eef42d4d51297b04b-0000.us-south.containers.appdomain.cloud
+```
+
+Obtain the intial user and password with these commands:
+
+```bash
+kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_username}\' | base64 -d && echo
+
+kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_password}' | base64 -d && echo
+```
+
+In a browser window - paste the URL for the route and accept any improperly signed certificates.
 
 ## Additional references
 
