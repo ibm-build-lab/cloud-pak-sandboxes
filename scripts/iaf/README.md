@@ -331,6 +331,8 @@ In a browser window - paste the URL for the route and accept any improperly sign
 
 ## Additional references
 
+[IBM Automation Foundation Playbook](https://pages.github.ibm.com/automation-base-pak/abp-playbook/)
+
 [Getting started with IBM Automation Foundation](https://www.ibm.com/support/knowledgecenter/en/cloudpaks_start/cloud-paks/about/overview-cp.html)
 
 [IBM Automation Foundation Installation links](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/installation-links.html)
