@@ -5,13 +5,12 @@
   - [Install Prereqs](#install-prereqs)
     - [1. Enable IBM Operator Catalog](#1-enable-ibm-operator-catalog)
     - [2. Install Common Services](#2-install-common-services)
-    - [3. Run pre-install.sh to save time (optional)](#3-run-pre-installsh-to-save-time-optional)
-    - [4. Add Entitled Registry Pull Secret](#4-add-entitled-registry-pull-secret)
-    - [5. Prerequisites for installing AI components (optional)](#5-prerequisites-for-installing-ai-components-optional)
+    - [3. Set Pull Secrets by running pre-install.sh](#3-set-pull-secrets-by-running-pre-installsh)
+    - [4. Prerequisites for installing AI components (optional)](#4-prerequisites-for-installing-ai-components-optional)
   - [Install IAF](#install-iaf)
   - [Create Instance of Automation Foundation (Optional)](#create-instance-of-automation-foundation-optional)
   - [Install Demo Cartridge (Optional)](#install-demo-cartridge-optional)
-    - [1. Add Entitled Registry Pull Secret for staging](#1-add-entitled-registry-pull-secret-for-staging)
+    - [1. Ensure that pull secrets are set](#1-ensure-that-pull-secrets-are-set)
     - [2. Set up Image Mirroring](#2-set-up-image-mirroring)
     - [3. Create Demo Cartridge Catalog Source](#3-create-demo-cartridge-catalog-source)
     - [4. Verify the Zen dashboard](#4-verify-the-zen-dashboard)
@@ -111,9 +110,7 @@ oc -n openshift-marketplace get catalogsource opencloud-operators -o jsonpath="{
 
 Should say `READY`.
 
-### 3. Run pre-install.sh to save time (optional)
-
-If you plan to install the Demo cartridge, do the following steps:
+### 3. Set Pull Secrets by running pre-install.sh
 
 - Copy the _template-iafenv.config to iafenv.config and set the required values
 
@@ -121,37 +118,7 @@ If you plan to install the Demo cartridge, do the following steps:
 
 - Run the [pre-install.sh](./pre-install.sh) script
 
-Skip step 4 if you ran this script.
-  
-### 4. Add Entitled Registry Pull Secret
-  
-**NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh) in step 3.
-
-Update your OpenShift cluster with global pull secrets for the `cp.icr.io` entitled registry.
-
-Use the following:
-
-- username: `cp`
-- password: [entitlement key](https://myibm.ibm.com/products-services/containerlibrary)
-
-Update secret and reload workers:
-
-```bash
-oc extract secret/pull-secret -n openshift-config --confirm --to=.
-jq --arg apikey `echo -n "cp:<password>" | base64` --arg registry "cp.icr.io" '.auths += {($registry): {"auth":$apikey}}' .dockerconfigjson > .dockerconfigjson-new
-mv .dockerconfigjson-new .dockerconfigjson
-oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson
-rm .dockerconfigjson
-
-for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ print $1 }'); \
-  do echo "reloading worker"; \
-  ibmcloud oc worker reload --cluster $CLUSTER -w $worker -f; \
-  done
-
-echo "Completed setting pull secret and sending command to reload workers..."
-```
-
-### 5. Prerequisites for installing AI components (optional)
+### 4. Prerequisites for installing AI components (optional)
 
 Go [here](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/prerequisites.html?view=kc#prerequisites-for-installing-ai-components) for details.
 
@@ -254,29 +221,9 @@ Go [here](https://pages.github.ibm.com/automation-base-pak/abp-playbook/cartridg
 
 ## [Install Demo Cartridge](https://github.ibm.com/automation-base-pak/iaf-internal/blob/main/install-iaf-demo.sh) (Optional)
 
-### 1. Add Entitled Registry Pull Secret for staging
+### 1. Ensure that pull secrets are set
 
-**NOTE**: skip this step if you ran [pre-install.sh](./pre-install.sh) from [IAF Install step 3](#3-run-pre-installsh-to-save-time-optional) above.
-
-For the entitled registry, enter the `username` and `password`:
-
-- username: `cp`
-- password: [entitlement key](https://wwwpoc.ibm.com/myibm/products-services/containerlibrary)
-
-Update secret and reload workers:
-
-```bash
-oc extract secret/pull-secret -n openshift-config --confirm --to=.
-jq --arg apikey `echo -n "cp:<password>" | base64` --arg registry "cp.stg.icr.io" '.auths += {($registry): {"auth":$apikey}}' .dockerconfigjson > .dockerconfigjson-new
-mv .dockerconfigjson-new .dockerconfigjson
-oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson
-rm .dockerconfigjson
-
-for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ print $1 }'); \
-  do echo "reloading worker"; \
-  ibmcloud oc worker reload --cluster $CLUSTER -w $worker -f; \
-  done
-```
+The Demo cartridge requires pull secrets for `cp.stg.icr.io`. Make sure the pre-instal.sh script was run from [step 3](#3-set-pull-secrets-by-running-pre-installsh) above.
 
 ### 2. Set up Image Mirroring
 
