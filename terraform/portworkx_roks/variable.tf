@@ -21,7 +21,7 @@ variable "environment" {
 }
 
 variable "resource_group" {
-  default     = "default"
+  default     = "cloud-pak-sandbox-ibm"
   description = "Resource Group in your account to host the cluster. List all available resource groups with: ibmcloud resource groups"
 }
 
