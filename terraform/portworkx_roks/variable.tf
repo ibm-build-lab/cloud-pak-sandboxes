@@ -57,8 +57,8 @@ variable "public_vlan_number" {
 locals {
   //infra                      = "classic"
   infra = var.infra
-  flavors                    = ["b3c.16x64"]
-  workers_count              = [4]
+  flavors                    = ["mx2.4x32"]
+  workers_count              = [2]
   roks_version               = "4.5"
   kubeconfig_dir             = "./.kube/config"
   entitled_registry_key_file = "./entitlement.key"
