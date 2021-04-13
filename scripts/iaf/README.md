@@ -223,7 +223,7 @@ Go [here](https://pages.github.ibm.com/automation-base-pak/abp-playbook/cartridg
 
 ### 1. Ensure that pull secrets are set
 
-The Demo cartridge requires pull secrets for `cp.stg.icr.io`. Make sure the pre-instal.sh script was run from [step 3](#3-set-pull-secrets-by-running-pre-installsh) above.
+The Demo cartridge requires pull secrets for `cp.stg.icr.io`. Make sure the [pre-install.sh](./preinstall.sh) script was run from [step 3](#3-set-pull-secrets-by-running-pre-installsh) above.
 
 ### 2. Set up Image Mirroring
 
