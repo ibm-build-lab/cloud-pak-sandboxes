@@ -51,14 +51,11 @@ select yn in "y" "n"; do
     ibmcloud sl vlan list -d $ZONE
     echo "Enter private VLAN id for $ZONE:"
     read PVLAN
-    #    PVLAN="${PVLAN:-3018046}"
     echo "Enter public VLAN id for $ZONE:"
     read PBVLAN
-    #    PBVLAN="${PBVLAN:-3018044}"
     echo "Creating Cluster"
     echo "ibmcloud oc cluster create classic --name ${CLUSTER} --version ${OCP_VERSION}_openshift --zone ${ZONE} --flavor ${OCP_FLAVOR} --workers ${NUM_NODES} --entitlement cloud_pak --private-vlan ${PVLAN} --public-vlan ${PBVLAN}"
     ibmcloud oc cluster create classic --name ${CLUSTER} --version ${OCP_VERSION}_openshift --zone ${ZONE} --flavor ${OCP_FLAVOR} --workers ${NUM_NODES} --entitlement cloud_pak --private-vlan ${PVLAN} --public-vlan ${PBVLAN}
-    # Documentation on how to access cluster: https://cloud.ibm.com/docs/openshift?topic=openshift-access_cluster
     echo "Waiting for cluster to come up..."
     date
 
