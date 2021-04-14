@@ -21,7 +21,6 @@
 echo "What Resource Group (defaults to cloud-pak-sandbox)?"
 read RESOURCE_GROUP
 RESOURCE_GROUP="${RESOURCE_GROUP:-cloud-pak-sandbox}"
-#RESOURCE_GROUP='cloud-pak-sandbox'
 ibmcloud target -g $RESOURCE_GROUP
 
 echo "Setting environment variables.  Be sure to have the iafenv.config file set up"
