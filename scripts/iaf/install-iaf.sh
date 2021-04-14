@@ -24,12 +24,8 @@ RESOURCE_GROUP="${RESOURCE_GROUP:-cloud-pak-sandbox}"
 #RESOURCE_GROUP='cloud-pak-sandbox'
 ibmcloud target -g $RESOURCE_GROUP
 
-# Get entitlement key, https://myibm.ibm.com/products-services/containerlibrary
-echo Please go to https://myibm.ibm.com/products-services/containerlibrary for your entitlement key
-echo Enter entitlement key here:
-read E_KEY
-#echo What is your IBM email address?
-#read EMAIL_ADDR
+echo "Setting environment variables.  Be sure to have the iafenv.config file set up"
+source ./iafenv.config
 
 # Create or get details of OCP Cluster
 echo "Do you already have an OpenShift cluster?"
@@ -94,9 +90,6 @@ kubectl config set-context --current --namespace=iaf
 
 # Create secret from entitlement key
 echo "Create secret from entitlement key"
-export CP_ICR_IO=cp.icr.io
-export CP_ICR_IO_USER=cp
-export CP_ICR_IO_KEY=$E_KEY
 ./pre-install.sh
 
 # Create the Operator catalog source
