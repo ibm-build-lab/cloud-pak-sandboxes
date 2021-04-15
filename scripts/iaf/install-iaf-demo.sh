@@ -98,7 +98,7 @@ spec:
   displayName: IAF Demo Cartridge
   publisher: IBM  
   sourceType: grpc  
-  image: cp.stg.icr.io/cp/iaf-demo-cartridge-catalog:latest
+  image: cp.stg.icr.io/cp/iaf-demo-cartridge-catalog:nightly
   updateStrategy:
     registryPoll:
      interval: 45m
@@ -226,7 +226,7 @@ done
 
 echo "IAF Demo Cartridge operator install and CR creation successful."
 echo "Demo Cartridge URL"
-oc get route cpd -n iaf-project -o jsonpath='{ .spec.host }{"\n"}' 
+oc get route cpd -n ${IAF_PROJECT} -o jsonpath='{ .spec.host }{"\n"}' 
 echo "User id"
 kubectl -n ibm-common-services get secret platform-auth-idp-credentials -o jsonpath='{.data.admin_username}\' | base64 -d && echo
 echo "Password"

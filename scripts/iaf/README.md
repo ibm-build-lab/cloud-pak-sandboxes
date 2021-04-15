@@ -2,18 +2,17 @@
 
 - [Installation steps for GA version of IAF](#installation-steps-for-ga-version-of-iaf)
   - [Log into cloud account](#log-into-cloud-account)
-  - [Install Prereqs](#install-prereqs)
-    - [1. Enable IBM Operator Catalog](#1-enable-ibm-operator-catalog)
-    - [2. Install Common Services](#2-install-common-services)
-    - [3. Set Pull Secrets by running pre-install.sh](#3-set-pull-secrets-by-running-pre-installsh)
-    - [4. Prerequisites for installing AI components (optional)](#4-prerequisites-for-installing-ai-components-optional)
-  - [Install IAF](#install-iaf)
-  - [Create Instance of Automation Foundation (Optional)](#create-instance-of-automation-foundation-optional)
+  - [Install Prereqs and IAF](#install-prereqs-and-iaf)
+    - [1. Set Pull Secrets](#1-set-pull-secrets)
+    - [2. Install prereqs and IAF](#2-install-prereqs-and-iaf)
+    - [3. Prerequisites for installing AI components (optional)](#3-prerequisites-for-installing-ai-components-optional)
+    - [4. Create Instance of Automation Foundation (Optional)](#4-create-instance-of-automation-foundation-optional)
   - [Install Demo Cartridge (Optional)](#install-demo-cartridge-optional)
     - [1. Ensure that pull secrets are set](#1-ensure-that-pull-secrets-are-set)
     - [2. Set up Image Mirroring](#2-set-up-image-mirroring)
-    - [3. Create Demo Cartridge Catalog Source](#3-create-demo-cartridge-catalog-source)
-    - [4. Verify the Zen dashboard](#4-verify-the-zen-dashboard)
+    - [3. Set default storage class](#3-set-default-storage-class)
+    - [4. Install Demo Cartridge](#4-install-demo-cartridge)
+    - [5. Verify the Zen dashboard](#5-verify-the-zen-dashboard)
   - [Additional references](#additional-references)
   
 ## Log into cloud account
@@ -38,182 +37,33 @@ Gain access to the OCP cluster:
 ibmcloud oc cluster config -c <openshift-cluster> --admin
 ```
 
-## Install Prereqs
+## Install Prereqs and IAF
 
-### 1. [Enable IBM Operator Catalog](https://github.com/IBM/cloud-pak/blob/master/reference/operator-catalog-enablement.md)
-
-Cleanup previously installed Catalog Source:
-
-```bash
-oc -n openshift-marketplace delete CatalogSource ibm-operator-catalog --ignore-not-found
-```
-
-Install Catalog Source:
-
-```bash
-cat << EOF | kubectl apply -n openshift-marketplace -f -
-apiVersion: operators.coreos.com/v1alpha1
-kind: CatalogSource
-metadata:
-    name: ibm-operator-catalog
-    namespace: openshift-marketplace
-spec:
-    displayName: IBM Operator Catalog
-    publisher: IBM
-    sourceType: grpc
-    image: docker.io/ibmcom/ibm-operator-catalog
-    updateStrategy:
-      registryPoll:
-        interval: 45m
-EOF
-```
-
-Verify Install
-
-```console
-oc get catalogsource -n openshift-marketplace | grep IBM
-```
-
-### 2. [Install Common Services](https://www.ibm.com/support/knowledgecenter/SSHKN6/installer/3.x.x/install_cs_cli.html)
-
-Cleanup previously installed Catalog Source:
-
-```bash
-oc -n openshift-marketplace delete CatalogSource opencloud-operators --ignore-not-found
-```
-
-Install Common Services (Bedrock):
-
-```bash
-cat << EOF | kubectl apply -n openshift-marketplace -f -
-apiVersion: operators.coreos.com/v1alpha1
-kind: CatalogSource
-metadata:
-  name: opencloud-operators
-  namespace: openshift-marketplace
-spec:
-  displayName: IBMCS Operators
-  publisher: IBM
-  sourceType: grpc
-  image: docker.io/ibmcom/ibm-common-service-catalog:latest
-  updateStrategy:
-    registryPoll:
-      interval: 45m
-EOF
-```
-
-After a few minutes, verify operator installation:
-
-```bash
-oc -n openshift-marketplace get catalogsource opencloud-operators -o jsonpath="{.status.connectionState.lastObservedState}"
-```
-
-Should say `READY`.
-
-### 3. Set Pull Secrets by running pre-install.sh
+### 1. Set Pull Secrets
 
 - Copy the _template-iafenv.config to iafenv.config and set the required values
 
 - Source ./iafenv.config
 
-- Run the [pre-install.sh](./pre-install.sh) script
+- Run the [setpullsecrets.sh](./setpullsecrets.sh) script
+  
+### 2. Install prereqs and IAF
 
-### 4. Prerequisites for installing AI components (optional)
+To install the Operator Catalog, Common Services and IAF run the [install-iaf.sh](./install-iaf.sh) script
 
-Go [here](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/prerequisites.html?view=kc#prerequisites-for-installing-ai-components) for details.
-
-## [Install IAF](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/installing.html)
-
-Verify prerequisites:
-
-```bash
-oc get catalogsource -n openshift-marketplace | grep IBM
-oc get pods -n openshift-marketplace | grep opencloud-operators
-oc get pods -n openshift-marketplace | grep ibm-operator
-```
-
-Run the following commands to set up for installation:
-
-```bash
-export IAF_PROJECT=<project to install IAF>
-oc new-project ${IAF_PROJECT}
-```
-
-Create an `OperatorGroup`:
-
-```bash
-cat << EOF | oc apply -f -
-apiVersion: operators.coreos.com/v1alpha2
-kind: OperatorGroup
-metadata:
-  name: iaf-group
-  namespace: ${IAF_PROJECT}
-spec:
-  targetNamespaces:
-  - ${IAF_PROJECT}
-EOF
-```
-
-Create a `Subscription`:
-
-```bash
-cat << EOF | oc apply -f -
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  name: ibm-automation
-  namespace: ${IAF_PROJECT}
-spec:
-  channel: v1.0
-  installPlanApproval: Automatic
-  name: ibm-automation
-  source: ibm-operator-catalog
-  sourceNamespace: openshift-marketplace
-EOF
-```
-
-[Verify installation](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/validate-install.html)
-
-```bash
-oc get subscription -n ${IAF_PROJECT} | grep ibm-automation
-```
-
-After a few minutes, should see:
-
-```console
-ibm-automation                                                          ibm-automation                 iaf-operators      v1.0
-ibm-automation-ai-v1.0-iaf-operators-openshift-marketplace              ibm-automation-ai              iaf-operators      v1.0
-ibm-automation-core-v1.0-iaf-core-operators-openshift-marketplace       ibm-automation-core            iaf-core-operators v1.0
-ibm-automation-elastic-v1.0-iaf-operators-openshift-marketplace         ibm-automation-elastic         iaf-operators      v1.0
-ibm-automation-eventprocessing-v1.0-iaf-operators-openshift-marketplace ibm-automation-eventprocessing iaf-operators      v1.0
-ibm-automation-flink-v1.0-iaf-operators-openshift-marketplace           ibm-automation-flink           iaf-operators      v1.0
-ibm-automation-v1.0-iaf-operators-openshift-marketplace                 ibm-automation                 iaf-operators      v1.0
-```
-
-Verify the install status and the ClusterServiceVersions:
-
-```bash
-oc get csv -n ${IAF_PROJECT}  | grep ibm-automation
-```
-
-Should see:
-
-```console
-ibm-automation-ai.v1.0.0              IBM Automation Foundation AI               1.0.0      Succeeded
-ibm-automation-core.v1.0.0            IBM Automation Foundation Core             1.0.0      Succeeded
-ibm-automation-elastic.v1.0.0         IBM Elastic                                1.0.0      Succeeded
-ibm-automation-eventprocessing.v1.0.0 IBM Automation Foundation Event Processing 1.0.0      Succeeded
-ibm-automation-flink.v1.0.0           IBM Automation Foundation Flink            1.0.0      Succeeded
-ibm-automation.v1.0.0                 IBM Automation Foundation                  1.0.0      Succeeded
-```
-
-Verify pods are running
+After several minutes, you can verify that the pods are running
 
 ```bash
 oc get pods -n ${IAF_PROJECT}
 ```
 
-## Create Instance of Automation Foundation (Optional)
+### 3. Prerequisites for installing AI components (optional)
+
+Go [here](https://www.ibm.com/docs/en/automationfoundation/1.0_ent?topic=installing-prerequisites#prerequisites-for-installing-ai-components) for details.
+
+### 4. Create Instance of Automation Foundation (Optional)
+
+If not installing the Demo Cartridge, you will need to create an instance of the AutomationBase.
 
 See [these](https://pages.github.ibm.com/automation-base-pak/abp-playbook/planning-install/install-ui-driven#creating-an-instance-of-ibm-automation-foundation) instructions to provision the `AutomationBase`.
 
@@ -223,7 +73,7 @@ Go [here](https://pages.github.ibm.com/automation-base-pak/abp-playbook/cartridg
 
 ### 1. Ensure that pull secrets are set
 
-The Demo cartridge requires pull secrets for `cp.stg.icr.io`. Make sure the [pre-install.sh](./preinstall.sh) script was run from [step 3](#3-set-pull-secrets-by-running-pre-installsh) above.
+The Demo cartridge requires pull secrets for `cp.stg.icr.io`. Make sure the [setpullsecrets.sh](./setpullsecrets.sh) script was run.
 
 ### 2. Set up Image Mirroring
 
@@ -232,24 +82,29 @@ Image mirroring is required to allow the correct container registry image to be 
 Execute:
 
 ```bash
-oc create -f setimagemirror.yaml -n kube-system
-sleep 120
-oc get pods -n kube-system | grep iaf-enable-mirrors
-
-for worker in $(ibmcloud ks workers --cluster $CLUSTER | grep kube | awk '{ print $1 }'); \
-  do echo "reloading worker"; \
-  ibmcloud oc worker reboot --cluster $CLUSTER -w $worker -f; \
-  done
-
-# wait 10 minutes for reboots to complete
-sleep 600
+./setimagemirror.sh
 ```
 
-### 3. Create Demo Cartridge Catalog Source
+### 3. Set default storage class
 
-Run the [install-iaf-demo.sh](./install-iaf-demo.sh) script to install the Demo Cartridge
+The demo cartridge needs the default storage class to be `ibmc-file-gold-gid`.  To set this, run the following command:
 
-### 4. Verify the Zen dashboard
+```bash
+kubectl patch storageclass ibmc-file-gold-gid -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+kubectl patch storageclass ibmc-block-gold -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+```
+
+### 4. Install Demo Cartridge
+
+Execute:
+
+```bash
+./install-iaf-demo.sh
+```
+
+to install the Demo Cartridge
+
+### 5. Verify the Zen dashboard
 
 The dashboard will be available by default as a route in the `ibm-common-services` project. Verify the dashboard by obtaining the route to the instance:
 

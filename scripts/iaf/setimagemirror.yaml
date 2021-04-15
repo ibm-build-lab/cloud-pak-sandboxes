@@ -13,7 +13,7 @@ data:
       prefix = ""
 
       [[registry.mirror]]
-      location = "cp.stg.icr.io/cp"
+        location = "cp.stg.icr.io/cp"
     
     [[registry]]
       location = "docker.io/ibmcom"
@@ -22,7 +22,7 @@ data:
       prefix = ""
 
       [[registry.mirror]]
-      location = "cp.stg.icr.io/cp"
+        location = "cp.stg.icr.io/cp"
          
 ---
  apiVersion: apps/v1
