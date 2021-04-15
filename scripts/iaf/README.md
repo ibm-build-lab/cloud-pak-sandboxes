@@ -87,7 +87,7 @@ Execute:
 
 ### 3. Set Default Storage Class
 
-The demo cartridge needs the default storage class to be `ibmc-file-gold-gid`.  To set this, run the following command:
+The demo cartridge needs the default storage class to be `ibmc-file-gold-gid`.  To set this, run the following commands:
 
 ```bash
 kubectl patch storageclass ibmc-file-gold-gid -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
