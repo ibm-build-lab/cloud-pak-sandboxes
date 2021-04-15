@@ -16,38 +16,15 @@
 #   kubectl get <resource> <name> -o yaml
 #   kubectl config set-context --current --namespace=<namespace/project>
 
-# Humio VLAN info:
-# Name: wdc04
-# PVlan: 2876468
-# PBVlan: 2876470
-# Name: wdc06
-# PVlan: 2916302
-# PBVlan: 2916300
-# Name: dal13
-# PVlan: 2847992
-# PBVlan: 2847990
-# Name: dal10
-# PVlan: 2832804
-# PBVlan: 2832802
-# Name: dal12
-# PVlan: 3018046
-# PBVlan: 3018044
-
 # Log in to IBM Cloud
 #ibmcloud login -sso
-#echo "What Resource Group (defaults to cloud-pak-sandbox)?"
-#read RESOURCE_GROUP
-#RESOURCE_GROUP="${RESOURCE_GROUP:-cloud-pak-sandbox}"
-#RESOURCE_GROUP='cloud-pak-sandbox'
-#ibmcloud target -g $RESOURCE_GROUP
+echo "What Resource Group (defaults to cloud-pak-sandbox)?"
+read RESOURCE_GROUP
+RESOURCE_GROUP="${RESOURCE_GROUP:-cloud-pak-sandbox}"
+ibmcloud target -g $RESOURCE_GROUP
 
-# Get entitlement key, https://myibm.ibm.com/products-services/containerlibrary
-#echo Please go to https://myibm.ibm.com/products-services/containerlibrary for your entitlement key
-#echo Enter entitlement key here:
-#read E_KEY
-E_KEY=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJQk0gTWFya2V0cGxhY2UiLCJpYXQiOjE1OTY4MzcwMjUsImp0aSI6IjcwMDNkYmU0ZDczZjQ4Y2M4NmQ4Y2Q5ZWE0YzVlYmY4In0.62Llbq4dGKWhPWOngqBMz5SdMZdbnGYjOFlzmN7Fgvw
-#echo What is your IBM email address?
-#read EMAIL_ADDR
+echo "Setting environment variables.  Be sure to have the iafenv.config file set up"
+source ./iafenv.config
 
 # Create or get details of OCP Cluster
 echo "Do you already have an OpenShift cluster?"
@@ -73,14 +50,11 @@ select yn in "y" "n"; do
     ibmcloud sl vlan list -d $ZONE
     echo "Enter private VLAN id for $ZONE:"
     read PVLAN
-    #    PVLAN="${PVLAN:-3018046}"
     echo "Enter public VLAN id for $ZONE:"
     read PBVLAN
-    #    PBVLAN="${PBVLAN:-3018044}"
     echo "Creating Cluster"
     echo "ibmcloud oc cluster create classic --name ${CLUSTER} --version ${OCP_VERSION}_openshift --zone ${ZONE} --flavor ${OCP_FLAVOR} --workers ${NUM_NODES} --entitlement cloud_pak --private-vlan ${PVLAN} --public-vlan ${PBVLAN}"
     ibmcloud oc cluster create classic --name ${CLUSTER} --version ${OCP_VERSION}_openshift --zone ${ZONE} --flavor ${OCP_FLAVOR} --workers ${NUM_NODES} --entitlement cloud_pak --private-vlan ${PVLAN} --public-vlan ${PBVLAN}
-    # Documentation on how to access cluster: https://cloud.ibm.com/docs/openshift?topic=openshift-access_cluster
     echo "Waiting for cluster to come up..."
     date
 
@@ -112,9 +86,6 @@ kubectl config set-context --current --namespace=iaf
 
 # Create secret from entitlement key
 echo "Create secret from entitlement key"
-export CP_ICR_IO=cp.icr.io
-export CP_ICR_IO_USER=cp
-export CP_ICR_IO_KEY=$E_KEY
 ./pre-install.sh
 
 # Create the Operator catalog source
