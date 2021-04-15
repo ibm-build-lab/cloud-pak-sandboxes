@@ -984,7 +984,8 @@ manage_vlan() {
     rm vlan.json
     rm vlan-public.json
     rm vlan-private.json
-    if CREATING_PRIVATE_VLAN || CREATING_PUBLIC_VLAN
+
+    if $CREATING_PRIVATE_VLAN || $CREATING_PUBLIC_VLAN
     then echo "vlan's are currently being created and will take some time to provision"
          echo "Please allow 10 minutes for the vlan's to be created and run the script again after that"
          echo "keep in mind that vlan's are unique to each data center"
