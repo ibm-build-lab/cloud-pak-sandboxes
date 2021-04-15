@@ -41,7 +41,7 @@ ibmcloud oc cluster config -c <openshift-cluster> --admin
 
 ### 1. Set Pull Secrets
 
-Copy the _template-iafenv.config to iafenv.config and set the required values. Then run these commands:
+Copy the `_template-iafenv.config` file to `iafenv.config` and set the required values. Then run these commands:
 
 ```bash
 source ./iafenv.config
