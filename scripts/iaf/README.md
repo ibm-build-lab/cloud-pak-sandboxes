@@ -8,9 +8,9 @@
     - [3. Prerequisites for installing AI components (optional)](#3-prerequisites-for-installing-ai-components-optional)
     - [4. Create Instance of Automation Foundation (Optional)](#4-create-instance-of-automation-foundation-optional)
   - [Install Demo Cartridge (Optional)](#install-demo-cartridge-optional)
-    - [1. Ensure that pull secrets are set](#1-ensure-that-pull-secrets-are-set)
+    - [1. Set Pull Secrets for Staging](#1-set-pull-secrets-for-staging)
     - [2. Set up Image Mirroring](#2-set-up-image-mirroring)
-    - [3. Set default storage class](#3-set-default-storage-class)
+    - [3. Set Default Storage Class](#3-set-default-storage-class)
     - [4. Install Demo Cartridge](#4-install-demo-cartridge)
     - [5. Verify the Zen dashboard](#5-verify-the-zen-dashboard)
   - [Additional references](#additional-references)
@@ -71,7 +71,7 @@ Go [here](https://pages.github.ibm.com/automation-base-pak/abp-playbook/cartridg
 
 ## [Install Demo Cartridge](https://github.ibm.com/automation-base-pak/iaf-internal/blob/main/install-iaf-demo.sh) (Optional)
 
-### 1. Ensure that pull secrets are set
+### 1. Set Pull Secrets for Staging
 
 The Demo cartridge requires pull secrets for `cp.stg.icr.io`. Make sure the [setpullsecrets.sh](./setpullsecrets.sh) script was run.
 
@@ -85,7 +85,7 @@ Execute:
 ./setimagemirror.sh
 ```
 
-### 3. Set default storage class
+### 3. Set Default Storage Class
 
 The demo cartridge needs the default storage class to be `ibmc-file-gold-gid`.  To set this, run the following command:
 
