@@ -15,6 +15,8 @@
     - [5. Verify the Zen dashboard](#5-verify-the-zen-dashboard)
   - [Additional references](#additional-references)
   
+NOTE: To install IBM Automation Foundation, an OpenShift cluster of size 4 nodes of at least 16x64 is required.  
+
 ## Log into cloud account
 
 In a terminal window, execute:
