@@ -36,4 +36,4 @@ kubectl apply -f ./installation.yaml
 
 sleep 180
 echo "Verifying installation"
-oc get pods -n iaf
+oc get pods -n $IAF_PROJECT
