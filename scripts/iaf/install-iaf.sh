@@ -23,9 +23,6 @@ read RESOURCE_GROUP
 RESOURCE_GROUP="${RESOURCE_GROUP:-cloud-pak-sandbox}"
 ibmcloud target -g $RESOURCE_GROUP
 
-echo "Setting environment variables.  Be sure to have the iafenv.config file set up"
-source ./iafenv.config
-
 ibmcloud oc cluster config -c $CLUSTER --admin
 
 CLUSTER_URL=$(kubectl cluster-info | sed -n -e 's/^.*at //p')
@@ -33,10 +30,6 @@ echo "Cluster is ready and console can be accessed via $CLUSTER_URL"
 # create namespace to install IAF
 kubectl create namespace iaf
 kubectl config set-context --current --namespace=iaf
-
-# Create secret from entitlement key
-echo "Create secret from entitlement key"
-./pre-install.sh
 
 # Create the Operator catalog source
 kubectl apply -f ./resources.yaml
