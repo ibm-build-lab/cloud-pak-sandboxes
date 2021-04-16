@@ -15,15 +15,44 @@ x=0
 bold=$(tput setaf 4; tput bold)
 normal=$(tput sgr0)
 green=$(tput setaf 2; tput bold)
+red=$(tput setaf 1; tput bold)
 
 # These values are used through out the progam
-CP4MCM="false"
-CP4APP="false"
-CP4I="false"
-CP4D35="false"
-CP4D30="false"
-CP4AUTO="false"
 EXISTING_CLUSTER="false"
+
+CP4MCM="false"
+CLOUD_PAK_NAME_MCM_VERSION="Cloud Pak for Multicloud Management 2.2"
+CLOUD_PAK_TEMPLATE_MCM=./templates/cpmcm-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_MCM="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4mcm"
+
+CP4APP="false"
+CLOUD_PAK_NAME_APP_VERSION="Cloud Pak for Applications 4.2"
+CLOUD_PAK_TEMPLATE_APP=./templates/cp4a-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_APP="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4app"
+
+CP4D35="false"
+CLOUD_PAK_NAME_DATA_VERSION="Cloud Pak for Data 3.5"
+CLOUD_PAK_TEMPLATE_DATA=./templates/cp4d-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_DATA="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data"
+
+CP4D30="false"
+CLOUD_PAK_NAME_DATA2_VERSION="Cloud Pak for Data 3.0"
+CLOUD_PAK_TEMPLATE_DATA2=./templates/cp4d_3.0-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_DATA2="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_3.0"
+
+CP4I="false"
+CLOUD_PAK_NAME_INTEGRATION_VERSION="Cloud Pak for Integration 2021.1"
+CLOUD_PAK_TEMPLATE_INTEGRATION=./templates/cp4i-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_INTEGRATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4i"
+
+CP4AUTO="false"
+CLOUD_PAK_NAME_AUTOMATION_VERSION="Cloud Pak for Automation 20.0"
+CLOUD_PAK_TEMPLATE_AUTOMATION=./templates/cp4auto-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4auto"
+
+
+EXISTING_CLUSTER="false"
+
 
 # Creats a spinning cursor for user to know program is running
 update_cursor() {
@@ -31,75 +60,75 @@ update_cursor() {
     pos=$(( ( pos + 1 )  % 7 ))
 }
 
+
+
 # Ask user to select cloud pak installation and updates workspace-configuration with choice
 get_cloud_pak_install() {
-
-    
     
     # check existing workspace list
     # updates .template_repo.url and .template_repo.branch based off of the choice made. Defaults to master branch
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("Cloud Pak for Multicloud Management 2.2" "Cloud Pak for Applications 4.2" "Cloud Pak for Data 3.5" "Cloud Pak for Data 3.0" "Cloud Pak for Integration 2021.1" "Cloud Pak for Automation 20.0")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
-            "Cloud Pak for Multicloud Management 2.2")
-                echo "${bold}Selected: Cloud Pak for Multicloud Management"
+            $CLOUD_PAK_NAME_MCM_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_MCM_VERSION"
                 CP4MCM="true"
-                cp ./cpmcm-workspace-configuration.json workspace-configuration.json
+                cp $CLOUD_PAK_TEMPLATE_MCM workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4mcm\"" temp.json  > workspace-configuration.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_MCM" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;
-            "Cloud Pak for Applications 4.2")
-                echo "${bold}Selected: Cloud Pak for Applications"
+            $CLOUD_PAK_NAME_APP_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_APP_VERSION"
                 CP4APP="true"
-                cp ./cp4a-workspace-configuration.json workspace-configuration.json
+                cp $CLOUD_PAK_TEMPLATE_APP workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4app\"" temp.json  > workspace-configuration.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_APP" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;
-            "Cloud Pak for Data 3.5")
-                echo "${bold}Selected: Cloud Pak for Data 3.5"
+            $CLOUD_PAK_NAME_DATA_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_DATA_VERSION"
                 CP4D35="true"
-                cp ./cp4d-workspace-configuration.json workspace-configuration.json
+                cp $CLOUD_PAK_TEMPLATE_DATA workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data\"" temp.json  > workspace-configuration.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_DATA" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;
-            "Cloud Pak for Data 3.0")
-                echo "${bold}Selected: Cloud Pak for Data 3.0"
+            $CLOUD_PAK_NAME_DATA2_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_DATA2_VERSION"
                 CP4D30="true"
-                cp ./cp4d_3.0-workspace-configuration.json workspace-configuration.json
+                cp $CLOUD_PAK_TEMPLATE_DATA2 workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_3.0\"" temp.json  > workspace-configuration.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_DATA2" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;    
-            "Cloud Pak for Integration 2021.1")
-                echo "${bold}Selected: Cloud Pak for Integration 2021.1"
+            $CLOUD_PAK_NAME_INTEGRATION_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_INTEGRATION_VERSION"
                 CP4I="true"
-                cp ./cp4i-workspace-configuration.json workspace-configuration.json
+                cp $CLOUD_PAK_TEMPLATE_INTEGRATION workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4i\"" temp.json  > workspace-configuration.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_INTEGRATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;
-            "Cloud Pak for Automation 20.0")
-                echo "${bold}Selected: Cloud Pak for Automation 20.0"
+            $CLOUD_PAK_NAME_AUTOMATION_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_AUTOMATION_VERSION"
                 CP4AUTO="true"
-                cp ./cp4auto-workspace-configuration.json workspace-configuration.json
+                cp $CLOUD_PAK_TEMPLATE_AUTOMATION workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.url |= \"https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4auto\"" temp.json  > workspace-configuration.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
@@ -108,6 +137,82 @@ get_cloud_pak_install() {
         esac
     done
 
+}
+
+# Checks the users available resource groups. If the resource group of the template is not available then the script ends with prompt
+check_resource_groups() {
+    echo "${bold}"
+    RESOURCE_GROUP=$(jq -r '(.template_data[] | .variablestore[] | select(.name == "resource_group") | .value)' temp.json)
+    FOUND_GROUP="false"
+    ibmcloud resource groups --output json > resource-groups.json
+    length=$(jq length resource-groups.json)
+    for (( c=0; c<$length; c++))
+    do
+        TEMP=$(jq -r ".[$c] | .name" resource-groups.json)
+        if [ "$RESOURCE_GROUP" = "$TEMP" ]
+        then FOUND_GROUP='true'
+        fi
+    done
+
+    if ! $FOUND_GROUP
+    then echo "Resource group ${green}$RESOURCE_GROUP${bold} is not found."
+        echo "please check your resource group and permissions and try again"
+        echo "for more information please refer to the documentation"
+        exit
+    else
+        echo "Resource Group: ${green}$RESOURCE_GROUP${bold} is found"
+    fi
+    echo ""
+    rm resource-groups.json
+}
+
+# Prompts user for accepting license and shows the user links to the license agreements for selected products.
+prompt_license() {
+    echo ""
+    echo "${red}By using this script you are accepting the licensing information here powered by IBM"
+    echo "${red}Red Hat ROKS license agreement: ${green}"
+    if $CP4MCM
+    then 
+        echo "${red}"  $CLOUD_PAK_NAME_MCM_VERSION " license agreement ${bold}"
+    fi
+    if $CP4APP
+    then
+        
+        echo "${red}"  $CLOUD_PAK_NAME_APP_VERSION " license agreement ${bold}"
+    fi
+    if $CP4D35
+    then
+        
+        echo "${red}"  $CLOUD_PAK_NAME_DATA_VERSION " license agreement ${bold}"
+    fi
+    if $CP4D30
+    then
+        
+        echo "${red}"  $CLOUD_PAK_NAME_DATA2_VERSION " license agreement ${bold}"
+    fi
+    if $CP4I
+    then
+        
+        echo "${red}"  $CLOUD_PAK_NAME_INTEGRATION_VERSION " license agreement ${bold}"
+    fi
+    if $CP4AUTO
+    then
+        
+        echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${bold}"
+    fi
+    licenseAgree=("Yes" "No")
+    select licenseAgree in "${licenseAgree[@]}"; do
+        case $licenseAgree in
+            "Yes")
+            echo "${green}License accepted:${bold}"
+            break
+            ;;
+            "No")
+            echo "${bold}This script is unable to continue with licesnse agreement."
+            exit
+            ;;
+        esac
+    done
 }
 
 # get workspace name from user, appends with appropriant cloud pak name
@@ -840,7 +945,8 @@ manage_vlan() {
     VLAN_OPTION="0"
     LENGTH="0"
     DATACENTER=$(jq -r '(.template_data[] | .variablestore[] | select(.name == "datacenter") | .value) ' workspace-configuration.json)
-    
+    CREATING_PRIVATE_VLAN="false"
+    CREATING_PUBLIC_VLAN="false"
     echo "${bold}VLAN datacenter set to: ${green}$DATACENTER${normal}"
     
     ibmcloud sl vlan list --output json > vlan.json
@@ -858,6 +964,7 @@ manage_vlan() {
     else
         echo "${bold}Private VLANs not found, creating new vlan:${normal}"
         
+        CREATING_PRIVATE_VLAN="true"
         create_private_vlan
     fi
 
@@ -870,12 +977,20 @@ manage_vlan() {
     else
         echo "${bold}Public VLANs not found, creating new vlan:${normal}"
         #echo "length is  empty"
+        CREATRING_PUBLIC_VLAN="true"
         create_public_vlan
     fi
 
     rm vlan.json
     rm vlan-public.json
     rm vlan-private.json
+
+    if $CREATING_PRIVATE_VLAN || $CREATING_PUBLIC_VLAN
+    then echo "vlan's are currently being created and will take some time to provision"
+         echo "Please allow 10 minutes for the vlan's to be created and run the script again after that"
+         echo "keep in mind that vlan's are unique to each data center"
+         exit
+    fi
 }
 
 #displays all the possible regions to be selected
@@ -1174,6 +1289,8 @@ then mkdir logs
 fi
 # sets up the workspace-config.json
 get_cloud_pak_install
+prompt_license
+check_resource_groups
 get_workspace_name
 get_meta_data
 write_meta_data
