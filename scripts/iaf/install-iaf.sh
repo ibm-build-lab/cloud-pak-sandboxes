@@ -18,15 +18,12 @@
 
 # Log in to IBM Cloud
 #ibmcloud login -sso
-echo "What Resource Group (defaults to cloud-pak-sandbox)?"
+echo "What Resource Group is your OpenShift Cluster in (ibmcloud resource groups)?"
 read RESOURCE_GROUP
-RESOURCE_GROUP="${RESOURCE_GROUP:-cloud-pak-sandbox}"
 ibmcloud target -g $RESOURCE_GROUP
 
 ibmcloud oc cluster config -c $CLUSTER --admin
 
-CLUSTER_URL=$(kubectl cluster-info | sed -n -e 's/^.*at //p')
-echo "Cluster is ready and console can be accessed via $CLUSTER_URL"
 # create namespace to install IAF
 kubectl create namespace iaf
 kubectl config set-context --current --namespace=iaf
