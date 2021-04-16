@@ -16,11 +16,12 @@ echo "What Resource Group is your OpenShift Cluster in (ibmcloud resource groups
 read RESOURCE_GROUP
 ibmcloud target -g $RESOURCE_GROUP
 
+source ./iafenv.config
 ibmcloud oc cluster config -c $CLUSTER --admin
 
 # create namespace to install IAF
-kubectl create namespace iaf
-kubectl config set-context --current --namespace=iaf
+kubectl create namespace $IAF_PROJECT
+kubectl config set-context --current --namespace=$IAF_PROJECT
 
 # Create the Operator catalog source
 kubectl apply -f ./resources.yaml
