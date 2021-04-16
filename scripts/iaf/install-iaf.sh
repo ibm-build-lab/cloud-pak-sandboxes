@@ -10,12 +10,6 @@
 # Download and install a few CLI tools and the Kubernetes Service plug-in.
 #   curl -sL https://ibm.biz/idt-installer | bash
 
-# helpful commands:
-#   docker exec -it <container name> /bin/bash
-#   kubectl describe <resource name>
-#   kubectl get <resource> <name> -o yaml
-#   kubectl config set-context --current --namespace=<namespace/project>
-
 # Log in to IBM Cloud
 #ibmcloud login -sso
 echo "What Resource Group is your OpenShift Cluster in (ibmcloud resource groups)?"
