@@ -173,32 +173,27 @@ prompt_license() {
     echo "${red}Red Hat ROKS license agreement: ${green}"
     if $CP4MCM
     then 
-        echo "${red}"  $CLOUD_PAK_NAME_MCM_VERSION " license agreement ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_MCM_VERSION " license agreement ${green}  ${bold}"
     fi
     if $CP4APP
     then
-        
-        echo "${red}"  $CLOUD_PAK_NAME_APP_VERSION " license agreement ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_APP_VERSION " license agreement ${green}  ${bold}"
     fi
     if $CP4D35
     then
-        
-        echo "${red}"  $CLOUD_PAK_NAME_DATA_VERSION " license agreement ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_DATA_VERSION " license agreement ${green}  ${bold}"
     fi
     if $CP4D30
     then
-        
-        echo "${red}"  $CLOUD_PAK_NAME_DATA2_VERSION " license agreement ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_DATA2_VERSION " license agreement ${green}  ${bold}"
     fi
     if $CP4I
     then
-        
-        echo "${red}"  $CLOUD_PAK_NAME_INTEGRATION_VERSION " license agreement ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_INTEGRATION_VERSION " license agreement ${green}  ${bold}"
     fi
     if $CP4AUTO
     then
-        
-        echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  ${bold}"
     fi
     licenseAgree=("Yes" "No")
     select licenseAgree in "${licenseAgree[@]}"; do
