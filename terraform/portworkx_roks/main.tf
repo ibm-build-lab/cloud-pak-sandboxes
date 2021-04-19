@@ -35,7 +35,7 @@ module "portworx" {
   //source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx"
 
   // Testing branch
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx?ref=portworkx-module"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx?ref=portworx-module"
   enable = true
   // Storage parameters
   install_storage      = true

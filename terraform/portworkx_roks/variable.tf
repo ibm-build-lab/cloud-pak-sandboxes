@@ -59,7 +59,7 @@ locals {
   infra = var.infra
   flavors                    = ["mx2.4x32"]
   workers_count              = [2]
-  roks_version               = "4.5"
+  roks_version               = "4.6"
   kubeconfig_dir             = "./.kube/config"
   entitled_registry_key_file = "./entitlement.key"
 }
