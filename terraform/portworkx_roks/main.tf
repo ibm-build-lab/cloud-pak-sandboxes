@@ -44,7 +44,7 @@ module "portworx" {
   resource_group_name  = var.resource_group
   dc_region            = var.region
   cluster_name         = "${var.project_name}-${var.environment}-cluster"  # Name format copied from the 'classic.tf' and 'vpc.tf'
-  portworx_service_name = "${var.porject_name}"
+  portworx_service_name = "${var.project_name}"
   storage_region       = var.vpc_zone_names
   plan                 = "px-enterprise"   # "px-dr-enterprise", "px-enterprise"
   px_tags              = ["${var.project_name}-${var.environment}-cluster"]
