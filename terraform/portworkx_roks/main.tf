@@ -30,15 +30,23 @@ module "cluster" {
   flavors             = local.flavors
 }
 
+module "portworx" {
+  // First source is the master branch
+  //source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx"
 
-// TO_DO
-
-//module "portworks" {
-# NUM_WORKERS= var.workers_count
-# IAM_TOKEN=
-# RESOURCE_GROUP= var.resource_group
-# VPC_REGION= local.infra == "classic" ? var.datacenter : var.vpc_zone_names
-# CLUSTER= 
-# REGION= var.region
-# STORAGE_CAPACITY= 
-//}
+  // Testing branch
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx?ref=portworkx-module"
+  enable = true
+  // Storage parameters
+  install_storage      = true
+  storage_capacity     = 200
+  // Portworx parameters
+  resource_group_name  = var.resource_group
+  dc_region            = var.region
+  cluster_name         = "${var.project_name}-${var.environment}-cluster"  # Name format copied from the 'classic.tf' and 'vpc.tf'
+  storage_region       = var.vpc_zone_names
+  plan                 = "px-enterprise"   # "px-dr-enterprise", "px-enterprise"
+  px_tags              = ["${var.project_name}-${var.environment}-cluster"]
+  kvdb                 = "internal"   # "external", "internal"
+  secret_type          = "k8s"   # "ibm-kp", "k8s"
+}
