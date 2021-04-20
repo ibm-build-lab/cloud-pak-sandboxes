@@ -11,8 +11,8 @@ variable "owner" {
   description = "Use your user name or team name. The owner is used to label the cluster and other resources with the tag 'owner:{owner}'"
 }
 
-variable "infra" {
-  description = "Create Openshift clister on IBM Cloud classic or VPC-gen2. Enter 'classic' or 'vpc':"
+variable "on_vpc" {
+  description = "Create Openshift clister on IBM Cloud classic or VPC-gen2. Enter 'true' or 'false':"
 }
 
 variable "environment" {
@@ -56,7 +56,7 @@ variable "public_vlan_number" {
 
 locals {
   //infra                      = "classic"
-  infra = var.infra
+  on_vpc                     = true
   flavors                    = ["mx2.4x32"]
   workers_count              = [2]
   roks_version               = "4.6"

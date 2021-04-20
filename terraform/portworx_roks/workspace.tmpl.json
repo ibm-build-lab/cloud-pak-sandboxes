@@ -16,7 +16,7 @@
   },
   "template_data": [
     {
-      "folder": "terraform/portworkx_roks",
+      "folder": "terraform/portworx_roks",
       "type": "terraform_v0.12",
       "variablestore": [
         {
