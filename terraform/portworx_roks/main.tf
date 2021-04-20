@@ -68,8 +68,4 @@ module "portworx" {
   px_tags               = ["${var.project_name}-${var.environment}-cluster"]
   kvdb                  = "internal"   # "external", "internal"
   secret_type           = "k8s"   # "ibm-kp", "k8s"
-
-  depends_on = [
-    ibm_container_cluster_config.cluster_config
-  ]
 }
