@@ -1,5 +1,5 @@
 provider "ibm" {
-  generation = local.infra == "classic" ? 1 : 2
+  generation = var.on_vpc ? 2 : 1
   region     = var.region
 }
 
@@ -9,7 +9,7 @@ module "cluster" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//roks"
 
   // General variables:
-  on_vpc         = local.infra == "vpc"
+  on_vpc         = var.on_vpc
   project_name   = var.project_name
   owner          = var.owner
   environment    = var.environment
@@ -20,10 +20,10 @@ module "cluster" {
   force_delete_storage = true
 
   // IBM Cloud Classic variables:
-  datacenter          = local.infra == "classic" ? var.datacenter : ""
+  datacenter          = var.on_vpc ? "" : var.datacenter
 
   // IBM Cloud VPC variables:
-  vpc_zone_names = local.infra == "vpc" ? var.vpc_zone_names : []
+  vpc_zone_names = var.on_vpc ? var.vpc_zone_names : []
 
   // General IBM Cloud variables:
   workers_count       = local.workers_count
