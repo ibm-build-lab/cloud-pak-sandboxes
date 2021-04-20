@@ -30,6 +30,24 @@ module "cluster" {
   flavors             = local.flavors
 }
 
+resource "null_resource" "mkdir_kubeconfig_dir" {
+  triggers = { always_run = timestamp() }
+
+  provisioner "local-exec" {
+    command = "mkdir -p ${local.kubeconfig_dir}"
+  }
+}
+
+data "ibm_container_cluster_config" "cluster_config" {
+  depends_on = [null_resource.mkdir_kubeconfig_dir]
+  cluster_name_id   = local.enable_cluster ? module.cluster.id : var.cluster_id
+  resource_group_id = module.cluster.resource_group.id
+  config_dir        = local.kubeconfig_dir
+  download          = true
+  admin             = false
+  network           = false
+}
+
 module "portworx" {
   // First source is the master branch
   //source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx"
@@ -43,9 +61,10 @@ module "portworx" {
   // Portworx parameters
   resource_group_name  = var.resource_group
   dc_region            = var.region
-  cluster_name         = "${var.project_name}-${var.environment}-cluster"  # Name format copied from the 'classic.tf' and 'vpc.tf'
+  //cluster_name         = "${var.project_name}-${var.environment}-cluster"  # Name format copied from the 'classic.tf' and 'vpc.tf'
+  cluster_name = "${var.cluster_name_id}"
   portworx_service_name = "${var.project_name}"
-  storage_region       = var.vpc_zone_names
+  storage_region       = var.vpc_zone_names[0]
   plan                 = "px-enterprise"   # "px-dr-enterprise", "px-enterprise"
   px_tags              = ["${var.project_name}-${var.environment}-cluster"]
   kvdb                 = "internal"   # "external", "internal"
