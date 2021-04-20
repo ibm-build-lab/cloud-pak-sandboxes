@@ -57,6 +57,7 @@ variable "public_vlan_number" {
 locals {
   //infra                      = "classic"
   on_vpc                     = true
+  enable_cluster             = true
   flavors                    = ["mx2.4x32"]
   workers_count              = [2]
   roks_version               = "4.6"
