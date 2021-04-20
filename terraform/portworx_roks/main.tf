@@ -61,7 +61,7 @@ module "portworx" {
   // Portworx parameters
   resource_group_name   = var.resource_group
   dc_region             = var.region
-  cluster_id            = "${var.project_name}-${var.environment}-cluster"
+  cluster_name          = module.cluster.name
   portworx_service_name = var.project_name
   storage_region        = var.vpc_zone_names[0]
   plan                  = "px-enterprise"   # "px-dr-enterprise", "px-enterprise"
