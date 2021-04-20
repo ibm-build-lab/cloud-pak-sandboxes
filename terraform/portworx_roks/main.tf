@@ -56,17 +56,20 @@ module "portworx" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx?ref=portworx-module"
   enable = true
   // Storage parameters
-  install_storage      = true
-  storage_capacity     = 200
+  install_storage       = true
+  storage_capacity      = 200
   // Portworx parameters
-  resource_group_name  = var.resource_group
-  dc_region            = var.region
-  //cluster_name         = "${var.project_name}-${var.environment}-cluster"  # Name format copied from the 'classic.tf' and 'vpc.tf'
-  cluster_name = "${var.cluster_name_id}"
-  portworx_service_name = "${var.project_name}"
-  storage_region       = var.vpc_zone_names[0]
-  plan                 = "px-enterprise"   # "px-dr-enterprise", "px-enterprise"
-  px_tags              = ["${var.project_name}-${var.environment}-cluster"]
-  kvdb                 = "internal"   # "external", "internal"
-  secret_type          = "k8s"   # "ibm-kp", "k8s"
+  resource_group_name   = var.resource_group
+  dc_region             = var.region
+  cluster_id            = "${var.project_name}-${var.environment}-cluster"
+  portworx_service_name = var.project_name
+  storage_region        = var.vpc_zone_names[0]
+  plan                  = "px-enterprise"   # "px-dr-enterprise", "px-enterprise"
+  px_tags               = ["${var.project_name}-${var.environment}-cluster"]
+  kvdb                  = "internal"   # "external", "internal"
+  secret_type           = "k8s"   # "ibm-kp", "k8s"
+
+  depends_on = [
+    ibm_container_cluster_config.cluster_config
+  ]
 }
