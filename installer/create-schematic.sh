@@ -1059,7 +1059,7 @@ select_region() {
             "eu-central")
                 echo "${bold}Chosen region: us-central, pease pick a data center${green}"
                 cp ./workspace-configuration.json temp.json
-                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "ue-de"' temp.json > workspace-configuration.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "eu-de"' temp.json > workspace-configuration.json
                 euData=("fra02" "fra04" "fra05")
                 select datacenter in "${euData[@]}"; do
                     case $datacenter in
