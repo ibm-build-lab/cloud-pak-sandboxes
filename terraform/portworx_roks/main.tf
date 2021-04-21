@@ -55,6 +55,9 @@ module "portworx" {
   // Testing branch
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx?ref=portworx-module"
   enable = true
+
+  ibmcloud_api_key      = length(var.ibmcloud_api_key) > 0 ? var.ibmcloud_api_key : file(local.ibmcloud_api_key)
+
   // Storage parameters
   install_storage       = true
   storage_capacity      = 200

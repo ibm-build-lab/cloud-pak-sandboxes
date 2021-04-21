@@ -3,6 +3,11 @@ variable "region" {
   description = "Region to provision the Openshift cluster. List all available regions with: ibmcloud regions"
 }
 
+variable "ibmcloud_api_key" {
+  default     = ""
+  description = "IBMCloud API Key for the account the resources will be provisioned on. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
+}
+
 variable "project_name" {
   description = "The project_name is combined with environment to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
 }
@@ -63,4 +68,5 @@ locals {
   roks_version               = "4.6"
   kubeconfig_dir             = "./.kube/config"
   entitled_registry_key_file = "./entitlement.key"
+  ibmcloud_api_key           = "./ibmcloud.key"
 }
