@@ -47,8 +47,20 @@ Copy the `_template-iafenv.config` file to `iafenv.config` and set the required 
 
 ```bash
 source ./iafenv.config
-./setpullsecrets.sh
 ```
+If installing on a VPC cluster run:
+
+```bash
+CLUSTER_ON_VPC=true ./setpullsecrets.sh
+```
+
+If installing on a Classic Infrastructure cluster, run:
+
+```bash
+CLUSTER_ON_VPC=false ./setpullsecrets.sh
+```
+
+
   
 ### 2. Install prereqs and IAF
 
