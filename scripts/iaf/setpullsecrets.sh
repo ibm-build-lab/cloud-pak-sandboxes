@@ -15,7 +15,7 @@ mv .dockerconfigjson-new .dockerconfigjson
 oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson  
 rm .dockerconfigjson
 
-if [[ ${CLUSTER_ON_VPC} ]]; then
+if [[ $CLUSTER_ON_VPC == "true" ]]; then
   action=replace
 else
   action=reload
