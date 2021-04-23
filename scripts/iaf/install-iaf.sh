@@ -32,7 +32,7 @@ oc get pods -n openshift-marketplace | grep opencloud-operators
 oc get pods -n openshift-marketplace | grep ibm-operator
 
 echo "Installing..."
-kubectl apply -f ./installation.yaml
+kubectl apply -f ./subscription.yaml
 
 sleep 180
 echo "Verifying installation"
