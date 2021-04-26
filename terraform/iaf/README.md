@@ -1,4 +1,4 @@
-# Cloud Pak for Multi Cloud Management Parameters and Installation Validation
+# IBM Automation Foundation Parameters and Installation Validation
 
 ## Cloud Pak Entitlement Key
 
@@ -34,11 +34,6 @@ Besides the access credentials the Terraform code requires the following input p
 | `public_vlan_number`           | Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the the VLAN type is public and the router begins with **fc**. Use the ID or Number. This value may be empty if there isn't any VLAN in the Zone, however this may cause issues if the code is applied again.   |                     | No       |
 | `entitled_registry_key`        | Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.                                                                                                                                               |                     | No       |
 | `entitled_registry_user_email` | Email address of the user owner of the Entitled Registry Key                                                                                                                                                                                                                                                                 |                     | Yes      |
-| `install_infr_mgt_module`      | Set to `true` to install the Infrastructure Management module                                                                                                                                                                                                                                                                | `false`             | No       |
-| `install_monitoring_module`    | Set to `true` to install the Monitoring module                                                                                                                                                                                                                                                                               | `false`             | No       |
-| `install_security_svcs_module` | Set to `true` to install the Security Services module                                                                                                                                                                                                                                                                        | `false`             | No       |
-| `install_operations_module`    | Set to `true` to install the Operations module                                                                                                                                                                                                                                                                               | `false`             | No       |
-| `install_tech_prev_module`     | Set to `true` to install the Tech Preview module                                                                                                                                                                                                                                                                             | `false`             | No       |
 
 If you are using Schematics directly or the Private Catalog, set the variable `entitled_registry_key` with the content of the Entitlement Key, the file `entitlement.key` is not available.
 
@@ -52,11 +47,8 @@ The Terraform code return the following output parameters.
 | `cluster_id`       | The unique identifier of the cluster.                                                                                               |
 | `cluster_name`     | The cluster name which should be: `{project_name}-{environment}-cluster`                                                            |
 | `resource_group`   | Resource group where the OpenShift cluster is created                                                                               |
-| `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
-| `cp4mcm_endpoint`  | URL of the CP4MCM dashboard                                                                                                         |
-| `cp4mcm_user`      | Username to login to the CP4MCM dashboard                                                                                           |
-| `cp4mcm_password`  | Password to login to the CP4MCM dashboard                                                                                           |
-| `cp4mcm_namespace` | Kubernetes namespace where all the CP4MCM objects are installed                                                                     |
+| `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |                                                                                        |
+| `iaf_namespace` | Kubernetes namespace where all the iaf resources are installed                                                                     |
 
 ## Validations
 
@@ -89,33 +81,21 @@ export KUBECONFIG=$(terraform output config_file_path)
 kubectl cluster-info
 
 # Namespace
-kubectl get namespaces $(terraform output cp4mcm_namespace)
+kubectl get namespaces $(terraform output iaf_namespace)
 
 # All resources
-kubectl get all --namespace $(terraform output cp4mcm_namespace)
-```
-
-Using the following credentials:
-
-```bash
-terraform output cp4mcm_user
-terraform output cp4mcm_password
-```
-
-Open the following URL:
-
-```bash
-open "http://$(terraform output cp4mcm_endpoint)"
+kubectl get all --namespace $(terraform output iaf_namespace)
 ```
 
 ## Uninstall
 
-To uninstall CP4MCM and its dependencies from a cluster, execute the following commands:
+To uninstall IAF and its dependencies from a cluster, execute the following commands:
 
 ```bash
-kubectl delete -n openshift-operators subscription.operators.coreos.com ibm-management-orchestrator
-kubectl delete -n openshift-marketplace catalogsource.operators.coreos.com ibm-management-orchestrator opencloud-operators
-kubectl delete namespace cp4mcm
+kubectl delete -n openshift-marketplace catalogsource.operators.coreos.com opencloud-operators
+kubectl delete -n openshift-operators subscription.operators.coreos.com ibm-automation
+kubectl delete -n openshift-operators operatorgroup.operators.coreos.com iaf-group
+kubectl delete namespace iaf
 ```
 
 **Note**: The uninstall/cleanup process is a work in progress at this time, we are identifying the objects that need to be deleted in order to have a successful re-installation.
