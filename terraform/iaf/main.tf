@@ -1,5 +1,5 @@
 provider "ibm" {
-  generation = local.on_vpc ? 2 : 1
+  generation = var.on_vpc ? 2 : 1
   region     = var.region
 }
 
@@ -8,7 +8,7 @@ locals {
 }
 
 module "cluster" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//iaf"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -57,12 +57,12 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "iaf" {
-  // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4mcm"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4mcm"
+  source = "../../../terraform-ibm-cloud-pak/iaf"
+  //source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//iaf"
   enable = true
 
   cluster_name_id = local.enable_cluster ? module.cluster.id : var.cluster_id
-  on_vpc = local.on_vpc
+  on_vpc = var.on_vpc
 
   // ROKS cluster parameters:
   openshift_version   = local.roks_version

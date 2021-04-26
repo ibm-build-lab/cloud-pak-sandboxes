@@ -30,7 +30,7 @@ variable "datacenter" {
 }
 variable "flavors" {
   type        = list(string)
-  default     = ["c3c.16x64"]
+  default     = ["b3c.16x64"]
   description = "Array with the flavors or machine types of each the workers group. Classic only takes the first flavor of the list. List all flavors for each zone with: 'ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2'. Example: [\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"]"
 }
 
