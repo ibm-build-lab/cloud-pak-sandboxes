@@ -20,9 +20,18 @@ variable "cluster_id" {
   default     = ""
   description = "If you have an existing cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned"
 }
+variable "on_vpc" {
+  default     = "false"
+  description = "Cluster type to be installed on, 'true' = VPC, 'false' = Classic"
+}
 variable "datacenter" {
   default     = ""
   description = "Datacenter or Zone in the IBM Cloud Classic region to provision the cluster. List all available zones with: ibmcloud ks zone ls --provider classic"
+}
+variable "flavors" {
+  type        = list(string)
+  default     = ["c3c.16x64"]
+  description = "Array with the flavors or machine types of each the workers group. Classic only takes the first flavor of the list. List all flavors for each zone with: 'ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2'. Example: [\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"]"
 }
 
 // VLAN's numbers variables on the datacenter, they are here until the
@@ -48,8 +57,6 @@ variable "entitled_registry_user_email" {
 
 // ROKS Module : Local Variables and constansts
 locals {
-  on_vpc                     = "false"
-  flavors                    = ["c3c.16x64"]
   workers_count              = [4]
   roks_version               = "4.6"
   kubeconfig_dir             = "./.kube/config"

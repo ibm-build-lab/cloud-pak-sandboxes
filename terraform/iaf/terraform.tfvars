@@ -13,20 +13,20 @@ on_vpc       = false
 project_name = "iaf"
 // Optional: set the project_name variable to avoid conflicts, like this:
 // export TF_VAR_project_name="something-different"
-owner        = "anonymous"
+owner        = "ann"
 // Optional: set the owner variable from $USER, like this:
 // export TF_VAR_owner=$USER
 environment  = "sandbox"
 region       = "us-south"
 // Using development resource group on cloud account:
-// resource_group = "cloud-pak-sandbox-ibm"
+resource_group = "cloud-pak-sandbox-ibm"
 // Using a standard partner account resource group
-resource_group = "cloud-pak-sandbox"
-datacenter     = ""
+//resource_group = "cloud-pak-sandbox"
+datacenter     = "dal12"
 
 // VLAN's numbers from desired "datacenter".  Run command "ibmcloud ks vlan ls --zone" to find.  If they don't exists, TF will create them
-private_vlan_number = ""
-public_vlan_number  = ""
+private_vlan_number = "3018046"
+public_vlan_number  = "3018044"
 
 
 // Entitlement Key parameters
@@ -35,7 +35,7 @@ public_vlan_number  = ""
 // 1. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, save the key to the
 // file "./entitlement.key"
 // 2. Set the entitled_registry_user_email with the docker email address to login to the registry, example:
-// entitled_registry_user_email = "John.Doe@ibm.com"
+entitled_registry_user_email = "ann.umberhocker@ibm.com"
 
 // RECOMMENDED: to set the entitled_registry_user_email using an external input, like this:
 // export TF_VAR_entitled_registry_user_email="John.Doe@ibm.com"

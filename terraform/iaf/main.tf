@@ -10,7 +10,7 @@ locals {
 module "cluster" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//iaf"
   enable = local.enable_cluster
-  on_vpc = local.on_vpc
+  on_vpc = var.on_vpc
 
   // General parameters:
   project_name = var.project_name
@@ -20,7 +20,7 @@ module "cluster" {
   // Openshift parameters:
   resource_group       = var.resource_group
   roks_version         = local.roks_version
-  flavors              = local.flavors
+  flavors              = var.flavors
   workers_count        = local.workers_count
   datacenter           = var.datacenter
   force_delete_storage = true
