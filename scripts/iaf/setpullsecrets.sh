@@ -15,7 +15,10 @@ mv .dockerconfigjson-new .dockerconfigjson
 oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson  
 rm .dockerconfigjson
 
-if [[ $CLUSTER_ON_VPC == "true" ]]; then
+echo "Is OpenShift Cluster on VPC ('true' or 'false'). Defaults to 'false'?"
+read ON_VPC
+ON_VPC="${ON_VPC:-false}"
+if [[ $ON_VPC == "true" ]]; then
   action=replace
 else
   action=reload
@@ -61,5 +64,4 @@ do
     sleep 180s
     result=$(oc get nodes | grep " Ready" | awk '{ print $2 }' | wc -l)
 done
-
 
