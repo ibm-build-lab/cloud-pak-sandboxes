@@ -57,6 +57,14 @@ variable "public_vlan_number" {
   description = "Public VLAN assigned to your zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
 }
 
+variable "entitled_registry_key" {
+  default     = ""
+  description = "Cloud Pak Entitlement Key. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable"
+}
+variable "entitled_registry_user_email" {
+  description = "Email address of the user owner of the Entitled Registry Key"
+}
+
 // ROKS Module : Local Variables and constansts
 
 locals {
