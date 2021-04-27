@@ -25,8 +25,13 @@ variable "on_vpc" {
   description = "Cluster type to be installed on, 'true' = VPC, 'false' = Classic"
 }
 variable "datacenter" {
-  default     = ""
+  default     = "dal12"
   description = "Datacenter or Zone in the IBM Cloud Classic region to provision the cluster. List all available zones with: ibmcloud ks zone ls --provider classic"
+}
+variable "vpc_zone_names" {
+  type        = list(string)
+  default     = ["us-south-1"]
+  description = "Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: ibmcloud ks zone ls --provider vpc-gen2"
 }
 variable "flavors" {
   type        = list(string)
@@ -46,7 +51,6 @@ variable "public_vlan_number" {
 }
 
 // IAF Module Variables
-
 variable "entitled_registry_key" {
   default     = ""
   description = "Cloud Pak Entitlement Key. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable"
@@ -55,7 +59,7 @@ variable "entitled_registry_user_email" {
   description = "Email address of the user owner of the Entitled Registry Key"
 }
 
-// ROKS Module : Local Variables and constansts
+// ROKS Module : Local Variables and constants
 locals {
   workers_count              = [4]
   roks_version               = "4.6"

@@ -23,6 +23,8 @@ module "cluster" {
   flavors              = var.flavors
   workers_count        = local.workers_count
   datacenter           = var.datacenter
+  vpc_zone_names       = var.vpc_zone_names
+
   force_delete_storage = true
 
   // Kubernetes Config parameters:
