@@ -63,8 +63,8 @@ locals {
   //infra                      = "classic"
   on_vpc                     = true
   enable_cluster             = true
-  flavors                    = ["mx2.4x32"]
-  workers_count              = [2]
+  flavors                    = ["bx2.16x64"]
+  workers_count              = [4]
   roks_version               = "4.6"
   kubeconfig_dir             = "./.kube/config"
   entitled_registry_key_file = "./entitlement.key"
