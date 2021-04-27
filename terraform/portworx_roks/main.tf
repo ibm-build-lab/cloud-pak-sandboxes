@@ -72,3 +72,20 @@ module "portworx" {
   kvdb                  = "internal"   # "external", "internal"
   secret_type           = "k8s"   # "ibm-kp", "k8s"
 }
+
+module "iaf" {
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//iaf?ref=automate_iaf"
+  enable = true
+
+  // ROKS cluster parameters:
+  openshift_version   = var.openshift_version
+  cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+  on_vpc              = var.on_vpc
+  cluster_name_id     = var.cluster_id
+
+  // Entitled Registry parameters:
+  // 1. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary
+  // 2. Save the key to a file, update the file path in the entitled_registry_key parameter
+  entitled_registry_key        = file("${path.cwd}/../../entitlement.key")
+  entitled_registry_user_email = var.entitled_registry_user_email
+}
