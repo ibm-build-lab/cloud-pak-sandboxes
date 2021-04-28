@@ -95,7 +95,7 @@ To uninstall IAF and its dependencies from a cluster, execute the following comm
 
 ```bash
 kubectl delete -n openshift-marketplace catalogsource.operators.coreos.com opencloud-operators
-kubectl delete -n openshift-operators subscription.operators.coreos.com ibm-automation
+kubectl delete -n iaf subscription.operators.coreos.com ibm-automation
 kubectl delete -n openshift-operators operatorgroup.operators.coreos.com iaf-group
 kubectl delete namespace iaf
 ```
