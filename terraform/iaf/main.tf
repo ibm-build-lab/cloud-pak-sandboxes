@@ -70,6 +70,9 @@ module "iaf" {
   openshift_version   = local.roks_version
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
 
+  // IBM Cloud API Key
+  ic_api_key          = var.ic_api_key
+
   // Entitled Registry parameters:
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
   entitled_registry_user_email = var.entitled_registry_user_email

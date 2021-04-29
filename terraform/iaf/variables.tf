@@ -7,6 +7,11 @@ variable "entitled_registry_user_email" {
   description = "Required: Email address of the user owner of the Entitled Registry Key"
 }
 
+// IBM Cloud API Key
+variable "ic_api_key" {
+  description = "IBM Cloud API Key"
+}
+
 // Cluster Variables
 variable "region" {
   default     = "us-south"
