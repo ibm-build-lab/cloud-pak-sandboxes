@@ -1,5 +1,4 @@
 provider "ibm" {
-  generation = var.on_vpc ? 2 : 1
   region     = var.region
 }
 
