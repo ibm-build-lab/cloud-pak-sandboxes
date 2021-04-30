@@ -1,6 +1,7 @@
 # Terraform & Schematics files to ignore
 .terraform
 terraform.tfstate*
+terraform.tfvars
 tmp
 .workspace_id
 
