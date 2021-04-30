@@ -136,8 +136,11 @@ Each Cloud Pak subdirectory contains the following files:
 
 The Input and Output parameters, as well as basic validations and uninstall process can be found in the README of each Cloud Pak, refer to the following links of each Cloud Pak:
 
+- [Automation Foundation](./iaf/README.md)
 - [Cloud Pak for Applications](./cp4app/README.md)
+- [Cloud Pak for Automation](./cp4auto/README.md)
 - [Cloud Pak for Data](./cp4data/README.md)
+- [Cloud Pak for Integration](./cp4int/README.md)
 - [Cloud Pak for Multi Cloud Management](./cp4mcm/README.md)
 
 The Makefiles in the `terraform/` directory help you to do the provisioning of the desired Cloud Pak, they also helps to document the process in case you'd like to do everything manually. The instructions about how to use the Makefile is in the document [Using Make](./Using_Make.md).
