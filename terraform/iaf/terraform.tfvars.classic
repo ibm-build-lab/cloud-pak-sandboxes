@@ -39,8 +39,10 @@ flavors = ["b3c.16x64"]
 // 1. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, save the key to the
 // file "./entitlement.key"
 // or set variable
-//entitled_registry_key=*******************
+entitled_registry_key=""
 
 // 2. Set the entitled_registry_user_email with the docker email address to login to the registry, example:
 entitled_registry_user_email = "john.doe@ibm.com"
 
+// IBM Cloud API Key
+ic_api_key=""
