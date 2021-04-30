@@ -7,6 +7,9 @@ This folder contains the Infrastructure as Code or Terraform code to create a **
 - Cloud Pak for Multi Cloud Management (CP4MCM)
 - Cloud Pak for Applications (CP4App)
 - Cloud Pak for Data (CP4Data)
+- Cloud Pak for Integration (CP4Int)
+- Cloud Pak for Automation (CP4Auto)
+- Automation Foundation (IAF)
 
 Everything is automated with Makefiles. However, instructions to get the same results manually are provided.
 
