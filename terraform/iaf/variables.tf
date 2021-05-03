@@ -30,7 +30,7 @@ variable "cluster_id" {
 
 // if set to false, cluster is on Classic Infrastructure
 variable "on_vpc" {
-  default     = "false"
+  default     = false
   description = "Required: Cluster type to be installed on, 'true' = VPC, 'false' = Classic"
 }
 
