@@ -23,10 +23,10 @@ Besides the access credentials the Terraform code requires the following input p
 
 | Name                           | Description | Default             | Required |
 | ------------------------------ | ------ | ------------------- | -------- |
-| `entitled_registry_key`        | Required: Entitlement key from - https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.  |                     | No       |
-| `entitled_registry_user_email` | Optional: Email address of the user owner of the Entitled Registry Key  |                     | Yes      |
+| `entitled_registry_key`        | Required: Entitlement key from - https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.  |                     | Yes       |
+| `entitled_registry_user_email` | Optional: Email address of the user owner of the Entitled Registry Key  |                     | No      |
 | `ic_api_key` | Required: API Key needed to log in to IBM Cloud  |                     | Yes      |
-| `region`                       | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`   | `us-south`          | No       |
+| `region`                       | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`   | `us-south`          | Yes       |
 | `resource_group`               | Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups` | `cloud-pak-sandbox` | No       |
 | `cluster_id`                   | Optional: If you have an existing cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned   | No       |
 | `on_vpc`                   | Whether OpenShift cluster is on VPC  | false                    | No       |
