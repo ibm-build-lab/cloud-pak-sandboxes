@@ -13,10 +13,10 @@ For example:
 ic_api_key = "< your IBM Cloud API key >"
 
 # Required
-entitled_registry_user_email = "< Your Entitled Key here >"
+entitled_registry_user_email = "< Entitlement Key user email here >"
 
 # Optional if not specifying in entitlement.key file:
-entitled_registry_key        = "< Your Entitled Key here >"
+entitled_registry_key        = "< Entitlement Key here >"
 ```
 
 **IMPORTANT**: Make sure to not commit the Entitlement Key file or content to the github repository.
