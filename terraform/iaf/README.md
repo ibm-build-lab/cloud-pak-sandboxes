@@ -4,14 +4,18 @@
 
 This Cloud Pak requires an Entitlement Key. It can be retrieved from https://myibm.ibm.com/products-services/containerlibrary.
 
-Edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` or save the entitlement key in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key.
+Edit the `./my_variables.auto.tfvars` file to define the `ic_api_key`, `entitled_registry_user_email` and `entitled_registry_key` or save the entitlement key in the file `entitlement.key` (for local Terraform only). The `entitled_registry_user_email` is set to the user email address of the account used to generate the Entitlement Key.
 
 For example:
 
 ```hcl
-entitled_registry_user_email = "john.smith@ibm.com"
+# Required
+ic_api_key = "< your IBM Cloud API key >"
 
-# Optionally:
+# Required
+entitled_registry_user_email = "< Your Entitled Key here >"
+
+# Optional if not specifying in entitlement.key file:
 entitled_registry_key        = "< Your Entitled Key here >"
 ```
 
@@ -24,7 +28,7 @@ Besides the access credentials the Terraform code requires the following input p
 | Name                           | Description | Default             | Required |
 | ------------------------------ | ------ | ------------------- | -------- |
 | `entitled_registry_key`        | Required: Entitlement key from - https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.  |                     | Yes       |
-| `entitled_registry_user_email` | Optional: Email address of the user owner of the Entitled Registry Key  |                     | No      |
+| `entitled_registry_user_email` | Optional: Email address of the user owner of the Entitled Registry Key  |                     | Yes      |
 | `ic_api_key` | Required: API Key needed to log in to IBM Cloud  |                     | Yes      |
 | `region`                       | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`   | `us-south`          | Yes       |
 | `resource_group`               | Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups` | `cloud-pak-sandbox` | No       |
