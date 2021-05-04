@@ -57,6 +57,11 @@ variable "flavors" {
   description = "Only required if cluster_id is not specified. Array with the flavors or machine types of each the workers group. Classic only takes the first flavor of the list. List all flavors for each zone with: 'ibmcloud ks flavors --zone us-south-1 --provider <classic | vpc-gen2>'. Example: [\"bx2.16x64\", \"mx2.8x64\", \"cx2.4x8\"]"
 }
 
+variable "force_delete_storage" {
+  default     = true
+  description = "If set to true, storage will be deleted with cluster is destroyed"
+}
+
 // Only required if cluster id is not specified and 'on_vpc=false'
 variable "datacenter" {
   default     = ""

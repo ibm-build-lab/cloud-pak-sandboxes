@@ -15,6 +15,8 @@ module "cluster" {
   project_name = var.project_name
   owner        = var.owner
   environment  = var.environment
+  // OCP entitlement not from Cloud Pak
+  entitlement  = local.entitlement
 
   // Openshift parameters:
   resource_group       = var.resource_group
@@ -23,8 +25,7 @@ module "cluster" {
   workers_count        = local.workers_count
   datacenter           = var.datacenter
   vpc_zone_names       = var.vpc_zone_names
-
-  force_delete_storage = true
+  force_delete_storage = var.force_delete_storage
 
   // Kubernetes Config parameters:
   // download_config = false
@@ -32,7 +33,6 @@ module "cluster" {
   // config_admin    = false
   // config_network  = false
 
-  // Debugging
   private_vlan_number = var.private_vlan_number
   public_vlan_number  = var.public_vlan_number
 }
@@ -58,7 +58,6 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "iaf" {
-  //source = "../../../terraform-ibm-cloud-pak/iaf"
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//iaf"
   enable = true
 
@@ -75,5 +74,4 @@ module "iaf" {
   // Entitled Registry parameters:
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
   entitled_registry_user_email = var.entitled_registry_user_email
-
 }
