@@ -27,7 +27,7 @@ Besides the access credentials the Terraform code requires the following input p
 
 | Name                           | Description | Default             | Required |
 | ------------------------------ | ------ | ------------------- | -------- |
-| `entitled_registry_key`        | Required: Entitlement key from - https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.  |                     | Yes       |
+| `entitled_registry_key`        | Required: [Entitlement key](https://myibm.ibm.com/products-services/containerlibrary), copy and paste the key to this variable or save the key to the file `entitlement.key`.  |                     | Yes       |
 | `entitled_registry_user_email` | Optional: Email address of the user owner of the Entitled Registry Key  |                     | Yes      |
 | `ic_api_key` | Required: API Key needed to log in to IBM Cloud  |                     | Yes      |
 | `region`                       | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`   | `us-south`          | Yes       |
