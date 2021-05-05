@@ -16,7 +16,7 @@ module "cluster" {
   owner        = var.owner
   environment  = var.environment
   // OCP entitlement not from Cloud Pak
-  entitlement  = local.entitlement
+  entitlement  = ""
 
   // Openshift parameters:
   resource_group       = var.resource_group
