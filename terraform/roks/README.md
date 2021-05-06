@@ -6,7 +6,9 @@ The Terraform script requires the following list of input variables. Here are so
 
 | Name | Description  | Default | Required |
 | - | - | - | - |
+| `on_vpc`               | If `true` provision the cluster on IBM Cloud VPC Gen 2, otherwise provision on IBM Cloud Classic                                                                   | `true`           | No       |
 | `enable`               | If set to `false` does not provision the Openshift cluster. Enabled by default  | `true`           | No       | | `on_vpc`               | If `true` provision the cluster on IBM Cloud VPC Gen 2, otherwise provision on IBM Cloud Classic                                                                   | `true`           | No       |
+| `region`               | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions` | `us-south`           | No       | 
 | `project_name`         | Used to name the cluster with the environment name, like this: `{project_name}-{environment}-cluster`<br />It's also used to label the cluster and other resources  |  | Yes      |
 | `owner`                | User name or team name. Used to label the cluster and other resources   |  | Yes      |
 | `environment`          | Used to name the cluster with the project name, like this: `{project_name}-{environment}-cluster` | `dev`            | No       |
