@@ -40,7 +40,7 @@ After execution has completed, access the cluster using `kubectl` or `oc`:
 ```bash
 ibmcloud ks cluster config -cluster $(terraform output cluster_id)
 kubectl cluster-info
-
+```
 
 ## Clean up
 
