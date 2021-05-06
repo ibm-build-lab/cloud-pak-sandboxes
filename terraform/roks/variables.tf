@@ -6,7 +6,7 @@ variable "on_vpc" {
 
 variable "entitlement" {
   default     = ""
-  description = "OCP entitlement"
+  description = "OCP entitlement. Enter 'cloud_pak' if using a Cloud Pak entitlement.  Leave blank if OCP entitlement"
 }
 
 variable "region" {
