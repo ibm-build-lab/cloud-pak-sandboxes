@@ -74,7 +74,7 @@ module "portworx" {
 }
 
 module "iaf" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//iaf?ref=automate_iaf"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//iaf"
   enable = true
 
   // ROKS cluster parameters:
