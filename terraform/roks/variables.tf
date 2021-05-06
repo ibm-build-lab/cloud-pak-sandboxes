@@ -48,13 +48,13 @@ variable "force_delete_storage" {
 // OpenShift cluster specific input parameters and default values:
 variable "flavors" {
   type    = list(string)
-  default = ["bx2.16x64", "bx2.16x64"]
+  default = ["b3c.16x64"]
   description = "Array with the flavors or machine types of each of the workers. List all flavors for each zone with: ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2 or ibmcloud ks flavors --zone dal10 --provider classic. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. Example on VPC `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"mx2.4x32\"]`"
 }
 
 variable "workers_count" {
   type    = list(number)
-  default = [2, 2]
+  default = [4]
   description = "Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]"
 }
 
@@ -69,7 +69,7 @@ variable "public_vlan_number" {
 }
 
 variable "datacenter" {
-  default = ""
+  default = "dal12"
   description = "Classic Only. List all available datacenters/zones with: 'ibmcloud ks zone ls --provider classic'"
 }
 
