@@ -81,7 +81,7 @@ module "iaf" {
   openshift_version   = local.roks_version
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
   on_vpc              = var.on_vpc
-  cluster_name_id     = var.cluster_id
+  cluster_name_id     = data.cluster_name_id
 
   // Entitled Registry parameters:
   // 1. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary
