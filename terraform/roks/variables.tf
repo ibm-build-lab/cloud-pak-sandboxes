@@ -10,11 +10,12 @@ variable "entitlement" {
 }
 
 variable "region" {
+  default     = "us-south"
   description = "List all available regions with: ibmcloud regions"
 }
 
 variable "project_name" {
-  default     = "roks-tfmod"
+  default     = "roks"
   description = "The project name is used to name the cluster with the environment name"
 }
 
@@ -40,17 +41,11 @@ variable "roks_version" {
 
 variable "force_delete_storage" {
   type        = bool
-  default     = false
+  default     = true
   description = "If set to true, force the removal of persistent storage associated with the cluster during cluster deletion. Default value is false"
 }
 
 // OpenShift cluster specific input parameters and default values:
-
-variable "vpc_zone_names" {
-  type    = list(string)
-  default = ["us-south-1"]
-  description = "IBM Cloud VPC only. Array with the subzones in the region to create the workers groups. List all the zones with: 'ibmcloud ks zone ls --provider vpc-gen2'. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
-}
 variable "flavors" {
   type    = list(string)
   default = ["bx2.16x64", "bx2.16x64"]
@@ -63,19 +58,25 @@ variable "workers_count" {
   description = "Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]"
 }
 
-variable "datacenter" {
-  description = "Classic Only. List all available datacenters/zones with: ibmcloud ks zone ls --provider classic"
-  default = ""
-}
-
-// VLAN's for this account in the datacenter
 variable "private_vlan_number" {
   default     = ""
   description = "Classic Only. Private VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number"
 }
+
 variable "public_vlan_number" {
   default     = ""
   description = "Classic Only. Public VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
+}
+
+variable "datacenter" {
+  default = ""
+  description = "Classic Only. List all available datacenters/zones with: 'ibmcloud ks zone ls --provider classic'"
+}
+
+variable "vpc_zone_names" {
+  type    = list(string)
+  default = ["us-south-1"]
+  description = "VPC only. Array with the subzones in the region to create the workers groups. List all the zones with: 'ibmcloud ks zone ls --provider vpc-gen2'. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
 }
 
 variable "config_dir" {
