@@ -4,12 +4,12 @@
 
 This Cloud Pak requires an [IBM Cloud API key](https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform#create-an-ibm-cloud-api-key)
 
-If running locally, edit the `./my_variables.auto.tfvars` file to define the `ic_api_key`.
+If running locally, edit the `./my_variables.auto.tfvars` file to define the `ibmcloud_api_key`.
 For example:
 
 ```hcl
 # Required
-ic_api_key = "< your IBM Cloud API key >"
+ibmcloud_api_key = "< your IBM Cloud API key >"
 
 ```
 
