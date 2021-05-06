@@ -12,6 +12,7 @@
   - [Checking Progress](#checking-progress)
   - [Accessing the Cloud Pak Console](#accessing-the-cloud-pak-console)
   - [Deleting the Workspace and Resources](#deleting-the-workspace-and-resources)
+  - [Clean Up Script](#Clean-up-script)
   - [Additional Information](#additional-information)
 
 ## Introduction
@@ -24,8 +25,8 @@ Currently you can run the script to install:
 - Cloud Pak for Application
 - Cloud Pak for Data
 - Cloud Pak for Integration
-- Cloud Pak for Automation (under development)
-- WatsonAIOps (under development)
+- Cloud Pak for Busincess Automation (under development)
+- Cloud Pak for Security Automation (under development)
 
 ## Install Using IBM Cloud Shell
 
@@ -130,6 +131,8 @@ The workspace activity plan logs will print out the Cloud Pak console *url*, *us
 
 ## Deleting The Workspace and Resources
 
+There are two methods to delete resources. Use the manual steps or look at the [Clean Up Script](Clean Up Script)
+
 ### 1. Log in to your [IBM Cloud](http://cloud.ibm.com) account
 ### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
 
@@ -145,6 +148,14 @@ All workspaces and clusters made with this tool will end in "-sandbox"
 Select `Delete workspace` and `Delete all associated resources` options, type the name of the workspace and select `Delete`.  This should issue a "terraform destroy" command to delete all resources that were created by the "terraform apply".  
 
 **NOTE:** If the workspace fails to delete, the Terraform state is out of sync.  Attempt deletion again but only select `Delete workspace` option.  Resources may then need to be manually deleted.
+
+## Clean Up Script
+
+An alternative to deleting cluster and schematics is to use delete-schematics.sh.
+
+To use this script you must first be logged into the IBM cloud bash shell or the IBM cloud cli if running from your computers bash.  After that run the delete-schematics and you will be prompted with instructions on what you would like to delete. Simply choose the options and delete.
+
+This does not have a catch and will immediatly delete selected options. Be carefull as to whats you select.
 
 ## Additional Information
 

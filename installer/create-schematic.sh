@@ -170,30 +170,30 @@ check_resource_groups() {
 prompt_license() {
     echo ""
     echo "${red}By using this script you are accepting the licensing information here powered by IBM"
-    echo "${red}Red Hat ROKS license agreement: ${green}"
+    echo "${red}Red Hat ROKS license agreement: https://www.ibm.com/support/customer/csol/terms/?id=i126-7696#detail-document ${green}"
     if $CP4MCM
     then 
-        echo "${red}"  $CLOUD_PAK_NAME_MCM_VERSION " license agreement ${green}  ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_MCM_VERSION " license agreement ${green} https://www.ibm.com/legal?lnk=flg-tous-usen  ${bold}"
     fi
     if $CP4APP
     then
-        echo "${red}"  $CLOUD_PAK_NAME_APP_VERSION " license agreement ${green}  ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_APP_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
     if $CP4D35
     then
-        echo "${red}"  $CLOUD_PAK_NAME_DATA_VERSION " license agreement ${green}  ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_DATA_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
     if $CP4D30
     then
-        echo "${red}"  $CLOUD_PAK_NAME_DATA2_VERSION " license agreement ${green}  ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_DATA2_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
     if $CP4I
     then
-        echo "${red}"  $CLOUD_PAK_NAME_INTEGRATION_VERSION " license agreement ${green}  ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_INTEGRATION_VERSION " license agreement ${green} https://www.ibm.com/docs/en/cloud-paks/cp-integration/2020.2?topic=licensing ${bold}"
     fi
     if $CP4AUTO
     then
-        echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  ${bold}"
+        echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
     licenseAgree=("Yes" "No")
     select licenseAgree in "${licenseAgree[@]}"; do
@@ -1059,7 +1059,7 @@ select_region() {
             "eu-central")
                 echo "${bold}Chosen region: us-central, pease pick a data center${green}"
                 cp ./workspace-configuration.json temp.json
-                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "ue-de"' temp.json > workspace-configuration.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "eu-de"' temp.json > workspace-configuration.json
                 euData=("fra02" "fra04" "fra05")
                 select datacenter in "${euData[@]}"; do
                     case $datacenter in
