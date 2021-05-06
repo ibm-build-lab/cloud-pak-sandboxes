@@ -1,63 +1,49 @@
-# Test ROKS Terraform Module
+# IBM Red Hat OpenShift Managed Cluster Parameters and Installation
 
-Follow these instructions to execute custom tests to the Terraform module.
+## Input Parameters
 
-## Set up access to IBM Cloud
+The Terraform script requires the following list of input variables. Here are some instructions to set their values for Terraform and how to get their values from IBM Cloud. Pay attention to the parameters required for **Classic** vs **VPC**.
 
-If running these modules from your local terminal, you need to set the credentials to access IBM Cloud.
+| Name | Description  | Default | Required |
+| - | - | - | - |
+| `enable`               | If set to `false` does not provision the Openshift cluster. Enabled by default  | `true`           | No       | | `on_vpc`               | If `true` provision the cluster on IBM Cloud VPC Gen 2, otherwise provision on IBM Cloud Classic                                                                   | `true`           | No       |
+| `project_name`         | Used to name the cluster with the environment name, like this: `{project_name}-{environment}-cluster`<br />It's also used to label the cluster and other resources  |  | Yes      |
+| `owner`                | User name or team name. Used to label the cluster and other resources   |  | Yes      |
+| `environment`          | Used to name the cluster with the project name, like this: `{project_name}-{environment}-cluster` | `dev`            | No       |
+| `entitlement`          | Source of OCP entitlement | `cloud_pak`            | No       |
+| `resource_group`       | Resource Group used to host the cluster. List all available resource groups with: `ibmcloud resource groups`                                                                           | `default`        | No       |
+| `roks_version`         | OpenShift version to install. List all available versions: `ibmcloud ks versions`. There is no need to include the suffix `_OpenShift`. The module will append it to install the specified version of OpenShift.  | `4.6`            | No       |
+| `datacenter`           | **IBM Cloud Classic** only (`on_vpc` = `false`). This is the Datacenter or Zone in the Region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`    | `dal10`          | No       |
+| `private_vlan_number`  | **IBM Cloud Classic** only. (`on_vpc` = `false`). Private VLAN assigned to your zone. Make it an empty string to select a private unnamed VLAN or to create new VLAN if there isn't one (i.e. this is the first cluster in the zone). To list available VLANs in the zone: `ibmcloud ks vlan ls --zone <datacenter>`. Make sure the the VLAN type is `private` and the router begins with `bc`. Use the `ID` or `Number` |                  | No       |
+| `public_vlan_number`   | **IBM Cloud Classic** only (`on_vpc` = `false`). Public VLAN assigned to your zone. Set to an empty string to select a public unnamed VLAN or to create a new VLAN if there aren't any (i.e. this is the first cluster in the zone). List available VLANs in the zone: `ibmcloud ks vlan ls --zone <datacenter>`. Make sure the the VLAN type is `public` and the router begins with `fc`. Use the `ID` or `Number`    |                  | No       |
+| `vpc_zone_names`       | **IBM Cloud VPC Gen 2** only (`on_vpc` = `true`). Array with the sub-zones in the region to create the workers groups. List all the zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Example: `["us-south-1", "us-south-2", "us-south-3"]`   | `["us-south-1"]` | No       |
+| `flavors`              | Array with the flavors or machine types of each of the workers.  List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic it is only possible to have one worker group, so only list one flavor, i.e. `["b3c.16x64"]`. Example on VPC `["mx2.4x32", "mx2.8x64", "cx2.4x8"]` or `["mx2.4x32"]`  | `["mx2.4x32"]`   | No       |
+| `workers_count`        | Array with the amount of workers on each workers group. On Classic it's only possible to have one workers group, so only the first number in the list is taken for the cluster size. Example: `[1, 3, 5]` or `[2]`   | `[2]`            | No       |
+| `force_delete_storage` | If set to `true`, force the removal of persistent storage associated with the cluster during cluster deletion. Default value is `false`.                                                             | `false`          | No       |
 
-You can define the IBM Cloud credentials in the IBM provider block but it is recommended to pass them in as environment variables.
+## Output Parameters
 
-Go [here](../../CREDENTIALS.md) for details.
+The module returns the following output variables:
 
-**NOTE**: These credentials are not required if running this Terraform code within an **IBM Cloud Schematics** workspace. They are automatically set from your account.
+| Name       | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `endpoint` | The URL of the public service endpoint for your cluster |
+| `id`       | The unique identifier of the cluster.                   |
+| `name`     | The name of the cluster                                 |
 
-## 2. Define custom test parameters
+## Validation
 
-Set values for required input variables in the file `terraform.tfvars`. Pay attention to the sections required for **Classic** vs **VPC**.
+If you use the cluster from other terraform code there may be no need to download the kubeconfig file. However, if you plan to use the cluster from the CLI (i.e. `kubectl`) or other application then it's recommended to download it to some directory.
 
-**IMPORTANT**: for **classic** you need to pass the values of the private and public VLAN numbers as an input if they exist. To obtain the VLAN numbers execute the following command:
-
-```bash
-❯ ibmcloud ks vlan ls --zone <data_center>
-OK
-ID        Name   Number   Type      Router         Supports Virtual Workers
-2979232          2146     private   bcr01a.dal10   true
-2979230          2341     public    fcr01a.dal10   true
-```
-
-If you have multiple VLAN numbers, choose one. Identify the private and public by the **Type** column and provide just the numbers in the **ID** column:
-
-```yaml
-private_vlan_number = "2979232"
-public_vlan_number  = "2979230"
-```
-
-If there aren't any VLANs in that datacenter, leave as empty strings and they will be created by the module.
-
-## 3. Test
-
-Using your local Terraform client, run the test by executing execute the following commands:
+After execution has completed, access the cluster using `kubectl` or `oc`:
 
 ```bash
-terraform init
-terraform plan
-terraform apply --auto-approve
-```
-
-## 4. Test the Kubernetes cluster
-
-To test the cluster using `kubectl`, execute:
-
-```bash
-export KUBECONFIG=$(terraform output config_file_path)
-
+ibmcloud ks cluster config -cluster $(terraform output cluster_id)
 kubectl cluster-info
-kubectl get namespace terraform-module-is-working
-```
 
-Or any other `kubectl` or `oc` command.
 
-## 5. Destroy
+## Clean up
 
-When tests is successfully complete, execute: `terraform destroy` and delete all the created files.
+When the cluster is no longer needed, run `terraform destroy` if this was created using your local Terraform client with `terraform apply`. 
+
+If this cluster was created using `schematics`, just delete the schematics workspace and specify to delete all created resources.

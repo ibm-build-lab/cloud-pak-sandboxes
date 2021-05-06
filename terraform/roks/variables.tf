@@ -1,7 +1,7 @@
 variable "on_vpc" {
   type        = bool
   default     = false
-  description = "To determine infrastructure. Options are `true` = installs on VPC, `false`  installs on classic"
+  description = "To determine infrastructure. Options are `true` = installs on VPC, `false` installs on classic"
 }
 
 variable "entitlement" {

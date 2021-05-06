@@ -25,4 +25,6 @@ datacenter            = "dal10"
 // Run "ibmcloud ks flavors --zone <zone> --provider classic"
 flavors               = ["b3c.4x16"]
 workers_count         = [1]
+private_vlan_number   = ""
+public_vlan_number    = ""
 
