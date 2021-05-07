@@ -2,10 +2,14 @@ provider "ibm" {
   region     = var.region
 }
 
+locals {
+  enable_cluster = var.cluster_id == null || var.cluster_id == ""
+}
 // IBM Cloud Classic/Gen2 VPC
 
 module "cluster" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//roks"
+  enable = local.enable_cluster
 
   // General variables:
   on_vpc         = var.on_vpc
@@ -67,7 +71,7 @@ module "portworx" {
   // Portworx parameters
   resource_group_name   = var.resource_group
   region                = var.region
-  cluster_id            = var.ibm_container_cluster_config.cluster_config.cluster_name_id
+  cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
   unique_id             = var.unique_id
 
   // These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
