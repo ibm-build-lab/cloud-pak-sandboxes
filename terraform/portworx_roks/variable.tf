@@ -98,7 +98,7 @@ variable "storage_profile" {
 
 variable "unique_id" {
     description = "Unique string for naming resources"
-    default     = "emc-t-1-px-ext-portworx"
+    default     = "px-roks"
 }
 
 # These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
