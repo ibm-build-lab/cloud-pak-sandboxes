@@ -26,7 +26,8 @@ vpc_zone_names     = ["us-south-1"]
 
 // Worker Node flavor
 flavors = ["bx2.16x64"]
-
+workers_count              = [4]
+roks_version               = "4.6"
 
 // Portworx
 enable                  = true
