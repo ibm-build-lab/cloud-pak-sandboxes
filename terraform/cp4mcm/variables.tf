@@ -35,6 +35,7 @@ variable "install_tech_prev_module" {
 // Cluster Variables
 // if set to false, cluster is on Classic Infrastructure
 variable "on_vpc" {
+  type        = boolean
   default     = false
   description = "Required: Cluster type to be installed on, 'true' = VPC, 'false' = Classic"
 }
