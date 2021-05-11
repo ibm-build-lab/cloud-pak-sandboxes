@@ -1,6 +1,6 @@
 # Description
 
-This script installs Multi Cloud Management Cloud Pak version 2.0 on an OpenShift cluster on IBM Cloud.  It prompts for inputs to install or use an existing OCP cluster then waits for the cluster to provision and installs MCM.
+This script installs Multi Cloud Management Cloud Pak version 2.2 on an OpenShift cluster on IBM Cloud.  It prompts for inputs to install or use an existing OCP cluster then waits for the cluster to provision and installs MCM.
 
 # Files
 
