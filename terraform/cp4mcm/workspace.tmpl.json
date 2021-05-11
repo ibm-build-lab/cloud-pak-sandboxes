@@ -44,8 +44,13 @@
           "type": "string"
         },
         {
-          "name": "datacenter",
-          "value": "dal10",
+          "name": "on_vpc",
+          "value": "false",
+          "type": "string"
+        },
+        {
+          "name": "flavors",
+          "value": "['b3c.16x64']",
           "type": "string"
         },
         {
@@ -56,6 +61,16 @@
         {
           "name": "public_vlan_number",
           "value": "",
+          "type": "string"
+        },
+        {
+          "name": "datacenter",
+          "value": "dal12",
+          "type": "string"
+        },
+        {
+          "name": "vpc_zone_names",
+          "value": "dal12",
           "type": "string"
         },
         {
