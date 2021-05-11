@@ -475,7 +475,7 @@ spec:
   displayName: CP4MCM Installer Catalog
   publisher: IBM CP4MCM
   sourceType: grpc
-  image: quay.io/cp4mcm/cp4mcm-orchestrator-catalog:2.1.5-stable
+  image: quay.io/cp4mcm/cp4mcm-orchestrator-catalog:2.2-latest
   updateStrategy:
     registryPoll:
       interval: 45m
@@ -488,7 +488,7 @@ metadata:
   name: ibm-management-orchestrator
   namespace: openshift-operators
 spec:
-  channel: 2.1-stable
+  channel: 2.2-stable
   installPlanApproval: Automatic
   name: ibm-management-orchestrator
   source: ibm-management-orchestrator
