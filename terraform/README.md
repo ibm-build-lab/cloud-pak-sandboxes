@@ -1,9 +1,10 @@
-# Creation of a Cloud Pak Sandbox
+# Creation of a Parter Sandbox
 
 This documentation is **<u>only for developers or advanced users</u>**. Sandbox **users** please refer to [Installer Script](../installer/README.md) documentation.
 
-This folder contains the Infrastructure as Code or Terraform code to create a **Sandbox** with an **Openshift** (ROKS) cluster on IBM Cloud Classic with a Cloud Pak. At this time the supported Cloud Paks are:
+This folder contains the Infrastructure as Code or Terraform code to create a **Sandbox** with an **Openshift** (ROKS) cluster on IBM Cloud and additional Cloud Paks. At this time the supported components are:
 
+- ROKS stand alone cluster in either VPC or Classic
 - Automation Foundation (IAF)
 - Cloud Pak for Applications (CP4App)
 - Cloud Pak for Automation (CP4Auto)
@@ -111,7 +112,7 @@ Additionally, you can append the above `export` commands in your shell profile o
 
 **IMPORTANT**: If you use a different filename than `credentials.sh` make sure to not commit the file to GitHub. The filename `credentials.sh` is in the `.gitignore` file so it is safe to use it..
 
-## Provisioning the Cloud Pak Sandbox
+## Provisioning the Sandbox
 
 To build the Sandbox with a selected Cloud Pak on IBM Cloud Classic the available methods are:
 
@@ -121,7 +122,7 @@ To build the Sandbox with a selected Cloud Pak on IBM Cloud Classic the availabl
 - **[Using IBM Cloud CLI](./Using_IBMCloud_CLI.md)**: The existing Terraform code provisions an OpenShift cluster then installs the requested Cloud Pak on it. With the IBM Cloud CLI you cannot install a Cloud Pak but you can provision an OpenShift cluster to install the Cloud Pak on using any of the above methods. Instructions to provision an OpenShift cluster using the CLI are in the [Using IBM Cloud CLI](./Using_IBMCloud_CLI.md) document.
 - **[Using a Private Catalog](./Using_Private_Catalog.md)**: (Deprecated) It's possible to have a Private Catalog as a user interface with the Schematics and Terraform code, however this option may be more complex than creating a Schematics workspace. This option is not supported anymore. Instructions to create a Private Catalog are in the [Using Private Catalog](./Using_Private_Catalog.md) document.
 
-## Cloud Pak Design
+## Design
 
 This directory contains the Terraform HCL code to execute/apply by Terraform either locally or by remotely, by IBM Cloud Schematics. The code to provision each specific Cloud Pak is located in a separate subdirectory. They each have almost the same design, input and output parameters and very similar basic validation.
 
@@ -134,8 +135,9 @@ Each Cloud Pak subdirectory contains the following files:
 - `workspace.tmpl.json`: this is a template file used by the `terraform/Schematics.mk` makefile to generate the `workspace.json` file which is used to create the IBM Cloud Schematics workspace. The template contains, among other data, the URL of the repository where the Terraform is located and the input parameters with default values. The generated JSON file contains the entitlement key. This file is not included in the repo and is ignored by GitHub (listed it in the `.gitignore` file).
 - `Makefile`: most of the Makefile logic is located in the `terraform/` makefiles (`Makefile` and `*.mk` files) however some specific actions for the Cloud Pak are required, for example, the Cloud Pak validations. All these specific actions are in this `Makefile`.
 
-The Input and Output parameters, as well as basic validations and uninstall process can be found in the README of each Cloud Pak, refer to the following links of each Cloud Pak:
+The Input and Output parameters, as well as basic validations and uninstall process can be found in the README of each component, refer to the following links below:
 
+- [ROKS](./roks/README.md)
 - [Automation Foundation](./iaf/README.md)
 - [Cloud Pak for Applications](./cp4app/README.md)
 - [Cloud Pak for Automation](./cp4auto/README.md)
@@ -149,8 +151,8 @@ In a nutshell the Makefiles provision a Cloud Pak either using your local Terraf
 
 Both processes will create a set of files to facilitate the provisioning. The Terraform process creates the `my_variables.auto.tfvars` with automatically generated variables such as the owner, entitlement key and cluster id if you have one. The Schematics process creates the `workspace.json` file from the template to generate the Schematics workspace. The Schematics process is the most similar to what the Installer will do but step by step, so you, as developer or advance user, can validate and debug the entire process.
 
-### Cloud Pak External Terraform Modules
+### External Terraform Modules
 
-As mentioned above, the `main.tf` file in each Cloud Pak subdirectory uses two Terraform modules: the ROKS and the Cloud Pak module. To know more about these modules refer to their [GitHub repository](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak).
+As mentioned above, the `main.tf` file in each subdirectory uses two Terraform modules: the ROKS and the Cloud Pak module. To know more about these modules refer to their [GitHub repository](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak).
 
 Note: All these modules will be registered in the Terraform Registry so they will be easy to access. This will be part of a future release that will include the Terraform 0.13/0.14 upgrade.
