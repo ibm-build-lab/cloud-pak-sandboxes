@@ -2,6 +2,10 @@ provider "ibm" {
   region     = var.region
 }
 
+provider "kubernetes" {
+  config_path = var.kube_config_path
+}
+
 locals {
   enable_cluster = var.cluster_id == null || var.cluster_id == ""
 }
