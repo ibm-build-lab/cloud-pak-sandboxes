@@ -251,6 +251,33 @@ get_workspace_name() {
     fi    
 }
 
+get_vpc() {
+
+    # updates workspace-configuration.json .template_data[.varialbestore.installing_monitoring_module]
+    echo "${bold}Build infrastructure on Classic or VPC ${green}"
+    classicvpc=("Classic" "VPC")
+    select response in "${classicvpc[@]}"; do
+        case $response in
+            "Classic")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "VPC")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+    
+}
+
+#get_portworx() {
+#
+#}
+
 # get project metadata (name, owner, env, etc...)
 get_meta_data() {
     # tags for workspace, used by workspace-configuration.json
@@ -1287,6 +1314,7 @@ get_cloud_pak_install
 prompt_license
 check_resource_groups
 get_workspace_name
+get_vpc
 get_meta_data
 write_meta_data
 get_cluster_info

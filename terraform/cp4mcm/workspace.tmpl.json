@@ -39,6 +39,11 @@
           "type": "string"
         },
         {
+          "name": "on_vpc",
+          "value": "{{ ON_VPC }}",
+          "type": "string"
+        },
+        {
           "name": "cluster_id",
           "value": "{{ CLUSTER_ID }}",
           "type": "string"
