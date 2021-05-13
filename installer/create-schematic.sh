@@ -53,6 +53,10 @@ CLOUD_PAK_REPO_LOCATION_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandbo
 
 EXISTING_CLUSTER="false"
 
+#IAF
+
+IBM_API_KEY="none"
+
 
 # Creats a spinning cursor for user to know program is running
 update_cursor() {
@@ -274,9 +278,14 @@ get_vpc() {
     
 }
 
-#get_portworx() {
-#
-#}
+get_ibm_api_key() {
+    echo "${bold}Enter IBM Cloud API Key, for more instructions go to"
+    read -p "${green}https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform#create-an-ibm-cloud-api-key:${normal} " -e IBM_API_KEY
+
+    cp workspace-configuration.json temp.json
+    jq -r --arg v "$ENTITLED_KEY" '(.template_data[] | .variablestore[] | select(.name == "entitled_registry_key") | .value) |= $v' temp.json > workspace-configuration.json    
+
+}
 
 # get project metadata (name, owner, env, etc...)
 get_meta_data() {
