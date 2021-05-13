@@ -54,7 +54,7 @@ CLOUD_PAK_REPO_LOCATION_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandbo
 EXISTING_CLUSTER="false"
 
 IAF="false"
-IAF_VERSION="IAF"
+IAF_VERSION="IBM Automation Foundation 1.0"
 IAF_TEMPLATE=./templates/iaf-workspace-configuration.json
 IAF_REPO_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf"
 IBM_API_KEY="none"
