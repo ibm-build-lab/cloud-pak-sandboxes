@@ -46,7 +46,7 @@
         {
           "name": "on_vpc",
           "value": "{{ ON_VPC }}",
-          "type": "bool"
+          "type": "string"
         },
         {
           "name": "datacenter",
