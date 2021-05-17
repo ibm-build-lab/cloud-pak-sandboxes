@@ -40,6 +40,13 @@ variable "on_vpc" {
   default     = false
   description = "Required: Cluster type to be installed on, 'true' = VPC, 'false' = Classic"
 }
+
+// Only required if cluster id is not specified and 'on_vpc=true'
+variable "vpc_zone_names" {
+  type        = list(string)
+  default     = ["us-south-1"]
+  description = "VPC Only: Only required if cluster_id is not specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: 'ibmcloud ks zone ls --provider vpc-gen2'. Only required if cluster id not specified and on_vpc=true."
+}
 // CP4MCM Module Variables
 
 // TODO: Include this variable in a future release to install/uninstall cp4mcm

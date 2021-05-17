@@ -53,7 +53,12 @@
                     "name": "on_vpc",
                     "value": "{{ ON_VPC }}",
                     "type": "bool"
-                  },
+                },
+                {
+                "name": "vpc_zone_names",
+                "value": "['us-south-1']",
+                "type": "string"
+                },  
                 {
                     "name": "datacenter",
                     "value": "dal10",
