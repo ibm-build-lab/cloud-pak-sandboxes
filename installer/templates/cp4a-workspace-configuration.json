@@ -50,11 +50,6 @@
                     "type": "string"
                 },
                 {
-                    "name": "on_vpc",
-                    "value": "{{ ON_VPC }}",
-                    "type": "string"
-                  },
-                {
                     "name": "datacenter",
                     "value": "dal10",
                     "type": "string"

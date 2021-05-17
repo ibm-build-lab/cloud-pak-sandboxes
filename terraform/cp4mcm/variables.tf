@@ -36,10 +36,6 @@ variable "public_vlan_number" {
   description = "Public VLAN assigned to your zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
 }
 
-variable "on_vpc" {
-  default     = false
-  description = "Required: Cluster type to be installed on, 'true' = VPC, 'false' = Classic"
-}
 // CP4MCM Module Variables
 
 // TODO: Include this variable in a future release to install/uninstall cp4mcm

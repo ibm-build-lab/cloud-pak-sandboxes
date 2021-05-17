@@ -25,10 +25,6 @@ variable "datacenter" {
   description = "Datacenter or Zone in the IBM Cloud Classic region to provision the cluster. List all available zones with: ibmcloud ks zone ls --provider classic"
 }
 
-variable "on_vpc" {
-  default     = false
-  description = "Required: Cluster type to be installed on, 'true' = VPC, 'false' = Classic"
-}
 // VLAN's numbers variables on the datacenter, they are here until the
 // permissions issues is fixed on Humio account
 variable "private_vlan_number" {
