@@ -472,10 +472,10 @@ metadata:
   name: ibm-management-orchestrator
   namespace: openshift-marketplace
 spec:
-  displayName: CP4MCM Installer Catalog
-  publisher: IBM CP4MCM
+  displayName: IBM Management Orchestrator Catalog
+  publisher: IBM 
   sourceType: grpc
-  image: quay.io/cp4mcm/cp4mcm-orchestrator-catalog:2.2-latest
+  image: quay.io/cp4mcm/cp4mcm-orchestrator-catalog:2.3-latest
   updateStrategy:
     registryPoll:
       interval: 45m
@@ -488,7 +488,7 @@ metadata:
   name: ibm-management-orchestrator
   namespace: openshift-operators
 spec:
-  channel: 2.2-stable
+  channel: 2.3-stable
   installPlanApproval: Automatic
   name: ibm-management-orchestrator
   source: ibm-management-orchestrator
