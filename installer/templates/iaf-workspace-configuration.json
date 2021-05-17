@@ -49,11 +49,6 @@
           "type": "bool"
         },
         {
-          "name": "vpc_zone_names",
-          "value": "['us-south-1']",
-          "type": "string"
-        },
-        {
           "name": "flavors",
           "value": "['b3c.16x64']",
           "type": "string"

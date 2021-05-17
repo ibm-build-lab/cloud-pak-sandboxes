@@ -44,11 +44,6 @@
           "type": "bool"
         },
         {
-          "name": "vpc_zone_names",
-          "value": "['us-south-1']",
-          "type": "string"
-        },
-        {
           "name": "cluster_id",
           "value": "{{ CLUSTER_ID }}",
           "type": "string"
