@@ -10,7 +10,7 @@
   },
   "template_data": [
     {
-      "folder": "terraform/cp4mcm",
+      "folder": "terraform/iaf",
       "type": "terraform_v0.12",
       "variablestore": [
         {
@@ -39,13 +39,18 @@
           "type": "string"
         },
         {
+          "name": "cluster_id",
+          "value": "{{ CLUSTER_ID }}",
+          "type": "string"
+        },
+        {
           "name": "on_vpc",
           "value": "{{ ON_VPC }}",
           "type": "string"
         },
         {
-          "name": "cluster_id",
-          "value": "{{ CLUSTER_ID }}",
+          "name": "flavors",
+          "value": "['b3c.16x64']",
           "type": "string"
         },
         {
@@ -64,6 +69,17 @@
           "type": "string"
         },
         {
+          "name": "vpc_zone_names",
+          "value": "['us-south-1']",
+          "type": "string"
+        },
+        {
+          "name": "IC_API_KEY",
+          "value": "{{ IC_API_KEY }}",
+          "type": "string",
+          "secure": true
+        },
+        {
           "name": "entitled_registry_key",
           "value": "{{ ENTITLED_KEY }}",
           "type": "string",
@@ -73,31 +89,6 @@
           "name": "entitled_registry_user_email",
           "value": "{{ ENTITLED_KEY_EMAIL }}",
           "type": "string"
-        },
-        {
-          "name": "install_infr_mgt_module",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_monitoring_module",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_security_svcs_module",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_operations_module",
-          "value": "false",
-          "type": "bool"
-        },
-        {
-          "name": "install_tech_prev_module",
-          "value": "false",
-          "type": "bool"
         }
       ]
     }

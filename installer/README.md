@@ -105,6 +105,7 @@ Finally, once a VLAN is created it will take some time until it is ready for use
 To check the status of the workspace:
 
 ### 1. Log in to [IBM Cloud](http://cloud.ibm.com) account
+
 ### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
 
 The image below shows the button for the resource list (orange box), as well as the two menu locations to find the cluster (green box) when the workspace finishes, and the workspace (red box) which you can follow while the script runs. 
@@ -114,6 +115,7 @@ NOTE: User may need permissions to view workspace schematics. Contact account ad
 ![resource-list](./images/resource-list.png)
 
 ### 3. Click to open your workspace
+
 All workspaces and clusters made with this tool will end in "-sandbox"
 
 The workspace will look like this. The "activity" button and the "workspaceid" are marked. You can also view the variables entered when using the script:
@@ -134,6 +136,7 @@ The workspace activity plan logs will print out the Cloud Pak console *url*, *us
 There are two methods to delete resources. Use the manual steps or look at the [Clean Up Script](Clean Up Script)
 
 ### 1. Log in to your [IBM Cloud](http://cloud.ibm.com) account
+
 ### 2. Select "Schematics workspaces" from the resource menu on top left column of IBM Cloud Console
 
 The image below shows the button for the resource list (orange box), as well as the two menu locations to find the cluster (green box) when the workspace finishes, and the workspace (red box) which you can follow while the script runs. 
@@ -143,6 +146,7 @@ NOTE: You will need permissions to view workspace schematics.
 ![resource-list](./images/resource-list.png)
 
 ### 3. Click "Delete" from the 3 dot menu on the right of your workspace
+
 All workspaces and clusters made with this tool will end in "-sandbox"
 
 Select `Delete workspace` and `Delete all associated resources` options, type the name of the workspace and select `Delete`.  This should issue a "terraform destroy" command to delete all resources that were created by the "terraform apply".  

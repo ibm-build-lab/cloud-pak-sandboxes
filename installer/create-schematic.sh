@@ -53,6 +53,12 @@ CLOUD_PAK_REPO_LOCATION_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandbo
 
 EXISTING_CLUSTER="false"
 
+IAF="false"
+IAF_VERSION="IBM Automation Foundation 1.0"
+IAF_TEMPLATE=./templates/iaf-workspace-configuration.json
+IAF_REPO_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf"
+IBM_API_KEY="none"
+
 
 # Creats a spinning cursor for user to know program is running
 update_cursor() {
@@ -70,7 +76,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION" "$IAF_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -133,6 +139,16 @@ get_cloud_pak_install() {
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;; 
+            $IAF_VERSION)
+                echo "${bold}Selected: $IAF_VERSION"
+                IAF="true"
+                cp $IAF_TEMPLATE workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$IAF_REPO_LOCATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;     
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
     done
@@ -248,7 +264,45 @@ get_workspace_name() {
     then
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4auto-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-cp4auto-sandbox"
-    fi    
+    fi
+
+    if $IAF
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-iaf-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-iaf-sandbox"
+    fi        
+}
+
+get_vpc() {
+
+    # updates workspace-configuration.json .template_data[.varialbestore.installing_monitoring_module]
+    echo "${bold}Build infrastructure on Classic or VPC ${green}"
+    classicvpc=("Classic" "VPC")
+    select response in "${classicvpc[@]}"; do
+        case $response in
+            "Classic")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "VPC")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+    
+}
+
+get_ibm_api_key() {
+    echo "${bold}Enter IBM Cloud API Key, for more instructions go to"
+    read -s -p "${green}https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform#create-an-ibm-cloud-api-key:${normal} " -e IBM_API_KEY
+
+    cp workspace-configuration.json temp.json
+    jq -r --arg v "$IBM_API_KEY" '(.template_data[] | .variablestore[] | select(.name == "IC_API_KEY") | .value) |= $v' temp.json > workspace-configuration.json    
+
 }
 
 # get project metadata (name, owner, env, etc...)
@@ -263,6 +317,10 @@ get_meta_data() {
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
+    if $IAF
+    then
+        get_ibm_api_key
+    fi 
 }
 
 # writes metadata to workspace-configuration.json and temp.json these need to be cleaned up later
@@ -816,6 +874,13 @@ cp4d30_modules() {
 
 }
 
+# writes IAF module data
+# updates the values across the respective workspace_configuration values
+iaf_modules() {
+    sleep 1
+
+}
+
 # Sets cluster id to user input or null
 # user input will use existing cluster for cloud pak install, null will create new cluster.
 get_cluster_info() {
@@ -1287,6 +1352,7 @@ get_cloud_pak_install
 prompt_license
 check_resource_groups
 get_workspace_name
+get_vpc
 get_meta_data
 write_meta_data
 get_cluster_info
@@ -1295,6 +1361,9 @@ if ! $EXISTING_CLUSTER
     then select_region
 fi
 
+if $IAF
+    then iaf_modules
+fi
 
 if $CP4MCM
     then cp4mcm_modules
