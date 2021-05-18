@@ -61,7 +61,6 @@ data "ibm_container_cluster_config" "cluster_config" {
   network           = false
 }
 
-
 module "portworx" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx"
   // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
@@ -74,7 +73,7 @@ module "portworx" {
   worker_nodes     = var.workers_count[0]  // Number of workers
 
   // Storage parameters
-  install_storage      = var.install_storage
+  install_storage      = true
   storage_capacity     = var.storage_capacity  // In GBs
   storage_iops         = var.storage_iops   // Must be a number, it will not be used unless a storage_profile is set to a custom profile
   storage_profile      = var.storage_profile
@@ -83,12 +82,14 @@ module "portworx" {
   resource_group_name   = var.resource_group
   region                = var.region
   cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
-  unique_id             = var.unique_id
+  unique_id             = "px-roks"
 
   // These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
   // You may override these for additional security.
   create_external_etcd  = var.create_external_etcd
   etcd_username         = var.etcd_username
   etcd_password         = var.etcd_password
-  etcd_secret_name      = var.etcd_secret_name
+
+  // Defaulted.  Don't change
+  etcd_secret_name      = "px-etcd-certs"
 }
