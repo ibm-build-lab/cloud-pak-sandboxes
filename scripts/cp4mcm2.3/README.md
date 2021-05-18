@@ -1,23 +1,23 @@
 # Description
 
-This script installs Multi Cloud Management Cloud Pak version 2.2 on an OpenShift cluster on IBM Cloud.  It prompts for inputs to install or use an existing OCP cluster then waits for the cluster to provision and installs MCM.
+This script installs Multi Cloud Management Cloud Pak version 2.3 on an OpenShift cluster on IBM Cloud.  It prompts for inputs to install or use an existing OCP cluster then waits for the cluster to provision and installs MCM.
 
 # Files
 
 _install.sh_: runs through installation
 
-_resources1.yaml_: contains the yaml necessary to create the CatalogSource resources for Common Services
+_resources1.yaml_: contains the yaml necessary to create the CatalogSource and Subscription resources for Common Services
 
-_resources2.yaml_: contains the yaml necessary to create the CatalogSource resources for MCM
+_resources2.yaml_: contains the yaml necessary to create the CatalogSource and Subscription resources for Multicloud Management
 
-_installation.yaml_: contains yaml to create the MCM installation
+_installation.yaml_: contains yaml to create the Multi Cloud Management installation
 
 # Running from Cloud Shell on IBM Cloud
 
 Launch a cloud shell by clicking on the terminal icon at the top right area on IBM Cloud console once you have logged into IBM Cloud. Run these commands:
 ```
 git clone https://github.com/ibm-pett/cloud-pak-sandboxes.git
-cd cloud-pak-sandboxes/cp4mcm2.2
+cd cloud-pak-sandboxes/cp4mcm2.3
 chmod +x install.sh
 ./install.sh
 ```
@@ -32,7 +32,7 @@ chmod +x install.sh
   - NOTE: You will like see this message several times as these resources get created.  Just ignore it:
   ```
   NAME                          PACKAGE                       SOURCE                        CHANNEL
-  ibm-management-orchestrator   ibm-management-orchestrator   ibm-management-orchestrator   2.2-stable
+  ibm-management-orchestrator   ibm-management-orchestrator   ibm-management-orchestrator   2.3-stable
   Error from server (NotFound): subscriptions.operators.coreos.com "ibm-common-service-operator-stable-v1-opencloud-operators-openshift-marketplace" not found
   Error from server (NotFound): subscriptions.operators.coreos.com "operand-deployment-lifecycle-manager-app" not found
   ```

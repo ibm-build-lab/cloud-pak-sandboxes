@@ -45,8 +45,13 @@
         },
         {
           "name": "on_vpc",
-          "value": "{{ ON_VPC }}",
-          "type": "string"
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "vpc_zone_names",
+          "value": "[\"us-south-1\"]",
+          "type": "list(string)"
         },
         {
           "name": "flavors",
@@ -66,11 +71,6 @@
         {
           "name": "public_vlan_number",
           "value": "",
-          "type": "string"
-        },
-        {
-          "name": "vpc_zone_names",
-          "value": "['us-south-1']",
           "type": "string"
         },
         {
