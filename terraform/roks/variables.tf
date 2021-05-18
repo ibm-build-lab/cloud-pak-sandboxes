@@ -1,5 +1,6 @@
 
 variable "cluster_id" {
+  default     = ""
   description = "If you have an existing cluster, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned"
 }
 
