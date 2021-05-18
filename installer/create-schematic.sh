@@ -1536,8 +1536,6 @@ select_vpc_zone() {
         esac
     done
 
-    manage_vlan
-
 }
 
 
