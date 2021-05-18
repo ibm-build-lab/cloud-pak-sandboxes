@@ -71,6 +71,16 @@
           "secure": true
         },
         {
+          "name": "on_vpc",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "vpc_zone_names",
+          "value": "[\"us-south-1\"]",
+          "type": "list(string)"
+        },
+        {
           "name": "entitled_registry_user_email",
           "value": "{{ ENTITLED_KEY_EMAIL }}",
           "type": "string"

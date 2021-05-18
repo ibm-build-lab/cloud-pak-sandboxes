@@ -39,6 +39,12 @@ variable "on_vpc" {
   default     = false
   description = "Required: Cluster type to be installed on, 'true' = VPC, 'false' = Classic"
 }
+// Only required if cluster id is not specified and 'on_vpc=true'
+variable "vpc_zone_names" {
+  type        = list(string)
+  default     = ["us-south-1"]
+  description = "VPC Only: Only required if cluster_id is not specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: 'ibmcloud ks zone ls --provider vpc-gen2'. Only required if cluster id not specified and on_vpc=true."
+}
 variable "cluster_id" {
   default     = ""
   description = "Optional: if you have an existing cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned"
@@ -66,6 +72,8 @@ variable "environment" {
 variable "owner" {
   description = "Only required if cluster_id is not specified. Use your user name or team name. The owner is used to label the cluster and other resources with the tag 'owner:{owner}'"
 }
+
+
 // Required if cluster id is not specified. Flavor will depend on whether classic or vpc
 variable "flavors" {
   type        = list(string)
