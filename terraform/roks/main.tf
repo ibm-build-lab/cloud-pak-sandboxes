@@ -3,7 +3,7 @@ provider "ibm" {
 }
 
 provider "kubernetes" {
-  config_path = local.kubeconfig_dir
+  config_path = var.config_dir
 }
 
 locals {
@@ -46,7 +46,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
   triggers = { always_run = timestamp() }
 
   provisioner "local-exec" {
-    command = "mkdir -p ${local.kubeconfig_dir}"
+    command = "mkdir -p ${var.config_dir}"
   }
 }
 
@@ -71,7 +71,7 @@ module "portworx" {
 
   // Cluster parameters
   kube_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-  worker_nodes     = local.workers_count[0]  // Number of workers
+  worker_nodes     = var.workers_count[0]  // Number of workers
 
   // Storage parameters
   install_storage      = var.install_storage
