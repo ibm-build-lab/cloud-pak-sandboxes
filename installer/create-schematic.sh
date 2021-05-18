@@ -1626,10 +1626,10 @@ get_cluster_info
 write_meta_data
 if ! $EXISTING_CLUSTER
     then 
-        if CLASSIC
+        if $CLASSIC
             then select_region
         fi
-        if VPC
+        if $VPC
             then select_vpc_zone
         fi
 fi
