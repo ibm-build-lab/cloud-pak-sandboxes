@@ -5,33 +5,33 @@ variable "cluster_id" {
 
 variable "entitlement" {
   default     = ""
-  description = "Used if `cluster_id` is not specified. Enter 'cloud_pak' if using a Cloud Pak entitlement.  Leave blank if OCP entitlement"
+  description = "Ignored if `cluster_id` is specified. Enter 'cloud_pak' if using a Cloud Pak entitlement.  Leave blank if OCP entitlement"
 }
 
 variable "on_vpc" {
   type        = bool
   default     = false
-  description = "Used if `cluster_id` is not specified. Type of infrastructure should cluster be? Options are `true` = VPC, `false` classic"
+  description = "Ignored if `cluster_id` is specified. Type of infrastructure should cluster be? Options are `true` = VPC, `false` classic"
 }
 
 variable "region" {
   default     = "us-south"
-  description = "Used if `cluster_id` is not specified. List all available regions with: `ibmcloud regions`"
+  description = "Ignored if `cluster_id` is specified. List all available regions with: `ibmcloud regions`"
 }
 
 variable "resource_group" {
   default     = "cloud-pak-sandbox"
-  description = "Used if `cluster_id` is not specified. List all available resource groups with: `ibmcloud resource groups`"
+  description = "Ignored if `cluster_id` is specified. List all available resource groups with: `ibmcloud resource groups`"
 }
 
 variable "roks_version" {
   default     = "4.6"
-  description = "Used if `cluster_id` is not specified. List available versions: `ibmcloud ks versions`"
+  description = "Ignored if `cluster_id` is specified. List available versions: `ibmcloud ks versions`"
 }
 
 variable "project_name" {
   default     = "roks"
-  description = "Used if `cluster_id` is not specified. The project name is used to name the cluster with the environment name"
+  description = "Ignored if `cluster_id` is specified. The project name is used to name the cluster with the environment name"
 }
 
 variable "owner" {
@@ -41,47 +41,47 @@ variable "owner" {
 
 variable "environment" {
   default     = "dev"
-  description = "Used if `cluster_id` is not specified.  The environment name is used to name the cluster with the project name"
+  description = "Ignored if `cluster_id` is specified.  The environment name is used to name the cluster with the project name"
 }
 
 variable "force_delete_storage" {
   type        = bool
   default     = true
-  description = "Used if `cluster_id` is not specified. If set to true, force the removal of persistent storage associated with the cluster during cluster deletion. Default value is false"
+  description = "Ignored if `cluster_id` is specified. If set to true, force the removal of persistent storage associated with the cluster during cluster deletion. Default value is false"
 }
 
 // OpenShift cluster specific input parameters and default values:
 variable "flavors" {
   type    = list(string)
   default = ["b3c.16x64"]
-  description = "Used if `cluster_id` is not specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"mx2.4x32\"]`"
+  description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"mx2.4x32\"]`"
 }
 
 variable "workers_count" {
   type    = list(number)
   default = [4]
-  description = "Used if `cluster_id` is not specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
+  description = "Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
 }
 
 variable "private_vlan_number" {
   default     = ""
-  description = "Used if `cluster_id` is not specified. Classic Only. Private VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number"
+  description = "Ignored if `cluster_id` is specified. Classic Only. Private VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number"
 }
 
 variable "public_vlan_number" {
   default     = ""
-  description = "Used if `cluster_id` is not specified. Classic Only. Public VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
+  description = "Ignored if `cluster_id` is specified. Classic Only. Public VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
 }
 
 variable "datacenter" {
   default = "dal12"
-  description = "Used if `cluster_id` is not specified. Classic Only. List all available datacenters/zones with: 'ibmcloud ks zone ls --provider classic'"
+  description = "Ignored if `cluster_id` is specified. Classic Only. List all available datacenters/zones with: 'ibmcloud ks zone ls --provider classic'"
 }
 
 variable "vpc_zone_names" {
   type    = list(string)
   default = ["us-south-1"]
-  description = "Used if `cluster_id` is not specified. VPC only. Array with the subzones in the region to create the workers groups. List all the zones with: 'ibmcloud ks zone ls --provider vpc-gen2'. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
+  description = "Ignored if `cluster_id` is specified. VPC only. Array with the subzones in the region to create the workers groups. List all the zones with: 'ibmcloud ks zone ls --provider vpc-gen2'. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
 }
 
 variable "config_dir" {
@@ -98,41 +98,41 @@ variable "install_portworx" {
 }
 
 variable "ibmcloud_api_key" {
-  description = "For Portworx: IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
+  description = "Ignored if Portworx is not enabled: IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
 }
 
 variable "storage_capacity"{
     type = number
     default = 200
-    description = "For Portworx: Storage capacityin GBs"
+    description = "Ignored if Portworx is not enabled: Storage capacityin GBs"
 }
 
 variable "storage_profile" {
     type = string
     default = "10iops-tier"
-    description = "Optional For Portworx: Storage profile used for creating storage"
+    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
 }
 
 variable "storage_iops" {
     type = number
     default = 10
-    description = "Optional For Portworx: Used only if a user provides a custom storage_profile"
+    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
 }
 
 variable "create_external_etcd" {
     type = bool
     default = false
-    description = "For Portworx: Do you want to create an external etcd database? `true` or `false`"
+    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
 }
 
 # These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
 # You may override these for additional security.
 variable "etcd_username" {
   default = ""
-  description = "For Portworx: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
 variable "etcd_password" {
   default = ""
-  description = "For Portworx: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
