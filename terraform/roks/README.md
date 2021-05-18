@@ -22,6 +22,16 @@ The Terraform script requires the following list of input variables. Here are so
 | `flavors`              | Array with the flavors or machine types of each of the workers.  List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic it is only possible to have one worker group, so only list one flavor, i.e. `["b3c.16x64"]`. Example on VPC `["mx2.4x32", "mx2.8x64", "cx2.4x8"]` or `["mx2.4x32"]`  | `["mx2.4x32"]`   | No       |
 | `workers_count`        | Array with the amount of workers on each workers group. On Classic it's only possible to have one workers group, so only the first number in the list is taken for the cluster size. Example: `[1, 3, 5]` or `[2]`   | `[2]`            | No       |
 | `force_delete_storage` | If set to `true`, force the removal of persistent storage associated with the cluster during cluster deletion. Default value is `false`.                                                             | `false`          | No       |
+| `install_storage`              | If set to `false` does not install storage and attach the volumes to the worker nodes. Enabled by default  |  `true` | Yes      |
+| `storage_capacity`             | Sets the capacity of the volume in GBs. |   `200`    | Yes      |
+| `storage_iops`                 | Sets the number of iops for a custom class. *Note* This is used only if a user provides a custom `storage_profile` |   `10`    | Yes      |
+| `storage_profile`              | The is the storage profile used for creating storage. If this is set to a custom profile, you must update the `storage_iops` |   `10iops-tier`    | Yes      |
+| `resource_group`          | The resource group name where the cluster is housed                                  |         | Yes      |
+| `cluster_id`                   | The name of the cluster created |  | Yes       |
+| `create_external_etcd`         | Set this value to `true` or `false` to create an external etcd | `false` | Yes |
+| `etcd_username`                | Username needed for etcd                         |      | yes |
+| `etcd_password`                | Password needed for etcd                         |      | Yes |
+| `etcd_secret_name`             | Etcd secret name, do not change it from default  | `px-etcd-certs`    | Yes |
 
 ## Output Parameters
 
@@ -32,6 +42,8 @@ The module returns the following output variables:
 | `endpoint` | The URL of the public service endpoint for your cluster |
 | `id`       | The unique identifier of the cluster.                   |
 | `name`     | The name of the cluster                                 |
+| `config_file_path` | Provides the config file path of the cluster |
+| `cluster_config`   | Provides the kube config of the cluster |
 
 ## Validation
 
@@ -44,8 +56,54 @@ ibmcloud ks cluster config -cluster $(terraform output cluster_id)
 kubectl cluster-info
 ```
 
+<b>For Portworx:</b>
+
+If you have not setup `kubectl` to access the cluster, execute:
+
+```bash
+# If created with Terraform:
+ibmcloud ks cluster config --cluster $(terraform output cluster_id)
+
+# If created with Schematics:
+ibmcloud ks cluster config --cluster $(ibmcloud schematics workspace output --id $WORKSPACE_ID --json | jq -r '.[].output_values[].cluster_id.value')
+
+# If created with IBM Cloud CLI:
+ibmcloud ks cluster config --cluster $CLUSTER_NAME
+```
+
+Verify the cluster is up and running executing these commands:
+
+```bash
+kubectl cluster-info
+kubectl get nodes
+kubectl get pods --all-namespaces
+```
+
+Execute the following commands to validate this Cloud Pak:
+
+```bash
+export KUBECONFIG=$(terraform output config_file_path)
+
+kubectl cluster-info
+```
+
+For more information on Portworx Validation, go [here](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/portworx/testing#3-verify).
+
 ## Clean up
 
 When the cluster is no longer needed, run `terraform destroy` if this was created using your local Terraform client with `terraform apply`. 
 
 If this cluster was created using `schematics`, just delete the schematics workspace and specify to delete all created resources.
+
+<b>For Portworx:</b>
+
+To uninstall Portworx and its dependencies from a cluster, execute the following commands:
+
+While logged into the cluster
+
+```bash
+curl -fsL https://install.portworx.com/px-wipe | bash
+```
+This will remove the Portworx and Stork pods on the cluster.
+
+Once this completes, execute: `terraform destroy` if this was create locally using Terraform or remove the Schematic's workspace.
