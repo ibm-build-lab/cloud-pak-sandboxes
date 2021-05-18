@@ -98,12 +98,6 @@ variable "public_vlan_number" {
   description = "Classic Only: Only required if cluster_id is not specified. Public VLAN assigned to your zone. List available VLANs in the zone: 'ibmcloud ks vlan ls --zone <datacenter>', make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Only required if cluster id not specified and on_vpc=false."
 }
 
-// VPC only. Required if cluster id is not specified and 'on_vpc=true'
-variable "vpc_zone_names" {
-  type        = list(string)
-  default     = ["us-south-1"]
-  description = "VPC Only: Only required if cluster_id is not specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: 'ibmcloud ks zone ls --provider vpc-gen2'. Only required if cluster id not specified and on_vpc=true."
-}
 
 // Local Variables and constants
 locals {
