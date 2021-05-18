@@ -53,7 +53,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
 
-  cluster_name_id   = var.enable_cluster ? module.cluster.id : var.cluster_id
+  cluster_name_id   = local.enable_cluster ? module.cluster.id : var.cluster_id
   resource_group_id = module.cluster.resource_group.id
   config_dir        = var.config_dir
   download          = true
