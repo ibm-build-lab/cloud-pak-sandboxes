@@ -46,7 +46,12 @@
         {
           "name": "on_vpc",
           "value": "false",
-          "type": "string"
+          "type": "bool"
+        },
+        {
+          "name": "vpc_zone_names",
+          "value": "[\"us-south-1\"]",
+          "type": "list(string)"
         },
         {
           "name": "flavors",
@@ -65,11 +70,6 @@
         },
         {
           "name": "datacenter",
-          "value": "dal12",
-          "type": "string"
-        },
-        {
-          "name": "vpc_zone_names",
           "value": "dal12",
           "type": "string"
         },

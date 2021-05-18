@@ -53,6 +53,14 @@ CLOUD_PAK_REPO_LOCATION_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandbo
 
 EXISTING_CLUSTER="false"
 
+IAF="false"
+IAF_VERSION="IBM Automation Foundation 1.0"
+IAF_TEMPLATE=./templates/iaf-workspace-configuration.json
+IAF_REPO_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf"
+IBM_API_KEY="none"
+
+CLASSIC="false"
+VPC="false"
 
 # Creats a spinning cursor for user to know program is running
 update_cursor() {
@@ -70,7 +78,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION" "$IAF_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -133,6 +141,16 @@ get_cloud_pak_install() {
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;; 
+            $IAF_VERSION)
+                echo "${bold}Selected: $IAF_VERSION"
+                IAF="true"
+                cp $IAF_TEMPLATE workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$IAF_REPO_LOCATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;  
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
     done
@@ -195,6 +213,10 @@ prompt_license() {
     then
         echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
+    if $IAF
+    then
+        echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
+    fi
     licenseAgree=("Yes" "No")
     select licenseAgree in "${licenseAgree[@]}"; do
         case $licenseAgree in
@@ -248,8 +270,48 @@ get_workspace_name() {
     then
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4auto-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-cp4auto-sandbox"
-    fi    
+    fi
+    if $IAF
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-iaf-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-iaf-sandbox"
+    fi      
 }
+
+get_vpc() {
+
+    # updates workspace-configuration.json .template_data[.varialbestore.installing_monitoring_module]
+    echo "${bold}Build infrastructure on Classic or VPC ${green}"
+    classicvpc=("Classic" "VPC")
+    select response in "${classicvpc[@]}"; do
+        case $response in
+            "Classic")
+               CLASSIC="true"
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "VPC")
+               VPC="true"
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+    
+}
+
+get_ibm_api_key() {
+    echo "${bold}Enter IBM Cloud API Key, for more instructions go to"
+    read -s -p "${green}https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform#create-an-ibm-cloud-api-key:${normal} " -e IBM_API_KEY
+    echo " "
+    cp workspace-configuration.json temp.json
+    jq -r --arg v "$IBM_API_KEY" '(.template_data[] | .variablestore[] | select(.name == "IC_API_KEY") | .value) |= $v' temp.json > workspace-configuration.json    
+ 
+}
+
 
 # get project metadata (name, owner, env, etc...)
 get_meta_data() {
@@ -263,6 +325,10 @@ get_meta_data() {
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
+    if $IAF
+    then
+        get_ibm_api_key
+    fi 
 }
 
 # writes metadata to workspace-configuration.json and temp.json these need to be cleaned up later
@@ -300,6 +366,12 @@ write_meta_data() {
     jq -r --arg v "$CLUSTER_ID" '(.template_data[] | .variablestore[] | select(.name == "cluster_id") | .value) |= $v' temp.json > workspace-configuration.json
 }
 
+# writes IAF module data
+# updates the values across the respective workspace_configuration values
+iaf_modules() {
+    sleep 1
+
+}
 # writes cp4mcm module values if needed
 # updates the values across the respective workspace-configuration values.
 cp4mcm_modules() {
@@ -1214,6 +1286,261 @@ select_region() {
 
 }
 
+select_vpc_zone() {
+    # pick region and datacenter
+    echo "${bold}Choose your cluster region: ${green}"
+    regions=("us-east" "us-south" "eu-de" "eu-gb" "ca-tor" "jp-tok" "jp-osa" "au-syd")
+    select region in "${regions[@]}"; do
+        case $region in
+            "us-east")
+                echo "${bold}Chosen region: us-east, pease pick a vpc zone:${green}"
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "us-east"' temp.json > workspace-configuration.json
+                eastZone=("us-east-1" "us-east-2" "us-east-3")
+                select datacenter in "${eastZone[@]}"; do
+                    case $datacenter in
+                        "us-east-1")
+                            echo "${bold}Chosen vpc zone: us-east-1"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"us-east-1\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "us-east-2")
+                            echo "${bold}Chosen vpc zone: us-east-2"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"us-east-2\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "us-east-3")
+                            echo "${bold}Chosen vpc zone: us-east-3"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"us-east-3\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        *) echo "${bold}invalid option $REPLY ${green}";;
+                    esac
+                done
+                break
+                ;;
+            "us-south")
+                echo "${bold}Chosen region: us-south, pease pick a vpc zone:${green}"
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "us-south"' temp.json > workspace-configuration.json
+                southZone=("us-south-1" "us-south-2" "us-south-3")
+                select datacenter in "${southZone[@]}"; do
+                    case $datacenter in
+                        "us-south-1")
+                            echo "${bold}Chosen vpc zone: us-south-1"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"us-south-1\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "us-south-2")
+                            echo "${bold}Chosen vpc zone: us-south-2"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"us-south-2\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "us-south-3")
+                            echo "${bold}Chosen vpc zone: us-south-3"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"us-south-3\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        *) echo "${bold}invalid option $REPLY ${green}";;
+                    esac
+                done
+                break
+                ;;
+            "eu-de")
+                echo "${bold}Chosen region: EU Frankenfurt, pease pick a vpc zone${green}"
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "eu-de"' temp.json > workspace-configuration.json
+                euZone=("eu-de-1" "eu-de-2" "eu-de-3")
+                select datacenter in "${euZone[@]}"; do
+                    case $datacenter in
+                        "eu-de-1")
+                            echo "${bold}Chosen vpc zone: eu-de-1"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"eu-de-1\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "eu-de-2")
+                            echo "${bold}Chosen vpc zone: eu-de-2"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"eu-de-2\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "eu-de-3")
+                            echo "${bold}Chosen vpc zone: eu-de-3"
+                            cp workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"eu-de-3\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        *) echo "${bold}invalid option $REPLY ${green}";;
+                    esac
+                done
+                break
+                ;;
+            "eu-gb")
+                echo "${bold}Chosen region: EU London, pease pick a vpc zone${green}"
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "eu-gb"' temp.json > workspace-configuration.json
+                ukZone=("eu-gb-1" "eu-gb-2" "eu-gb-3")
+                select datacenter in "${ukZone[@]}"; do
+                    case $datacenter in
+                        "eu-gb-1")
+                            echo "${bold}Chosen vpc zone: eu-gb-1"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"eu-gb-1\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "eu-gb-2")
+                            echo "${bold}Chosen vpc zone: eu-gb-2"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"eu-gb-2\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "eu-gb-3")
+                            echo "${bold}Chosen vpc zone: eu-gb-3"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"eu-gb-3\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        *) echo "${bold}invalid option $REPLY ${green}";;
+                    esac
+                done
+                break
+                ;;
+            "ca-tor")
+                echo "${bold}Chosen region: Canada Toronto, pease pick a vpc zone${green}"
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "ca-tor"' temp.json > workspace-configuration.json
+                caZone=("ca-tor-1" "ca-tor-1" "ca-tor-1" )
+                select datacenter in "${caZone[@]}"; do
+                    case $datacenter in
+                        "ca-tor-1")
+                            echo "${bold}Chosen vpc zone: ca-tor-1"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"ca-tor-1\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "ca-tor-2")
+                            echo "${bold}Chosen vpc zone: ca-tor-2"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"ca-tor-2\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "ca-tor-3")
+                            echo "${bold}Chosen vpc zone: ca-tor-1"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"ca-tor-3\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        *) echo "${bold}invalid option $REPLY ${green}";;
+                    esac
+                done
+                break
+                ;;
+            "jp-tok")
+                echo "${bold}Chosen region: Japan Tokyo, pease pick a vpc zone${green}"
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "jp-tok"' temp.json > workspace-configuration.json
+                jpZone=("jp-tok-1" "jp-tok-2" "jp-tok-3")
+                select datacenter in "${jpZone[@]}"; do
+                    case $datacenter in
+                        "jp-tok-1")
+                            echo "${bold}Chosen vpc zone: jp-tok-1"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"jp-tok-1\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "jp-tok-2")
+                            echo "${bold}Chosen vpc zone: jp-tok-2"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"jp-tok-2\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "jp-tok-3")
+                            echo "${bold}Chosen vpc zone: jp-tok-3"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"jp-tok-3\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        *) echo "${bold}invalid option $REPLY ${green}";;
+                    esac
+                done
+                break
+                ;;
+            "jp-osa")
+                echo "${bold}Chosen region: Japan Osaka, pease pick a vpc zone${green}"
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "jp-osa"' temp.json > workspace-configuration.json
+                jpZone=("jp-osa-1" "jp-osa-2" "jp-osa-3")
+                select datacenter in "${jpZone[@]}"; do
+                    case $datacenter in
+                        "jp-osa-1")
+                            echo "${bold}Chosen vpc zone: jp-osa-1"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"jp-osa-1\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "jp-osa-2")
+                            echo "${bold}Chosen vpc zone: jp-osa-2"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"jp-osa-2\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "jp-osa-3")
+                            echo "${bold}Chosen vpc zone: jp-osa-3"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"jp-osa-3\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        *) echo "${bold}invalid option $REPLY ${green}";;
+                    esac
+                done
+                break
+                ;;
+            "au-syd")
+                echo "${bold}Chosen region: uk south, pease pick a vpc zone${green}"
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "au-syd"' temp.json > workspace-configuration.json
+                auZone=("au-syd-1" "au-syd-2" "au-syd-3")
+                select datacenter in "${auZone[@]}"; do
+                    case $datacenter in
+                        "au-syd-1")
+                            echo "${bold}Chosen vpc zone: au-syd-1"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"au-syd-1\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "au-syd-2")
+                            echo "${bold}Chosen vpc zone: au-syd-2"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"au-syd-2\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        "au-syd-3")
+                            echo "${bold}Chosen vpc zone: au-syd-3"
+                            cp ./workspace-configuration.json temp.json
+                            jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"au-syd-3\"]"' temp.json > workspace-configuration.json
+                            break
+                            ;;
+                        *) echo "${bold}invalid option $REPLY ${green}";;
+                    esac
+                done
+                break
+                ;;    
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    manage_vlan
+
+}
+
+
 # create workspace, keeps a copy of the input and stores in $WORKSPACE_NAME-input.json and a copy of the ouptput in $WORKSPACE_NAME-config.json
 create_workspace() {
     echo
@@ -1277,6 +1604,11 @@ clean_entitled_key() {
     cp ./logs/$WORKSPACE_NAME-config.json temp.json
     jq -r ".template_data[0].variablestore[9].value |= \"SENSITIVE_DATA\"" temp.json > ./logs/$WORKSPACE_NAME-config.json
     rm temp.json    
+    
+    if $IAF
+    then
+        get_ibm_api_key
+    fi 
 }
 
 if [ ! -d "./logs" ] 
@@ -1284,6 +1616,7 @@ then mkdir logs
 fi
 # sets up the workspace-config.json
 get_cloud_pak_install
+get_vpc
 prompt_license
 check_resource_groups
 get_workspace_name
@@ -1292,7 +1625,13 @@ write_meta_data
 get_cluster_info
 write_meta_data
 if ! $EXISTING_CLUSTER
-    then select_region
+    then 
+        if CLASSIC
+            then select_region
+        fi
+        if VPC
+            then select_vpc_zone
+        fi
 fi
 
 
@@ -1305,7 +1644,9 @@ fi
 if $CP4D30
     then cp4d30_modules
 fi
-
+if $IAF
+    then iaf_modules
+fi
 
 # clean up temp
 cp ./workspace-configuration.json ./logs/$WORKSPACE_NAME-input.json
