@@ -303,6 +303,22 @@ get_vpc() {
     
 }
 
+set_vpc_form() {
+    if VPC
+    then 
+        if CP4MCM
+        then 
+            cp ./workspace-configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
+            break
+        fi
+        if IAF
+        then
+            break
+        fi
+    fi
+}
+
 get_ibm_api_key() {
     echo "${bold}Enter IBM Cloud API Key, for more instructions go to"
     read -s -p "${green}https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform#create-an-ibm-cloud-api-key:${normal} " -e IBM_API_KEY
