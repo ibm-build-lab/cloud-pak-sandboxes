@@ -1,4 +1,4 @@
-# Cloud Pak for Data Parameters and Installation Validation
+# Cloud Pak for Integration 
 
 ## Requirements
 
