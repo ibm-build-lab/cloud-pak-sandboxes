@@ -27,7 +27,7 @@ entitled_registry_key        = "< Your Entitled Key here >"
 
 ## Provisioning the Sandbox
 
-For instructions to provision the sandbox, go [here](../README.md#privisioning-the-sandbox).
+For instructions to provision the sandbox, go [here](../README.md#provisioning-the-sandbox).
 
 ## Input Parameters
 
