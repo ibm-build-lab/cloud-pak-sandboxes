@@ -1,8 +1,16 @@
 # Cloud Pak for Multi Cloud Management Parameters and Installation Validation
 
+## Requirements
+
+Make sure all requirements listed [here](../README.md#requirements) are completed.
+
+## Configure Access to IBM Cloud
+
+Make sure access to IBM Cloud is set up.  Go [here](../README.md#configure-access-to-ibm-cloud) for details.
+
 ## Cloud Pak Entitlement Key
 
-This Cloud Pak requires an Entitlement Key. It can be retrieved from https://myibm.ibm.com/products-services/containerlibrary.
+This Cloud Pak requires an Entitlement Key. It can be retrieved from [here](https://myibm.ibm.com/products-services/containerlibrary).
 
 If running local Terraform client, edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` or save the entitlement key in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key.
 
@@ -17,31 +25,35 @@ entitled_registry_key        = "< Your Entitled Key here >"
 
 **IMPORTANT**: Make sure to not commit the Entitlement Key file or content to the github repository.
 
+## Provisioning the Sandbox
+
+For instructions to provision the sandbox, go [here](../README.md#privisioning-the-sandbox).
+
 ## Input Parameters
 
-Besides the access credentials the Terraform code requires the following input parameters, for some variables are instructions to get the possible values using `ibmcloud`.
+Besides the access credentials, the Terraform code requires the following input parameters. For some variables there are instructions to get the possible values using `ibmcloud`.
 
 | Name                           | Description    | Default             | Required |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | -------- |
-| `project_name`                 | The project name is used to name the cluster with the environment name. It's also used to label the cluster and other resources   | `cloud-pack`        | Yes      |
-| `owner`                        | Use your user name or team name. The owner is used to label the cluster and other resources    | `anonymous`         | Yes      |
-| `environment`                  | The environment name is used to label the cluster and other resources  | `sandbox`           | No       |
-| `region`                       | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`   | `us-south`          | No       |
-| `resource_group`               | Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`   | `cloud-pak-sandbox` | No       |
 | `cluster_id`                   | **Optional:** cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned  | No       |
-| `on_vpc`                   | Whether OpenShift cluster is on VPC. `true`=VPC, `false`=Classic  | `false`                    | Yes       |
-| `datacenter`                   | **Classic only**: required if `cluster_id` is not specified. Datacenter or Zone in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`   | `dal10`             | No       |
-| `private_vlan_number`          | **Classic only**: required if `cluster_id` is not specified. Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the the VLAN type is private and the router begins with **bc**. Use the ID or Number. This value may be empty if there isn't any VLAN in the Zone, however this may cause issues if the code is applied again. |                     | No       |
-| `public_vlan_number`           | **Classic only**: required if `cluster_id` is not specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the the VLAN type is public and the router begins with **fc**. Use the ID or Number. This value may be empty if there isn't any VLAN in the Zone, however this may cause issues if the code is applied again.   |                     | No       |
-| `flavors`        | Required if `cluster_id` is not specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: "ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2" or "ibmcloud ks flavors --zone dal10 --provider classic". On Classic it is only possible to have one worker group, so only list one flavor, i.e. ["b3c.16x64"]. Example on VPC, ["mx2.4x32", "mx2.8x64", "cx2.4x8"] or ["mx2.4x32"]   | `["b3c.16x64"]`                  | No       |
-| `vpc_zone_names`                   | **VPC Only**: Only required if cluster_id is not specified. Zones in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`   | `us-south-1`             | No       |
+| `on_vpc`                   | Ignored if `cluster_id` is specified. Type of infrastructure to provision. `true`=VPC, `false`=Classic  | `false`                    | Yes       |
+| `resource_group`               | Ignored if `cluster_id` is specified. Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`   | `cloud-pak-sandbox` | No       |
+| `project_name`                 | Ignored if `cluster_id` is specified. The project name is used to name the cluster with the `environment` name. It's also used to label the cluster and other resources   | `cloud-pack`        | Yes      |
+| `owner`                        | Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources    | `anonymous`         | Yes      |
+| `environment`                  | Ignored if `cluster_id` is specified. The environment name is used to name the cluster  | `sandbox`           | No       |
+| `region`                       | Ignored if `cluster_id` is specified. IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`   | `us-south`          | No       |
+| `datacenter`                   | **Classic only**: Ignored if `cluster_id` is specified. Datacenter or Zone in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`   | `dal10`             | No       |
+| `private_vlan_number`          | **Classic only**: Ignored if `cluster_id` is specified. Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the VLAN type is private and the router begins with **bc**. Use the ID or Number. This value may be empty if there isn't any VLAN in the Zone. A VLAN will be provisioned. |                     | No       |
+| `public_vlan_number`           | **Classic only**: Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the VLAN type is public and the router begins with **fc**. Use the ID or Number. This value may be empty if there isn't an existing VLAN in the Zone. A VLAN will be provisioned.   |                     | No       |
+| `flavors`        | Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic it is only possible to have one worker group, so only list one flavor, example `["b3c.16x64"]`. Example on VPC, `["b2x.16x64", "cx2.4x8"] or ["mx2.4x32"]`   | `["b3c.16x64"]`                  | No       |
+| `vpc_zone_names`                   | **VPC Only**: Ignored if `cluster_id` is specified. Zones in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`   | `us-south-1`             | No       |
 | `entitled_registry_key`        | Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.  |                     | No       |
-| `entitled_registry_user_email` | Email address of the user owner of the Entitled Registry Key                                                                                                                                                                                                                                                                 |                     | Yes      |
-| `install_infr_mgt_module`      | Set to `true` to install the Infrastructure Management module                                                                                                                                                                                                                                                                | `false`             | No       |
-| `install_monitoring_module`    | Set to `true` to install the Monitoring module                                                                                                                                                                                                                                                                               | `false`             | No       |
-| `install_security_svcs_module` | Set to `true` to install the Security Services module                                                                                                                                                                                                                                                                        | `false`             | No       |
-| `install_operations_module`    | Set to `true` to install the Operations module                                                                                                                                                                                                                                                                               | `false`             | No       |
-| `install_tech_prev_module`     | Set to `true` to install the Tech Preview module                                                                                                                                                                                                                                                                             | `false`             | No       |
+| `entitled_registry_user_email` | Email address of the user owner of the Entitled Registry Key   |                     | Yes      |
+| `install_infr_mgt_module`      | Set to `true` to install the Infrastructure Management module   | `false`             | No       |
+| `install_monitoring_module`    | Set to `true` to install the Monitoring module  | `false`             | No       |
+| `install_security_svcs_module` | Set to `true` to install the Security Services module    | `false`             | No       |
+| `install_operations_module`    | Set to `true` to install the Operations module   | `false`             | No       |
+| `install_tech_prev_module`     | Set to `true` to install the Tech Preview module    | `false`             | No       |
 
 If you are using Schematics directly or the Private Catalog, set the variable `entitled_registry_key` with the content of the Entitlement Key, the file `entitlement.key` is not available.
 
@@ -61,7 +73,7 @@ The Terraform code return the following output parameters.
 | `cp4mcm_password`  | Password to login to the CP4MCM dashboard                                                                                           |
 | `cp4mcm_namespace` | Kubernetes namespace where all the CP4MCM objects are installed                                                                     |
 
-## Validations
+## Validation
 
 If you have not setup `kubectl` to access the cluster, execute:
 
@@ -76,7 +88,7 @@ ibmcloud ks cluster config --cluster $(ibmcloud schematics workspace output --id
 ibmcloud ks cluster config --cluster $CLUSTER_NAME
 ```
 
-Verify the cluster is up and running executing these commands:
+Verify the cluster is up and running with these commands:
 
 ```bash
 kubectl cluster-info
