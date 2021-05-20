@@ -55,8 +55,8 @@
         },
         {
           "name": "flavors",
-          "value": "['b3c.16x64']",
-          "type": "string"
+          "value": "[\"b3c.16x64\"]",
+          "type": "list(string)"
         },
         {
           "name": "datacenter",
