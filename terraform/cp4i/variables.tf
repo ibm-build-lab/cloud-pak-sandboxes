@@ -48,14 +48,7 @@ variable "public_vlan_number" {
   description = "Public VLAN assigned to your zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
 }
 
-// CP4DATA Module Variables
-
-// TODO: Include this variable in a future release to install/uninstall cp4data
-// variable "cp4data_installer_comand" {
-//   default     = "install"
-//   description = "Command to execute by the cp4data installer, the most common are: install, uninstall, check, upgrade"
-// }
-
+// CP4I Module Variables
 variable "entitled_registry_key" {
   default     = ""
   description = "Cloud Pak Entitlement Key. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable"
