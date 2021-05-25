@@ -47,24 +47,24 @@ variable "flavors" {
 variable "vpc_zone_names" {
   type        = list(string)
   default     = ["us-south-1"]
-  description = "Ignored if `cluster_id` is specified. **VPC Only**. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Only required if cluster id not specified and `on_vpc=true`."
+  description = "**VPC Only**. Ignored if `cluster_id` is specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Only required if cluster id not specified and `on_vpc=true`."
 }
 
 // Classic Only. Required if cluster id is not specified and 'on_vpc=false'
 variable "datacenter" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. *Classic Only*: Datacenter or Zone in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`. Only required if cluster id not specified and `on_vpc=false`."
+  description = "**Classic Only**: Ignored if `cluster_id` is specified.  Datacenter or Zone in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`. Only required if cluster id not specified and `on_vpc=false`."
 }
 
 // Classic Only: VLAN's numbers on the datacenter
 // Required if cluster id is not specified and 'on_vpc=false'
 variable "private_vlan_number" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. *Classic Only*. Private VLAN assigned to your zone. List available VLANs in the zone: 'ibmcloud ks vlan ls --zone <datacenter>', make sure the the VLAN type is private and the router begins with bc. Use the ID or Number."
+  description = "**Classic Only**: Ignored if `cluster_id` is specified. Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <datacenter>`, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number."
 }
 variable "public_vlan_number" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. *Classic Only*. Public VLAN assigned to your zone. List available VLANs in the zone: 'ibmcloud ks vlan ls --zone <datacenter>', make sure the the VLAN type is public and the router begins with fc. Use the ID or Number."
+  description = "**Classic Only**: Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <datacenter>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number."
 }
 
 // MCM Module Variables
