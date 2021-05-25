@@ -62,7 +62,6 @@ module "cp4mcm" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4mcm"
   enable = true
   on_vpc = var.on_vpc
-  //roks_is_ready = module.cluster.endpoint
 
   // ROKS cluster parameters:
   openshift_version   = local.roks_version
