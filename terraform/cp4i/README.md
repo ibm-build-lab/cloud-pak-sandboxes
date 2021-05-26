@@ -59,6 +59,7 @@ The Terraform code return the following output parameters.
 | `cluster_name`      | The cluster name which should be: `{project_name}-{environment}-cluster`                                                            |
 | `resource_group`    | Resource group where the OpenShift cluster is created                                                                               |
 | `kubeconfig`        | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
+| `flavors` | Cluster flavor or the size of the cluster. |
 
 ## Validations
 

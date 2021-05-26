@@ -16,6 +16,9 @@ output "cluster_name" {
 output "kubeconfig" {
   value = data.ibm_container_cluster_config.cluster_config.config_file_path
 }
+output "flavors" {
+  value = var.flavors
+}
 
 // output "cluster_config" {
 //   value = module.cluster.config

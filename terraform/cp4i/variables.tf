@@ -56,12 +56,21 @@ variable "entitled_registry_key" {
 variable "entitled_registry_user_email" {
   description = "Email address of the user owner of the Entitled Registry Key"
 }
+variable "on_vpc" {
+  default = "false"
+  description = "Required: Cluster type to be installed on, 'true = VPC, 'false' = Classic"
+}
+
+variable "flavors" {
+  type        = list(string)
+  default     = ["bx2.16x64"]
+  description = "Only required if cluster_id is not specified. Array with the flavors or machine types of each the workers group. Classic only takes the first flavor of the list. List all flavors for each zone with: 'ibmcloud ks flavors --zone us-south-1 --provider <classic | vpc-gen2>'. Example: [\"bx2.16x64\", \"mx2.8x64\", \"cx2.4x8\"]"
+}
 
 // ROKS Module : Local Variables and constansts
 
 locals {
-  infra                      = "classic"
-  flavors                    = ["b3c.16x64"]
+  flavors                    = ["bx2.16x64"]
   workers_count              = [5]
   roks_version               = "4.6"
   kubeconfig_dir             = "./.kube/config"
