@@ -1,3 +1,8 @@
+// IBM Cloud API Key
+variable "ibmcloud_api_key" {
+  description = "IBM Cloud API Key. Go here for information on how to create: https://cloud.ibm.com/iam/apikeys"
+}
+
 // Cluster Variables
 // if set to false, cluster is on Classic Infrastructure
 variable "cluster_id" {
