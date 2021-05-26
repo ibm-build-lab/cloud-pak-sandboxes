@@ -68,6 +68,11 @@ variable "public_vlan_number" {
   description = "**Classic Only**: Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <datacenter>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number."
 }
 
+variable "force_delete_storage" {
+  default     = "true"
+  description = "Should Storage be deleted cluster is deprovisioned?"
+}
+
 // IAF Module Variables
 variable "entitled_registry_key" {
   default     = ""
