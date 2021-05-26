@@ -8,7 +8,7 @@ variable "entitled_registry_user_email" {
 }
 
 // IBM Cloud API Key
-variable "ic_api_key" {
+variable "ibmcloud_api_key" {
   description = "IBM Cloud API Key"
 }
 
