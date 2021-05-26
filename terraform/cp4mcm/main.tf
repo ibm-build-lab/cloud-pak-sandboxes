@@ -66,6 +66,7 @@ module "cp4mcm" {
   // ROKS cluster parameters:
   openshift_version   = local.roks_version
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+  cluster_name_id = local.enable_cluster ? module.cluster.id : var.cluster_id
 
   // Entitled Registry parameters:
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
