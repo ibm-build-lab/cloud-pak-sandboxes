@@ -70,7 +70,7 @@ variable "public_vlan_number" {
 
 variable "force_delete_storage" {
   default     = "true"
-  description = "Should Storage be deleted cluster is deprovisioned?"
+  description = "Should Storage be deleted when cluster is deprovisioned?"
 }
 
 // IAF Module Variables
