@@ -1,4 +1,12 @@
-# Cloud Pak for Data Parameters and Installation Validation
+# Cloud Pak for Integration 
+
+## Requirements
+
+Make sure all requirements listed [here](../README.md#requirements) are completed.
+
+## Configure Access to IBM Cloud
+
+Make sure access to IBM Cloud is set up.  Go [here](../README.md#configure-access-to-ibm-cloud) for details.
 
 ## Cloud Pak Entitlement Key
 
@@ -17,23 +25,27 @@ entitled_registry_key        = "< Your Entitled Key here >"
 
 **IMPORTANT**: Make sure to not commit the Entitlement Key file or content to the github repository.
 
+## Provisioning the Sandbox
+
+For instructions to provision the sandbox, go [here](../README.md#provisioning-the-sandbox).
+
 ## Input Parameters
 
 In addition, the Terraform code requires the following input parameters, for some variables are instructions to get the possible values using `ibmcloud`.
 
-| Name                               | Description                                                                                                                                                                                                                                                                                                                  | Default                     | Required |
+| Name                               | Description  | Default                     | Required |
 | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | -------- |
-| `project_name`                     | The project name is used to name the cluster with the environment name. It's also used to label the cluster and other resources                                                                                                                                                                                              | `cloud-pack`                | Yes      |
-| `owner`                            | Use your user name or team name. The owner is used to label the cluster and other resources                                                                                                                                                                                                                                  | `anonymous`                 | Yes      |
-| `environment`                      | The environment name is used to label the cluster and other resources                                                                                                                                                                                                                                                        | `sandbox`                   | No       |
-| `region`                           | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`                                                                                                                                                                                                                                   | `us-south`                  | No       |
-| `resource_group`                   | Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`                                                                                                                                                                                                      | `cloud-pak-sandbox`         | No       |
-| `cluster_id`                       | If you have an existing cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned                                                                                                                                                                             |                             | No       |
-| `datacenter`                       | On IBM Cloud Classic this is the datacenter or Zone in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`                                                                                                                                                          | `dal10`                     | No       |
+| `project_name`                     | The project name is used to name the cluster with the environment name. It's also used to label the cluster and other resources    | `cloud-pack`                | Yes      |
+| `owner`                            | Use your user name or team name. The owner is used to label the cluster and other resources  | `anonymous`                 | Yes      |
+| `environment`                      | The environment name is used to label the cluster and other resources    | `sandbox`                   | No       |
+| `region`                           | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`    | `us-south`                  | No       |
+| `resource_group`                   | Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`     | `cloud-pak-sandbox`         | No       |
+| `cluster_id`                       | If you have an existing cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned   |                             | No       |
+| `datacenter`                       | On IBM Cloud Classic this is the datacenter or Zone in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`   | `dal10`                     | No       |
 | `private_vlan_number`              | Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the the VLAN type is private and the router begins with **bc**. Use the ID or Number. This value may be empty if there isn't any VLAN in the Zone, however this may cause issues if the code is applied again. |                             | No       |
 | `public_vlan_number`               | Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the the VLAN type is public and the router begins with **fc**. Use the ID or Number. This value may be empty if there isn't any VLAN in the Zone, however this may cause issues if the code is applied again.   |                             | No       |
-| `entitled_registry_key`            | Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.                                                                                                                                               |                             | No       |
-| `entitled_registry_user_email`     | Email address of the user owner of the Entitled Registry Key                                                                                                                                                                                                                                                                 |                             | Yes      |
+| `entitled_registry_key`            | Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.   |                             | No       |
+| `entitled_registry_user_email`     | Email address of the user owner of the Entitled Registry Key   |                             | Yes      |
 If you are using Schematics directly or the Private Catalog, set the variable `entitled_registry_key` with the content of the Entitlement Key, the file `entitlement.key` is not available.
 
 ## Output Parameters

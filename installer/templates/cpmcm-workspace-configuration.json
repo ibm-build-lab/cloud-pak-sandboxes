@@ -58,12 +58,17 @@
                     "name": "on_vpc",
                     "value": "false",
                     "type": "bool"
-                  },
-                  {
+                },
+                {
+                    "name": "flavors",
+                    "value": "[\"b3c.16x64\"]",
+                    "type": "list(string)"
+                },
+                {
                     "name": "vpc_zone_names",
                     "value": "[\"us-south-1\"]",
                     "type": "list(string)"
-                  },
+                },
                 {
                     "name": "private_vlan_number",
                     "value": "0",

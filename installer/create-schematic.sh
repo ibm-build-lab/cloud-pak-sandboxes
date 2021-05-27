@@ -278,6 +278,23 @@ get_workspace_name() {
     fi      
 }
 
+
+set_vpc_flavors() {
+    if $VPC
+    then 
+        if $CP4MCM
+        then 
+            cp ./workspace-configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+        fi
+        if $IAF
+        then
+            cp ./workspace-configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+        fi
+    fi
+}
+
 get_vpc() {
 
     # updates workspace-configuration.json .template_data[.varialbestore.installing_monitoring_module]
@@ -295,6 +312,7 @@ get_vpc() {
                VPC="true"
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
+               set_vpc_flavors
                break
                ;;
             *) echo "${bold}invalid option $REPLY ${green}";;
@@ -302,6 +320,7 @@ get_vpc() {
     done
     
 }
+
 
 get_ibm_api_key() {
     echo "${bold}Enter IBM Cloud API Key, for more instructions go to"
@@ -327,7 +346,7 @@ get_meta_data() {
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
     if $IAF
     then
-        get_ibm_api_key
+       get_ibm_api_key
     fi 
 }
 
@@ -1623,27 +1642,27 @@ write_meta_data
 get_cluster_info
 write_meta_data
 if ! $EXISTING_CLUSTER
-    then 
-        if $CLASSIC
-            then select_region
-        fi
-        if $VPC
-            then select_vpc_zone
-        fi
+then 
+    if $CLASSIC
+    then select_region
+    fi
+    if $VPC
+    then select_vpc_zone
+    fi
 fi
 
 
 if $CP4MCM
-    then cp4mcm_modules
+then cp4mcm_modules
 fi
 if $CP4D35
-    then cp4d35_modules
+then cp4d35_modules
 fi
 if $CP4D30
-    then cp4d30_modules
+then cp4d30_modules
 fi
 if $IAF
-    then iaf_modules
+then iaf_modules
 fi
 
 # clean up temp

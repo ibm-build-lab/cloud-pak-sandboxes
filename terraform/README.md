@@ -1,4 +1,4 @@
-# Creation of a Parter Sandbox
+# Creation of a Partner Sandbox
 
 This documentation is **<u>only for developers or advanced users</u>**. Sandbox **users** please refer to [Installer Script](../installer/README.md) documentation.
 
@@ -14,15 +14,15 @@ This folder contains the Infrastructure as Code or Terraform code to create a **
 
 Everything is automated with Makefiles. However, instructions to get the same results manually are provided.
 
-- [Creation of a Cloud Pak Sandbox](#creation-of-a-cloud-pak-sandbox)
+- [Creation of a Partner Sandbox](#creation-of-a-partner-sandbox)
   - [Requirements](#requirements)
   - [Configure Access to IBM Cloud](#configure-access-to-ibm-cloud)
     - [Create an IBM Cloud API Key](#create-an-ibm-cloud-api-key)
     - [Create an IBM Cloud Classic Infrastructure API Key](#create-an-ibm-cloud-classic-infrastructure-api-key)
     - [Create the credentials file](#create-the-credentials-file)
-  - [Provisioning the Cloud Pak Sandbox](#provisioning-the-cloud-pak-sandbox)
-  - [Cloud Pak Design](#cloud-pak-design)
-    - [Cloud Pak External Terraform Modules](#cloud-pak-external-terraform-modules)
+  - [Provisioning the Sandbox](#provisioning-the-sandbox)
+  - [Design](#design)
+    - [External Terraform Modules](#external-terraform-modules)
 
 ## Requirements
 

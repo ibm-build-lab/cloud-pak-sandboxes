@@ -1,5 +1,9 @@
 # IBM Red Hat OpenShift Managed Cluster Parameters and Installation
 
+## Set up
+
+If running using your local Terraform Client, copy the appropriate `terraform.tfvars.classic` or `terraform.tfvars.vpc` to `terraform.tfvars` and ensure your values are set properly.  
+ 
 ## Input Parameters
 
 The Terraform script requires the following list of input variables. Here are some instructions to set their values for Terraform and how to get their values from IBM Cloud. Pay attention to the parameters required for **Classic** vs **VPC**.
