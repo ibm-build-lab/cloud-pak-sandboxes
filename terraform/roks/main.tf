@@ -83,7 +83,7 @@ module "portworx" {
   resource_group_name   = var.resource_group
   region                = var.region
   cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
-  unique_id             = "px-roks"
+  unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
 
   // These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
   // You may override these for additional security.
