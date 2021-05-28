@@ -3,7 +3,7 @@
   "type": ["terraform_v0.12"],
   "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Multi Cloud Management Cloud Pak on IBM Cloud Classic",
   "tags": ["owner:{{ OWNER }}", "env:{{ ENV }}", "project:{{ PROJECT }}"],
-  "resource_group": "schematics",
+  "resource_group": "cloud-pak-sandbox",
   "template_repo": {
     "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes",
     "branch": "{{ BRANCH }}"

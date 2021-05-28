@@ -9,7 +9,7 @@
         "env:{{ ENV }}",
         "project:{{ PROJECT }}"
     ],
-    "resource_group": "schematics",
+    "resource_group": "cloud-pak-sandbox",
     "template_repo": {
         "url": "https://github.ibm.com/hcbt/cloud-pak-sandboxes",
         "branch": "{{ BRANCH }}"
