@@ -1562,7 +1562,7 @@ select_vpc_zone() {
 create_workspace() {
     echo
     echo "${bold}Creating workspace: ${green}$WORKSPACE_NAME${bold}...${normal}"
-    #ibmcloud target -g schematics
+    #ibmcloud target -g cloud-pak-sandbox
     ibmcloud schematics workspace new --file ./logs/$WORKSPACE_NAME-input.json --json > ./logs/$WORKSPACE_NAME-config.json
     if [ $? -ne 0 ]; then
     exit 1
