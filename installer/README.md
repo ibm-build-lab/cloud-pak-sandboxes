@@ -52,7 +52,7 @@ Within the **IBM Cloud Shell** terminal, clone the following repo:
 
 ### Create a resource group
 
-In order for the scrip to run it requires a resource group to work out of as well as for the user to have permissions to that group. By default this resource group is ```cloud-pak-sandbox``` so you will need to go to your IBM cloud account and create this resource goup.
+In order for the script to run it requires a resource group to work out of as well as for the user to have permissions to that group. By default this resource group is ```cloud-pak-sandbox``` so you will need to go to your IBM cloud account and create this resource goup.
 
 If you want to use a personal resource group then you can go to the workspace-configuration.json in with respect to the cloud pak you wish to install and edit the resource group name to your choice.
 
