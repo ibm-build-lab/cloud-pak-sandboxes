@@ -74,7 +74,7 @@
             "type": "string"
           },
           {
-            "name": "IC_API_KEY",
+            "name": "ibmcloud_api_key",
             "value": "{{ IC_API_KEY }}",
             "type": "string",
             "secure": true
