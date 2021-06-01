@@ -33,6 +33,7 @@
           "name": "flavors",
           "value": "[\"b3c.4x16\"]",
           "type": "list(string)"
+        },
         {
           "name": "install_portworx",
           "value": "false",
