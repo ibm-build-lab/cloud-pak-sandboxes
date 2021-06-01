@@ -21,12 +21,12 @@ The Cloud Pak Sandbox Installer is an easy to use script that allows you to prov
 
 Currently you can run the script to install:
 
+- Automation Foundation
 - Cloud Pak for Multi Cloud Management
-- Cloud Pak for Application
 - Cloud Pak for Data
 - Cloud Pak for Integration
 - Cloud Pak for Busincess Automation (under development)
-- Cloud Pak for Security Automation (under development)
+- Cloud Pak for Security (under development)
 
 ## Install Using IBM Cloud Shell
 

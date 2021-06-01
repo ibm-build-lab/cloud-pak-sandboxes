@@ -1,8 +1,12 @@
 {
   "name": "{{ WORKSPACE_NAME }}",
   "type": ["terraform_v0.12"],
-  "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Applications Cloud Pak on IBM Cloud Classic",
-  "tags": ["owner:{{ OWNER }}", "env:{{ ENV }}", "project:{{ PROJECT }}"],
+  "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox with Portworx on IBM Cloud Classic or Gen2 VPC",
+  "tags": [
+    "owner:{{ OWNER }}",
+    "env:{{ ENV }}",
+    "project:{{ PROJECT }}"
+  ],
   "resource_group": "cloud-pak-sandbox",
   "template_repo": {
     "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes",
@@ -10,13 +14,34 @@
   },
   "template_data": [
     {
-      "folder": "terraform/cp4app",
+      "folder": "terraform/roks",
       "type": "terraform_v0.12",
       "variablestore": [
+        { 
+          "name": "on_vpc",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "flavors",
+          "value": "[\"bx2.16x64\"]",
+          "type": "list(string)"
+        },
+        {
+          "name": "install_portworx",
+          "value": "false",
+          "type": "bool"
+        },
         {
           "name": "region",
-          "value": "us-south",
+          "value": "us-east",
           "type": "string"
+        },
+        {
+          "name": "ibmcloud_api_key",
+          "value": "{{ IC_API_KEY }}", 
+          "type": "string",
+          "secure": true
         },
         {
           "name": "project_name",
@@ -40,22 +65,17 @@
         },
         {
           "name": "cluster_id",
-          "value": "{{ CLUSTER_ID }}",
+          "value": "",
           "type": "string"
         },
         {
           "name": "datacenter",
-          "value": "dal10",
+          "value": "",
           "type": "string"
         },
         {
-          "name": "on_vpc",
-          "value": "false",
-          "type": "bool"
-        },
-        {
           "name": "vpc_zone_names",
-          "value": "[\"us-south-1\"]",
+          "value": "[\"us-east-1\"]",
           "type": "list(string)"
         },
         {
@@ -69,19 +89,33 @@
           "type": "string"
         },
         {
-          "name": "entitled_registry_key",
-          "value": "{{ ENTITLED_KEY }}",
-          "type": "string",
-          "secure": true
+          "name": "storage_capacity",
+          "value": "200",
+          "type": "number"
         },
         {
-          "name": "entitled_registry_user_email",
-          "value": "{{ ENTITLED_KEY_EMAIL }}",
+          "name": "storage_iops",
+          "value": "10",
+          "type": "number"
+        },
+        {
+          "name": "storage_profile",
+          "value": "10iops-tier",
           "type": "string"
         },
         {
-          "name": "cp4app_installer_command",
-          "value": "install",
+          "name": "create_external_etcd",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "etcd_username",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "etcd_password",
+          "value": "",
           "type": "string"
         }
       ]
