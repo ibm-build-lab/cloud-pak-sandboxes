@@ -153,47 +153,6 @@ variable "entitled_registry_user_email" {
   description = "Docker email address"
 }
 
-// PORTWORX VARIABLES
-
-variable "storage_capacity" {
-  default     = 200
-  type        = number
-  description = "Sets storage capacity for portworx"
-}
-
-variable "storage_iops" {
-  default     = 10
-  type        = number
-  description = "Sets storage iops for portworx"
-}
-
-variable "storage_profile" {
-  default     = "10iops-tier"
-  type        = string
-  description = "Sets storage profile for portworx"
-}
-
-variable "create_external_etcd" {
-  default     = false
-  type        = bool
-  description = "Allows user to use external etcd for portworx"
-}
-
-variable "etcd_username" {
-  default     = ""
-  type        = string
-  description = "Sets etcd for portworx"
-}
-
-variable "etcd_password" {
-  default     = ""
-  type        = string
-  description = "Sets etcd for portworx"
-}
-
-// Modules available to install
-variable "empty_module_list" {
-  default     = true
 variable "cpd_project_name" {
   type        = string
   default     = "default"
