@@ -313,12 +313,24 @@ get_vpc() {
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
                set_vpc_flavors
+               if $CP4D35
+               then get_portworx
+               fi
                break
                ;;
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
     done
     
+}
+
+get_portworx() {
+
+    echo "${bold}Setup Portworx"
+    read -p "${bold}Declare Portworx storage capacity in ${green}gb${bold}, default value is ${green}200: ${normal}" -e STORAGE_CAPACITY
+    cp ./workspace-configuration.json temp.json
+    jq -r --arg v "$STORAGE_CAPACITY" '(.template_data[] | .variablestore[] | select(.name == "STORAGE_CAPACITY") | .value) |= $v' temp.json > workspace-configuration.json
+
 }
 
 

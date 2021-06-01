@@ -91,6 +91,36 @@
           "type": "string"
         },
         {
+          "name": "storage_capacity",
+          "value": "200",
+          "type": "number"
+        },
+        {
+          "name": "storage_iops", 
+          "value": "10",
+          "type": "number"
+        },
+        {
+          "name": "storage_profile",
+          "value": "10iops-tier",
+          "type": "string"
+        },
+        {
+          "name": "create_external_etcd",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "etcd_username",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "etcd_password",
+          "value": "",
+          "type": "string"
+        },
+        {
           "name": "empty_module_list",
           "value": "true",
           "type": "bool"
