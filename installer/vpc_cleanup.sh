@@ -2,40 +2,37 @@ bold=$(tput setaf 4; tput bold)
 normal=$(tput sgr0)
 green=$(tput setaf 2; tput bold)
 
-VPC_LENGTH=0
-SUBNET_LENGTH=0
-
 RESOURCEGROUPNAME="cloud-pak-sandbox"
 
 get_vpc() {
-    ibmcloud is vpcs --json  > vpc-list.json
-    VPC_LENGTH=$(jq '. | length' vpc-list.json)
+    ibmcloud is vpcs --json  > temp/vpc-list.json
+    VPC_LENGTH=$(jq '. | length' temp/vpc-list.json)
 }
 
 get_subnet() {
-    ibmcloud is subnets --json > subnets-list.json
-    SUBNET_LENGTH=$(jq '. | length' subnets-list.json)
+    ibmcloud is subnets --json > temp/subnet-list.json
+    SUBNET_LENGTH=$(jq '. | length' temp/subnet-list.json)
 }
 
 get_vpn() {
-    ibmcloud is vpcs --json  > vpn-list.json
-    VPN_LENGTH=$(jq '. | length' vpn-list.json)
+    ibmcloud is vpcs --json  > temp/vpn-list.json
+    VPN_LENGTH=$(jq '. | length' temp/vpn-list.json)
 }
 
 get_load_balancer() {
-    ibmcloud is load-balancers --json > balance-list.json
-    BALANCE_LENGTH=$(jq '. | length' balance-list.json)
+    ibmcloud is load-balancers --json > temp/balance-list.json
+    BALANCE_LENGTH=$(jq '. | length' temp/balance-list.json)
 
 }
 
 get_instances() {
-    ibmcloud is instances --json > instance-list.json
-    INSTANCE_LENGTH=$(jq '. | length' instance-list.json)
+    ibmcloud is instances --json > temp/instance-list.json
+    INSTANCE_LENGTH=$(jq '. | length' temp/instance-list.json)
 }
 
 get_gateway() {
-    ibmcloud is public-gateways --json > gateway-list.json
-    GATEWAY=$(jq '. | length' gateway-list.json)
+    ibmcloud is public-gateways --json > temp/gateway-list.json
+    GATEWAY_LENGTH=$(jq '. | length' temp/gateway-list.json)
 }
 
 delete_vpc() {
@@ -49,7 +46,7 @@ delete_vpc() {
         echo "${green}"
         for (( c=1; c<=$VPC_LENGTH; c++))
         do 
-            TEMP=$(jq -c --argjson v "$c" '(  .[$v-1] | .name, .id)' vpc-list.json )
+            TEMP=$(jq -c --argjson v "$c" '(  .[$v-1] | .name, .id)' temp/vpc-list.json )
             echo $c". "$TEMP
         done
         echo $c". EXIT"
@@ -61,8 +58,8 @@ delete_vpc() {
         elif (($VPC_OPTION>0)) && (($VPC_OPTION<=$VPC_LENGTH))
         then echo "${bold}Preparing to delete...${normal}"
              VPC_OPTION=$(($VPC_OPTION-1))
-             VPC_ID=$(jq -r --argjson v "$VPC_OPTION" '(.[$v] | .id)' vpc-list.json )
-             VPC_NAME=$(jq -r --argjson v "$VPC_OPTION" '(.[$v] | .name)' vpc-list.json )
+             VPC_ID=$(jq -r --argjson v "$VPC_OPTION" '(.[$v] | .id)' temp/vpc-list.json )
+             VPC_NAME=$(jq -r --argjson v "$VPC_OPTION" '(.[$v] | .name)' temp/vpc-list.json )
              echo "${bold}Continue to delete...?${green}"
              echo $VPC_NAME
              echo $VPC_ID
@@ -101,7 +98,7 @@ delete_subnet() {
         echo "${green}"
         for (( c=1; c<=$SUBNET_LENGTH; c++))
         do 
-            TEMP=$(jq -c --argjson v "$c" '(  .[$v-1] | .name, .id)' subnets-list.json )
+            TEMP=$(jq -c --argjson v "$c" '(  .[$v-1] | .name, .id)' temp/subnet-list.json )
             echo $c". "$TEMP
         done
         echo $c". EXIT"
@@ -113,8 +110,8 @@ delete_subnet() {
         elif (($SUBNET_OPTION>0)) && (($SUBNET_OPTION<=$SUBNET_LENGTH))
         then echo "${bold}Preparing to delete...${normal}"
              SUBNET_OPTION=$(($SUBNET_OPTION-1))
-             SUBNET_ID=$(jq -r --argjson v "$SUBNET_OPTION" '(.[$v] | .id)' subnets-list.json )
-             SUBNET_NAME=$(jq -r --argjson v "$SUBNET_OPTION" '(.[$v] | .name)' subnets-list.json )
+             SUBNET_ID=$(jq -r --argjson v "$SUBNET_OPTION" '(.[$v] | .id)' temp/subnet-list.json )
+             SUBNET_NAME=$(jq -r --argjson v "$SUBNET_OPTION" '(.[$v] | .name)' temp/subnet-list.json )
              echo "${bold}Continue to delete...${green}"
              echo $SUBNET_ID
              echo $SUBNET_NAME
@@ -147,8 +144,8 @@ delete_vpn() {
     echo "Searching for VPN's with Subnet $SUBNET_NAME..."
     for (( c=1; c<=$VPN_LENGTH; c++))
     do 
-        VPN_ID=$(jq -r --argjson v "$c" '.[$v-1] |  .id' vpn-list.json)
-        VPN_SUBNET=$(jq -r -c --argjson v "$c" '.[$v-1] | .subnets[0] | .name' vpn-list.json)
+        VPN_ID=$(jq -r --argjson v "$c" '.[$v-1] |  .id' temp/vpn-list.json)
+        VPN_SUBNET=$(jq -r -c --argjson v "$c" '.[$v-1] | .subnets[0] | .name' temp/vpn-list.json)
         if [[ "$VPN_SUBNET" == "$SUBNET_NAME" ]];
         then 
             echo "Deleting VPN gateway $VPN_ID"
@@ -158,18 +155,18 @@ delete_vpn() {
 }
 
 delete_balance() {
-get_load_balancer
-echo "Searching for Load Balancers with Subnet $SUBNET_NAME..."
-for (( c=1; c<=$BALANCE_LENGTH; c++))
-do 
-    LOAD_BALANCE_ID=$(jq -r --argjson v "$c" '.[$v-1] | .id' balance-list.json)
-    LOAD_BALANCE_SUBNET=$(jq -r -c --argjson v "$c" '.[$v-1] | .subnets[0] | .name' balance-list.json)
-    if [[ "$LOAD_BALANCE_SUBNET" == "$SUBNET_NAME" ]];
-    then 
-        echo "Deleting Load Balancer $LOAD_BALANCE_ID"
-        ibmcloud is load-balancer-delete $LOAD_BALANCE_ID --force
-    fi
-done
+    get_load_balancer
+    echo "Searching for Load Balancers with Subnet $SUBNET_NAME..."
+    for (( c=1; c<=$BALANCE_LENGTH; c++))
+    do 
+        LOAD_BALANCE_ID=$(jq -r --argjson v "$c" '.[$v-1] | .id' temp/balance-list.json)
+        LOAD_BALANCE_SUBNET=$(jq -r -c --argjson v "$c" '.[$v-1] | .subnets[0] | .name' temp/balance-list.json)
+        if [[ "$LOAD_BALANCE_SUBNET" == "$SUBNET_NAME" ]];
+        then 
+            echo "Deleting Load Balancer $LOAD_BALANCE_ID"
+            ibmcloud is load-balancer-delete $LOAD_BALANCE_ID --force
+        fi
+    done
 }
 
 delete_instances() {
@@ -177,8 +174,8 @@ delete_instances() {
     echo "Searching for Instances with Subnet $SUBNET_NAME..."
     for (( c=1; c<=$INSTANCE_LENGTH; c++))
     do 
-        INSTANCE_ID=$(jq -r --argjson v "$c" '.[$v-1] | .id' instance-list.json)
-        INSTANCE_SUBNET=$(jq -r -c --argjson v "$c" '.[$v-1] | .subnets[0] | .name' instance-list.json)
+        INSTANCE_ID=$(jq -r --argjson v "$c" '.[$v-1] | .id' temp/instance-list.json)
+        INSTANCE_SUBNET=$(jq -r -c --argjson v "$c" '.[$v-1] | .subnets[0] | .name' temp/instance-list.json)
         if [[ "$INSTANCE_SUBNET" == "$SUBNET_NAME" ]];
         then 
             echo "Deleting instance $INSTANCE_ID"
@@ -198,7 +195,7 @@ delete_gateway() {
         echo "${green}"
         for (( c=1; c<=$GATEWAY_LENGTH; c++))
         do 
-            TEMP=$(jq -c --argjson v "$c" '(  .[$v-1] | [.name, .vpc.name])' gateway-list.json )
+            TEMP=$(jq -c --argjson v "$c" '(  .[$v-1] | [.name, .vpc.name])' temp/gateway-list.json )
             echo $c". "$TEMP
         done
         echo $c". EXIT"
@@ -210,7 +207,7 @@ delete_gateway() {
         elif (($GATEWAY_OPTION>0)) && (($GATEWAY_OPTION<=$GATEWAY_LENGTH))
         then echo "${bold}Preparing to delete...${normal}"
                 GATEWAY_OPTION=$(($GATEWAY_OPTION-1))
-                GATEWAY_ID=$(jq -r --argjson v "$GATEWAY_OPTION" '(.[$v] | .id)' gateway-list.json )
+                GATEWAY_ID=$(jq -r --argjson v "$GATEWAY_OPTION" '(.[$v] | .id)' temp/gateway-list.json )
                 echo "${bold}Continue to delete...${green}"
                 echo $GATEWAY_NAME
                 echo $GATEWAY_ID
@@ -238,9 +235,10 @@ delete_gateway() {
 delete_vpc
 
 
-rm -rf balance-list.json
-rm -rf gateway-list.json
-rm -rf subnets-list.json
-rm -rf vpc-list.json
-
+rm -rf temp/balance-list.json
+rm -rf temp/gateway-list.json
+rm -rf temp/subnet-list.json
+rm -rf temp/vpc-list.json
+rm -rf temp/vpn-list.json
+rm -rf temp/instance-list.json
 
