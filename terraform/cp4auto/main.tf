@@ -1,5 +1,4 @@
 provider "ibm" {
-  generation = local.infra == "classic" ? 1 : 2
   region     = var.region
 }
 
@@ -11,7 +10,7 @@ module "cluster" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/roks"
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//roks"
   enable = local.enable_cluster
-  on_vpc = local.infra == "vpc"
+  on_vpc = var.on_vpc
 
   // General parameters:
   project_name = var.project_name
