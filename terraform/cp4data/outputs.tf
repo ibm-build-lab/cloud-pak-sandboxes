@@ -20,7 +20,7 @@ output "cluster_name" {
 // CP4DATA output parameters
 output "cpd_url" {
   description = "Access your Cloud Pak for Data deployment at this URL."
-  value = "https://cpd-${var.project_name}.${module.cluster.ingress_hostname}"
+  value = "https://${var.cpd_project_name}-cpd-${var.cpd_project_name}.${module.cluster.ingress_hostname}"
 }
 
 output "cpd_user" {
