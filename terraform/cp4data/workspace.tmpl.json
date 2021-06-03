@@ -50,12 +50,22 @@
           "type": "string"
         },
         {
+          "name": "entitlement",
+          "value": "",
+          "type": "string"
+        },
+        {
           "name": "datacenter",
           "value": "dal10",
           "type": "string"
         },
         {
           "name": "on_vpc",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_portworx",
           "value": "false",
           "type": "bool"
         },
@@ -88,6 +98,11 @@
         {
           "name": "entitled_registry_user_email",
           "value": "{{ ENTITLED_KEY_EMAIL }}",
+          "type": "string"
+        },
+        {
+          "name": "ibmcloud_api_key",
+          "value": "",
           "type": "string"
         },
         {
@@ -182,6 +197,11 @@
         },
         {
           "name": "install_db2_data_management",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_big_sql",
           "value": "false",
           "type": "bool"
         }
