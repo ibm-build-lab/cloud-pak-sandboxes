@@ -222,10 +222,15 @@ prompt_license() {
         case $licenseAgree in
             "Yes")
             echo "${green}License accepted:${bold}"
+            if $CP4D35
+            then 
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "accept_cpd_license") | .value) |= "true"' temp.json > workspace-configuration.json
+            fi
             break
             ;;
             "No")
-            echo "${bold}This script is unable to continue with licesnse agreement."
+            echo "${bold}This script is unable to continue with license agreement."
             exit
             ;;
         esac
@@ -506,7 +511,6 @@ cp4mcm_modules() {
 # writes cp4d 3.5 module data
 # updates the values across the respective workspace_configuration values
 cp4d35_modules() {
-    isEmptyList=true
     # updates workspace-configuration.json .template_data[.varialbestore.install_watson_knowledge_catalog]
     echo "${bold}Install Watson knowledge catalog?  ${green}"
     yesno=("Yes" "No")
@@ -515,7 +519,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_knowledge_catalog") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -535,7 +538,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_studio") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -555,7 +557,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_machine_learning") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -575,7 +576,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_open_scale") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false             
                break
                ;;
             "No")
@@ -595,7 +595,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_data_virtualization") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -615,7 +614,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_streams") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -635,7 +633,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_analytics_dashboard") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -655,7 +652,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_spark") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -675,7 +671,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_warehouse") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -695,7 +690,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_data_gate") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -715,7 +709,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_rstudio") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -735,7 +728,6 @@ cp4d35_modules() {
             "Yes")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2_data_management") | .value) |= "true"' temp.json > workspace-configuration.json
-               isEmptyList=false
                break
                ;;
             "No")
@@ -747,10 +739,24 @@ cp4d35_modules() {
         esac
     done
 
-    if [ $isEmptyList == false ]; then
-        cp ./workspace-configuration.json temp.json
-        jq -r '(.template_data[] | .variablestore[] | select(.name == "empty_module_list") | .value) |= "false"' temp.json > workspace-configuration.json
-    fi
+    # updates workspace-configuration.json .template_data[.varialbestore.install_big_sql]
+    echo "${bold}Install Big SQL?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_big_sql") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_big_sql") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 }
 
 # wites cp4d_3.0 module data

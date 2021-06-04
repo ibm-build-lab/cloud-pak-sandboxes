@@ -85,11 +85,6 @@
           "type": "string"
         },
         {
-          "name": "storage_class_name",
-          "value": "ibmc-file-custom-gold-gid",
-          "type": "string"
-        },
-        {
           "name": "entitled_registry_key",
           "value": "{{ ENTITLED_KEY }}",
           "type": "string",
@@ -136,8 +131,8 @@
           "type": "string"
         },
         {
-          "name": "empty_module_list",
-          "value": "true",
+          "name": "accept_cpd_license",
+          "value": "false",
           "type": "bool"
         },
         {
