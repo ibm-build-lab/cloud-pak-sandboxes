@@ -59,7 +59,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "portworx" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//portworx?ref=updatePXRemoveScript"
   // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
   enable = var.install_portworx
 
