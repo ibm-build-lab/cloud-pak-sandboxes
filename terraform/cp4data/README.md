@@ -119,3 +119,12 @@ open $(terraform output cp4data_endpoint)
 ## Uninstall
 
 **Note**: The uninstall/cleanup process is a work in progress at this time, we are identifying the objects that need to be deleted in order to have a successful re-installation.
+
+To remove this from Schematics, a user needs to run `./remove_attached.sh` from `cloud-pak-sandboxes/scripts/portworx/`
+
+Example:
+```bash
+./remove_attached.sh -r us-east -c cluster_name
+```
+
+Lastly, delete the resources and workspace from the Schematic.
