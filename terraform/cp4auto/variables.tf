@@ -62,7 +62,7 @@ variable "public_vlan_number" {
   description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
 }
 
-// CP4I Module Variables
+// CP4Auto Module Variables
 variable "entitled_registry_key" {
   default     = ""
   description = "Required: Cloud Pak Entitlement Key. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable"
