@@ -298,7 +298,7 @@ set_vpc_flavors() {
 get_vpc() {
 
     # updates workspace-configuration.json .template_data[.varialbestore.installing_monitoring_module]
-    echo "${bold}Build infrastructure on Classic or VPC ${green}"
+    echo "${bold}Cluster infrastructure on Classic or VPC ${green}"
     classicvpc=("Classic" "VPC")
     select response in "${classicvpc[@]}"; do
         case $response in
@@ -336,10 +336,10 @@ get_portworx() {
 
 get_ibm_api_key() {
     echo "${bold}Enter IBM Cloud API Key, for more instructions go to"
-    read -s -p "${green}https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform#create-an-ibm-cloud-api-key:${normal} " -e IBM_API_KEY
+    read -s -p "${green}https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform#create-an-ibm-cloud-api-key${bold}:${normal} " -e IBM_API_KEY
     echo " "
     cp workspace-configuration.json temp.json
-    jq -r --arg v "$IBM_API_KEY" '(.template_data[] | .variablestore[] | select(.name == "IC_API_KEY") | .value) |= $v' temp.json > workspace-configuration.json    
+    jq -r --arg v "$IBM_API_KEY" '(.template_data[] | .variablestore[] | select(.name == "ibmcloud_api_key") | .value) |= $v' temp.json > workspace-configuration.json    
  
 }
 
@@ -351,12 +351,12 @@ get_meta_data() {
     PROJECT_OWNER_NAME_TAG="owner:$PROJECT_OWNER_NAME"
     read -p "${bold}Enter Environment Name:${normal} " -e ENV_NAME
     ENV_NAME_TAG="env:$ENV_NAME"
-    read -p "${bold}Enter Project Name (new clusters will be named starting with ${green}Project Name):${normal} " -e PROJECT_NAME
+    read -p "${bold}Enter Project Name (new clusters will be named starting with ${green}Project Name)${bold}:${normal} " -e PROJECT_NAME
     PROJECT_NAME_TAG="project:$PROJECT_NAME"
-    read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary):${normal} " -e ENTITLED_KEY
+    read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary${bold}):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
-    if $IAF
+    if $IAF || $CP4D35
     then
        get_ibm_api_key
     fi 
@@ -1633,11 +1633,7 @@ clean_entitled_key() {
     cp ./logs/$WORKSPACE_NAME-config.json temp.json
     jq -r ".template_data[0].variablestore[9].value |= \"SENSITIVE_DATA\"" temp.json > ./logs/$WORKSPACE_NAME-config.json
     rm temp.json    
-    
-    if $IAF
-    then
-        get_ibm_api_key
-    fi 
+
 }
 
 if [ ! -d "./logs" ] 
@@ -1645,7 +1641,6 @@ then mkdir logs
 fi
 # sets up the workspace-config.json
 get_cloud_pak_install
-get_vpc
 prompt_license
 check_resource_groups
 get_workspace_name
@@ -1653,6 +1648,7 @@ get_meta_data
 write_meta_data
 get_cluster_info
 write_meta_data
+get_vpc
 if ! $EXISTING_CLUSTER
 then 
     if $CLASSIC
