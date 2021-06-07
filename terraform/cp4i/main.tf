@@ -25,6 +25,7 @@ module "cluster" {
   workers_count        = local.workers_count
   datacenter           = var.datacenter
   force_delete_storage = true
+  vpc_zone_names       = var.vpc_zone_names
 
   // Kubernetes Config parameters:
   // download_config = false
