@@ -65,6 +65,11 @@
           "type": "bool"
         },
         {
+          "name": "flavors",
+          "value": "[\"b3c.16x64\"]",
+          "type": "list(string)"
+        },
+        {
           "name": "install_portworx",
           "value": "false",
           "type": "bool"
