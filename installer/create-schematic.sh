@@ -338,7 +338,7 @@ get_portworx() {
 
     echo "${bold}Setup Portworx"
     cp ./workspace-configuration.json temp.json
-    jq -r --arg v "$INSTALL_PORTWORX" '(.template_data[] | .variablestore[] | select(.name == "INSTALL_PORTWORX") | .value) |= "true"' temp.json > workspace-configuration.json
+    jq -r '(.template_data[] | .variablestore[] | select(.name == "install_portworx") | .value) |= "true"' temp.json > workspace-configuration.json
 
     read -p "${bold}Declare Portworx storage capacity in ${green}gb${bold}, default value is ${green}200: ${normal}" -e STORAGE_CAPACITY
     cp ./workspace-configuration.json temp.json
@@ -1693,9 +1693,9 @@ rm temp.json
 rm workspace-configuration.json
 
 # pushes .json using the ibmcloud schmatics plugin
-create_workspace
-generate_workspace_plan
-apply_workspace_plan
+# create_workspace
+# generate_workspace_plan
+# apply_workspace_plan
 
 # A post install set of messages for users to complete any remaining steps.
 if $CP4MCM
