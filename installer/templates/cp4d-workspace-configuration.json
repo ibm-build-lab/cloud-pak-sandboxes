@@ -65,6 +65,11 @@
           "type": "bool"
         },
         {
+          "name": "flavors",
+          "value": "[\"b3c.16x64\"]",
+          "type": "list(string)"
+        },
+        {
           "name": "install_portworx",
           "value": "false",
           "type": "bool"
@@ -85,11 +90,6 @@
           "type": "string"
         },
         {
-          "name": "storage_class_name",
-          "value": "ibmc-file-custom-gold-gid",
-          "type": "string"
-        },
-        {
           "name": "entitled_registry_key",
           "value": "{{ ENTITLED_KEY }}",
           "type": "string",
@@ -103,7 +103,8 @@
         {
           "name": "ibmcloud_api_key",
           "value": "",
-          "type": "string"
+          "type": "string",
+          "secure": true
         },
         {
           "name": "storage_capacity",
@@ -136,9 +137,14 @@
           "type": "string"
         },
         {
-          "name": "empty_module_list",
-          "value": "true",
+          "name": "accept_cpd_license",
+          "value": "false",
           "type": "bool"
+        },
+        {
+          "name": "cpd_project_name",
+          "value": "cp4d",
+          "type": "string"
         },
         {
           "name": "install_watson_knowledge_catalog",
