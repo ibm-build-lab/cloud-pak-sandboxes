@@ -98,7 +98,8 @@
         {
           "name": "ibmcloud_api_key",
           "value": "",
-          "type": "string"
+          "type": "string",
+          "secure": true
         },
         {
           "name": "storage_capacity",
@@ -134,6 +135,11 @@
           "name": "accept_cpd_license",
           "value": "false",
           "type": "bool"
+        },
+        {
+          "name": "cpd_project_name",
+          "value": "cp4d",
+          "type": "string"
         },
         {
           "name": "install_watson_knowledge_catalog",

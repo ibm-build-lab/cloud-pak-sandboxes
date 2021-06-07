@@ -297,6 +297,11 @@ set_vpc_flavors() {
             cp ./workspace-configuration.json temp.json
             jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
         fi
+        if $CP4D35
+        then
+            cp ./workspace-configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+        fi
     fi
 }
 
@@ -332,6 +337,9 @@ get_vpc() {
 get_portworx() {
 
     echo "${bold}Setup Portworx"
+    cp ./workspace-configuration.json temp.json
+    jq -r --arg v "$INSTALL_PORTWORX" '(.template_data[] | .variablestore[] | select(.name == "INSTALL_PORTWORX") | .value) |= "true"' temp.json > workspace-configuration.json
+
     read -p "${bold}Declare Portworx storage capacity in ${green}gb${bold}, default value is ${green}200: ${normal}" -e STORAGE_CAPACITY
     cp ./workspace-configuration.json temp.json
     jq -r --arg v "$STORAGE_CAPACITY" '(.template_data[] | .variablestore[] | select(.name == "STORAGE_CAPACITY") | .value) |= $v' temp.json > workspace-configuration.json
