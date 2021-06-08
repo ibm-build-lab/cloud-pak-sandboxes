@@ -21,4 +21,27 @@ output "kubeconfig" {
 //   value = module.cluster.config
 // }
 
+// CP4Auto Output Parameters
+// Dashboard URL
 
+output "cp4auto_url" {
+  description = "Access your Cloud Pak for Integration deployment at this URL."
+  value = module.cp4i.endpoint 
+  
+  # ? "https://default-navigator-pn.${module.cluster.name}.${var.region}.containers.appdomain.cloud" : "" 
+}
+
+output "cp4auto_user" {
+  description = "Username for your Cloud Pak for Integration deployment."
+  value = "admin"
+}
+
+output "cp4auto_pass" {
+  description = "Password for your Cloud Pak for Integration deployment."
+  value = module.cp4i.cp4i_password
+}
+
+// Namespace
+output "namespace" {
+  value = "default"
+}
