@@ -1736,5 +1736,5 @@ fi
 
 if $CP4AUTO
 then
-    echo "${bold}Cloud Pak for Integrations will be available in about 30 minutes.${green}"
+    echo "${bold}Cloud Pak for Automation will be available in about 30 minutes.${green}"
 fi
