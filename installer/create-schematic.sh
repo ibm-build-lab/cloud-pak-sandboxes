@@ -1693,9 +1693,9 @@ rm temp.json
 rm workspace-configuration.json
 
 # pushes .json using the ibmcloud schmatics plugin
-# create_workspace
-# generate_workspace_plan
-# apply_workspace_plan
+create_workspace
+generate_workspace_plan
+apply_workspace_plan
 
 # A post install set of messages for users to complete any remaining steps.
 if $CP4MCM
