@@ -50,15 +50,19 @@ CLOUD_PAK_NAME_AUTOMATION_VERSION="Cloud Pak for Automation 20.0"
 CLOUD_PAK_TEMPLATE_AUTOMATION=./templates/cp4auto-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4auto"
 
-
-EXISTING_CLUSTER="false"
+CP4S="false"
+CLOUD_PAK_NAME_SECURITY_VERSION="Cloud Pak for Security 1.7.0"
+CLOUD_PAK_TEMPLATE_SECURITY=./templates/cp4s-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4s"
 
 IAF="false"
 IAF_VERSION="IBM Automation Foundation 1.0"
 IAF_TEMPLATE=./templates/iaf-workspace-configuration.json
 IAF_REPO_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf"
-IBM_API_KEY="none"
 
+
+IBM_API_KEY="none"
+EXISTING_CLUSTER="false"
 CLASSIC="false"
 VPC="false"
 
@@ -78,7 +82,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION" "$IAF_VERSION")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION" "$CLOUD_PAK_NAME_SECURITY_VERSION" "$IAF_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -137,6 +141,16 @@ get_cloud_pak_install() {
                 cp $CLOUD_PAK_TEMPLATE_AUTOMATION workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;; 
+            $CLOUD_PAK_NAME_SECURITY_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
+                CP4S="true"
+                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
+                cp workspace_configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
@@ -213,6 +227,9 @@ prompt_license() {
     then
         echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
+    if $CP4S
+    then
+        echo "${red}"  $CLOUD_PAK_NAME_SECURITY_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     if $IAF
     then
         echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
@@ -275,6 +292,11 @@ get_workspace_name() {
     then
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4auto-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-cp4auto-sandbox"
+    fi
+    if $CP4S
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4auto-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4s-sandbox"
     fi
     if $IAF
     then
@@ -369,7 +391,7 @@ get_meta_data() {
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary${bold}):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
-    if $IAF || $CP4D35
+    if $IAF || $CP4D35 || $CP4MCM
     then
        get_ibm_api_key
     fi 
@@ -415,6 +437,10 @@ write_meta_data() {
 iaf_modules() {
     sleep 1
 
+}
+
+cp4s_modules() {
+    sleep 1
 }
 # writes cp4mcm module values if needed
 # updates the values across the respective workspace-configuration values.
@@ -1683,6 +1709,9 @@ fi
 if $CP4D30
 then cp4d30_modules
 fi
+if $CP4S
+then cp4s_modules
+fi
 if $IAF
 then iaf_modules
 fi
@@ -1737,4 +1766,9 @@ fi
 if $CP4AUTO
 then
     echo "${bold}Cloud Pak for Automation will be available in about 30 minutes.${green}"
+fi
+
+if $CP4S
+then
+    echo "${bold}Cloud Pak for Automation will be available in about 1 hour 30 minutes.${green}"
 fi
