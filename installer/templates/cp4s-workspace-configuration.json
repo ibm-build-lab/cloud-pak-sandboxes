@@ -86,7 +86,12 @@
           "type": "string"
         },
         {
-          "name": "ldap_user",
+          "name": "ldap_status",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "ldap_user_id",
           "value": "",
           "type": "string"
         }

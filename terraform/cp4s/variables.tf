@@ -33,6 +33,17 @@ variable "environment" {
   description = "Ignored if `cluster_id` is specified. The environment is combined with project_name to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'env:{environment}'"
 }
 
+variable "ldap_status" {
+  default     = ""
+  description = "User has an existing ldap"
+
+}
+
+variable "ldap_user_id" {
+  default = ""
+  description = "ldap admin user id, or for IBM active directoy the admin user id"
+}
+
 // Flavor will depend on whether classic or vpc
 variable "flavors" {
   type        = list(string)

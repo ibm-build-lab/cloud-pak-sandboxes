@@ -440,8 +440,31 @@ iaf_modules() {
 }
 
 cp4s_modules() {
-    sleep 1
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_infr_mgt_module]
+    echo "${bold}Do you have an LDAP configured? ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               read -p "${bold}Provide LDAP admin user id:${normal} " -e LDAP_USER_ID
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "ldap_status") | .value) |= "true"' temp.json > workspace-configuration.json
+               cp ./workspace-configuration.json temp.json
+               jq -r --arg v "$LDAP_USER_ID" '(.template_data[] | .variablestore[] | select(.name == "ldap_user_id") | .value) |= $v' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "ldap_status") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
 }
+
 # writes cp4mcm module values if needed
 # updates the values across the respective workspace-configuration values.
 cp4mcm_modules() {
@@ -452,10 +475,11 @@ cp4mcm_modules() {
     select response in "${yesno[@]}"; do
         case $response in
             "Yes")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_infr_mgt_module") | .value) |= "true"' temp.json > workspace-configuration.json
-               break
-               ;;
+
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_infr_mgt_module") | .value) |= "true"' temp.json > workspace-configuration.json
+                break
+                ;;
             "No")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_infr_mgt_module") | .value) |= "false"' temp.json > workspace-configuration.json

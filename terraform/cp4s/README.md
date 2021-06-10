@@ -1,4 +1,4 @@
-# Cloud Pak for Integration 
+# Cloud Pak for Security
 
 ## Requirements
 
@@ -91,23 +91,23 @@ export KUBECONFIG=$(terraform output config_file_path)
 kubectl cluster-info
 
 # Namespace
-kubectl get namespaces $(terraform output cp4i_namespace)
+kubectl get namespaces $(terraform output cp4s_namespace)
 
 # All resources
-kubectl get all --namespace $(terraform output cp4i_namespace)
+kubectl get all --namespace $(terraform output cp4s_namespace)
 ```
 
 Using the following credentials:
 
 ```bash
-terraform output cp4i_user
-terraform output cp4i_password
+terraform output cp4s_user
+terraform output cp4s_password
 ```
 
 Open the following URL:
 
 ```bash
-open $(terraform output cp4i_endpoint)
+open $(terraform output cp4s_endpoint)
 ```
 
 ## Uninstall
