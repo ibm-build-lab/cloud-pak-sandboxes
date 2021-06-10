@@ -53,7 +53,7 @@ CLOUD_PAK_REPO_LOCATION_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandbo
 CP4S="false"
 CLOUD_PAK_NAME_SECURITY_VERSION="Cloud Pak for Security 1.7.0"
 CLOUD_PAK_TEMPLATE_SECURITY=./templates/cp4s-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4s"
+CLOUD_PAK_REPO_LOCATION_SECURITY="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4s"
 
 IAF="false"
 IAF_VERSION="IBM Automation Foundation 1.0"
@@ -230,6 +230,7 @@ prompt_license() {
     if $CP4S
     then
         echo "${red}"  $CLOUD_PAK_NAME_SECURITY_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
+    fi
     if $IAF
     then
         echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
@@ -295,7 +296,7 @@ get_workspace_name() {
     fi
     if $CP4S
     then
-        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4auto-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4s-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-cp4s-sandbox"
     fi
     if $IAF
