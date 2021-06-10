@@ -148,8 +148,8 @@ get_cloud_pak_install() {
             $CLOUD_PAK_NAME_SECURITY_VERSION)
                 echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
                 CP4S="true"
-                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace_configuration.json
-                cp workspace_configuration.json temp.json
+                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
+                cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
