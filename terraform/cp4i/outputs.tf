@@ -43,5 +43,5 @@ output "cp4i_pass" {
 
 // Namespace
 output "namespace" {
-  value = "default"
+  value = var.namespace
 }

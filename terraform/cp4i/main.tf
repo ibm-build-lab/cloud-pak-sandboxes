@@ -60,8 +60,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4i" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4data"
-  # source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4i"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4i?ref=cloudPakOutputs"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4i"
   enable = true
   force  = true
 
@@ -74,5 +73,5 @@ module "cp4i" {
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
   entitled_registry_user_email = var.entitled_registry_user_email
 
-  namespace = "cp4i"
+  namespace = var.namespace
 }
