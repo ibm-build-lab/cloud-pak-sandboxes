@@ -16,7 +16,7 @@
   },
   "template_data": [
     {
-      "folder": "terraform/cp4i",
+      "folder": "terraform/cp4s",
       "type": "terraform_v0.12",
       "variablestore": [
         {
@@ -83,6 +83,16 @@
         {
           "name": "entitled_registry_user_email",
           "value": "{{ ENTITLED_KEY_EMAIL }}",
+          "type": "string"
+        },
+        {
+          "name": "ldap_status",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "ldap_user_id",
+          "value": "",
           "type": "string"
         }
       ]
