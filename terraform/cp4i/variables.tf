@@ -70,6 +70,10 @@ variable "entitled_registry_key" {
 variable "entitled_registry_user_email" {
   description = "Required: Email address of the user owner of the Entitled Registry Key"
 }
+variable "namespace" {
+  default     = "cp4i"
+  description = "Namespace for CP4I"
+}
 
 // Local Variables and constants
 locals {
