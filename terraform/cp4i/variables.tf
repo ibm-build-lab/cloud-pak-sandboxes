@@ -74,7 +74,7 @@ variable "entitled_registry_user_email" {
 // Local Variables and constants
 locals {
   workers_count              = [5]
-  roks_version               = "4.6"
+  roks_version               = "4.7"
   kubeconfig_dir             = "./.kube/config"
   entitled_registry_key_file = "./entitlement.key"
 }
