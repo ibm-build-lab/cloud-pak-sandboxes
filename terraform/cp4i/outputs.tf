@@ -27,8 +27,6 @@ output "kubeconfig" {
 output "cp4i_url" {
   description = "Access your Cloud Pak for Integration deployment at this URL."
   value = module.cp4i.cp4i_endpoint
-  
-  # ? "https://default-navigator-pn.${module.cluster.name}.${var.region}.containers.appdomain.cloud" : "" 
 }
 
 output "cp4i_user" {
