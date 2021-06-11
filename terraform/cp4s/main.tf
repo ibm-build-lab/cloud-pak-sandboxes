@@ -73,4 +73,6 @@ module "cp4s" {
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
   entitled_registry_user_email = var.entitled_registry_user_email
 
+  ldap_user_id = var.ldap_user_id
+  ldap_status = var.ldap_status
 }
