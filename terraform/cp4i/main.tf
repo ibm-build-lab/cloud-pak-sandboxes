@@ -1,5 +1,5 @@
 provider "ibm" {
-  # generation = local.infra == "classic" ? 1 : 2
+  version    = "~> 1.12"
   region     = var.region
 }
 
