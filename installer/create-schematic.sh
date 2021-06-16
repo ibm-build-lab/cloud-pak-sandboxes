@@ -82,7 +82,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION" "$CLOUD_PAK_NAME_SECURITY_VERSION" "$IAF_VERSION")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION" "$IAF_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -145,16 +145,16 @@ get_cloud_pak_install() {
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;; 
-            $CLOUD_PAK_NAME_SECURITY_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
-                CP4S="true"
-                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
-                break
-                ;; 
+#            $CLOUD_PAK_NAME_SECURITY_VERSION)
+#                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
+#                CP4S="true"
+#                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
+#                cp workspace-configuration.json temp.json
+#                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+#                cp workspace-configuration.json temp.json
+#                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+#                break
+#                ;; 
             $IAF_VERSION)
                 echo "${bold}Selected: $IAF_VERSION"
                 IAF="true"
