@@ -1791,6 +1791,15 @@ fi
 if $CP4AUTO
 then
     echo "${bold}Cloud Pak for Automation will be available in about 30 minutes.${green}"
+    date
+    echo
+    echo "Run the following command to get the pods: "
+    echo "oc get pod -n cp4ba"
+    echo
+    echo "To get the endpoint, run the command below: "
+    echo "oc describe PlatformNavigator cp4ba-navigator --namespace=cp4ba | grep https://cp4ba-navigator ${normal}"
+    echo
+    echo "${bold} For Troubleshooting your Cloud Pak for Business Automation, please refer to: ${green} https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/21.0.x?topic=automation-troubleshooting"
 fi
 
 if $CP4S

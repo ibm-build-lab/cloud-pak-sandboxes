@@ -71,10 +71,16 @@ variable "entitled_registry_user_email" {
   description = "Required: Email address of the user owner of the Entitled Registry Key"
 }
 
+# Default namespace
+variable "namespace" {
+  default = "cp4ba"
+  description = "Default namespace for Cloud Pak for Business Automation"
+}
+
 // Local Variables and constansts
 locals {
   workers_count              = [5]
-  roks_version               = "4.6"
+  roks_version               = "4.7"
   kubeconfig_dir             = "./.kube/config"
   entitled_registry_key_file = "./entitlement.key"
 }

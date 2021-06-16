@@ -1,4 +1,5 @@
 provider "ibm" {
+  version    = "~> 1.12"
   region     = var.region
 }
 
@@ -63,6 +64,8 @@ module "cp4auto" {
   enable = true
   force  = true
 
+  // Assign the namepace
+  namespace = var.namespace
 
   // ROKS cluster parameters:
   openshift_version   = local.roks_version
