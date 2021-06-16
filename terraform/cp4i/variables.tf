@@ -7,30 +7,30 @@ variable "cluster_id" {
 variable "on_vpc" {
   type        = bool
   default     = false
-  description = "Ignored if `cluster_id` is specified. Cluster type to be installed on, 'true' = VPC, 'false' = Classic"
+  description = "Ignored if `cluster_id` is specified. Cluster type to be installed on, `true` = VPC, `false` = Classic"
 }
 
 variable "region" {
   default     = "us-south"
-  description = "Ignored if `cluster_id` is specified. Region to provision the Openshift cluster. List all available regions with: ibmcloud regions"
+  description = "Ignored if `cluster_id` is specified. Region to provision the Openshift cluster. List all available regions with: `ibmcloud regions`"
 }
 
 variable "resource_group" {
   default     = "cloud-pak-sandbox"
-  description = "Ignored if `cluster_id` is specified. Resource Group in your account to host the cluster. List all available resource groups with: ibmcloud resource groups"
+  description = "Ignored if `cluster_id` is specified. Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`"
 }
 
 variable "project_name" {
-  description = "Ignored if `cluster_id` is specified. The project_name is combined with environment to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
-}
-
-variable "owner" {
-  description = "Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources with the tag 'owner:{owner}'"
+  description = "Ignored if `cluster_id` is specified. The project_name is combined with `environment` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
 }
 
 variable "environment" {
   default     = "dev"
-  description = "Ignored if `cluster_id` is specified. The environment is combined with project_name to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'env:{environment}'"
+  description = "Ignored if `cluster_id` is specified. The environment is combined with `project_name` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'env:{environment}'"
+}
+
+variable "owner" {
+  description = "Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources with the tag 'owner:{owner}'"
 }
 
 // Flavor will depend on whether classic or vpc
@@ -44,22 +44,22 @@ variable "flavors" {
 variable "vpc_zone_names" {
   type        = list(string)
   default     = ["us-south-1"]
-  description = "**VPC Only**: Ignored if `cluster_id` is specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: 'ibmcloud ks zone ls --provider vpc-gen2'. Only required if cluster id not specified and on_vpc=true."
+  description = "**VPC Only**: Ignored if `cluster_id` is specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`."
 }
 
 variable "datacenter" {
   default     = "dal10"
-  description = "**Classic Only**. Ignored if `cluster_id` is specified. Datacenter or Zone in the IBM Cloud Classic region to provision the cluster. List all available zones with: ibmcloud ks zone ls --provider classic"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Datacenter or Zone in the IBM Cloud Classic region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`"
 }
 
 variable "private_vlan_number" {
   default     = ""
-  description = "**Classic Only**. Ignored if `cluster_id` is specified. Private VLAN assigned to your zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number. Leave blank if Private VLAN does not exist, one will be created"
 }
 
 variable "public_vlan_number" {
   default     = ""
-  description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Leave blank if Public VLAN does not exist, one will be created"
 }
 
 // CP4I Module Variables
