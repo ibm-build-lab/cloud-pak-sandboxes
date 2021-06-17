@@ -98,6 +98,8 @@ module "cp4i" {
   enable = true
   force  = true
 
+  on_vpc              = var.on_vpc
+  portworx_is_ready   = module.portworx.portworx_is_ready
 
   // ROKS cluster parameters:
   openshift_version   = var.roks_version
