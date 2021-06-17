@@ -346,9 +346,7 @@ get_vpc() {
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
                set_vpc_flavors
-               if $CP4D35
-               then get_portworx
-               fi
+               get_portworx
                break
                ;;
             *) echo "${bold}invalid option $REPLY ${green}";;
