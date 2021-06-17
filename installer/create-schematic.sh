@@ -390,7 +390,7 @@ get_meta_data() {
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary${bold}):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
-    if $IAF || $CP4D35 || $CP4MCM
+    if $IAF || $CP4D35 || $CP4MCM || $CP4I
     then
        get_ibm_api_key
     fi 
