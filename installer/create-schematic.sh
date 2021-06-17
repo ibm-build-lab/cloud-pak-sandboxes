@@ -325,6 +325,11 @@ set_vpc_flavors() {
             cp ./workspace-configuration.json temp.json
             jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
         fi
+        if $CP4I
+        then
+            cp ./workspace-configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+        fi
     fi
 }
 
