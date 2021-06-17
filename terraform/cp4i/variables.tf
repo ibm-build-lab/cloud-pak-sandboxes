@@ -20,6 +20,11 @@ variable "resource_group" {
   description = "Ignored if `cluster_id` is specified. Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`"
 }
 
+variable "roks_version" {
+  default     = "4.6"
+  description = "Ignored if `cluster_id` is specified. List available versions: `ibmcloud ks versions`"
+}
+
 variable "project_name" {
   description = "Ignored if `cluster_id` is specified. The project_name is combined with `environment` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
 }
@@ -40,12 +45,24 @@ variable "flavors" {
   description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each the workers group. Classic only takes the first flavor of the list. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider <classic | vpc-gen2>`. Classic: `[\"b3c.16x64\"]`, VPC: `[\"bx2.16x64\"]`"
 }
 
+variable "workers_count" {
+  type    = list(number)
+  default = [5]
+  description = "Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
+}
+
 // Only required if cluster id is not specified and 'on_vpc=true'
 variable "vpc_zone_names" {
   type        = list(string)
   default     = ["us-south-1"]
   description = "**VPC Only**: Ignored if `cluster_id` is specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`."
 }
+
+variable "config_dir" {
+  default     = "./.kube/config"
+  description = "Directory to store the kubeconfig file, set the value to empty string to not download the config"
+}
+
 
 variable "datacenter" {
   default     = "dal10"
@@ -129,8 +146,5 @@ variable "namespace" {
 
 // Local Variables and constants
 locals {
-  workers_count              = [5]
-  roks_version               = "4.6"
-  kubeconfig_dir             = "./.kube/config"
   entitled_registry_key_file = "./entitlement.key"
 }

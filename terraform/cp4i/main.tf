@@ -21,9 +21,9 @@ module "cluster" {
 
   // Openshift parameters:
   resource_group       = var.resource_group
-  roks_version         = local.roks_version
+  roks_version         = var.roks_version
   flavors              = var.flavors
-  workers_count        = local.workers_count
+  workers_count        = var.workers_count
   datacenter           = var.datacenter
   force_delete_storage = true
   vpc_zone_names       = var.vpc_zone_names
@@ -43,7 +43,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
   triggers = { always_run = timestamp() }
 
   provisioner "local-exec" {
-    command = "mkdir -p ${local.kubeconfig_dir}"
+    command = "mkdir -p ${var.config_dir}"
   }
 }
 
@@ -52,7 +52,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
   cluster_name_id   = local.enable_cluster ? module.cluster.id : var.cluster_id
   resource_group_id = module.cluster.resource_group.id
-  config_dir        = local.kubeconfig_dir
+  config_dir        = var.config_dir
   download          = true
   admin             = false
   network           = false
@@ -100,7 +100,7 @@ module "cp4i" {
 
 
   // ROKS cluster parameters:
-  openshift_version   = local.roks_version
+  openshift_version   = var.roks_version
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
 
   // Entitled Registry parameters:
