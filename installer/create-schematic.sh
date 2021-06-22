@@ -325,6 +325,11 @@ set_vpc_flavors() {
             cp ./workspace-configuration.json temp.json
             jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
         fi
+        if $CP4I
+        then
+            cp ./workspace-configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+        fi
     fi
 }
 
@@ -346,9 +351,7 @@ get_vpc() {
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
                set_vpc_flavors
-               if $CP4D35
-               then get_portworx
-               fi
+               get_portworx
                break
                ;;
             *) echo "${bold}invalid option $REPLY ${green}";;
@@ -392,7 +395,7 @@ get_meta_data() {
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary${bold}):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
-    if $IAF || $CP4D35 || $CP4MCM
+    if $IAF || $CP4D35 || $CP4MCM || $CP4I
     then
        get_ibm_api_key
     fi 
