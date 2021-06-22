@@ -65,6 +65,16 @@
           "type": "list(string)"
         },
         {
+          "name": "flavors",
+          "value": "[\"b3c.16x64\"]",
+          "type": "list(string)"
+        },
+        {
+          "name": "install_portworx",
+          "value": "false",
+          "type": "bool"
+        },
+        {
           "name": "private_vlan_number",
           "value": "",
           "type": "string"
@@ -88,7 +98,8 @@
         {
           "name": "ibmcloud_api_key",
           "value": "",
-          "type": "string"
+          "type": "string",
+          "secure": true
         },
         {
           "name": "storage_capacity",
