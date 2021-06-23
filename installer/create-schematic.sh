@@ -82,7 +82,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION" "$IAF_VERSION")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$IAF_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -135,16 +135,16 @@ get_cloud_pak_install() {
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;
-            $CLOUD_PAK_NAME_AUTOMATION_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_AUTOMATION_VERSION"
-                CP4AUTO="true"
-                cp $CLOUD_PAK_TEMPLATE_AUTOMATION workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
-                break
-                ;; 
+#            $CLOUD_PAK_NAME_AUTOMATION_VERSION)
+#                echo "${bold}Selected: $CLOUD_PAK_NAME_AUTOMATION_VERSION"
+#                CP4AUTO="true"
+#                cp $CLOUD_PAK_TEMPLATE_AUTOMATION workspace-configuration.json
+#                cp workspace-configuration.json temp.json
+#                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+#                cp workspace-configuration.json temp.json
+#                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+#                break
+#                ;; 
 #            $CLOUD_PAK_NAME_SECURITY_VERSION)
 #                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
 #                CP4S="true"
@@ -171,9 +171,19 @@ get_cloud_pak_install() {
 
 }
 
+# 
+get_resource_group() {
+    read -p "${bold}Enter Resource Group Name:${normal} " -e RESOURCE_GROUP
+    cp workspace-configuration.json temp.json
+    jq -r --arg v "$RESOURCE_GROUP" '(.template_data[] | .variablestore[] | select(.name == "resource_group") | .value) |= $v' temp.json > workspace-configuration.json
+    cp workspace-configuration.json temp.json
+    jq -r ".resource_group |= \"$RESOURCE_GROUP\"" temp.json > workspace-configuration.json
+}
+
 # Checks the users available resource groups. If the resource group of the template is not available then the script ends with prompt
 check_resource_groups() {
     echo "${bold}"
+    get_resource_group
     RESOURCE_GROUP=$(jq -r '(.template_data[] | .variablestore[] | select(.name == "resource_group") | .value)' temp.json)
     FOUND_GROUP="false"
     ibmcloud resource groups --output json > resource-groups.json
