@@ -357,11 +357,13 @@ get_vpc() {
                break
                ;;
             "VPC")
-               VPC="true"
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
-               set_vpc_flavors
-               get_portworx
+                VPC="true"
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
+                set_vpc_flavors
+                if [ ! $CP4MCM ] || [ ! $IAF ]
+                    then get_portworx
+                fi
                break
                ;;
             *) echo "${bold}invalid option $REPLY ${green}";;
@@ -1726,7 +1728,9 @@ get_meta_data
 write_meta_data
 get_cluster_info
 write_meta_data
-get_vpc
+if [ ! $CP4APP ] || [ ! $CP4DATA30 ]
+    then get_vpc
+fi
 if ! $EXISTING_CLUSTER
 then 
     if $CLASSIC
