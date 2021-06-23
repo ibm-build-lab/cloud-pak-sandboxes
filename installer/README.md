@@ -66,10 +66,6 @@ To run the installer, do the following in the **IBM Cloud Shell** terminal:
 
 From here the Installer will ask you a set of questions pertaining to the cluster you wish to create. 
 
-Here is a sample of CP4MCM output:
-
-![script-sample](./images/sample-script.png)
-
 ## Install From Personal Device
 
 To run this Installer on your local machine:
