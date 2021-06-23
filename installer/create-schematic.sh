@@ -385,10 +385,18 @@ get_meta_data() {
     # tags for workspace, used by workspace-configuration.json
     read -p "${bold}Enter Project Owner Name:${normal} " -e PROJECT_OWNER_NAME
     PROJECT_OWNER_NAME_TAG="owner:$PROJECT_OWNER_NAME"
-    read -p "${bold}Enter Environment Name:${normal} " -e ENV_NAME
-    ENV_NAME_TAG="env:$ENV_NAME"
-    read -p "${bold}Enter Project Name (new clusters will be named starting with ${green}Project Name)${bold}:${normal} " -e PROJECT_NAME
-    PROJECT_NAME_TAG="project:$PROJECT_NAME"
+    if [ $CLUSTER_ID == "" ]
+    then
+      read -p "${bold}Enter Environment Name:${normal} " -e ENV_NAME
+      ENV_NAME_TAG="env:$ENV_NAME"
+      read -p "${bold}Enter Project Name (new clusters will be named starting with ${green}Project Name)${bold}:${normal} " -e PROJECT_NAME
+      PROJECT_NAME_TAG="project:$PROJECT_NAME"
+    else
+      ENV_NAME=""
+      ENV_NAME_TAG=""
+      PROJECT_NAME=""
+      PROJECT_NAME_TAG=""
+    fi
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary${bold}):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
@@ -1062,7 +1070,7 @@ create_public_vlan() {
     ibmcloud sl vlan create -t public -d $DATACENTER -n sandbox-public -f --output json > logs/vlan-public-$WORKSPACE_NAME.json
     echo "${bold}Public Vlan creation started, this process may take some time.${normal}"
     echo "${bold}You may continue to refresh the vlan list until it appears, cancel this current sandbox creation, or choose another vlan${normal}"
-    echo "${bold}The VLAN confirmation can be foudn in ${green}logs/vlan-public-$WORKSPACE_NAME${normal}"
+    echo "${bold}The VLAN confirmation can be found in ${green}logs/vlan-public-$WORKSPACE_NAME${normal}"
     ibmcloud sl vlan list --output json > vlan.json
     jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PUBLIC"))]' vlan.json > vlan-public.json
 }
@@ -1165,7 +1173,7 @@ select_region() {
     select region in "${regions[@]}"; do
         case $region in
             "us-east")
-                echo "${bold}Chosen region: us-east, pease pick a data center:${green}"
+                echo "${bold}Chosen region: us-east, please pick a data center:${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "us-east"' temp.json > workspace-configuration.json
                 eastData=("wdc04" "wdc06" "wdc07")
@@ -1195,7 +1203,7 @@ select_region() {
                 break
                 ;;
             "us-south")
-                echo "${bold}Chosen region: us-south, pease pick a data center:${green}"
+                echo "${bold}Chosen region: us-south, please pick a data center:${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "us-south"' temp.json > workspace-configuration.json
                 southData=("dal10" "dal12" "dal13")
@@ -1225,7 +1233,7 @@ select_region() {
                 break
                 ;;
             "eu-central")
-                echo "${bold}Chosen region: us-central, pease pick a data center${green}"
+                echo "${bold}Chosen region: us-central, please pick a data center${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "eu-de"' temp.json > workspace-configuration.json
                 euData=("fra02" "fra04" "fra05")
@@ -1255,7 +1263,7 @@ select_region() {
                 break
                 ;;
             "uk-south")
-                echo "${bold}Chosen region: uk south, pease pick a data center${green}"
+                echo "${bold}Chosen region: uk south, please pick a data center${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "uk-south"' temp.json > workspace-configuration.json
                 ukData=("lon04" "lon05" "lon06")
@@ -1285,7 +1293,7 @@ select_region() {
                 break
                 ;;
                 "ap-north")
-                echo "${bold}Chosen region: ap north, pease pick a data center${green}"
+                echo "${bold}Chosen region: ap north, please pick a data center${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "ap-north"' temp.json > workspace-configuration.json
                 apNorthData=("hkg02" "che01" "tok02" "tok04" "tok05" "seo01" "sng01")
@@ -1339,7 +1347,7 @@ select_region() {
                 break
                 ;;
                 "ap-south")
-                echo "${bold}Chosen region: ap-south, pease pick a data center${green}"
+                echo "${bold}Chosen region: ap-south, please pick a data center${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "ap-south"' temp.json > workspace-configuration.json
                 apSouthData=("mel01" "syd01" "syd04" "syd05")
@@ -1389,7 +1397,7 @@ select_vpc_zone() {
     select region in "${regions[@]}"; do
         case $region in
             "us-east")
-                echo "${bold}Chosen region: us-east, pease pick a vpc zone:${green}"
+                echo "${bold}Chosen region: us-east, please pick a vpc zone:${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "us-east"' temp.json > workspace-configuration.json
                 eastZone=("us-east-1" "us-east-2" "us-east-3")
@@ -1419,7 +1427,7 @@ select_vpc_zone() {
                 break
                 ;;
             "us-south")
-                echo "${bold}Chosen region: us-south, pease pick a vpc zone:${green}"
+                echo "${bold}Chosen region: us-south, please pick a vpc zone:${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "us-south"' temp.json > workspace-configuration.json
                 southZone=("us-south-1" "us-south-2" "us-south-3")
@@ -1449,7 +1457,7 @@ select_vpc_zone() {
                 break
                 ;;
             "eu-de")
-                echo "${bold}Chosen region: EU Frankenfurt, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: EU Frankenfurt, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "eu-de"' temp.json > workspace-configuration.json
                 euZone=("eu-de-1" "eu-de-2" "eu-de-3")
@@ -1479,7 +1487,7 @@ select_vpc_zone() {
                 break
                 ;;
             "eu-gb")
-                echo "${bold}Chosen region: EU London, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: EU London, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "eu-gb"' temp.json > workspace-configuration.json
                 ukZone=("eu-gb-1" "eu-gb-2" "eu-gb-3")
@@ -1509,7 +1517,7 @@ select_vpc_zone() {
                 break
                 ;;
             "ca-tor")
-                echo "${bold}Chosen region: Canada Toronto, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: Canada Toronto, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "ca-tor"' temp.json > workspace-configuration.json
                 caZone=("ca-tor-1" "ca-tor-1" "ca-tor-1" )
@@ -1539,7 +1547,7 @@ select_vpc_zone() {
                 break
                 ;;
             "jp-tok")
-                echo "${bold}Chosen region: Japan Tokyo, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: Japan Tokyo, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "jp-tok"' temp.json > workspace-configuration.json
                 jpZone=("jp-tok-1" "jp-tok-2" "jp-tok-3")
@@ -1569,7 +1577,7 @@ select_vpc_zone() {
                 break
                 ;;
             "jp-osa")
-                echo "${bold}Chosen region: Japan Osaka, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: Japan Osaka, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "jp-osa"' temp.json > workspace-configuration.json
                 jpZone=("jp-osa-1" "jp-osa-2" "jp-osa-3")
@@ -1599,7 +1607,7 @@ select_vpc_zone() {
                 break
                 ;;
             "au-syd")
-                echo "${bold}Chosen region: uk south, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: uk south, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "au-syd"' temp.json > workspace-configuration.json
                 auZone=("au-syd-1" "au-syd-2" "au-syd-3")
@@ -1709,9 +1717,8 @@ get_cloud_pak_install
 prompt_license
 check_resource_groups
 get_workspace_name
-get_meta_data
-write_meta_data
 get_cluster_info
+get_meta_data
 write_meta_data
 get_vpc
 if ! $EXISTING_CLUSTER
