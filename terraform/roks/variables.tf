@@ -99,6 +99,7 @@ variable "install_portworx" {
 }
 
 variable "ibmcloud_api_key" {
+  default = ""
   description = "Ignored if Portworx is not enabled: IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
 }
 
