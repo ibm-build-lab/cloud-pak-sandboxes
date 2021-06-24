@@ -385,7 +385,7 @@ get_meta_data() {
     # tags for workspace, used by workspace-configuration.json
     read -p "${bold}Enter Project Owner Name:${normal} " -e PROJECT_OWNER_NAME
     PROJECT_OWNER_NAME_TAG="owner:$PROJECT_OWNER_NAME"
-    if [ $CLUSTER_ID == "" ]
+    if [ -z $CLUSTER_ID ]
     then
       read -p "${bold}Enter Environment Name:${normal} " -e ENV_NAME
       ENV_NAME_TAG="env:$ENV_NAME"
