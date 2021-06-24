@@ -73,9 +73,11 @@ module "iaf" {
   // ROKS cluster parameters:
   openshift_version   = local.roks_version
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+  region              = var.region
+  resource_group      = var.resource_group
 
   // IBM Cloud API Key
-  ibmcloud_api_key          = var.ibmcloud_api_key
+  ibmcloud_api_key    = var.ibmcloud_api_key
 
   // Entitled Registry parameters:
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
