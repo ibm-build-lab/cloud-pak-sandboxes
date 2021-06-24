@@ -18,13 +18,13 @@ variable "on_vpc" {
 // Required if cluster id is not specified
 variable "region" {
   default     = "us-south"
-  description = "Ignored if `cluster_id` is specified. Region to provision the Openshift cluster. List all available regions with: ibmcloud regions"
+  description = "Region of the Openshift cluster. List all available regions with: ibmcloud regions"
 }
 
 // Required if cluster id is not specified
 variable "resource_group" {
   default     = "Default"
-  description = "Ignored if `cluster_id` is specified. Resource Group to host the cluster. List all available resource groups with: `ibmcloud resource groups`"
+  description = "Resource Group of the cluster. List all available resource groups with: `ibmcloud resource groups`"
 }
 // Required if cluster id is not specified
 variable "project_name" {
