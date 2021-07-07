@@ -11,12 +11,12 @@
     ],
     "resource_group": "cloud-pak-sandbox",
     "template_repo": {
-        "url": "https://github.ibm.com/hcbt/cloud-pak-sandboxes",
+        "url": "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak",
         "branch": "{{ BRANCH }}"
     },
     "template_data": [
         {
-            "folder": "terraform/cp4app",
+            "folder": "examples/cp4app",
             "type": "terraform_v0.12",
             "variablestore": [
                 {
