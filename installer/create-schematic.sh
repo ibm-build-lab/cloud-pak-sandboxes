@@ -21,7 +21,7 @@ red=$(tput setaf 1; tput bold)
 EXISTING_CLUSTER="false"
 
 CP4MCM="false"
-CLOUD_PAK_NAME_MCM_VERSION="Cloud Pak for Multicloud Management 2.2"
+CLOUD_PAK_NAME_MCM_VERSION="Cloud Pak for Multicloud Management"
 CLOUD_PAK_TEMPLATE_MCM=./templates/cpmcm-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_MCM="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4mcm"
 
