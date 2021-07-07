@@ -38,7 +38,7 @@ The development and testing of the sandbox setup code requires the following ele
 - Install some utility tools such as:
   - [jq](https://stedolan.github.io/jq/download/) (optional)
   - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-  - `oc`
+  - [oc](https://docs.openshift.com/container-platform/3.6/cli_reference/get_started_cli.html)
 
 Execute these commands to validate some of these requirements:
 
