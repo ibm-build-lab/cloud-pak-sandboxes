@@ -94,7 +94,7 @@ module "portworx" {
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4aiops" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4data"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4aiops?ref=add_aiops"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops?ref=add_aiops"
   enable = true
 
   on_vpc              = var.on_vpc
