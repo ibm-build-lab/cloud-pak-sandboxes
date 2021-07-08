@@ -60,6 +60,10 @@ IAF_VERSION="IBM Automation Foundation 1.0"
 IAF_TEMPLATE=./templates/iaf-workspace-configuration.json
 IAF_REPO_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf"
 
+CP4AIOPS="false"
+CLOUD_PAK_NAME_AIOPS_VERSION="Cloud Pak for Watson AIOps 2.1"
+CLOUD_PAK_TEMPLATE_AIOPS=./templates/cp4aiops-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_AIOPS="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/aiops"
 
 IBM_API_KEY="none"
 EXISTING_CLUSTER="false"
@@ -164,6 +168,16 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
+                ;;
+            $CLOUD_PAK_NAME_AIOPS_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_AIOPS_VERISON"
+                CP4AIOPS="true"
+                cp $CLOUD_PAK_TEMPLATE_AIOPS workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AIOPS" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
                 ;;  
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
@@ -245,6 +259,10 @@ prompt_license() {
     then
         echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
+    if $CP4AIOPS
+    then
+        echo "${red}"  $CLOUD_PAK_NAME_AIOPS_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
+    fi
     licenseAgree=("Yes" "No")
     select licenseAgree in "${licenseAgree[@]}"; do
         case $licenseAgree in
@@ -313,7 +331,12 @@ get_workspace_name() {
     then
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-iaf-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-iaf-sandbox"
-    fi      
+    fi 
+    if $CP4AIOPS
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-aiops-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-aiops-sandbox"
+    fi       
 }
 
 
@@ -336,6 +359,11 @@ set_vpc_flavors() {
             jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
         fi
         if $CP4I
+        then
+            cp ./workspace-configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+        fi
+        if $CP4AIOPS
         then
             cp ./workspace-configuration.json temp.json
             jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
@@ -415,7 +443,7 @@ get_meta_data() {
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary${bold}):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
-    if $IAF || $CP4D35 || $CP4MCM || $CP4I
+    if $IAF || $CP4D35 || $CP4MCM || $CP4I || $CP4AIOPS
     then
        get_ibm_api_key
     fi 
@@ -1820,4 +1848,9 @@ fi
 if $CP4S
 then
     echo "${bold}Cloud Pak for Automation will be available in about 1 hour 30 minutes.${green}"
+fi
+
+if $CP4AIOPS
+then
+    echo "${bold}Cloud Pak for Watson AIOps will be available in about 2 hours.${green}"
 fi
