@@ -86,7 +86,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$IAF_VERSION")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
