@@ -61,7 +61,7 @@ IAF_TEMPLATE=./templates/iaf-workspace-configuration.json
 IAF_REPO_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf"
 
 CP4AIOPS="false"
-CLOUD_PAK_NAME_AIOPS_VERSION="Cloud Pak for Watson AIOps 2.1"
+CLOUD_PAK_NAME_AIOPS_VERSION="Cloud Pak for Watson AIOps 3.1"
 CLOUD_PAK_TEMPLATE_AIOPS=./templates/cp4aiops-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_AIOPS="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/aiops"
 
