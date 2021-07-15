@@ -66,12 +66,12 @@ variable "workers_count" {
 
 variable "private_vlan_number" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. Classic Only. Private VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Private VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target <resource_group>; ibmcloud ks vlan ls --zone <zone>`"
 }
 
 variable "public_vlan_number" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. Classic Only. Public VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target <resource_group>; ibmcloud ks vlan ls --zone <zone>`"
 }
 
 variable "datacenter" {
