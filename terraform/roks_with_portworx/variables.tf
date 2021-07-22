@@ -17,12 +17,12 @@ variable "on_vpc" {
 
 variable "region" {
   default     = "us-south"
-  description = "Ignored if `cluster_id` is specified. List all available regions with: `ibmcloud regions`"
+  description = "Region that the cluster is/will be located. List all available regions with: `ibmcloud regions`"
 }
 
 variable "resource_group" {
   default     = "cloud-pak-sandbox"
-  description = "Ignored if `cluster_id` is specified. List all available resource groups with: `ibmcloud resource groups`"
+  description = "Resource group that the cluster is/will be located. List all available resource groups with: `ibmcloud resource groups`"
 }
 
 variable "roks_version" {
