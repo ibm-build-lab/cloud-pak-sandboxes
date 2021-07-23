@@ -97,10 +97,10 @@ variable "install_portworx" {
   description = "Install Portworx on the ROKS cluster. `true` or `false`"
 }
 
-variable "portworx_is_ready" {
-  type = any
-  default = null
-}
+# variable "portworx_is_ready" {
+#   type = any
+#   default = null
+# }
 
 variable "ibmcloud_api_key" {
   description = "Ignored if Portworx is not enabled: IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
