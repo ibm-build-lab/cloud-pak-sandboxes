@@ -16,12 +16,12 @@ variable "on_vpc" {
 
 variable "region" {
   default     = "us-south"
-  description = "Ignored if `cluster_id` is specified. List all available regions with: `ibmcloud regions`"
+  description = "Region that the cluster is/will be provisioned in. List all available regions with: `ibmcloud regions`"
 }
 
 variable "resource_group" {
   default     = "cloud-pak-sandbox"
-  description = "Ignored if `cluster_id` is specified. List all available resource groups with: `ibmcloud resource groups`"
+  description = "Resource group that the cluster is/will be provisioned in. List all available resource groups with: `ibmcloud resource groups`"
 }
 
 variable "roks_version" {
@@ -65,12 +65,12 @@ variable "workers_count" {
 
 variable "private_vlan_number" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. Classic Only. Private VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number"
+  description = "Ignored if `cluster_id` is specified. Classic Only. Private VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target -g <resource_group>; ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number"
 }
 
 variable "public_vlan_number" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. Classic Only. Public VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
+  description = "Ignored if `cluster_id` is specified. Classic Only. Public VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target -g <resource_group>; ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
 }
 
 variable "datacenter" {
