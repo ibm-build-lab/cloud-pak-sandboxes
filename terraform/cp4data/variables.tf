@@ -161,6 +161,7 @@ variable "cpd_project_name" {
 
 variable "accept_cpd_license" {
   type        = bool
+  default     = true
   description = "Do you accept the cpd license agreements? This includes any modules chosen as well. `true` or `false`"
 }
 
