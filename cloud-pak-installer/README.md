@@ -2,12 +2,15 @@
 
 - [Cloud Pak Sandbox User Installation Script](#cloud-pak-sandbox-user-installation-script)
   - [Introduction](#introduction)
-    - [Install with IBM Cloud Shell](#install-with-ibm-cloud-shell)
-      - [Get Registry Key](#get-registry-key)
-      - [Download the Script](#download-the-script)
-      - [Create a resource group](#create-a-resource-group)
-      - [Run Installer](#run-installer)
-    - [Install From Personal Device](#install-from-personal-device)
+  - [Requirments](#requirments)
+    - [Understanding the IBM Cloud Shell](#understanding-the-ibm-cloud-shell)
+    - [Generate an IBM API key](#generate-an-IBM-API-key)
+    - [Get Registry Key](#get-registry-key)
+    - [Download the Script](#download-the-script)
+    - [Create a resource group](#create-a-resource-group)
+    - [CP4S requirments](#cp4s-requirments)
+  - [Runing the Installer](#run-installer)
+  - [Installing From Personal Device](#install-from-personal-device)
   - [VLAN Usage](#vlan-usage)
   - [Checking Progress](#checking-progress)
   - [Accessing the Cloud Pak Console](#accessing-the-cloud-pak-console)
@@ -25,12 +28,27 @@ Currently you can run the script to install:
 - Cloud Pak for Multi Cloud Management
 - Cloud Pak for Data
 - Cloud Pak for Integration
+- Cloud Pak for AIOps
+- Cloud Pak for Security (local runtime installer only)
 - Cloud Pak for Busincess Automation (under development)
-- Cloud Pak for Security (under development)
+- Cloud Pak for Network Automation (under development)
 
-## Install Using IBM Cloud Shell
+## Requirments
 
+In order to run the cloud-pak-installer.sh script you must have a series of required input values, these are discussed below in the requirments.  Some modules may require additional requirments.  Cloud Pak for Security will require additional requirments which are listed below.
+
+After the input values and tools are gathered you will need decide to run the cloud pak installer from your local machine or the IBM Cloud Shell.  CP4S must be run from your local machine.  In either case you will clone the repo, add permission to the script if needed, and run cloud-pak-installer.sh
+
+### Understanding the IBM Cloud Shell
+
+Running the cloud-pak-installer on IBM Cloud Shell is a simple process and has all the required tools installed, follow this link for more info on the IBM Cloud Shell
 [Understanding the IBM Cloud User Interface](https://cloud.ibm.com/docs/overview?topic=overview-ui)
+
+### Generate an IBM API key
+
+When install cloud paks, some require an api key and any type of VPC, IAF, and Portworx combination will also require an api key.  To generate the API key you can log into your IBM account and go to this link.
+
+[IBM Cloud IAM API key](https://cloud.ibm.com/iam/apikeys)
 
 ### Get registry key
 
@@ -39,7 +57,7 @@ Each Cloud Pak requires an entitlement key. The script will prompt for this key 
 If you do not have the key visit this link to generate one:
 [Generate Cloud Pak Entitlement Key](https://myibm.ibm.com/products-services/containerlibrary)
 
-NOTE: For Cloud Pak for Data you will also need your docker credentials if installing the Guardium External Strap module
+NOTE: For Cloud Pak for Data you will also need your docker credentials if installing the Guardium External Strap module.
 
 ### Download the script
 
@@ -52,19 +70,27 @@ Within the **IBM Cloud Shell** terminal, clone the following repo:
 
 ### Create a resource group
 
-In order for the script to run it requires a resource group to work out of as well as for the user to have permissions to that group. By default this resource group is ```cloud-pak-sandbox``` so you will need to go to your IBM cloud account and create this resource goup.
+In order for the script to run it requires a resource group to work out of as well as for the user to have permissions to that group. The cloud-pak-installer.sh will prompt for the resource group.  If one is not provided or if the provided one is not found the script will fail with the appropriate error.
 
-If you want to use an alternative resource group then you can go to the `<module>/workspace-configuration.json` in with respect to the cloud pak you wish to install and edit the resource group name to your choice.
+Note: Be sure that you have permission to the resource group you are using.  If you do not have permission this is the same as the resource group not existing to the cloud-pak-installer.sh
 
-### Run installer
+### CP4S Requirments
+
+Cloud Pak for Security requires docker images running locally to install the cloud pak.  Due to this when installing CP4S you must run the installer from a local machine with docker permissions.  In addition you will need to be sure the following command line tools are enabled.
+
+[CP4S Requirments](https://www.ibm.com/docs/en/cloud-paks/cp-security/1.6.0?topic=tasks-installing-developer-tools)
+
+## Run installer
 
 To run the installer, do the following in the **IBM Cloud Shell** terminal:
 
-    cd cloud-pak-sandboxes/installer
-    chmod +x create-schematic.sh
-    ./create-schematic.sh
+    cd cloud-pak-sandboxes/cloud-pak-installer
+    chmod +x cloud-pak-installer.sh
+    ./cloud-pak-installer.sh
 
-From here the Installer will ask you a set of questions pertaining to the cluster you wish to create. 
+From here the Installer will ask you a set of questions pertaining to the cluster you wish to create.  The cloud-pak-installer.sh will take about 15 minutes to run, when it is finished a workspace schematic will be created to manage the creation of an openshift cluster and cloud pak install.  Depending on selection the creation of the resources can take anywhere from 1-3 hours this can go even longer when choosing mutiple modules.
+
+The cloud-pak-installer.sh will return a link that you can go to and monitor the install.
 
 ## Install From Personal Device
 
@@ -147,7 +173,7 @@ Select `Delete workspace` and `Delete all associated resources` options, type th
 
 ## Clean Up Script
 
-An alternative to deleting cluster and schematics is to use delete-schematics.sh.
+An alternative to deleting cluster and schematics is to use [cloud-pak-sandboxes/scripts/delete-schematics](https://github.com/ibm-hcbt/cloud-pak-sandboxes/scripts/delete-schematics).
 
 To use this script you must first be logged into the IBM cloud bash shell or the IBM cloud cli if running from your computers bash.  After that run the delete-schematics and you will be prompted with instructions on what you would like to delete. Simply choose the options and delete.
 
@@ -188,4 +214,3 @@ Cloud Pak for Multi Cloud Management [Sandbox Inputs/Outputs and Validation](htt
 [IBM Schematic Workspaces](http://github.com)
 
 [RedHat OpenShift Kubernetes Services/(ROKS)](https://developer.ibm.com/recipes/tutorials/planning-redhat-openshift-deployment-on-ibm-cloud/)
-
