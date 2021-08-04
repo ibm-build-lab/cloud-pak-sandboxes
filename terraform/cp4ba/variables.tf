@@ -194,6 +194,40 @@ variable "cluster_config_path" {
   description = "directory to store the kubeconfig file"
 }
 
+variable "registry_server" {
+  description = "Enter the public image registry or route (e.g., default-route-openshift-image-registry.apps.<hostname>).\nThis is required for docker/podman login validation:"
+}
+
+variable "entitlement_key" {
+  type        = string
+  description = "Do you have a Cloud Pak for Business Automation Entitlement Registry key? If not, Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
+}
+
+variable "public_registry_server" {
+  description = "public image registry or route for docker/podman login validation: \n (e.g., default-route-openshift-image-registry.apps.<hostname>). This is required for docker/podman login validation: "
+}
+
+variable "registry_user" {
+  description = "Enter the user name for your docker registry: "
+}
+
+variable "docker_password" {
+  description = "Enter the password for your docker registry: "
+}
+
+variable "docker_username" {
+  description = "Docker username for creating the secret."
+}
+
+variable "docker_secret_name" {
+  description = "Enter the name of the docker registry's image."
+}
+
+variable "cluster_name_or_id" {
+  default     = ""
+  description = "Enter your cluster id or name to install the Cloud Pak. Leave blank to provision a new Openshift cluster."
+}
+
 
 //variable "cluster_id" {
 //  default     = ""
@@ -208,21 +242,41 @@ variable "install_portworx" {
 }
 
 locals {
-  cp4ba_namespace              = "cp4ba-project"
-  entitled_registry            = "cp.icr.io"
-  entitled_registry_user       = "cp"
-  enable_cluster               = var.cluster_name_id == "" || var.cluster_name_id == null
-  use_entitlement              = var.use_entitlement #? ["yes", "Yes", "YES", "y", "Y"] : ["", "n", "N", "no", "No", "NO"]
-  local_public_registry_server = var.local_public_registry_server
-  local_public_image_registry  = var.public_image_registry
-  local_registry_server        = var.local_registry_server
-  local_registry_user          = var.local_registry_user
-  local_registry_password      = var.local_registry_password
-  entitled_registry_key        = chomp(var.entitled_registry_key)
+//  cp4ba_namespace              = "cp4ba"
+
+  docker_secret_name           = "docker-registry"
+  docker_server                = "cp.icr.io"
+  docker_username              = "cp"
+  docker_password              = chomp(var.entitlement_key)
+  docker_email                 = var.entitled_registry_user_email
+
+  enable_cluster               = var.cluster_name_or_id == "" || var.cluster_name_or_id == null
+  use_entitlement              = "yes"
+  project_name                 = "cp4ba"
+  platform_options             = 1 // 1: roks - 2: ocp - 3: private cloud
+  deployment_type              = 2 // 1: demo - 2: enterprise
+  platform_version             = "4.6" // roks version
+
+//  entitled_registry_key        = chomp(var.entitlement_key)
   ibmcloud_api_key             = chomp(var.ibmcloud_api_key)
-  openshift_version_regex      = regex("(\\d+).(\\d+)(.\\d+)*(_openshift)*", var.openshift_version)
-  openshift_version_number     = local.openshift_version_regex[3] == "_openshift" ? tonumber("${local.openshift_version_regex[0]}.${local.openshift_version_regex[1]}") : 0
-}
+ }
+//
+//locals {
+//  cp4ba_namespace              = "cp4ba-project"
+//  entitled_registry            = "cp.icr.io"
+//  entitled_registry_user       = "cp"
+//  enable_cluster               = var.cluster_name_id == "" || var.cluster_name_id == null
+//  use_entitlement              = var.use_entitlement #? ["yes", "Yes", "YES", "y", "Y"] : ["", "n", "N", "no", "No", "NO"]
+//  local_public_registry_server = var.local_public_registry_server
+//  local_public_image_registry  = var.public_image_registry
+//  local_registry_server        = var.local_registry_server
+//  local_registry_user          = var.local_registry_user
+//  local_registry_password      = var.local_registry_password
+//  entitled_registry_key        = chomp(var.entitled_registry_key)
+//  ibmcloud_api_key             = chomp(var.ibmcloud_api_key)
+//  openshift_version_regex      = regex("(\\d+).(\\d+)(.\\d+)*(_openshift)*", var.openshift_version)
+//  openshift_version_number     = local.openshift_version_regex[3] == "_openshift" ? tonumber("${local.openshift_version_regex[0]}.${local.openshift_version_regex[1]}") : 0
+//}
 
 locals {
   storage_class_name               = "cp4a-file-retain-gold-gid"

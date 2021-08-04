@@ -83,39 +83,47 @@ module "cp4ba"{
     // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
     enable = true
 
-    openshift_version   = var.openshift_version
-    cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_dir
-    cluster_name_id     = var.cluster_name_id
+//    openshift_version   = var.openshift_version
+//    cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_dir
+//    cluster_name_id     = var.cluster_name_id
 //    on_vpc              = var.on_vpc
 
     // IBM Cloud API Key
-    ibmcloud_api_key = var.ibmcloud_api_key
+     CLUSTER_NAME_OR_ID     = var.cluster_name_or_id
+    //    on_vpc              = var.on_vpc
 
-    # Cluster
-//    on_vpc                        = var.on_vpc
-    portworx_is_ready             = var.portworx_is_ready
-    namespace                     = var.namespace
+        // IBM Cloud API Key
+      IBMCLOUD_API_KEY = var.ibmcloud_api_key
 
-    # Platform
-    Platform_Option               = var.platform_options
-    Platform_Version              = var.platform_version
-    Project_Name                  = var.project_name
-    Deployment_Type               = var.deployment_type
+      # Cluster
+  //    on_vpc                        = var.on_vpc
+  //    portworx_is_ready             = var.portworx_is_ready
+  //    namespace                     = local.cp4ba_namespace
+  //
+  //    # Platform
+      PLATFORM_SELECTED              = local.platform_options
+      PLATFORM_VERSION              = local.platform_version
+      PROJECT_NAME                     = local.project_name
+      DEPLOYMENT_TYPE               = local.deployment_type
+      USER_NAME_EMAIL                = var.entitled_registry_user_email
+      USE_ENTITLEMENT               = local.use_entitlement
+      ENTITLED_REGISTRY_KEY               = var.entitlement_key # file("${path.cwd}/../../entitlement.key")
+      # Registry Images
+      DOCKER_SECRET_NAME            = var.docker_secret_name
+      DOCKER_SERVER                 = local.docker_server
+      DOCKER_USERNAME               = local.docker_username
+      DOCKER_REGISTRY_PASS               = local.docker_password
+      DOCKER_USER_EMAIL                  = local.docker_email
+      public_registry_server        = var.public_registry_server
+      LOCAL_PUBLIC_REGISTRY_SERVER   = var.public_image_registry
+  //    local_registry_server         = var.registry_server
+  //    local_registry_user           = var.registry_user
 
-    Username_Email                = var.entitled_registry_user_email
-    Use_Entitlement               = local.use_entitlement
-    Entitlement_Key               = file("${path.cwd}/../../entitlement.key")
-    # Registry Images
-    Local_Public_Registry_Server  = local.local_public_registry_server
-    Local_Public_Image_Registry   = local.local_public_image_registry
-    Local_Registry_Server         = local.local_registry_server
-    Local_Registry_User           = local.local_registry_user
-    Local_Registry_Password       = local.local_registry_password
-    # Storage Classes
-    Storage_Class_Name            = local.storage_class_name
-    Sc_Slow_File_Storage_Classname   = local.sc_slow_file_storage_classname
-    Sc_Medium_File_Storage_Classname = local.sc_medium_file_storage_classname
-    Sc_Fast_File_Storage_Classname   = local.sc_fast_file_storage_classname
+  //    # Storage Classes
+      STORAGE_CLASSNAME            = local.storage_class_name
+      SC_SLOW_FILE_STORAGE_CLASSNAME   = local.sc_slow_file_storage_classname
+      SC_MEDIUM_FILE_STORAGE_CLASSNAME = local.sc_medium_file_storage_classname
+      SC_FAST_FILE_STORAGE_CLASSNAME   = local.sc_fast_file_storage_classname
 }
 
 ////######################### DB2 ##################################
