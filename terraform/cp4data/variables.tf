@@ -155,7 +155,7 @@ variable "entitled_registry_user_email" {
 
 variable "cpd_project_name" {
   type        = string
-  default     = "default"
+  default     = "cp4d"
   description = "Name of the project namespace"
 }
 
