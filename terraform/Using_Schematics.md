@@ -14,7 +14,7 @@ There are two ways to create and execute the Schematics workspace, using [IBM Cl
 
 3. Provide a name, tags, location. Choose **schematics** resource group
 
-4. Once workspace is created, add **https://github.com/ibm-hcbt/cloud-pak-sandboxes/terraform/roks** as the github URL, note `roks` is an example.  Change this to whichever module you want to install
+4. Once workspace is created, add **https://github.com/ibm-hcbt/cloud-pak-sandboxes/terraform/cp4data** as the github URL, note `cp4data` is an example.  Change this to whichever module you want to install
 
 5. Leave **Personal access token** blank
 
