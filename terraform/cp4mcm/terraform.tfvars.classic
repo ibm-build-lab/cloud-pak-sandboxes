@@ -17,16 +17,15 @@ resource_group = "cloud-pak-sandbox"
 datacenter     = ""
 
 // VLAN's numbers in datacenter, if they exist. 
-//private_vlan_number = ""
-//public_vlan_number  = ""
+private_vlan_number = ""
+public_vlan_number  = ""
 
 // Entitlement Key parameters
 // --------------------------
-
-// 1. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, save the key to the
-// file "./entitlement.key"
-// 2. Set the entitled_registry_user_email with the docker email address to login to the registry, example:
-entitled_registry_user_email = "John.Doe@ibm.com"
+// Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, save the key to the
+entitlement_key = ""
+// Set the entitled_registry_user_email with the docker email address to login to the registry:
+entitled_registry_user_email = ""
 
 // CP4MCM Modules installation parameters
 // --------------------------------------
