@@ -56,7 +56,7 @@ module "portworx" {
   //source = "../../../terraform-ibm-cloud-pak/modules/portworx"
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
   // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
-  enable = var.install_portworx
+  enable = var.on_vpc
 
   ibmcloud_api_key = var.ibmcloud_api_key
 
