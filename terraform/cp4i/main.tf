@@ -28,12 +28,6 @@ module "cluster" {
   force_delete_storage = true
   vpc_zone_names       = var.vpc_zone_names
 
-  // Kubernetes Config parameters:
-  // download_config = false
-  // config_dir      = local.kubeconfig_dir
-  // config_admin    = false
-  // config_network  = false
-
   // Debugging
   private_vlan_number = var.private_vlan_number
   public_vlan_number  = var.public_vlan_number
@@ -92,19 +86,13 @@ module "portworx" {
   etcd_secret_name      = "px-etcd-certs"
 }
 
-resource "null_resource" "sc" {
-  provisioner "local-exec" {
-    command = "echo 'portworx id: ${module.portworx.portworx_is_ready}'"
-  }
-}
-
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4i" {
-  source = "../../../terraform-ibm-cloud-pak/modules/cp4i"
-  //source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4i"
+  //source = "../../../terraform-ibm-cloud-pak/modules/cp4i"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4i"
   enable = true
 
-  // assumption that if on vpc, Portworx has been configured
+  // Assumption that if on vpc, Portworx has been configured
   storageclass = module.portworx.portworx_is_ready == null ? "ibmc-file-gold-gid" : "portworx-rwx-gp3-sc"
   
   // ROKS cluster parameters:
