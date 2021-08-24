@@ -47,7 +47,7 @@ variable "flavors" {
 
 variable "workers_count" {
   type    = list(number)
-  default = [5]
+  default = [4]
   description = "Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
 }
 

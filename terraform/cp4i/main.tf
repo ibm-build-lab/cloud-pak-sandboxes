@@ -92,21 +92,21 @@ module "portworx" {
   etcd_secret_name      = "px-etcd-certs"
 }
 
+resource "null_resource" "sc" {
+  provisioner "local-exec" {
+    command = "echo 'portworx id: ${module.portworx.portworx_is_ready}'"
+  }
+}
+
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4i" {
   source = "../../../terraform-ibm-cloud-pak/modules/cp4i"
   //source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4i"
   enable = true
 
-  // Create an implicit dependency on the Portworx module if cluster is on vpc
-  //portworx_is_ready = var.on_vpc ? module.portworx.portworx_is_ready : 1
-  # depends_on = [
-  #   module.portworx.portworx_is_ready,
-  # ]
-
   // assumption that if on vpc, Portworx has been configured
   storageclass = module.portworx.portworx_is_ready == null ? "ibmc-file-gold-gid" : "portworx-rwx-gp3-sc"
-
+  
   // ROKS cluster parameters:
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
 
