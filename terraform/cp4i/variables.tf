@@ -82,7 +82,7 @@ variable "public_vlan_number" {
 // Portworx Module Variables
 variable "ibmcloud_api_key" {
   default = ""
-  description = "Ignored if Portworx is not enabled. IBMCloud API Key for the account the resources will be provisioned on. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
+  description = "**VPC Only**. For Portworx setup. IBMCloud API Key for the account the resources will be provisioned on. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
 }
 
 variable "storage_capacity"{
