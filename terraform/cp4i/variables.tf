@@ -35,6 +35,7 @@ variable "environment" {
 }
 
 variable "owner" {
+  default     = ""
   description = "Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources with the tag 'owner:{owner}'"
 }
 
