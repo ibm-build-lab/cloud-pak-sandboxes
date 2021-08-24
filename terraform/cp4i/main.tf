@@ -9,7 +9,7 @@ locals {
 }
 
 module "cluster" {
-  // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/roks"
+  //source = "../../../terraform-ibm-cloud-pak/modules/roks"
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
@@ -59,6 +59,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "portworx" {
+  //source = "../../../terraform-ibm-cloud-pak/modules/portworx"
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
   // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
   enable = var.install_portworx
@@ -93,16 +94,20 @@ module "portworx" {
 
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4i" {
-  // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4data"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4i"
+  source = "../../../terraform-ibm-cloud-pak/modules/cp4i"
+  //source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4i"
   enable = true
-  force  = true
 
-  on_vpc              = var.on_vpc
-  portworx_is_ready   = module.portworx.portworx_is_ready
+  // Create an implicit dependency on the Portworx module if cluster is on vpc
+  //portworx_is_ready = var.on_vpc ? module.portworx.portworx_is_ready : 1
+  # depends_on = [
+  #   module.portworx.portworx_is_ready,
+  # ]
+
+  // assumption that if on vpc, Portworx has been configured
+  storageclass = module.portworx.portworx_is_ready == null ? "ibmc-file-gold-gid" : "portworx-rwx-gp3-sc"
 
   // ROKS cluster parameters:
-  openshift_version   = var.roks_version
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
 
   // Entitled Registry parameters:

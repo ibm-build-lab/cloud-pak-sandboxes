@@ -1,7 +1,13 @@
 // Openshift cluster parameters
 // ----------------------------
 
-// Create a cluster based on values below
+// IBM Cloud API Key. Go here for information on how to create: https://cloud.ibm.com/iam/apikeys
+ibmcloud_api_key = ""
+
+// Using an existing cluster
+cluster_id = ""
+
+// Or create a cluster based on values below
 project_name 	= "vpc"
 owner        	= "anonymous"
 environment  	= "test"
@@ -50,4 +56,11 @@ workers_count   = [4]
 // This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 //create_external_etcd = ""
 //etcd_username = ""
+
+// Entitlement Key parameters
+// --------------------------
+// Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary
+entitled_registry_key = ""
+entitled_registry_user_email = "
+
 
