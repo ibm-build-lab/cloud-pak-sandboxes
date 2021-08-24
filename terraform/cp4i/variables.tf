@@ -88,37 +88,37 @@ variable "ibmcloud_api_key" {
 variable "storage_capacity"{
     type = number
     default = 200
-    description = "Ignored if Portworx is not enabled. Storage capacityin GBs"
+    description = "**VPC Only**. For Portworx setup. Storage capacity in GBs"
 }
 
 variable "storage_profile" {
     type = string
     default = "10iops-tier"
-    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
+    description = "**VPC Only**. For Portworx setup. Optional, Storage profile used for creating storage"
 }
 
 variable "storage_iops" {
     type = number
     default = 10
-    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
+    description = "**VPC Only**. For Portworx setup. Optional, Used only if a user provides a custom storage_profile"
 }
 
 variable "create_external_etcd" {
     type = bool
     default = false
-    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
+    description = "**VPC Only**. For Portworx setup. Do you want to create an external etcd database? `true` or `false`"
 }
 
 # These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
 # You may override these for additional security.
 variable "etcd_username" {
   default = ""
-  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+  description = "**VPC Only**. For Portworx setup. This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
 variable "etcd_password" {
   default = ""
-  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+  description = "**VPC Only**. For Portworx setup. This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
 // CP4I Module Variables
