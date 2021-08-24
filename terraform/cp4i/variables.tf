@@ -80,26 +80,15 @@ variable "public_vlan_number" {
 }
 
 // Portworx Module Variables
-variable "install_portworx" {
-  type        = bool
-  default     = false
-  description = "Install Portworx on the ROKS cluster. `true` or `false`"
-}
-
-variable "portworx_is_ready" {
-  type = any
-  default = null
-}
-
 variable "ibmcloud_api_key" {
   default = ""
-  description = "Ignored if Portworx is not enabled: IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
+  description = "Ignored if Portworx is not enabled. IBMCloud API Key for the account the resources will be provisioned on. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
 }
 
 variable "storage_capacity"{
     type = number
     default = 200
-    description = "Ignored if Portworx is not enabled: Storage capacityin GBs"
+    description = "Ignored if Portworx is not enabled. Storage capacityin GBs"
 }
 
 variable "storage_profile" {
@@ -143,9 +132,4 @@ variable "entitled_registry_user_email" {
 variable "namespace" {
   default     = "cp4i"
   description = "Namespace for CP4I"
-}
-
-// Local Variables and constants
-locals {
-  entitled_registry_key_file = "./entitlement.key"
 }
