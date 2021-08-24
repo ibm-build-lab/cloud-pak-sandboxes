@@ -1,13 +1,13 @@
 {
-  "name": "test-cp4data35-sandbox",
+  "name": "test-cp4data35-sandbox-1",
   "type": [
     "terraform_v0.12"
   ],
   "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Data on IBM Cloud Classic",
   "tags": [
-    "owner:tekton-cpd35-test",
+    "owner:tekton-cpd35-test-1",
     "env:cpd",
-    "project:tekton-cpd35-test"
+    "project:tekton-cpd35-test-1"
   ],
   "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
@@ -25,12 +25,12 @@
         },
         {
           "name": "project_name",
-          "value": "tekton-cpd35-test",
+          "value": "tekton-cpd35-test-1",
           "type": "string"
         },
         {
           "name": "owner",
-          "value": "tekton-cpd35-test",
+          "value": "tekton-cpd35-test-1",
           "type": "string"
         },
         {
@@ -147,12 +147,12 @@
         },
         {
           "name": "install_watson_knowledge_catalog",
-          "value": "true",
+          "value": "false",
           "type": "bool"
         },
         {
           "name": "install_watson_studio",
-          "value": "true",
+          "value": "false",
           "type": "bool"
         },
         {
@@ -182,7 +182,7 @@
         },
         {
           "name": "install_spark",
-          "value": "true",
+          "value": "false",
           "type": "bool"
         },
         {
@@ -197,7 +197,7 @@
         },
         {
           "name": "install_rstudio",
-          "value": "true",
+          "value": "false",
           "type": "bool"
         },
         {
