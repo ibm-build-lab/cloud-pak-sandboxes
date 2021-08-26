@@ -1,5 +1,4 @@
 provider "ibm" {
-  version    = "~> 1.12"
   region     = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
 }
