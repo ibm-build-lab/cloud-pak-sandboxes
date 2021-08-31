@@ -74,6 +74,8 @@ module "cp4mcm" {
   entitled_registry_key        = var.entitled_registry_key
   entitled_registry_user_email = var.entitled_registry_user_email
 
+  // MCM specific variables
+  namespace                    = local.namespace
   install_infr_mgt_module      = var.install_infr_mgt_module
   install_monitoring_module    = var.install_monitoring_module
   install_security_svcs_module = var.install_security_svcs_module
