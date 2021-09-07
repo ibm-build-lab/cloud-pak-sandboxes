@@ -32,12 +32,6 @@ module "cluster" {
   vpc_zone_names       = var.vpc_zone_names
   force_delete_storage = true
 
-  // Kubernetes Config parameters:
-  // download_config = false
-  // config_dir      = local.kubeconfig_dir
-  // config_admin    = false
-  // config_network  = false
-
   // Debugging
   private_vlan_number = var.private_vlan_number
   public_vlan_number  = var.public_vlan_number
@@ -73,14 +67,15 @@ module "cp4mcm" {
   ibmcloud_api_key          = var.ibmcloud_api_key
 
   // ROKS cluster parameters:
-  openshift_version   = local.roks_version
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
   cluster_name_id = local.enable_cluster ? module.cluster.id : var.cluster_id
 
   // Entitled Registry parameters:
-  entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
+  entitled_registry_key        = var.entitled_registry_key
   entitled_registry_user_email = var.entitled_registry_user_email
 
+  // MCM specific variables
+  namespace                    = local.namespace
   install_infr_mgt_module      = var.install_infr_mgt_module
   install_monitoring_module    = var.install_monitoring_module
   install_security_svcs_module = var.install_security_svcs_module

@@ -90,6 +90,11 @@
           "type": "string"
         },
         {
+          "name": "namespace",
+          "value": "cp4mcm",
+          "type": "string"
+        },
+        {
           "name": "install_infr_mgt_module",
           "value": "false",
           "type": "bool"

@@ -1,7 +1,13 @@
 // Openshift cluster parameters
 // ----------------------------
 
-// Create a cluster based on values below
+// IBM Cloud API Key. Go here for information on how to create: https://cloud.ibm.com/iam/apikeys
+ibmcloud_api_key = ""
+
+// Using an existing cluster
+cluster_id = ""
+
+// Or create a cluster based on values below
 project_name 	= "classic"
 owner        	= "anonymous"
 environment  	= "test"
@@ -28,18 +34,10 @@ workers_count         = [4]
 private_vlan_number   = ""
 public_vlan_number    = ""
 
-// Entitlement Key parameters
+// Cloud Pak Entitlement Key parameters
 // --------------------------
-// Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, save the key to the
-entitlement_key = ""
+// Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary
+entitled_registry_key = ""
 // Set the entitled_registry_user_email with the docker email address to login to the registry:
 entitled_registry_user_email = ""
 
-// CP4MCM Modules installation parameters
-// --------------------------------------
-
-install_infr_mgt_module      = false
-install_monitoring_module    = false
-install_security_svcs_module = false
-install_operations_module    = false
-install_tech_prev_module     = false
