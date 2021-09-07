@@ -1,17 +1,18 @@
 {
-  "name": "tekton-cpd35-sandbox",
+  "name": "tekton-vpc-cp4data35-sandbox",
   "type": [
     "terraform_v0.12"
   ],
   "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Data on IBM Cloud Classic",
   "tags": [
     "owner:tekton",
-    "env:cpd35",
+    "env:vpc-cpd35",
     "project:tekton"
   ],
   "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data"
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data",
+    "branch": "master"
   },
   "template_data": [
     {
@@ -35,7 +36,7 @@
         },
         {
           "name": "environment",
-          "value": "cpd35",
+          "value": "vpc-cpd35",
           "type": "string"
         },
         {
@@ -55,37 +56,37 @@
         },
         {
           "name": "datacenter",
-          "value": "wdc04",
+          "value": "dal10",
           "type": "string"
         },
         {
           "name": "on_vpc",
-          "value": "false",
+          "value": "true",
           "type": "bool"
         },
         {
           "name": "flavors",
-          "value": "[\"b3c.16x64\"]",
+          "value": "[\"bx2.16x64\"]",
           "type": "list(string)"
         },
         {
           "name": "install_portworx",
-          "value": "false",
+          "value": "true",
           "type": "bool"
         },
         {
           "name": "vpc_zone_names",
-          "value": "[\"us-south-1\"]",
+          "value": "[\"us-east-1\"]",
           "type": "list(string)"
         },
         {
           "name": "private_vlan_number",
-          "value": "3090560",
+          "value": "",
           "type": "string"
         },
         {
           "name": "public_vlan_number",
-          "value": "3090562",
+          "value": "",
           "type": "string"
         },
         {
