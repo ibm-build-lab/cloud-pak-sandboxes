@@ -55,6 +55,11 @@ CLOUD_PAK_NAME_SECURITY_VERSION="Cloud Pak for Security 1.7.0"
 CLOUD_PAK_TEMPLATE_SECURITY=./templates/cp4s-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_SECURITY="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4s"
 
+CP4NA="false"
+CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION="Cloud Pak for Network Automation 2.1.1"
+CLOUD_PAK_TEMPLATE_NETWORK_AUTOMATION=./templates/cp4na-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_SECURITY="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4na"
+
 IAF="false"
 IAF_VERSION="IBM Automation Foundation 1.0"
 IAF_TEMPLATE=./templates/iaf-workspace-configuration.json
@@ -86,7 +91,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -158,7 +163,17 @@ get_cloud_pak_install() {
 #                cp workspace-configuration.json temp.json
 #                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
 #                break
-#                ;; 
+#                ;;
+            $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION"
+                CP4NA="true"
+                cp $CLOUD_PAK_TEMPLATE_NETWORK_AUTOMATION workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_NETWORK_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;; 
             $IAF_VERSION)
                 echo "${bold}Selected: $IAF_VERSION"
                 IAF="true"
@@ -255,6 +270,10 @@ prompt_license() {
     then
         echo "${red}"  $CLOUD_PAK_NAME_SECURITY_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
+    if $CP4NA
+    then 
+        echo "${red}"  $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
+    fi
     if $IAF
     then
         echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
@@ -327,6 +346,11 @@ get_workspace_name() {
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4s-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-cp4s-sandbox"
     fi
+    if $CP4NA
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4na-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4na-sandbox"
+    fi    
     if $IAF
     then
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-iaf-sandbox${bold}):${normal} " -e WORKSPACE_NAME
@@ -1848,10 +1872,18 @@ fi
 
 if $CP4S
 then
-    echo "${bold}Cloud Pak for Automation will be available in about 1 hour 30 minutes.${green}"
+    echo "${bold}Cloud Pak for Security will be available in about 1 hour 30 minutes.${green}"
 fi
 
 if $CP4AIOPS
 then
     echo "${bold}Cloud Pak for Watson AIOps will be available in about 2 hours.${green}"
+fi
+
+if $CP4NA
+then
+    echo "${bold}Cloud Pak for Network Automation will be available in about 1 hour 30 minutes.${green}"
+    echo "${bold}After the install is completed you can go to your cluster and look under installed operators to find CP4NA${green}"
+    echo
+    echo "${bold}To continue create an instance, an instance will require a configured LDAP to use ${green}"
 fi
