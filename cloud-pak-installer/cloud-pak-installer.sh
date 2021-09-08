@@ -58,7 +58,7 @@ CLOUD_PAK_REPO_LOCATION_SECURITY="https://github.com/ibm-hcbt/cloud-pak-sandboxe
 CP4NA="false"
 CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION="Cloud Pak for Network Automation 2.1.1"
 CLOUD_PAK_TEMPLATE_NETWORK_AUTOMATION=./templates/cp4na-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_SECURITY="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4na"
+CLOUD_PAK_REPO_LOCATION_NETWORK_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4na"
 
 IAF="false"
 IAF_VERSION="IBM Automation Foundation 1.0"
@@ -169,7 +169,7 @@ get_cloud_pak_install() {
                 CP4NA="true"
                 cp $CLOUD_PAK_TEMPLATE_NETWORK_AUTOMATION workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_NETWORK_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_NETWORK_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
