@@ -273,6 +273,7 @@ prompt_license() {
     if $CP4NA
     then 
         echo "${red}"  $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
+    fi
     if $IAF
     then
         echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
