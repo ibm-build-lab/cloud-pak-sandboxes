@@ -57,6 +57,10 @@ data "ibm_container_cluster_config" "cluster_config" {
   download          = true
   admin             = false
   network           = false
+
+  provisioner "local-exec" {
+    command = "sleep 300"
+  }
 }
 
 module "portworx" {
