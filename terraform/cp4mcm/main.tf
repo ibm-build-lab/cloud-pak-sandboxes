@@ -68,6 +68,8 @@ module "cp4mcm" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4mcm"
   enable = true
   on_vpc = var.on_vpc
+  region = var.region
+  zone   = var.on_vpc ? var.vpc_zone_names[0] : var.datacenter
   
   // IBM Cloud API Key
   ibmcloud_api_key          = var.ibmcloud_api_key
