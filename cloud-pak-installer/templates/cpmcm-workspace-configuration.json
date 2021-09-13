@@ -93,7 +93,8 @@
                 {
                     "name": "ibmcloud_api_key",
                     "value": "key",
-                    "type": "string"
+                    "type": "string",
+                    "secure": true
                 },
                 {
                     "name": "install_infr_mgt_module",
