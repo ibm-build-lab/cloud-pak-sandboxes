@@ -19,7 +19,7 @@ variable "on_vpc" {
 // Required if cluster id is not specified
 variable "region" {
   default     = "us-south"
-  description = "Ignored if `cluster_id` is specified. Region to provision the Openshift cluster. List all available regions with: ibmcloud regions"
+  description = "Ignored if `cluster_id` is specified. Region to provision the Openshift cluster. List all available regions with: `ibmcloud regions`"
 }
 
 // Required if cluster id is not specified
