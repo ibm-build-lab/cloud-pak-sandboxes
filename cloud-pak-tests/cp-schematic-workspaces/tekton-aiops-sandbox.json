@@ -21,7 +21,7 @@
       "variablestore": [
         {
           "name": "region",
-          "value": "us-east",
+          "value": "us-south",
           "type": "string"
         },
         {
@@ -51,7 +51,7 @@
         },
         {
           "name": "datacenter",
-          "value": "wdc04",
+          "value": "dal10",
           "type": "string"
         },
         {
@@ -76,12 +76,12 @@
         },
         {
           "name": "private_vlan_number",
-          "value": "3090560",
+          "value": "3048687",
           "type": "string"
         },
         {
           "name": "public_vlan_number",
-          "value": "3090562",
+          "value": "3048689",
           "type": "string"
         },
         {
