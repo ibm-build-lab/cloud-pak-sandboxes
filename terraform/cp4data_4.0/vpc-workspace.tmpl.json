@@ -158,7 +158,7 @@
         },
         {
           "name": "cpd_project_name",
-          "value": "cp4d",
+          "value": "zen",
           "type": "string"
         },
         {
@@ -167,37 +167,37 @@
           "type": "bool"
         },
         {
-          "name": "install_watson_knowledge_catalog",
+          "name": "install_wsl",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_watson_studio",
+          "name": "install_aiopenscale",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_watson_machine_learning",
+          "name": "install_wml",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_watson_open_scale",
+          "name": "install_wkc",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_data_virtualization",
+          "name": "install_dv",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_streams",
+          "name": "install_spss",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_analytics_dashboard",
+          "name": "install_cde",
           "value": "false",
           "type": "bool"
         },
@@ -207,27 +207,37 @@
           "type": "bool"
         },
         {
-          "name": "install_db2_warehouse",
+          "name": "install_dods",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_db2_data_gate",
+          "name": "install_ca",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_rstudio",
+          "name": "install_ds",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_db2_data_management",
+          "name": "install_db2oltp",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_db2wh",
           "value": "false",
           "type": "bool"
         },
         {
           "name": "install_big_sql",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_wsruntime",
           "value": "false",
           "type": "bool"
         }

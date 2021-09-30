@@ -166,71 +166,94 @@ variable "accept_cpd_license" {
 }
 
 // Modules available to install on CP4D
-variable "install_watson_knowledge_catalog" {
-  default     = false
-  type        = bool
-  description = "Install Watson Knowledge Catalog module. Only for Cloud Pak for Data v3.5"
+variable "install_wsl" {
+  default = false
+  type = string
+  description = "Install WSL module. Only for Cloud Pak for Data v4.0"
 }
-variable "install_watson_studio" {
-  default     = false
-  type        = bool
-  description = "Install Watson Studio module. Only for Cloud Pak for Data v3.5"
+
+variable "install_aiopenscale" {
+  default = false
+  type = string
+  description = "Install AI Open Scale module. Only for Cloud Pak for Data v4.0"
 }
-variable "install_watson_machine_learning" {
-  default     = false
-  type        = bool
-  description = "Install Watson Machine Learning module. Only for Cloud Pak for Data v3.5"
+
+variable "install_wml" {
+  default = false
+  type = string
+  description = "Install Watson Machine Learning module. Only for Cloud Pak for Data v4.0"
 }
-variable "install_watson_open_scale" {
-  default     = false
-  type        = bool
-  description = "Install Watson Open Scale module. Only for Cloud Pak for Data v3.5"
+
+variable "install_wkc" {
+  default = false
+  type = string
+  description = "Install Watson Knowledge Catalog module. Only for Cloud Pak for Data v4.0"
 }
-variable "install_data_virtualization" {
-  default     = false
-  type        = bool
-  description = "Install Data Virtualization module. Only for Cloud Pak for Data v3.5"
+
+variable "install_dv" {
+  default = false
+  type = string
+  description = "Install Data Virtualization module. Only for Cloud Pak for Data v4.0"
 }
-variable "install_streams" {
-  default     = false
-  type        = bool
-  description = "Install Streams module. Only for Cloud Pak for Data v3.5"
+
+variable "install_spss" {
+  default = false
+  type = string
+  description = "Install SPSS module. Only for Cloud Pak for Data v4.0"
 }
-variable "install_analytics_dashboard" {
-  default     = false
-  type        = bool
-  description = "Install Analytics Dashboard module. Only for Cloud Pak for Data v3.5"
+
+variable "install_cde" {
+  default = false
+  type = string
+  description = "Install CDE module. Only for Cloud Pak for Data v4.0"
 }
+
 variable "install_spark" {
-  default     = false
-  type        = bool
-  description = "Install Analytics Engine powered by Apache Spark module. Only for Cloud Pak for Data v3.5"
+  default = false
+  type = string
+  description = "Install Analytics Engine powered by Apache Spark module. Only for Cloud Pak for Data v4.0"
 }
-variable "install_db2_warehouse" {
-  default     = false
-  type        = bool
-  description = "Install DB2 Warehouse module. Only for Cloud Pak for Data v3.5"
+
+variable "install_dods" {
+  default = false
+  type = string
+  description = "Install DODS module. Only for Cloud Pak for Data v4.0"
 }
-variable "install_db2_data_gate" {
-  default     = false
-  type        = bool
-  description = "Install DB2 Data_Gate module. Only for Cloud Pak for Data v3.5"
+
+variable "install_ca" {
+  default = false
+  type = string
+  description = "Install CA module. Only for Cloud Pak for Data v4.0"
 }
-variable "install_rstudio" {
-  default     = false
-  type        = bool
-  description = "Install RStudio module. Only for Cloud Pak for Data v3.5"
+
+variable "install_ds" {
+  default = false
+  type = string
+  description = "Install DS module. Only for Cloud Pak for Data v4.0"
 }
-variable "install_db2_data_management" {
-  default     = false
-  type        = bool
-  description = "Install DB2 Data Management module. Only for Cloud Pak for Data v3.5"
+
+variable "install_db2oltp" {
+  default = false
+  type = string
+  description = "Install DB2OLTP module. Only for Cloud Pak for Data v4.0"
+}
+
+variable "install_db2wh" {
+  default = false
+  type = string
+  description = "Install DB2WH module. Only for Cloud Pak for Data v4.0"
 }
 
 variable "install_big_sql" {
-  default     = false
-  type        = bool 
-  description = "Install Big SQL module. Only for Cloud Pak for Data v3.5"
+  default = false
+  type = string
+  description = "Install Big SQL module. Only for Cloud Pak for Data v4.0"
+}
+
+variable "install_wsruntime" {
+  default = false
+  type = string
+  description = "Install WS Runtime. Only for Cloud Pak for Data v4.0"
 }
 
 
