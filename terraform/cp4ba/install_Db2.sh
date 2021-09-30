@@ -12,64 +12,21 @@
 ###############################################################################
 
 CUR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-DB2_INPUT_PROPS_FILENAME="01-parametersForDb2OnOCP.sh"
-DB2_INPUT_PROPS_FILENAME_FULL="${CUR_DIR}/${DB2_INPUT_PROPS_FILENAME}"
-
-if [[ -f $DB2_INPUT_PROPS_FILENAME_FULL ]]; then
-   echo
-   echo "Found ${DB2_INPUT_PROPS_FILENAME}.  Reading in variables from that script."
-   . $DB2_INPUT_PROPS_FILENAME_FULL
-   
-   if [ $db2OnOcpProjectName == "REQUIRED" ] || [ $db2AdminUserPassword == "REQUIRED" ] || [ "$db2StandardLicenseKey" == "REQUIRED" ]; then
-      echo "File ${DB2_INPUT_PROPS_FILENAME} not fully updated. Pls. update all parameters in the BEFORE running script section."
-      echo
-      exit 0
-   fi
-   
-   echo "Done!"
-else
-   echo
-   echo "File ${DB2_INPUT_PROPS_FILENAME_FULL} not found. Pls. check."
-   echo
-   exit 0
-fi
 
 echo
-echo -e "\x1B[1mThis script installs Db2u on OCP into project ${db2OnOcpProjectName}. For this, you need the jq tool installed and your Entitlement Registry key handy.\n \x1B[0m"
 
-printf "Do you want to continue (Yes/No, default: No): "
-read -rp "" ans
-case "$ans" in
-"y"|"Y"|"yes"|"Yes"|"YES")
-    echo
-    echo -e "Installing Db2U on OCP..."
-    ;;
-*)
-    echo
-    echo -e "Exiting..."
-    echo
-    exit 0
-    ;;
-esac
-
-if [ $cp4baDeploymentPlatform == "ROKS" ]; then
-  echo
-  echo "Installing the storage classes..."
-  oc apply -f cp4a-bronze-storage-class.yaml
-  oc apply -f cp4a-silver-storage-class.yaml
-  oc apply -f cp4a-gold-storage-class.yaml
   kubectl patch storageclass ibmc-block-gold -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
   kubectl patch storageclass cp4a-file-delete-gold-gid -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-fi
+
 
 echo
 echo "Installing the IBM Operator Catalog..."
 oc apply -f ibm_operator_catalog.yaml
 
 echo
-echo "Creating project ${db2OnOcpProjectName}..."
-oc new-project ${db2OnOcpProjectName}
-oc project ${db2OnOcpProjectName}
+echo "Creating project ${DB2_PROJECT_NAME}..."
+oc new-project ${DB2_PROJECT_NAME}
+oc project ${DB2_PROJECT_NAME}
 
 echo
 echo "Creating secret ibm-registry. For this, your Entitlement Registry key is needed."
@@ -105,7 +62,7 @@ do
     done
   fi
 done
-oc create secret docker-registry ibm-registry --docker-server=${DOCKER_REG_SERVER} --docker-username=${DOCKER_REG_USER} --docker-password=${ENTITLEMENTKEY} --docker-email=${EMAIL} --namespace=${db2OnOcpProjectName}
+oc create secret docker-registry ibm-registry --docker-server=${DOCKER_REG_SERVER} --docker-username=${DOCKER_REG_USER} --docker-password=${ENTITLEMENTKEY} --docker-email=${EMAIL} --namespace=${DB2_PROJECT_NAME}
 
 if [ $cp4baDeploymentPlatform == "ROKS" ]; then
   echo
@@ -115,17 +72,17 @@ fi
 
 echo
 echo "Modifying the OpenShift Global Pull Secret (you need jq tool for that):"
-echo $(oc get secret pull-secret -n openshift-config --output="jsonpath={.data.\.dockerconfigjson}" | base64 --decode; oc get secret ibm-registry -n ${db2OnOcpProjectName} --output="jsonpath={.data.\.dockerconfigjson}" | base64 --decode) | jq -s '.[0] * .[1]' > dockerconfig_merged
+echo $(oc get secret pull-secret -n openshift-config --output="jsonpath={.data.\.dockerconfigjson}" | base64 --decode; oc get secret ibm-registry -n ${DB2_PROJECT_NAME} --output="jsonpath={.data.\.dockerconfigjson}" | base64 --decode) | jq -s '.[0] * .[1]' > dockerconfig_merged
 oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=dockerconfig_merged
 
 echo
 echo "You are now ready to install the Db2u Operator:"
 echo "  1. Open your OCP Web Console and navigate to \"Operators -> OperatorHub\"."
-echo "  2. Set the project scope to \"${db2OnOcpProjectName}\"."
+echo "  2. Set the project scope to \"${DB2_PROJECT_NAME}\"."
 echo "  3. Search for \"db2\"."
 echo "  4. Select \"IBM Db2\"."
 echo "  5. Click \"Install\"."
-echo "  6. Make sure the namespace is set to \"${db2OnOcpProjectName}\"."
+echo "  6. Make sure the namespace is set to \"${DB2_PROJECT_NAME}\"."
 echo "  7. Set the Approval Strategy to \"Manual\". Leave all other parameters at the defaults."
 echo "  8. Click \"Install\", then click \"Approve\"."
 echo "  9. Wait untill the installation of the Db2u operator succeeded."
@@ -147,28 +104,13 @@ case "$ans" in
     ;;
 esac
 
-. $DB2_INPUT_PROPS_FILENAME_FULL
-if [ $db2InstanceVersion == "REQUIRED" ]; then
-   echo "File ${DB2_INPUT_PROPS_FILENAME} not updated. Pls. update parameter db2InstanceVersion."
-   echo
-   exit 0
-fi
+echo "Deploying the Db2u cluster ..."
 
-echo
-echo "Final step is to deploy the Db2u cluster..."
-cp db2.template.yaml db2.yaml
-sed -i.bak "s|db2OnOcpProjectName|$db2OnOcpProjectName|g" db2.yaml
-sed -i.bak "s|db2AdminUserPassword|$db2AdminUserPassword|g" db2.yaml
-sed -i.bak "s|db2InstanceVersion|$db2InstanceVersion|g" db2.yaml
-sed -i.bak "s|db2Cpu|$db2Cpu|g" db2.yaml
-sed -i.bak "s|db2Memory|$db2Memory|g" db2.yaml
-sed -i.bak "s|db2StorageSize|$db2StorageSize|g" db2.yaml
-sed -i.bak "s|db2OnOcpStorageClassName|$db2OnOcpStorageClassName|g" db2.yaml
 db2License="accept: true"
-if [ "$db2StandardLicenseKey" == "" ]; then
+if [ "$DB2_PROJECT_NAME" == "" ]; then
    db2License="accept: true"
 else
-   db2License="value: $db2StandardLicenseKey"
+   db2License="value: $DB2_STANDARD_LICENSE_KEY"
 fi
 sed -i.bak "s|db2License|$db2License|g" db2.yaml
 oc apply -f db2.yaml
@@ -188,25 +130,9 @@ echo
 echo "Wait untill the pod \"c-db2ucluster-restore-morph-xxxxx\" pod is in STATUS \"Completed\"."
 
 echo
-printf "Has the installation of your Db2u cluster succeeded (Yes/No, default: No): "
-read -rp "" ans
-case "$ans" in
-"y"|"Y"|"yes"|"Yes"|"YES")
-    echo
-    echo -e "Installation of your Db2u cluster succeeded."
-    ;;
-*)
-    echo
-    echo -e "Pls. debug the installation of your Db2u cluster. Exiting..."
-    echo
-    exit 0
-    ;;
-esac
-
-echo
 echo "Finally, pls. increase the number of DBs allowed. For this:"
 echo "  1. Open your OCP Web Console and navigate to \"Workloads -> Config Maps\"."
-echo "  2. Set the project scope to \"${db2OnOcpProjectName}\"."
+echo "  2. Set the project scope to \"${DB2_PROJECT_NAME}\"."
 echo "  3. Click \"c-db2ucluster-db2dbmconfig\"."
 echo "  4. Open tab \"YAML\"."
 echo "  5. Scroll to the bottom of the definition and change \"NUMDB\" to \"20\"."
@@ -228,21 +154,21 @@ esac
 
 echo
 echo "Finally, this script will patch the running Db2u cluster to apply the NUMDB change..."
-oc exec c-db2ucluster-db2u-0 -it -- su - $db2AdminUserName -c "db2 update dbm cfg using numdb 20"
+oc exec c-db2ucluster-db2u-0 -it -- su - ${DB2_ADMIN_USER_NAME} -c "db2 update dbm cfg using numdb 20"
 
-oc exec c-db2ucluster-db2u-0 -it -- su - $db2AdminUserName -c "db2set DB2_WORKLOAD=FILENET_CM"
-oc exec c-db2ucluster-db2u-0 -it -- su - $db2AdminUserName -c "set CUR_COMMIT=ON"
+oc exec c-db2ucluster-db2u-0 -it -- su - ${DB2_ADMIN_USER_NAME} -c "db2set DB2_WORKLOAD=FILENET_CM"
+oc exec c-db2ucluster-db2u-0 -it -- su - ${DB2_ADMIN_USER_NAME} -c "set CUR_COMMIT=ON"
 
-oc exec c-db2ucluster-db2u-0 -it -- su - $db2AdminUserName -c "db2stop"
-oc exec c-db2ucluster-db2u-0 -it -- su - $db2AdminUserName -c "db2start"
+oc exec c-db2ucluster-db2u-0 -it -- su - ${DB2_ADMIN_USER_NAME} -c "db2stop"
+oc exec c-db2ucluster-db2u-0 -it -- su - ${DB2_ADMIN_USER_NAME} -c "db2start"
 
-oc exec c-db2ucluster-db2u-0 -it -- su - $db2AdminUserName -c "db2 deactivate database BLUDB"
+oc exec c-db2ucluster-db2u-0 -it -- su - ${DB2_ADMIN_USER_NAME} -c "db2 deactivate database BLUDB"
 
-oc exec c-db2ucluster-db2u-0 -it -- su - $db2AdminUserName -c "db2 drop database BLUDB"
+oc exec c-db2ucluster-db2u-0 -it -- su - ${DB2_ADMIN_USER_NAME} -c "db2 drop database BLUDB"
 
 echo
 echo "Existing databases are:"
-oc exec c-db2ucluster-db2u-0 -it -- su - $db2AdminUserName -c "db2 list database directory | grep \"Database name\""
+oc exec c-db2ucluster-db2u-0 -it -- su - ${DB2_ADMIN_USER_NAME} -c "db2 list database directory | grep \"Database name\""
 
 echo
 echo "Use this hostname/IP to access the databases e.g. with IBM Data Studio."
@@ -252,10 +178,10 @@ oc get route console -n openshift-console -o yaml | grep routerCanonicalHostname
 echo
 echo "Use one of these NodePorts to access the databases e.g. with IBM Data Studio (usually the first one is for legacy-server (Db2 port 50000), the second for ssl-server (Db2 port 50001))."
 echo "\x1B[1mPls. also update in ${DB2_INPUT_PROPS_FILENAME} property \"db2PortNumber\" with this information (legacy-server).\x1B[0m"
-oc get svc -n ${db2OnOcpProjectName} c-db2ucluster-db2u-engn-svc -o json | grep nodePort
+oc get svc -n ${DB2_PROJECT_NAME} c-db2ucluster-db2u-engn-svc -o json | grep nodePort
 
 echo
-echo "Use \"$db2AdminUserName\" and password \"$db2AdminUserPassword\" to access the databases e.g. with IBM Data Studio."
+echo "Use \"${DB2_ADMIN_USER_NAME}\" and password \"${DB2_ADMIN_USER_PASSWORD}\" to access the databases e.g. with IBM Data Studio."
 
 echo
 echo "Db2u installation complete! Congratulations. Exiting..."

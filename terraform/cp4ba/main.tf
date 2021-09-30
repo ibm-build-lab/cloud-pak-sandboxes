@@ -61,42 +61,46 @@ data "ibm_container_cluster_config" "cluster_config" {
 module "install_db2" {
   source = "/bin/bash ./install_Db2.sh"
 
-  //  environment {
-  # CP4BA Database Name information
+  environment {
+    # CP4BA Database Name information
 
-  # ************** Hardcode all these variables ****************
-//  DB2_UMS_DB_NAME = local.db2_ums_db_name
-//  DB2_ICN_DB_NAME = local.db2_icn_db_name
-//  DB2_DEVOS_1_NAME = local.db2_devos_1_name
-//  DB2_AEOS_NAME = local.db2_aeos_name
-//  DB2_BAW_DOCS_NAME = local.db2_baw_docs_name
-//  DB2_BAW_TOS_NAME = local.db2_baw_tos_name
-//  DB2_BAW_DOS_NAME = local.db2_baw_dos_name
-//  DB2_BAW_DB_NAME = local.db2_baw_Db_name
-//  DB2_APP_DB_NAME = local.db2_app_db_name
-//  DB2_AE_DB_NAME = local.db2_ae_db_name
-//  DB2_BAS_DB_NAME = local.db2_bas_db_name
-//  DB2_GCD_DB_NAME = local.db2_gcd_db_name
-//  DB2_ON_OCP_PROJECT_NAME = local.db2_project_name
-//  DB2_ADMIN_USER_NAME = local.db2_admin_user_name
-//  DB2_ADMIN_USER_PASSWORD = local.db2_admin_user_password
-//  DB2_STANDARD_LICENSE_KEY = local.db2_standard_license_key
-//  DB2_CPU = local.db2_cpu
-//  DB2_MEMORY = local.db2_memory
-//  DB2_INSTANCE_VERSION = local.db2_instance_version
-//  DB2_HOST_NAME = local.db2_host_name
-  //    DB2_HOST_IP              = local.db2_host_ip
-  //    DB2_PORT_NUMBER          = local.db2_port_number
-  //    DB2_USE_ONN_OCP          = local.db2_use_on_ocp
-  //    CP4BA_DEPLOYMENT_PLATFORM = local.cp4ba_deployment_platform
-//  DB2_ON_OCP_STORAGE_CLASS_NAME = local.db2_on_ocp_storage_class_name
-//  DB2_STORAGE_SIZE = local.db2_storage_size
-  # ------ Docker Information ----------
-  ENTITLED_REGISTRY_KEY = var.entitlement_key
-  ENTITLEMENT_REGISTRY_USER_EMAIL = var.entitled_registry_user_email
-  # Entilement_user
-  DOCKER_SERVER = local.docker_server
-  DOCKER_USERNAME = local.docker_username
+    # ************** Hardcode all these variables ****************
+    //  DB2_UMS_DB_NAME = local.db2_ums_db_name
+    //  DB2_ICN_DB_NAME = local.db2_icn_db_name
+    //  DB2_DEVOS_1_NAME = local.db2_devos_1_name
+    //  DB2_AEOS_NAME = local.db2_aeos_name
+    //  DB2_BAW_DOCS_NAME = local.db2_baw_docs_name
+    //  DB2_BAW_TOS_NAME = local.db2_baw_tos_name
+    //  DB2_BAW_DOS_NAME = local.db2_baw_dos_name
+    //  DB2_BAW_DB_NAME = local.db2_baw_Db_name
+    //  DB2_APP_DB_NAME = local.db2_app_db_name
+    //  DB2_AE_DB_NAME = local.db2_ae_db_name
+    //  DB2_BAS_DB_NAME = local.db2_bas_db_name
+    //  DB2_GCD_DB_NAME = local.db2_gcd_db_name
+    //  DB2_ON_OCP_PROJECT_NAME = local.db2_project_name
+      DB2_ADMIN_USER_NAME = local.db2_admin_user_name
+      DB2_ADMIN_USER_PASSWORD = local.db2_admin_user_password
+      DB2_STANDARD_LICENSE_KEY = local.db2_standard_license_key
+    //  DB2_CPU = local.db2_cpu
+    //  DB2_MEMORY = local.db2_memory
+    //  DB2_INSTANCE_VERSION = local.db2_instance_version
+    //  DB2_HOST_NAME = local.db2_host_name
+    //    DB2_HOST_IP              = local.db2_host_ip
+    //    DB2_PORT_NUMBER          = local.db2_port_number
+    //    DB2_USE_ONN_OCP          = local.db2_use_on_ocp
+    //    CP4BA_DEPLOYMENT_PLATFORM = local.cp4ba_deployment_platform
+    //  DB2_ON_OCP_STORAGE_CLASS_NAME = local.db2_on_ocp_storage_class_name
+    //  DB2_STORAGE_SIZE = local.db2_storage_size
+    # ------ Docker Information ----------
+    ENTITLED_REGISTRY_KEY = var.entitlement_key
+    ENTITLEMENT_REGISTRY_USER_EMAIL = var.entitled_registry_user_email
+    DB2_PROJECT_NAME = "ibm-db2"
+//    db2_standard_license_key
+    # Entilement_user
+    DOCKER_SERVER = local.docker_server
+    DOCKER_USERNAME = local.docker_username
+    DB2_ADMIN_USER_PASSWORD = var.db2_admin_user_password
+  }
 }
 
 module "portworx" {
