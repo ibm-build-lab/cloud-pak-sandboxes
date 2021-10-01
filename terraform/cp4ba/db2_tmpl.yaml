@@ -6,7 +6,7 @@ metadata:
 spec:
   size: 1
   license:
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJQk0gTWFya2V0cGxhY2UiLCJpYXQiOjE2Mjk5MTE0OTgsImp0aSI6ImJkNGE3OWZlYWQ3NzRjZDU4ZTIwNDdmN2JiOTc1MTI3In0.EMm6U4y6Rmuba5owRd4N-HNugmhMxXNNbSuqVVl-lnQ"
+    db2License
   account:
     imagePullSecrets:
       - ibm-db2-registry
