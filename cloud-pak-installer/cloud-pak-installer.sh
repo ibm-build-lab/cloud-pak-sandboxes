@@ -30,6 +30,11 @@ CLOUD_PAK_NAME_APP_VERSION="Cloud Pak for Applications 4.2"
 CLOUD_PAK_TEMPLATE_APP=./templates/cp4a-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_APP="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4app"
 
+CP4D40="false"
+CLOUD_PAK_NAME_DATA4_VERSION="Cloud Pak for Data 4.0"
+CLOUD_PAK_TEMPLATE_DATA4=./templates/cp4d_4.0-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_DATA4="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_4.0"
+
 CP4D35="false"
 CLOUD_PAK_NAME_DATA_VERSION="Cloud Pak for Data 3.5"
 CLOUD_PAK_TEMPLATE_DATA=./templates/cp4d-workspace-configuration.json
@@ -91,7 +96,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_DATA4_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -110,6 +115,16 @@ get_cloud_pak_install() {
                 cp $CLOUD_PAK_TEMPLATE_APP workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_APP" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;
+            $CLOUD_PAK_NAME_DATA4_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_DATA4_VERSION"
+                CP4D40="true"
+                cp $CLOUD_PAK_TEMPLATE_DATA4 workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_DATA4" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
@@ -133,7 +148,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
-                ;;    
+                ;;        
             $CLOUD_PAK_NAME_INTEGRATION_VERSION)
                 echo "${bold}Selected: $CLOUD_PAK_NAME_INTEGRATION_VERSION"
                 CP4I="true"
@@ -250,6 +265,10 @@ prompt_license() {
     then
         echo "${red}"  $CLOUD_PAK_NAME_APP_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
+    if $CP4D40
+    then
+        echo "${red}"  $CLOUD_PAK_NAME_DATA4_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
+    fi
     if $CP4D35
     then
         echo "${red}"  $CLOUD_PAK_NAME_DATA_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
@@ -288,6 +307,11 @@ prompt_license() {
             "Yes")
             echo "${green}License accepted:${bold}"
             if $CP4D35
+            then 
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "accept_cpd_license") | .value) |= "true"' temp.json > workspace-configuration.json
+            fi
+            if $CP4D40
             then 
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "accept_cpd_license") | .value) |= "true"' temp.json > workspace-configuration.json
@@ -336,6 +360,12 @@ get_workspace_name() {
         WORKSPACE_NAME=$WORKSPACE_NAME"-cp4data30-sandbox"
     fi
 
+    if $CP4D40
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4data40-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4data40-sandbox"
+    fi
+
     if $CP4AUTO
     then
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4auto-sandbox${bold}):${normal} " -e WORKSPACE_NAME
@@ -378,6 +408,11 @@ set_vpc_flavors() {
             jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
         fi
         if $CP4D35
+        then
+            cp ./workspace-configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+        fi
+        if $CP4D40
         then
             cp ./workspace-configuration.json temp.json
             jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
@@ -468,7 +503,7 @@ get_meta_data() {
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary${bold}):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
-    if $IAF || $CP4D35 || $CP4MCM || $CP4I || $CP4AIOPS
+    if $IAF || $CP4D35 || $CP4D40 || $CP4MCM || $CP4I || $CP4AIOPS
     then
        get_ibm_api_key
     fi 
@@ -636,6 +671,295 @@ cp4mcm_modules() {
             "No")
                cp ./workspace-configuration.json temp.json
                jq -r '(.template_data[] | .variablestore[] | select(.name == "install_tech_prev_module") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+}
+
+# writes cp4d 4.0 module data
+# updates the values across the respective workspace_configuration values
+cp4d40_modules() {
+    # updates workspace-configuration.json .template_data[.varialbestore.install_wsl]
+    echo "${bold}Install Watson Studio?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_wsl") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_wsl") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_aiopenscale]
+    echo "${bold}Install Watson AI OpenScale?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_aiopenscale") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_aiopenscale") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_wml]
+    echo "${bold}Install Watson Machine Learning?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_wml") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_wml") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_wkc]
+    echo "${bold}Install Watson Knowledge Catalog?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_wkc") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_wkc") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_dv]
+    echo "${bold}Install Data Virtualization?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_dv") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_dv") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_spss]
+    echo "${bold}Install SPSS Modeler?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_spss") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_spss") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_cde]
+    echo "${bold}Install Cognos Dashboard Engine?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_cde") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_cde") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_spark]
+    echo "${bold}Install Analytics Engine powered by Apache Spark?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_spark") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_spark") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_dods]
+    echo "${bold}Install Decision Optimization?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_dods") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_dods") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_ca]
+    echo "${bold}Install Cognos Analytics?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_ca") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_ca") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_ds]
+    echo "${bold}Install DataStage?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_ds") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_ds") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_db2oltp]
+    echo "${bold}Install Db2oltp?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2oltp") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2oltp") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_db2wh]
+    echo "${bold}Install Db2 Warehouse?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2wh") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_db2wh") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_big_sql]
+    echo "${bold}Install Db2 Big SQL?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_big_sql") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_big_sql") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.install_wsruntime]
+    echo "${bold}Install Jupyter Python 3.7 Runtime Addon?  ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_wsruntime") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_wsruntime") | .value) |= "false"' temp.json > workspace-configuration.json
                break
                ;;
             *) echo "${bold}invalid option $REPLY ${green}";;
@@ -1804,6 +2128,9 @@ fi
 
 if $CP4MCM
 then cp4mcm_modules
+fi
+if $CP4D40
+then cp4d40_modules
 fi
 if $CP4D35
 then cp4d35_modules
