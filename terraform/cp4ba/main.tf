@@ -80,7 +80,7 @@ module "install_db2" {
     //  DB2_ON_OCP_PROJECT_NAME = local.db2_project_name
       DB2_ADMIN_USER_NAME = local.db2_admin_user_name
       DB2_ADMIN_USER_PASSWORD = local.db2_admin_user_password
-      DB2_STANDARD_LICENSE_KEY = local.db2_standard_license_key
+//      DB2_STANDARD_LICENSE_KEY = local.db2_standard_license_key # Only needed to provision larger DBs (over 150Gi)
     //  DB2_CPU = local.db2_cpu
     //  DB2_MEMORY = local.db2_memory
     //  DB2_INSTANCE_VERSION = local.db2_instance_version
@@ -94,7 +94,7 @@ module "install_db2" {
     # ------ Docker Information ----------
     ENTITLED_REGISTRY_KEY = var.entitlement_key
     ENTITLEMENT_REGISTRY_USER_EMAIL = var.entitled_registry_user_email
-    DB2_PROJECT_NAME = "ibm-db2"
+
 //    db2_standard_license_key
     # Entilement_user
     DOCKER_SERVER = local.docker_server
