@@ -106,6 +106,8 @@ module "cp4data" {
   // Prereqs
   worker_node_flavor = var.flavors[0]
 
+  operator_namespace = var.operator_namespace
+
   // Entitled Registry parameters:
   entitled_registry_key        = var.entitled_registry_key
   entitled_registry_user_email = var.entitled_registry_user_email
@@ -115,6 +117,13 @@ module "cp4data" {
 
   // CP4D Info
   cpd_project_name = var.cpd_project_name
+
+  // IBM Cloud API Key
+  ibmcloud_api_key          = var.ibmcloud_api_key
+
+  region = var.region
+  resource_group_name = var.resource_group_name
+  cluster_id = var.cluster_id
 
   // Parameters to install submodules
   install_wsl         = var.install_wsl
