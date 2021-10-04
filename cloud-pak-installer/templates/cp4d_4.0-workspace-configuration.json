@@ -147,6 +147,16 @@
           "type": "string"
         },
         {
+          "name": "operator_namespace",
+          "value": "ibm-common-services",
+          "type": "string"
+        },
+        {
+          "name": "resource_group_name",
+          "value": "cloud-pak-sandbox",
+          "type": "string"
+        },
+        {
           "name": "install_wsl",
           "value": "false",
           "type": "bool"

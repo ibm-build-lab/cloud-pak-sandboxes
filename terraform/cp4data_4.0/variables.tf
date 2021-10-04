@@ -143,6 +143,18 @@ variable "etcd_password" {
 }
 
 // ======= CP4Data Variables ========
+variable "operator_namespace" {
+  type        = string
+  default     = ""
+  description = "Name of the Operator Namespace"
+}
+
+variable "resource_group_name" {
+  type        = string
+  default     = "cloud-pak-sandbox"
+  description = "Resource group that the cluster is/will be provisioned in. List all available resource groups with: `ibmcloud resource groups`"
+}
+
 variable "entitled_registry_key" {
   type        = string
   description = "Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
@@ -155,7 +167,7 @@ variable "entitled_registry_user_email" {
 
 variable "cpd_project_name" {
   type        = string
-  default     = "cp4d"
+  default     = "zen"
   description = "Name of the project namespace"
 }
 

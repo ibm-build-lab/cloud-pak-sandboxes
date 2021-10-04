@@ -162,6 +162,16 @@
           "type": "string"
         },
         {
+          "name": "operator_namespace",
+          "value": "ibm-common-services",
+          "type": "string"
+        },
+        {
+          "name": "resource_group_name",
+          "value": "cloud-pak-sandbox",
+          "type": "string"
+        },
+        {
           "name": "accept_cpd_license",
           "value": "true",
           "type": "bool"
