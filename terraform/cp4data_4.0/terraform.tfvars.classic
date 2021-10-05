@@ -31,25 +31,30 @@ public_vlan_number    = ""
 // Cloud Pak for Data
 // Entitled Registry parameters:
 entitled_registry_key        = "[ ENTITLEMENT_KEY ]"
-entitled_registry_user_email = "john.doe@ibm.com"
+entitled_registry_user_email = "cp"
+// entitled_registry_user_email = "john.doe@ibm.com"
+
+operator_namesapce = "ibm-common-services"
 
 // CP4D License Acceptance
 accept_cpd_license = true
 
 // CP4D Info
-cpd_project_name = "cp4d"
+cpd_project_name = "zen"
 
 // Parameters to install submodules
-install_watson_knowledge_catalog = false
-install_watson_studio            = false
-install_watson_machine_learning  = false
-install_watson_open_scale        = false
-install_data_virtualization      = false
-install_streams                  = false
-install_analytics_dashboard      = false
-install_spark                    = false
-install_db2_warehouse            = false
-install_db2_data_gate            = false
-install_big_sql                  = false
-install_rstudio                  = false
-install_db2_data_management      = false
+install_wsl         = false
+install_aiopenscale = false
+install_wml         = false
+install_wkc         = false
+install_dv          = false
+install_spss        = false
+install_cde         = false
+install_spark       = false
+install_dods        = false
+install_ca          = false
+install_ds          = false
+install_db2oltp     = false
+install_db2wh       = false
+install_big_sql     = false
+install_wsruntime   = false
