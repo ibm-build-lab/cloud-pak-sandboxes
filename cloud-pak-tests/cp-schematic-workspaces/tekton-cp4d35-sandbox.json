@@ -55,7 +55,7 @@
         },
         {
           "name": "datacenter",
-          "value": "dal10",
+          "value": "dal12",
           "type": "string"
         },
         {
