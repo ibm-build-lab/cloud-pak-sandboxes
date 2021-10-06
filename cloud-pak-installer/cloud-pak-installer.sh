@@ -2053,7 +2053,7 @@ create_workspace() {
     echo "${bold}Created workspace: ${green}$WORKSPACE_ID${bold}${normal}" 
     echo "${bold}To view workspace, login to cloud.ibm.com and go to: ${green}https://cloud.ibm.com/schematics/workspaces/$WORKSPACE_ID${normal}"
     echo "${bold}Working on setting up workspace....${green}"
-    while (( x < 60 ))
+    while (( x < 120 ))
     do
         update_cursor
         sleep 1
@@ -2070,7 +2070,7 @@ generate_workspace_plan() {
 
     echo "${bold}Schematics plan in progress...${green}"
     # creates a graphic on commond line for users to follow script is still running
-    while (( x < 150 ))
+    while (( x < 300 ))
     do
         update_cursor
         sleep 1
