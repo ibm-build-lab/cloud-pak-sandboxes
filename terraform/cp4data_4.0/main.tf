@@ -122,7 +122,7 @@ module "cp4data" {
   ibmcloud_api_key          = var.ibmcloud_api_key
 
   region = var.region
-  resource_group_name = var.resource_group_name
+  resource_group_name = var.resource_group
   cluster_id = var.cluster_id
 
   // Parameters to install submodules
