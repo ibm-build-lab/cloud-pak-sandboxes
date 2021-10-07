@@ -2116,7 +2116,7 @@ write_meta_data
 if [ ! $CP4APP ] || [ ! $CP4DATA30 ]
     then get_vpc
 fi
-if ! $EXISTING_CLUSTER
+if [ ! $EXISTING_CLUSTER ] || [ $CP4MCM ]
 then 
     if $CLASSIC
     then select_region
