@@ -67,7 +67,7 @@
         },
         {
           "name": "resource_group",
-          "value": "cloud-pak-sandbox",
+          "value": "cloud-pak-sandbox-ibm",
           "type": "string"
         },
         {
@@ -168,7 +168,7 @@
         },
         {
           "name": "resource_group_name",
-          "value": "cloud-pak-sandbox",
+          "value": "cloud-pak-sandbox-ibm",
           "type": "string"
         },
         {

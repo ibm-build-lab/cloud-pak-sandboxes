@@ -20,7 +20,7 @@ variable "region" {
 }
 
 variable "resource_group" {
-  default     = "cloud-pak-sandbox"
+  default     = "cloud-pak-sandbox-ibm"
   description = "Resource group that the cluster is/will be provisioned in. List all available resource groups with: `ibmcloud resource groups`"
 }
 
@@ -151,7 +151,7 @@ variable "operator_namespace" {
 
 variable "resource_group_name" {
   type        = string
-  default     = "cloud-pak-sandbox"
+  default     = "cloud-pak-sandbox-ibm"
   description = "Resource group that the cluster is/will be provisioned in. List all available resource groups with: `ibmcloud resource groups`"
 }
 
