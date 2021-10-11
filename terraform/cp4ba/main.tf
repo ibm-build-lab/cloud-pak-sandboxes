@@ -13,9 +13,9 @@ data "ibm_resource_group" "group" {
 module "cluster" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
   enable = local.enable_cluster
-//  on_vpc = var.on_vpc
+  on_vpc = var.on_vpc
 
-  project_name             = var.project_name
+  project_name             = var.roks_project_name
   owner                    = var.entitled_registry_user_email
   environment              = var.environment
 
@@ -24,7 +24,7 @@ module "cluster" {
   flavors              = var.flavors
   workers_count        = var.workers_count
   datacenter           = var.data_center
-  force_delete_storage = true
+  force_delete_storage = var.force_delete_storage
   vpc_zone_names       = var.vpc_zone_names
 
   private_vlan_number  = var.private_vlan_number
@@ -82,8 +82,8 @@ module "portworx" {
 
   // Storage parameters
   install_storage      = true
-  storage_capacity     = var.storage_capacity  // In GBs
-  storage_iops         = var.storage_iops   // Must be a number, it will not be used unless a storage_profile is set to a custom profile
+  storage_capacity     = var.storage_capacity
+  storage_iops         = var.storage_iops
   storage_profile      = var.storage_profile
 
   // Portworx parameters
@@ -92,8 +92,6 @@ module "portworx" {
   cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
   unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
 
-  // These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
-  // You may override these for additional security.
   create_external_etcd  = var.create_external_etcd
   etcd_username         = var.etcd_username
   etcd_password         = var.etcd_password
@@ -104,7 +102,7 @@ module "portworx" {
 
 
 module "cp4ba"{
-    source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/cp4ba"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/cp4ba"
 
   CLUSTER_NAME_OR_ID     = var.cluster_name_or_id
 
@@ -113,21 +111,11 @@ module "cp4ba"{
 
   # ---- Platform ----
   CP4BA_PROJECT_NAME            = var.cp4ba_project_name
-  USER_NAME_EMAIL               = var.entitled_registry_user_email
-  ENTITLED_REGISTRY_KEY         = var.entitlement_key
 
   # ---- Registry Images ----
-  ENTITLED_REGISTRY_KEY_SECRET_NAME = local.entitled_registry_key_secret_name
-  DOCKER_SERVER                 = local.docker_server
-  DOCKER_USERNAME               = local.docker_username
-  DOCKER_USER_EMAIL             = local.docker_email
+  ENTITLED_REGISTRY_EMAIL       = var.entitled_registry_user_email
+  ENTITLED_REGISTRY_KEY         = var.entitlement_key
 
-  # ------- FILES ASSIGNMENTS --------
-  CP4BA_ADMIN_NAME                 = local.cp4ba_admin_name
-  CP4BA_ADMIN_GROUP                = local.cp4ba_admin_group
-  CP4BA_USERS_GROUP                = local.cp4ba_users_group
-  CP4BA_UMS_ADMIN_NAME             = local.cp4ba_ums_admin_name
-  CP4BA_UMS_ADMIN_GROUP            = local.cp4ba_ums_admin_group
 
   # ----- DB2 Settings -----
   DB2_PORT_NUMBER         = var.db2_port_number

@@ -10,18 +10,13 @@ variable "cluster_name_id" {
 
 variable "entitled_registry_user_email" {
   type = string
-  description = "Email address of the user owner of the Entitled Registry Key"
-//  validation {
-//    condition = can(regrex("^No resources found+$", var.entitled_registry_user_email))
-//    error_message = "At least one user must be available in order to proceed. Please refer to the README for the requirements and instructions. The script will now exit!"
-//  }
+  description = "The Entitled Registry Key's email address."
 }
 
-variable "iaas_classic_api_key" {}
-variable "iaas_classic_username" {}
-//variable "ssh_public_key_file" {}
-//variable "ssh_private_key_file" {}
-variable "classic_datacenter" {}
+variable "on_vpc" {
+  default = true
+  description = "To determine infrastructure. Options are `true` = installs on VPC, `false`  installs on classic"
+}
 
 variable "config_dir" {
   default     = "./.kube/config"
@@ -33,23 +28,8 @@ variable "region" {
 }
 
 variable "resource_group" {
-//  name       = "cloud-pak-sandbox-ibm"
+  default     = "cloud-pak-sandbox-ibm"
   description = "Resource group name where the cluster will be hosted."
-}
-
-variable "openshift_version" {
-  default     = "4.6"
-  type        = string
-  description = "Openshift version installed in the cluster"
-}
-//
-//variable "hasEntitlementKey" {
-//  type        = string
-//  description = "Do you have a Cloud Pak for Business Automation Entitlement Registry key (Yes/No, default: No):"
-//}
-
-variable "local_registry_server" {
-  description = "Enter the public image registry or route (e.g., default-route-openshift-image-registry.apps.<hostname>).\nThis is required for docker/podman login validation:"
 }
 
 variable "portworx_is_ready" {
@@ -59,32 +39,7 @@ variable "portworx_is_ready" {
 
 variable "entitled_registry_key" {
   type        = string
-//  sensitive = true
   description = "Do you have a Cloud Pak for Business Automation Entitlement Registry key? If not, Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
-}
-
-variable "namespace" {
-  type        = string
-  description = "namespace for cp4ba"
-}
-
-variable "project_name" {
-  description = "Enter a valid project name. Project name should not be 'openshift' or 'kube' or start with 'openshift' or 'kube'."
-  type = string
-//  validation {
-//    condition = can(regex("^kube+$", var.project_name))
-//    error_message = "Please enter a valid project name that should not be 'openshift' or 'kube' or start with 'openshift' or 'kube'."
-//  }
-}
-
-variable "platform_options" {
-  type        = number
-  description = "Select the cloud platform to deploy. Enter a valid option [1 - 3]: \n 1. RedHat OpenShift Kubernetes Service (ROKS) - Public Cloud \n 2. Openshift Container Platform (OCP) - Private Cloud \n 3. Other ( Certified Kubernetes Cloud Platform / CNCF)"
-}
-
-variable "deployment_type" {
-  type        = number
-  description = "What type of deployment is being performed? Enter a valid option [1 to 2]: \n 1. Demo \n 2. Enterprise"
 }
 
 variable "platform_version" {
@@ -93,12 +48,6 @@ variable "platform_version" {
 
 variable "environment" {
   default     = "dev"
-  description = "Ignored if `cluster_id` is specified. The environment is combined with `project_name` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'env:{environment}'"
-}
-
-variable "use_entitlement" {
-  type = string
-  default = "yes"
 }
 
 variable "workers_count" {
@@ -129,7 +78,7 @@ variable "public_vlan_number" {
 }
 
 variable "cluster_config_path" {
-  default     = "./.kube/config"
+  default     = ".kube/config"
   description = "directory to store the kubeconfig file"
 }
 
@@ -145,6 +94,11 @@ variable "entitlement_key" {
 variable "cluster_name_or_id" {
   default     = ""
   description = "Enter your cluster id or name to install the Cloud Pak. Leave blank to provision a new Openshift cluster."
+}
+
+variable "roks_project_name" {
+  default = "default"
+  description = "The cluster's project name or namespace."
 }
 
 variable "cp4ba_project_name" {
@@ -182,8 +136,6 @@ variable "create_external_etcd" {
     description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
 }
 
-# These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
-# You may override these for additional security.
 variable "etcd_username" {
   default = ""
   description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
@@ -194,7 +146,8 @@ variable "etcd_password" {
   description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
-// OpenShift cluster specific input parameters and default values:
+variable "force_delete_storage" {}
+
 variable "flavors" {
   type    = list(string)
   default = ["b3c.16x64"]
@@ -212,8 +165,8 @@ locals {
   # CP4BA Database Name information
   db2_admin_user_password  = "passw0rd"
   db2_standard_license_key = "W0xpY2Vuc2VDZXJ0aWZpY2F0ZV0KQ2hlY2tTdW09Q0FBODlCOTA0QzU3RTY2OTU1RjJDQTY4MzlCRTZCOTMKVGltZVN0YW1wPTE1NjU3MjM5MDIKUGFzc3dvcmRWZXJzaW9uPTQKVmVuZG9yTmFtZT1JQk0gVG9yb250byBMYWIKVmVuZG9yUGFzc3dvcmQ9N3Y4cDRmcTJkdGZwYwpWZW5kb3JJRD01ZmJlZTBlZTZmZWIuMDIuMDkuMTUuMGYuNDguMDAuMDAuMDAKUHJvZHVjdE5hbWU9REIyIFN0YW5kYXJkIEVkaXRpb24KUHJvZHVjdElEPTE0MDUKUHJvZHVjdFZlcnNpb249MTEuNQpQcm9kdWN0UGFzc3dvcmQ9MzR2cnc1MmQyYmQyNGd0NWFmNHU4Y2M0ClByb2R1Y3RBbm5vdGF0aW9uPTEyNyAxNDMgMjU1IDI1NSA5NCAyNTUgMSAwIDAgMC0yNzsjMCAxMjggMTYgMCAwCkFkZGl0aW9uYWxMaWNlbnNlRGF0YT0KTGljZW5zZVN0eWxlPW5vZGVsb2NrZWQKTGljZW5zZVN0YXJ0RGF0ZT0wOC8xMy8yMDE5CkxpY2Vuc2VEdXJhdGlvbj02NzE2CkxpY2Vuc2VFbmREYXRlPTEyLzMxLzIwMzcKTGljZW5zZUNvdW50PTEKTXVsdGlVc2VSdWxlcz0KUmVnaXN0cmF0aW9uTGV2ZWw9MwpUcnlBbmRCdXk9Tm8KU29mdFN0b3A9Tm8KQnVuZGxlPU5vCkN1c3RvbUF0dHJpYnV0ZTE9Tm8KQ3VzdG9tQXR0cmlidXRlMj1ObwpDdXN0b21BdHRyaWJ1dGUzPU5vClN1YkNhcGFjaXR5RWxpZ2libGVQcm9kdWN0PU5vClRhcmdldFR5cGU9QU5ZClRhcmdldFR5cGVOYW1lPU9wZW4gVGFyZ2V0ClRhcmdldElEPUFOWQpFeHRlbmRlZFRhcmdldFR5cGU9CkV4dGVuZGVkVGFyZ2V0SUQ9ClNlcmlhbE51bWJlcj0KVXBncmFkZT1ObwpJbnN0YWxsUHJvZ3JhbT0KQ2FwYWNpdHlUeXBlPQpNYXhPZmZsaW5lUGVyaW9kPQpEZXJpdmVkTGljZW5zZVN0eWxlPQpEZXJpdmVkTGljZW5zZVN0YXJ0RGF0ZT0KRGVyaXZlZExpY2Vuc2VFbmREYXRlPQpEZXJpdmVkTGljZW5zZUFnZ3JlZ2F0ZUR1cmF0aW9uPQo="
-  db2_admin_user_name           = "db2inst1"
-  db2_project_name              = "ibm-db2"
+  db2_admin_user_name      = "db2inst1"
+  db2_project_name         = "ibm-db2"
 }
 
 locals {
@@ -243,37 +196,9 @@ variable "db2_host_ip" {}
 
 variable "db2_port_number" {}
 
-# --- CP4BA SETTINGS ---
-locals {
-  cp4ba_admin_name = "cp4badmin"
-  cp4ba_admin_group = "cp4badmins"
-  cp4ba_users_group = "cp4bausers"
-  cp4ba_ums_admin_name = "umsadmin"
-  cp4ba_ums_admin_group = "cn=cp4badmins,dc=example,dc=com"
-}
-
 # --- LDAP SETTINGS ---
 locals {
-  # LDAP name - don't use dashes (-), only use underscores
-  ldap_name = "ldap_custom"
   ldap_admin_name = "cn=root"
-  ldap_type = "IBM Security Directory Server"
-  ldap_port = "389"
-  ldap_server = "150.238.92.26"
-  ldap_base_dn = "dc=example,dc=com"
-  ldap_user_name_attribute = "*:cn"
-  ldap_user_display_name_attr = "cn"
-  ldap_group_base_dn = "dc=example,dc=com"
-  ldap_group_name_attribute = "*:cn"
-  ldap_group_display_name_attr = "cn"
-  ldap_group_membership_search_filter = "('\\|(\\&(objectclass=groupOfNames)(member={0}))(\\&(objectclass=groupOfUniqueNames)(uniqueMember={0})))"
-  ldap_group_member_id_map = "groupofnames:member"
-  ldap_ad_gc_host = ""
-  ldap_ad_gc_port = ""
-  ldap_ad_user_filter = "(\\&(samAccountName=%v)(objectClass=user))"
-  ldap_ad_group_filter = "(\\&(samAccountName=%v)(objectclass=group))"
-  ldap_tds_user_filter = "(\\&(cn=%v)(objectclass=person))"
-  ldap_tds_group_filter = "(\\&(cn=%v)(\\|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"
 }
 
 # --- HA Settings ---
