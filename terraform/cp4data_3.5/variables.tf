@@ -52,14 +52,14 @@ variable "force_delete_storage" {
 
 // OpenShift cluster specific input parameters and default values:
 variable "flavors" {
-  type    = list(string)
-  default = ["b3c.16x64"]
+  type        = list(string)
+  default     = ["b3c.16x64"]
   description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"bx2.16x64\"]`"
 }
 
 variable "workers_count" {
-  type    = list(number)
-  default = [4]
+  type        = list(number)
+  default     = [4]
   description = "Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
 }
 
@@ -74,13 +74,13 @@ variable "public_vlan_number" {
 }
 
 variable "datacenter" {
-  default = "dal12"
+  default     = "dal12"
   description = "Ignored if `cluster_id` is specified. Classic Only. List all available datacenters/zones with: 'ibmcloud ks zone ls --provider classic'"
 }
 
 variable "vpc_zone_names" {
-  type    = list(string)
-  default = ["us-south-1"]
+  type        = list(string)
+  default     = ["us-south-1"]
   description = "Ignored if `cluster_id` is specified. VPC only. Array with the subzones in the region to create the workers groups. List all the zones with: 'ibmcloud ks zone ls --provider vpc-gen2'. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
 }
 
@@ -106,39 +106,39 @@ variable "ibmcloud_api_key" {
   description = "IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
 }
 
-variable "storage_capacity"{
-    type = number
-    default = 200
-    description = "Ignored if Portworx is not enabled: Storage capacityin GBs"
+variable "storage_capacity" {
+  type        = number
+  default     = 200
+  description = "Ignored if Portworx is not enabled: Storage capacityin GBs"
 }
 
 variable "storage_profile" {
-    type = string
-    default = "10iops-tier"
-    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
+  type        = string
+  default     = "10iops-tier"
+  description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
 }
 
 variable "storage_iops" {
-    type = number
-    default = 10
-    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
+  type        = number
+  default     = 10
+  description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
 }
 
 variable "create_external_etcd" {
-    type = bool
-    default = false
-    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
+  type        = bool
+  default     = false
+  description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
 }
 
 # These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
 # You may override these for additional security.
 variable "etcd_username" {
-  default = ""
+  default     = ""
   description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
 variable "etcd_password" {
-  default = ""
+  default     = ""
   description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
@@ -229,7 +229,7 @@ variable "install_db2_data_management" {
 
 variable "install_big_sql" {
   default     = false
-  type        = bool 
+  type        = bool
   description = "Install Big SQL module. Only for Cloud Pak for Data v3.5"
 }
 

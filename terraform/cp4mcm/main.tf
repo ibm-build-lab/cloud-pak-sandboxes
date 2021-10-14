@@ -1,6 +1,6 @@
 provider "ibm" {
-  version    = "~> 1.12"
-  region     = var.region
+  version          = "~> 1.12"
+  region           = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
 }
 
@@ -64,13 +64,13 @@ module "cp4mcm" {
   on_vpc = var.on_vpc
   region = var.region
   zone   = var.on_vpc ? var.vpc_zone_names[0] : var.datacenter
-  
+
   // IBM Cloud API Key
-  ibmcloud_api_key          = var.ibmcloud_api_key
+  ibmcloud_api_key = var.ibmcloud_api_key
 
   // ROKS cluster parameters:
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-  cluster_name_id = local.enable_cluster ? module.cluster.id : var.cluster_id
+  cluster_name_id     = local.enable_cluster ? module.cluster.id : var.cluster_id
 
   // Entitled Registry parameters:
   entitled_registry_key        = var.entitled_registry_key

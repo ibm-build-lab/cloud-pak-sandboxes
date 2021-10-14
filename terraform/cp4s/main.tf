@@ -1,6 +1,6 @@
 provider "ibm" {
   # generation = local.infra == "classic" ? 1 : 2
-  region     = var.region
+  region = var.region
 }
 
 locals {

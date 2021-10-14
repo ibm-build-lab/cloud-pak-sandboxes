@@ -1,6 +1,6 @@
 provider "ibm" {
-  version    = "~> 1.12"
-  region     = var.region
+  version = "~> 1.12"
+  region  = var.region
 }
 
 locals {

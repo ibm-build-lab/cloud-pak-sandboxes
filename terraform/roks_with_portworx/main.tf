@@ -1,5 +1,5 @@
 provider "ibm" {
-  region     = var.region
+  region           = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
 }
 
@@ -17,19 +17,19 @@ module "cluster" {
   on_vpc = var.on_vpc
 
   // General
-  project_name   = var.project_name
-  owner          = var.owner
-  environment    = var.environment
-  resource_group = var.resource_group
-  roks_version   = var.roks_version
-  entitlement    = var.entitlement
+  project_name         = var.project_name
+  owner                = var.owner
+  environment          = var.environment
+  resource_group       = var.resource_group
+  roks_version         = var.roks_version
+  entitlement          = var.entitlement
   force_delete_storage = var.force_delete_storage
 
   // Parameters for the Workers
-  flavors        = var.flavors
-  workers_count  = var.workers_count
+  flavors       = var.flavors
+  workers_count = var.workers_count
   // Classic only
-  datacenter     = var.datacenter
+  datacenter          = var.datacenter
   private_vlan_number = var.private_vlan_number
   public_vlan_number  = var.public_vlan_number
   // VPC only
@@ -40,7 +40,7 @@ module "cluster" {
   // config_dir      = var.config_dir
   // config_admin    = false
   // config_network  = false
-  
+
 }
 
 resource "null_resource" "mkdir_kubeconfig_dir" {
@@ -71,26 +71,26 @@ module "portworx" {
 
   // Cluster parameters
   kube_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-  worker_nodes     = var.workers_count[0]  // Number of workers
+  worker_nodes     = var.workers_count[0] // Number of workers
 
   // Storage parameters
-  install_storage      = true
-  storage_capacity     = var.storage_capacity  // In GBs
-  storage_iops         = var.storage_iops   // Must be a number, it will not be used unless a storage_profile is set to a custom profile
-  storage_profile      = var.storage_profile
+  install_storage  = true
+  storage_capacity = var.storage_capacity // In GBs
+  storage_iops     = var.storage_iops     // Must be a number, it will not be used unless a storage_profile is set to a custom profile
+  storage_profile  = var.storage_profile
 
   // Portworx parameters
-  resource_group_name   = var.resource_group
-  region                = var.region
-  cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
-  unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
+  resource_group_name = var.resource_group
+  region              = var.region
+  cluster_id          = data.ibm_container_cluster_config.cluster_config.cluster_name_id
+  unique_id           = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
 
   // These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
   // You may override these for additional security.
-  create_external_etcd  = var.create_external_etcd
-  etcd_username         = var.etcd_username
-  etcd_password         = var.etcd_password
+  create_external_etcd = var.create_external_etcd
+  etcd_username        = var.etcd_username
+  etcd_password        = var.etcd_password
 
   // Defaulted.  Don't change
-  etcd_secret_name      = "px-etcd-certs"
+  etcd_secret_name = "px-etcd-certs"
 }

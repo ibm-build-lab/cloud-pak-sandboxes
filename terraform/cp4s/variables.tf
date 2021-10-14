@@ -39,7 +39,6 @@ variable "admin_user" {
 
 }
 
-
 // Flavor will depend on whether classic or vpc
 variable "flavors" {
   type        = list(string)
