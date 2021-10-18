@@ -51,7 +51,7 @@
         },
         {
           "name": "entitlement",
-          "value": "",
+          "value": "cloud_pak",
           "type": "string"
         },
         {
