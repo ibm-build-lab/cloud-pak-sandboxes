@@ -3,7 +3,7 @@
     "type": [
         "terraform_v0.12"
     ],
-    "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Applications Cloud Pak on IBM Cloud Classic",
+    "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Multi Cloud Management Cloud Pak on IBM Cloud Classic",
     "tags": [
         "owner:{{ OWNER }}",
         "env:{{ ENV }}",
@@ -16,7 +16,7 @@
     },
     "template_data": [
         {
-            "folder": "terraform/cp4app",
+            "folder": "terraform/cp4mcm",
             "type": "terraform_v0.12",
             "variablestore": [
                 {
@@ -58,20 +58,25 @@
                     "name": "on_vpc",
                     "value": "false",
                     "type": "bool"
-                  },
-                  {
+                },
+                {
+                    "name": "flavors",
+                    "value": "[\"b3c.16x64\"]",
+                    "type": "list(string)"
+                },
+                {
                     "name": "vpc_zone_names",
                     "value": "[\"us-south-1\"]",
                     "type": "list(string)"
-                  },
+                },
                 {
                     "name": "private_vlan_number",
-                    "value": "",
+                    "value": "0",
                     "type": "string"
                 },
                 {
                     "name": "public_vlan_number",
-                    "value": "",
+                    "value": "0",
                     "type": "string"
                 },
                 {
@@ -86,9 +91,35 @@
                     "type": "string"
                 },
                 {
-                    "name": "cp4app_installer_command",
-                    "value": "install",
-                    "type": "string"
+                    "name": "ibmcloud_api_key",
+                    "value": "key",
+                    "type": "string",
+                    "secure": true
+                },
+                {
+                    "name": "install_infr_mgt_module",
+                    "value": "false",
+                    "type": "bool"
+                },
+                {
+                    "name": "install_monitoring_module",
+                    "value": "false",
+                    "type": "bool"
+                },
+                {
+                    "name": "install_security_svcs_module",
+                    "value": "false",
+                    "type": "bool"
+                },
+                {
+                    "name": "install_operations_module",
+                    "value": "false",
+                    "type": "bool"
+                },
+                {
+                    "name": "install_tech_prev_module",
+                    "value": "false",
+                    "type": "bool"
                 }
             ]
         }

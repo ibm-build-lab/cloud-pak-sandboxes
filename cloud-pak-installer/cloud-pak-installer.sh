@@ -21,7 +21,7 @@ red=$(tput setaf 1; tput bold)
 EXISTING_CLUSTER="false"
 
 CP4MCM="false"
-CLOUD_PAK_NAME_MCM_VERSION="Cloud Pak for Multicloud Management 2.2"
+CLOUD_PAK_NAME_MCM_VERSION="Cloud Pak for Multicloud Management 2.3"
 CLOUD_PAK_TEMPLATE_MCM=./templates/cpmcm-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_MCM="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4mcm"
 
@@ -41,7 +41,7 @@ CLOUD_PAK_TEMPLATE_DATA2=./templates/cp4d_3.0-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_DATA2="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_3.0"
 
 CP4I="false"
-CLOUD_PAK_NAME_INTEGRATION_VERSION="Cloud Pak for Integration 2021.1"
+CLOUD_PAK_NAME_INTEGRATION_VERSION="Cloud Pak for Integration 2021.2.1"
 CLOUD_PAK_TEMPLATE_INTEGRATION=./templates/cp4i-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_INTEGRATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4i"
 
@@ -55,11 +55,20 @@ CLOUD_PAK_NAME_SECURITY_VERSION="Cloud Pak for Security 1.7.0"
 CLOUD_PAK_TEMPLATE_SECURITY=./templates/cp4s-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_SECURITY="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4s"
 
+CP4NA="false"
+CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION="Cloud Pak for Network Automation 2.1.1"
+CLOUD_PAK_TEMPLATE_NETWORK_AUTOMATION=./templates/cp4na-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_NETWORK_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4na"
+
 IAF="false"
 IAF_VERSION="IBM Automation Foundation 1.0"
 IAF_TEMPLATE=./templates/iaf-workspace-configuration.json
 IAF_REPO_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf"
 
+CP4AIOPS="false"
+CLOUD_PAK_NAME_AIOPS_VERSION="Cloud Pak for Watson AIOps 3.1"
+CLOUD_PAK_TEMPLATE_AIOPS=./templates/cp4aiops-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_AIOPS="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4aiops"
 
 IBM_API_KEY="none"
 EXISTING_CLUSTER="false"
@@ -82,7 +91,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_AUTOMATION_VERSION" "$CLOUD_PAK_NAME_SECURITY_VERSION" "$IAF_VERSION")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -135,22 +144,32 @@ get_cloud_pak_install() {
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
                 ;;
-            $CLOUD_PAK_NAME_AUTOMATION_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_AUTOMATION_VERSION"
-                CP4AUTO="true"
-                cp $CLOUD_PAK_TEMPLATE_AUTOMATION workspace-configuration.json
+#            $CLOUD_PAK_NAME_AUTOMATION_VERSION)
+#                echo "${bold}Selected: $CLOUD_PAK_NAME_AUTOMATION_VERSION"
+#                CP4AUTO="true"
+#                cp $CLOUD_PAK_TEMPLATE_AUTOMATION workspace-configuration.json
+#                cp workspace-configuration.json temp.json
+#                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+#                cp workspace-configuration.json temp.json
+#                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+#                break
+#                ;; 
+#            $CLOUD_PAK_NAME_SECURITY_VERSION)
+#                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
+#                CP4S="true"
+#                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
+#                cp workspace-configuration.json temp.json
+#                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+#                cp workspace-configuration.json temp.json
+#                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+#                break
+#                ;;
+            $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION"
+                CP4NA="true"
+                cp $CLOUD_PAK_TEMPLATE_NETWORK_AUTOMATION workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
-                break
-                ;; 
-            $CLOUD_PAK_NAME_SECURITY_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
-                CP4S="true"
-                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
-                cp workspace_configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_NETWORK_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
@@ -164,6 +183,16 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
+                ;;
+            $CLOUD_PAK_NAME_AIOPS_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_AIOPS_VERISON"
+                CP4AIOPS="true"
+                cp $CLOUD_PAK_TEMPLATE_AIOPS workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AIOPS" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
                 ;;  
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
@@ -171,9 +200,19 @@ get_cloud_pak_install() {
 
 }
 
+# 
+get_resource_group() {
+    read -p "${bold}Enter Resource Group Name:${normal} " -e RESOURCE_GROUP
+    cp workspace-configuration.json temp.json
+    jq -r --arg v "$RESOURCE_GROUP" '(.template_data[] | .variablestore[] | select(.name == "resource_group") | .value) |= $v' temp.json > workspace-configuration.json
+    cp workspace-configuration.json temp.json
+    jq -r ".resource_group |= \"$RESOURCE_GROUP\"" temp.json > workspace-configuration.json
+}
+
 # Checks the users available resource groups. If the resource group of the template is not available then the script ends with prompt
 check_resource_groups() {
     echo "${bold}"
+    get_resource_group
     RESOURCE_GROUP=$(jq -r '(.template_data[] | .variablestore[] | select(.name == "resource_group") | .value)' temp.json)
     FOUND_GROUP="false"
     ibmcloud resource groups --output json > resource-groups.json
@@ -231,9 +270,17 @@ prompt_license() {
     then
         echo "${red}"  $CLOUD_PAK_NAME_SECURITY_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
+    if $CP4NA
+    then 
+        echo "${red}"  $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
+    fi
     if $IAF
     then
         echo "${red}"  $CLOUD_PAK_NAME_AUTOMATION_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
+    fi
+    if $CP4AIOPS
+    then
+        echo "${red}"  $CLOUD_PAK_NAME_AIOPS_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
     licenseAgree=("Yes" "No")
     select licenseAgree in "${licenseAgree[@]}"; do
@@ -299,11 +346,21 @@ get_workspace_name() {
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4s-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-cp4s-sandbox"
     fi
+    if $CP4NA
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4na-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4na-sandbox"
+    fi    
     if $IAF
     then
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-iaf-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-iaf-sandbox"
-    fi      
+    fi 
+    if $CP4AIOPS
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-aiops-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-aiops-sandbox"
+    fi       
 }
 
 
@@ -325,6 +382,16 @@ set_vpc_flavors() {
             cp ./workspace-configuration.json temp.json
             jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
         fi
+        if $CP4I
+        then
+            cp ./workspace-configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+        fi
+        if $CP4AIOPS
+        then
+            cp ./workspace-configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+        fi
     fi
 }
 
@@ -342,13 +409,14 @@ get_vpc() {
                break
                ;;
             "VPC")
-               VPC="true"
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
-               set_vpc_flavors
-               if $CP4D35
-               then get_portworx
-               fi
+                VPC="true"
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
+                set_vpc_flavors
+                #if [ ! $CP4MCM ] || [ ! $IAF ]
+                #    then get_portworx
+                #fi
+                get_portworx
                break
                ;;
             *) echo "${bold}invalid option $REPLY ${green}";;
@@ -385,14 +453,22 @@ get_meta_data() {
     # tags for workspace, used by workspace-configuration.json
     read -p "${bold}Enter Project Owner Name:${normal} " -e PROJECT_OWNER_NAME
     PROJECT_OWNER_NAME_TAG="owner:$PROJECT_OWNER_NAME"
-    read -p "${bold}Enter Environment Name:${normal} " -e ENV_NAME
-    ENV_NAME_TAG="env:$ENV_NAME"
-    read -p "${bold}Enter Project Name (new clusters will be named starting with ${green}Project Name)${bold}:${normal} " -e PROJECT_NAME
-    PROJECT_NAME_TAG="project:$PROJECT_NAME"
+    if [ -z $CLUSTER_ID ]
+    then
+      read -p "${bold}Enter Environment Name:${normal} " -e ENV_NAME
+      ENV_NAME_TAG="env:$ENV_NAME"
+      read -p "${bold}Enter Project Name (new clusters will be named starting with ${green}Project Name)${bold}:${normal} " -e PROJECT_NAME
+      PROJECT_NAME_TAG="project:$PROJECT_NAME"
+    else
+      ENV_NAME=""
+      ENV_NAME_TAG=""
+      PROJECT_NAME=""
+      PROJECT_NAME_TAG=""
+    fi
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary${bold}):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
-    if $IAF || $CP4D35 || $CP4MCM
+    if $IAF || $CP4D35 || $CP4MCM || $CP4I || $CP4AIOPS
     then
        get_ibm_api_key
     fi 
@@ -1062,7 +1138,7 @@ create_public_vlan() {
     ibmcloud sl vlan create -t public -d $DATACENTER -n sandbox-public -f --output json > logs/vlan-public-$WORKSPACE_NAME.json
     echo "${bold}Public Vlan creation started, this process may take some time.${normal}"
     echo "${bold}You may continue to refresh the vlan list until it appears, cancel this current sandbox creation, or choose another vlan${normal}"
-    echo "${bold}The VLAN confirmation can be foudn in ${green}logs/vlan-public-$WORKSPACE_NAME${normal}"
+    echo "${bold}The VLAN confirmation can be found in ${green}logs/vlan-public-$WORKSPACE_NAME${normal}"
     ibmcloud sl vlan list --output json > vlan.json
     jq --arg v "$DATACENTER" '[.[] | select(.primaryRouter.datacenter.name | contains($v)) | select(.networkSpace | contains("PUBLIC"))]' vlan.json > vlan-public.json
 }
@@ -1165,7 +1241,7 @@ select_region() {
     select region in "${regions[@]}"; do
         case $region in
             "us-east")
-                echo "${bold}Chosen region: us-east, pease pick a data center:${green}"
+                echo "${bold}Chosen region: us-east, please pick a data center:${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "us-east"' temp.json > workspace-configuration.json
                 eastData=("wdc04" "wdc06" "wdc07")
@@ -1195,7 +1271,7 @@ select_region() {
                 break
                 ;;
             "us-south")
-                echo "${bold}Chosen region: us-south, pease pick a data center:${green}"
+                echo "${bold}Chosen region: us-south, please pick a data center:${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "us-south"' temp.json > workspace-configuration.json
                 southData=("dal10" "dal12" "dal13")
@@ -1225,7 +1301,7 @@ select_region() {
                 break
                 ;;
             "eu-central")
-                echo "${bold}Chosen region: us-central, pease pick a data center${green}"
+                echo "${bold}Chosen region: us-central, please pick a data center${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "eu-de"' temp.json > workspace-configuration.json
                 euData=("fra02" "fra04" "fra05")
@@ -1255,7 +1331,7 @@ select_region() {
                 break
                 ;;
             "uk-south")
-                echo "${bold}Chosen region: uk south, pease pick a data center${green}"
+                echo "${bold}Chosen region: uk south, please pick a data center${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "uk-south"' temp.json > workspace-configuration.json
                 ukData=("lon04" "lon05" "lon06")
@@ -1285,7 +1361,7 @@ select_region() {
                 break
                 ;;
                 "ap-north")
-                echo "${bold}Chosen region: ap north, pease pick a data center${green}"
+                echo "${bold}Chosen region: ap north, please pick a data center${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "ap-north"' temp.json > workspace-configuration.json
                 apNorthData=("hkg02" "che01" "tok02" "tok04" "tok05" "seo01" "sng01")
@@ -1339,7 +1415,7 @@ select_region() {
                 break
                 ;;
                 "ap-south")
-                echo "${bold}Chosen region: ap-south, pease pick a data center${green}"
+                echo "${bold}Chosen region: ap-south, please pick a data center${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "ap-south"' temp.json > workspace-configuration.json
                 apSouthData=("mel01" "syd01" "syd04" "syd05")
@@ -1389,7 +1465,7 @@ select_vpc_zone() {
     select region in "${regions[@]}"; do
         case $region in
             "us-east")
-                echo "${bold}Chosen region: us-east, pease pick a vpc zone:${green}"
+                echo "${bold}Chosen region: us-east, please pick a vpc zone:${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "us-east"' temp.json > workspace-configuration.json
                 eastZone=("us-east-1" "us-east-2" "us-east-3")
@@ -1419,7 +1495,7 @@ select_vpc_zone() {
                 break
                 ;;
             "us-south")
-                echo "${bold}Chosen region: us-south, pease pick a vpc zone:${green}"
+                echo "${bold}Chosen region: us-south, please pick a vpc zone:${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "us-south"' temp.json > workspace-configuration.json
                 southZone=("us-south-1" "us-south-2" "us-south-3")
@@ -1449,7 +1525,7 @@ select_vpc_zone() {
                 break
                 ;;
             "eu-de")
-                echo "${bold}Chosen region: EU Frankenfurt, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: EU Frankenfurt, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "eu-de"' temp.json > workspace-configuration.json
                 euZone=("eu-de-1" "eu-de-2" "eu-de-3")
@@ -1479,7 +1555,7 @@ select_vpc_zone() {
                 break
                 ;;
             "eu-gb")
-                echo "${bold}Chosen region: EU London, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: EU London, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "eu-gb"' temp.json > workspace-configuration.json
                 ukZone=("eu-gb-1" "eu-gb-2" "eu-gb-3")
@@ -1509,7 +1585,7 @@ select_vpc_zone() {
                 break
                 ;;
             "ca-tor")
-                echo "${bold}Chosen region: Canada Toronto, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: Canada Toronto, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "ca-tor"' temp.json > workspace-configuration.json
                 caZone=("ca-tor-1" "ca-tor-1" "ca-tor-1" )
@@ -1539,7 +1615,7 @@ select_vpc_zone() {
                 break
                 ;;
             "jp-tok")
-                echo "${bold}Chosen region: Japan Tokyo, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: Japan Tokyo, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "jp-tok"' temp.json > workspace-configuration.json
                 jpZone=("jp-tok-1" "jp-tok-2" "jp-tok-3")
@@ -1569,7 +1645,7 @@ select_vpc_zone() {
                 break
                 ;;
             "jp-osa")
-                echo "${bold}Chosen region: Japan Osaka, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: Japan Osaka, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "jp-osa"' temp.json > workspace-configuration.json
                 jpZone=("jp-osa-1" "jp-osa-2" "jp-osa-3")
@@ -1599,7 +1675,7 @@ select_vpc_zone() {
                 break
                 ;;
             "au-syd")
-                echo "${bold}Chosen region: uk south, pease pick a vpc zone${green}"
+                echo "${bold}Chosen region: uk south, please pick a vpc zone${green}"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "region") | .value) |= "au-syd"' temp.json > workspace-configuration.json
                 auZone=("au-syd-1" "au-syd-2" "au-syd-3")
@@ -1709,12 +1785,13 @@ get_cloud_pak_install
 prompt_license
 check_resource_groups
 get_workspace_name
+get_cluster_info
 get_meta_data
 write_meta_data
-get_cluster_info
-write_meta_data
-get_vpc
-if ! $EXISTING_CLUSTER
+if [ ! $CP4APP ] || [ ! $CP4DATA30 ]
+    then get_vpc
+fi
+if [ ! $EXISTING_CLUSTER ] || [ $CP4MCM ]
 then 
     if $CLASSIC
     then select_region
@@ -1795,5 +1872,18 @@ fi
 
 if $CP4S
 then
-    echo "${bold}Cloud Pak for Automation will be available in about 1 hour 30 minutes.${green}"
+    echo "${bold}Cloud Pak for Security will be available in about 1 hour 30 minutes.${green}"
+fi
+
+if $CP4AIOPS
+then
+    echo "${bold}Cloud Pak for Watson AIOps will be available in about 2 hours.${green}"
+fi
+
+if $CP4NA
+then
+    echo "${bold}Cloud Pak for Network Automation will be available in about 1 hour 30 minutes.${green}"
+    echo "${bold}After the install is completed you can go to your cluster and look under installed operators to find CP4NA${green}"
+    echo
+    echo "${bold}To continue create an instance, an instance will require a configured LDAP to use ${green}"
 fi

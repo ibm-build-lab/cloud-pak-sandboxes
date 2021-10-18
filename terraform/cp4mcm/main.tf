@@ -1,4 +1,5 @@
 provider "ibm" {
+  version    = "~> 1.12"
   region     = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
 }
@@ -13,7 +14,7 @@ locals {
 
 module "cluster" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/roks"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//roks"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -30,12 +31,6 @@ module "cluster" {
   datacenter           = var.datacenter
   vpc_zone_names       = var.vpc_zone_names
   force_delete_storage = true
-
-  // Kubernetes Config parameters:
-  // download_config = false
-  // config_dir      = local.kubeconfig_dir
-  // config_admin    = false
-  // config_network  = false
 
   // Debugging
   private_vlan_number = var.private_vlan_number
@@ -64,22 +59,25 @@ data "ibm_container_cluster_config" "cluster_config" {
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4mcm" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4mcm"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4mcm"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4mcm"
   enable = true
   on_vpc = var.on_vpc
+  region = var.region
+  zone   = var.on_vpc ? var.vpc_zone_names[0] : var.datacenter
   
   // IBM Cloud API Key
   ibmcloud_api_key          = var.ibmcloud_api_key
 
   // ROKS cluster parameters:
-  openshift_version   = local.roks_version
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
   cluster_name_id = local.enable_cluster ? module.cluster.id : var.cluster_id
 
   // Entitled Registry parameters:
-  entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
+  entitled_registry_key        = var.entitled_registry_key
   entitled_registry_user_email = var.entitled_registry_user_email
 
+  // MCM specific variables
+  namespace                    = local.namespace
   install_infr_mgt_module      = var.install_infr_mgt_module
   install_monitoring_module    = var.install_monitoring_module
   install_security_svcs_module = var.install_security_svcs_module

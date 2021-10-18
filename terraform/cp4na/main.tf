@@ -1,5 +1,5 @@
 provider "ibm" {
-  generation = local.infra == "classic" ? 1 : 2
+  # generation = local.infra == "classic" ? 1 : 2
   region     = var.region
 }
 
@@ -8,9 +8,10 @@ locals {
 }
 
 module "cluster" {
+  // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/roks"
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
-  on_vpc = local.infra == "vpc"
+  on_vpc = var.on_vpc
 
   // General parameters:
   project_name = var.project_name
@@ -20,10 +21,11 @@ module "cluster" {
   // Openshift parameters:
   resource_group       = var.resource_group
   roks_version         = local.roks_version
-  flavors              = local.flavors
+  flavors              = var.flavors
   workers_count        = local.workers_count
   datacenter           = var.datacenter
   force_delete_storage = true
+  vpc_zone_names       = var.vpc_zone_names
 
   // Kubernetes Config parameters:
   // download_config = false
@@ -34,10 +36,6 @@ module "cluster" {
   // Debugging
   private_vlan_number = var.private_vlan_number
   public_vlan_number  = var.public_vlan_number
-}
-
-data "ibm_resource_group" "group" {
-  name = var.resource_group
 }
 
 resource "null_resource" "mkdir_kubeconfig_dir" {
@@ -52,7 +50,7 @@ data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
 
   cluster_name_id   = local.enable_cluster ? module.cluster.id : var.cluster_id
-  resource_group_id = data.ibm_resource_group.group.id
+  resource_group_id = module.cluster.resource_group.id
   config_dir        = local.kubeconfig_dir
   download          = true
   admin             = false
@@ -60,12 +58,19 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
-module "cp4app" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4app"
+module "cp4na" {
+  // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4data"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4na"
   enable = true
+  force  = true
 
-  cluster_config_path          = data.ibm_container_cluster_config.cluster_config.config_file_path
+
+  // ROKS cluster parameters:
+  openshift_version   = local.roks_version
+  cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+
+  // Entitled Registry parameters:
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
   entitled_registry_user_email = var.entitled_registry_user_email
-  installer_command            = var.installer_command
+
 }

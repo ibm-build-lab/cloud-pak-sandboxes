@@ -37,23 +37,3 @@ datacenter     = "dal10"
 // RECOMMENDED: to set the entitled_registry_user_email using an external input, like this:
 // export TF_VAR_entitled_registry_user_email="johandry.amador@ibm.com"
 
-// CP4DATA Parametrers:
-// --------------------
-
-storage_class_name = "ibmc-file-custom-gold-gid"
-
-// CP4DATA Modules installation parameters
-// ---------------------------------------
-empty_module_list                = true
-install_watson_knowledge_catalog = false
-install_watson_studio            = false
-install_watson_machine_learning  = false
-install_watson_open_scale        = false
-install_data_virtualization      = false
-install_streams                  = false
-install_analytics_dashboard      = false
-install_spark                    = false
-install_db2_warehouse            = false
-install_db2_data_gate            = false
-install_rstudio                  = false
-install_db2_data_management      = false

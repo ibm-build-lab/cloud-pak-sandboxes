@@ -1,4 +1,5 @@
 provider "ibm" {
+  version    = "~> 1.12"
   region     = var.region
 }
 
@@ -7,8 +8,7 @@ locals {
 }
 
 module "cluster" {
-  // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/roks"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//roks"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -58,8 +58,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4auto" {
-  // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4data"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//cp4auto"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4auto"
   enable = true
   force  = true
 

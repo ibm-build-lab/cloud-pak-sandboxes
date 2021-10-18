@@ -35,7 +35,6 @@ variable "environment" {
 }
 
 variable "owner" {
-  default     = ""
   description = "Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources with the tag 'owner:{owner}'"
 }
 
@@ -48,7 +47,7 @@ variable "flavors" {
 
 variable "workers_count" {
   type    = list(number)
-  default = [4]
+  default = [5]
   description = "Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
 }
 
@@ -61,7 +60,7 @@ variable "vpc_zone_names" {
 
 variable "config_dir" {
   default     = "./.kube/config"
-  description = "Directory to store the cluster config file"
+  description = "Directory to store the kubeconfig file, set the value to empty string to not download the config"
 }
 
 
@@ -72,57 +71,67 @@ variable "datacenter" {
 
 variable "private_vlan_number" {
   default     = ""
-  description = "**Classic Only**. Ignored if `cluster_id` is specified. Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud target -g <resource-group>; ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number. Leave blank if Private VLAN does not exist, one will be created"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number. Leave blank if Private VLAN does not exist, one will be created"
 }
 
 variable "public_vlan_number" {
   default     = ""
-  description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud target -g <resource-group>; ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Leave blank if Public VLAN does not exist, one will be created"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Leave blank if Public VLAN does not exist, one will be created"
 }
 
 // Portworx Module Variables
+variable "install_portworx" {
+  type        = bool
+  default     = false
+  description = "Install Portworx on the ROKS cluster. `true` or `false`"
+}
+
+variable "portworx_is_ready" {
+  type = any
+  default = null
+}
+
 variable "ibmcloud_api_key" {
-  default = ""
-  description = "**VPC Only**. For Portworx setup. IBMCloud API Key for the account the resources will be provisioned on. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
+  description = "Ignored if Portworx is not enabled: IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
 }
 
 variable "storage_capacity"{
     type = number
     default = 200
-    description = "**VPC Only**. For Portworx setup. Storage capacity in GBs"
+    description = "Ignored if Portworx is not enabled: Storage capacityin GBs"
 }
 
 variable "storage_profile" {
     type = string
     default = "10iops-tier"
-    description = "**VPC Only**. For Portworx setup. Optional, Storage profile used for creating storage"
+    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
 }
 
 variable "storage_iops" {
     type = number
     default = 10
-    description = "**VPC Only**. For Portworx setup. Optional, Used only if a user provides a custom storage_profile"
+    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
 }
 
 variable "create_external_etcd" {
     type = bool
     default = false
-    description = "**VPC Only**. For Portworx setup. Do you want to create an external etcd database? `true` or `false`"
+    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
 }
 
 # These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
 # You may override these for additional security.
 variable "etcd_username" {
   default = ""
-  description = "**VPC Only**. For Portworx setup. This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
 variable "etcd_password" {
   default = ""
-  description = "**VPC Only**. For Portworx setup. This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
-// CP4I Module Variables
+// CP4AIOPS Module Variables
 variable "entitled_registry_key" {
   default     = ""
   description = "Required: Cloud Pak Entitlement Key. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable"
@@ -131,6 +140,11 @@ variable "entitled_registry_user_email" {
   description = "Required: Email address of the user owner of the Entitled Registry Key"
 }
 variable "namespace" {
-  default     = "cp4i"
-  description = "Namespace for CP4I"
+  default     = "cp4aiops"
+  description = "Namespace for CP4AIOPS"
+}
+
+// Local Variables and constants
+locals {
+  entitled_registry_key_file = "./entitlement.key"
 }

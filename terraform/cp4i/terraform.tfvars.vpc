@@ -1,7 +1,13 @@
 // Openshift cluster parameters
 // ----------------------------
 
-// Create a cluster based on values below
+// IBM Cloud API Key. Go here for information on how to create: https://cloud.ibm.com/iam/apikeys
+ibmcloud_api_key = ""
+
+// Using an existing cluster
+cluster_id = ""
+
+// Or create a cluster based on values below
 project_name 	= "vpc"
 owner        	= "anonymous"
 environment  	= "test"
@@ -40,3 +46,21 @@ workers_count   = [4]
 //vpc_zone_names  = ["eu-de-1", "eu-de-1"]
 //flavors	  = ["bx2.8x32","bx2.16x64"]
 //workers_count	  = [2,1]
+
+// Portworx specific variables. Ignored if Portworx is not enabled
+//install_portworx = true
+//storage_capacity = "200"
+//storage_profile = "10iops-tier"
+//storage_iops = 10
+
+// This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+//create_external_etcd = ""
+//etcd_username = ""
+
+// Entitlement Key parameters
+// --------------------------
+// Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary
+entitled_registry_key = ""
+entitled_registry_user_email = "
+
+

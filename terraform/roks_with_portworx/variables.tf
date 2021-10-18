@@ -17,12 +17,12 @@ variable "on_vpc" {
 
 variable "region" {
   default     = "us-south"
-  description = "Ignored if `cluster_id` is specified. List all available regions with: `ibmcloud regions`"
+  description = "Region that the cluster is/will be located. List all available regions with: `ibmcloud regions`"
 }
 
 variable "resource_group" {
   default     = "cloud-pak-sandbox"
-  description = "Ignored if `cluster_id` is specified. List all available resource groups with: `ibmcloud resource groups`"
+  description = "Resource group that the cluster is/will be located. List all available resource groups with: `ibmcloud resource groups`"
 }
 
 variable "roks_version" {
@@ -55,34 +55,34 @@ variable "force_delete_storage" {
 variable "flavors" {
   type    = list(string)
   default = ["b3c.16x64"]
-  description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"mx2.4x32\"]`"
+  description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"bx2.16x64\"]`"
 }
 
 variable "workers_count" {
   type    = list(number)
   default = [4]
-  description = "Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
+  description = "Array with the amount of workers on each workers group. Classic and Portworx set up only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
 }
 
 variable "private_vlan_number" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. Classic Only. Private VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Private VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target <resource_group>; ibmcloud ks vlan ls --zone <zone>`"
 }
 
 variable "public_vlan_number" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. Classic Only. Public VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target <resource_group>; ibmcloud ks vlan ls --zone <zone>`"
 }
 
 variable "datacenter" {
   default = "dal12"
-  description = "Ignored if `cluster_id` is specified. Classic Only. List all available datacenters/zones with: 'ibmcloud ks zone ls --provider classic'"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Classic Only. List all available datacenters/zones with: `ibmcloud ks zone ls --provider classic`"
 }
 
 variable "vpc_zone_names" {
   type    = list(string)
   default = ["us-south-1"]
-  description = "Ignored if `cluster_id` is specified. VPC only. Array with the subzones in the region to create the workers groups. List all the zones with: 'ibmcloud ks zone ls --provider vpc-gen2'. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
+  description = "Ignored if `cluster_id` is specified. VPC only. Array with the subzones in the region to create the workers groups. List all the zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
 }
 
 variable "config_dir" {
@@ -99,7 +99,8 @@ variable "install_portworx" {
 }
 
 variable "ibmcloud_api_key" {
-  description = "Ignored if Portworx is not enabled: IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
+  default = ""
+  description = "Ignored if not installing Portworx. IBMCloud API Key for the account the resources will be provisioned on. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
 }
 
 variable "storage_capacity"{

@@ -4,7 +4,7 @@ variable "cluster_id" {
 }
 
 variable "entitlement" {
-  default     = ""
+  default     = "cloud_pak"
   description = "Ignored if `cluster_id` is specified. Enter 'cloud_pak' if using a Cloud Pak entitlement.  Leave blank if OCP entitlement"
 }
 
@@ -16,12 +16,12 @@ variable "on_vpc" {
 
 variable "region" {
   default     = "us-south"
-  description = "Ignored if `cluster_id` is specified. List all available regions with: `ibmcloud regions`"
+  description = "Region that the cluster is/will be provisioned in. List all available regions with: `ibmcloud regions`"
 }
 
 variable "resource_group" {
   default     = "cloud-pak-sandbox"
-  description = "Ignored if `cluster_id` is specified. List all available resource groups with: `ibmcloud resource groups`"
+  description = "Resource group that the cluster is/will be provisioned in. List all available resource groups with: `ibmcloud resource groups`"
 }
 
 variable "roks_version" {
@@ -54,7 +54,7 @@ variable "force_delete_storage" {
 variable "flavors" {
   type    = list(string)
   default = ["b3c.16x64"]
-  description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"mx2.4x32\"]`"
+  description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"bx2.16x64\"]`"
 }
 
 variable "workers_count" {
@@ -65,12 +65,12 @@ variable "workers_count" {
 
 variable "private_vlan_number" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. Classic Only. Private VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number"
+  description = "Ignored if `cluster_id` is specified. Classic Only. Private VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target -g <resource_group>; ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number"
 }
 
 variable "public_vlan_number" {
   default     = ""
-  description = "Ignored if `cluster_id` is specified. Classic Only. Public VLAN assigned to zone. List available VLANs in the zone: ibmcloud ks vlan ls --zone, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
+  description = "Ignored if `cluster_id` is specified. Classic Only. Public VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target -g <resource_group>; ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number"
 }
 
 variable "datacenter" {
@@ -97,13 +97,13 @@ variable "install_portworx" {
   description = "Install Portworx on the ROKS cluster. `true` or `false`"
 }
 
-variable "portworx_is_ready" {
-  type = any
-  default = null
-}
+# variable "portworx_is_ready" {
+#   type = any
+#   default = null
+# }
 
 variable "ibmcloud_api_key" {
-  description = "Ignored if Portworx is not enabled: IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
+  description = "IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
 }
 
 variable "storage_capacity"{
@@ -155,12 +155,13 @@ variable "entitled_registry_user_email" {
 
 variable "cpd_project_name" {
   type        = string
-  default     = "default"
+  default     = "cp4d"
   description = "Name of the project namespace"
 }
 
 variable "accept_cpd_license" {
   type        = bool
+  default     = true
   description = "Do you accept the cpd license agreements? This includes any modules chosen as well. `true` or `false`"
 }
 
