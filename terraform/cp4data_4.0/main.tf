@@ -123,7 +123,7 @@ module "cp4data" {
 
   region = var.region
   resource_group_name = var.resource_group
-  cluster_id = var.cluster_id
+  cluster_id = local.enable_cluster ? module.cluster.id : var.cluster_id
 
   // Parameters to install submodules
   install_wsl         = var.install_wsl
