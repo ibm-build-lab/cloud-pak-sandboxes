@@ -41,11 +41,6 @@ CLOUD_PAK_NAME_DATA_VERSION="Cloud Pak for Data 3.5"
 CLOUD_PAK_TEMPLATE_DATA=./templates/cp4d-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_DATA="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data"
 
-CP4D30="false"
-CLOUD_PAK_NAME_DATA2_VERSION="Cloud Pak for Data 3.0"
-CLOUD_PAK_TEMPLATE_DATA2=./templates/cp4d_3.0-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_DATA2="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_3.0"
-
 CP4I="false"
 CLOUD_PAK_NAME_INTEGRATION_VERSION="Cloud Pak for Integration 2021.2.1"
 CLOUD_PAK_TEMPLATE_INTEGRATION=./templates/cp4i-workspace-configuration.json
@@ -139,17 +134,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
-                ;;
-            $CLOUD_PAK_NAME_DATA2_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_DATA2_VERSION"
-                CP4D30="true"
-                cp $CLOUD_PAK_TEMPLATE_DATA2 workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_DATA2" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
-                break
-                ;;        
+                ;;      
             $CLOUD_PAK_NAME_INTEGRATION_VERSION)
                 echo "${bold}Selected: $CLOUD_PAK_NAME_INTEGRATION_VERSION"
                 CP4I="true"
@@ -274,10 +259,6 @@ prompt_license() {
     then
         echo "${red}"  $CLOUD_PAK_NAME_DATA_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
-    if $CP4D30
-    then
-        echo "${red}"  $CLOUD_PAK_NAME_DATA2_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
-    fi
     if $CP4I
     then
         echo "${red}"  $CLOUD_PAK_NAME_INTEGRATION_VERSION " license agreement ${green} https://www.ibm.com/docs/en/cloud-paks/cp-integration/2020.2?topic=licensing ${bold}"
@@ -353,12 +334,6 @@ get_workspace_name() {
     then
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4data35-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-cp4data35-sandbox"
-    fi
-
-    if $CP4D30
-    then
-        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-cp4data30-sandbox${bold}):${normal} " -e WORKSPACE_NAME
-        WORKSPACE_NAME=$WORKSPACE_NAME"-cp4data30-sandbox"
     fi
 
     if $CP4D40
@@ -1219,172 +1194,6 @@ cp4d35_modules() {
     done
 }
 
-# wites cp4d_3.0 module data
-# updates the value across the respective workspace_configuration values
-cp4d30_modules() {
-
-    # updates workspace-configuration.json .template_data[.varialbestore.install_guardium_external_stap]
-    # updates workspace-configuration.json .template_data[.varialbestore.docker_id]
-    # updates workspace-configuration.json .template_data[.varialbestore.docker_access_token]
-    echo "${bold}Install guardium external? ${green}"
-    yesno=("Yes" "No")
-    select response in "${yesno[@]}"; do
-        case $response in
-            "Yes")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_guardium_external_stap") | .value) |= "true"' temp.json > workspace-configuration.json
-               read -p "${bold}Enter Docker ID:${normal} " -e DOCKER_ID
-               read -p "${bold}Enter Docker Access Token:${normal} " -e DOCKER_ACCESS
-               cp workspace-configuration.json temp.json
-               jq -r --arg v "$DOCKER_ID" '(.template_data[] | .variablestore[] | select(.name == "docker_id") | .value) |= $v' temp.json > workspace-configuration.json
-               cp workspace-configuration.json temp.json
-               jq -r --arg v "$DOCKER_ACCESS" '(.template_data[] | .variablestore[] | select(.name == "docker_access_token") | .value) |= $v' temp.json > workspace-configuration.json
-               break
-               ;;
-            "No")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_guardium_external_stap") | .value) |= "false"' temp.json > workspace-configuration.json
-               break
-               ;;
-            *) echo "${bold}invalid option $REPLY ${green}";;
-        esac
-    done
-
-    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_assistant]
-    echo "${bold}Install watson assistant? ${green}"
-    yesno=("Yes" "No")
-    select response in "${yesno[@]}"; do
-        case $response in
-            "Yes")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant") | .value) |= "true"' temp.json > workspace-configuration.json
-               break
-               ;;
-            "No")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant") | .value) |= "false"' temp.json > workspace-configuration.json
-               break
-               ;;
-            *) echo "${bold}invalid option $REPLY ${green}";;
-        esac
-    done
-
-    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_assistant_for_voice_interaction]
-    echo "${bold}Install watson assistant for voice interaction? ${green}"
-    yesno=("Yes" "No")
-    select response in "${yesno[@]}"; do
-        case $response in
-            "Yes")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant_for_voice_interaction") | .value) |= "true"' temp.json > workspace-configuration.json
-               break
-               ;;
-            "No")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_assistant_for_voice_interaction") | .value) |= "false"' temp.json > workspace-configuration.json
-               break
-               ;;
-            *) echo "${bold}invalid option $REPLY ${green}";;
-        esac
-    done
-
-    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_discovery]
-    echo "${bold}Install watson discovery?  ${green}"
-    yesno=("Yes" "No")
-    select response in "${yesno[@]}"; do
-        case $response in
-            "Yes")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_discovery") | .value) |= "true"' temp.json > workspace-configuration.json
-               break
-               ;;
-            "No")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_discovery") | .value) |= "false"' temp.json > workspace-configuration.json
-               break
-               ;;
-            *) echo "${bold}invalid option $REPLY ${green}";;
-        esac
-    done
-
-    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_knowledge_studio]
-    echo "${bold}Install watson knowledge studio?  ${green}"
-    yesno=("Yes" "No")
-    select response in "${yesno[@]}"; do
-        case $response in
-            "Yes")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_knowledge_studio") | .value) |= "true"' temp.json > workspace-configuration.json
-               break
-               ;;
-            "No")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_knowledge_studio") | .value) |= "false"' temp.json > workspace-configuration.json
-               break
-               ;;
-            *) echo "${bold}invalid option $REPLY ${green}";;
-        esac
-    done
-
-    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_language_translator]
-    echo "${bold}Install watson language translator?  ${green}"
-    yesno=("Yes" "No")
-    select response in "${yesno[@]}"; do
-        case $response in
-            "Yes")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_language_translator") | .value) |= "true"' temp.json > workspace-configuration.json
-               break
-               ;;
-            "No")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_language_translator") | .value) |= "false"' temp.json > workspace-configuration.json
-               break
-               ;;
-            *) echo "${bold}invalid option $REPLY ${green}";;
-        esac
-    done
-
-    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_speech_text]
-    echo "${bold}Install Watson speech text?  ${green}"
-    yesno=("Yes" "No")
-    select response in "${yesno[@]}"; do
-        case $response in
-            "Yes")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_speech_text") | .value) |= "true"' temp.json > workspace-configuration.json
-               break
-               ;;
-            "No")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_watson_speech_text") | .value) |= "false"' temp.json > workspace-configuration.json
-               break
-               ;;
-            *) echo "${bold}invalid option $REPLY ${green}";;
-        esac
-    done
-
-    # updates workspace-configuration.json .template_data[.varialbestore.install_edge_analytics]
-    echo "${bold}Install edge analytics?  ${green}"
-    yesno=("Yes" "No")
-    select response in "${yesno[@]}"; do
-        case $response in
-            "Yes")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_edge_analytics") | .value) |= "true"' temp.json > workspace-configuration.json
-               break
-               ;;
-            "No")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_edge_analytics") | .value) |= "false"' temp.json > workspace-configuration.json
-               break
-               ;;
-            *) echo "${bold}invalid option $REPLY ${green}";;
-        esac
-    done
-
-}
-
 # Sets cluster id to user input or null
 # user input will use existing cluster for cloud pak install, null will create new cluster.
 get_cluster_info() {
@@ -2135,9 +1944,6 @@ then cp4d40_modules
 fi
 if $CP4D35
 then cp4d35_modules
-fi
-if $CP4D30
-then cp4d30_modules
 fi
 if $CP4S
 then cp4s_modules
