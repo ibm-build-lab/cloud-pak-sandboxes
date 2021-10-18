@@ -91,7 +91,11 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
+<<<<<<< HEAD:cloud-pak-installer/cloud-pak-installer.sh
     cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_SECURITY_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
+=======
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
+>>>>>>> master:installer/create-schematic.sh
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -154,12 +158,31 @@ get_cloud_pak_install() {
 #                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
 #                break
 #                ;; 
+<<<<<<< HEAD:cloud-pak-installer/cloud-pak-installer.sh
             $CLOUD_PAK_NAME_SECURITY_VERSION)
                 echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
                 CP4S="true"
                 cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+=======
+#            $CLOUD_PAK_NAME_SECURITY_VERSION)
+#                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
+#                CP4S="true"
+#                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
+#                cp workspace-configuration.json temp.json
+#                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+#                cp workspace-configuration.json temp.json
+#                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+#                break
+#                ;;
+            $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION"
+                CP4NA="true"
+                cp $CLOUD_PAK_TEMPLATE_NETWORK_AUTOMATION workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_NETWORK_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+>>>>>>> master:installer/create-schematic.sh
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
@@ -1855,7 +1878,11 @@ fi
 
 if $CP4S
 then
+<<<<<<< HEAD:cloud-pak-installer/cloud-pak-installer.sh
     echo "${bold}Cloud Pak for Security will be available in about 1 hour.${green}"
+=======
+    echo "${bold}Cloud Pak for Security will be available in about 1 hour 30 minutes.${green}"
+>>>>>>> master:installer/create-schematic.sh
 fi
 
 if $CP4AIOPS
