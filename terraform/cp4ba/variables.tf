@@ -97,7 +97,7 @@ variable "cluster_name_or_id" {
 }
 
 variable "roks_project_name" {
-  default = "default"
+  default = "cloud-pak"
   description = "The cluster's project name or namespace."
 }
 
