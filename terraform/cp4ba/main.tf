@@ -69,36 +69,36 @@ module "Db2" {
   DOCKER_USERNAME                 = local.docker_username
 }
 
-module "portworx" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
-  // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
-  enable = var.install_portworx
-
-  ibmcloud_api_key = var.ibmcloud_api_key
-
-  // Cluster parameters
-  kube_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-  worker_nodes     = var.workers_count[0]  // Number of workers
-
-  // Storage parameters
-  install_storage      = true
-  storage_capacity     = var.storage_capacity
-  storage_iops         = var.storage_iops
-  storage_profile      = var.storage_profile
-
-  // Portworx parameters
-  resource_group_name   = var.resource_group
-  region                = var.region
-  cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
-  unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
-
-  create_external_etcd  = var.create_external_etcd
-  etcd_username         = var.etcd_username
-  etcd_password         = var.etcd_password
-
-  // Defaulted.  Don't change
-  etcd_secret_name      = "px-etcd-certs"
-}
+//module "portworx" {
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
+//  // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
+//  enable = var.install_portworx
+//
+//  ibmcloud_api_key = var.ibmcloud_api_key
+//
+//  // Cluster parameters
+//  kube_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+//  worker_nodes     = var.workers_count[0]  // Number of workers
+//
+//  // Storage parameters
+//  install_storage      = true
+//  storage_capacity     = var.storage_capacity
+//  storage_iops         = var.storage_iops
+//  storage_profile      = var.storage_profile
+//
+//  // Portworx parameters
+//  resource_group_name   = var.resource_group
+//  region                = var.region
+//  cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
+//  unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
+//
+//  create_external_etcd  = var.create_external_etcd
+//  etcd_username         = var.etcd_username
+//  etcd_password         = var.etcd_password
+//
+//  // Defaulted.  Don't change
+//  etcd_secret_name      = "px-etcd-certs"
+//}
 
 
 module "cp4ba"{
@@ -125,7 +125,7 @@ module "cp4ba"{
   DB2_ADMIN_USER_PASSWORD = var.db2_admin_user_password
 
   # ----- LDAP Settings -----
-  LDAP_ADMIN_NAME         = local.ldap_admin_name
+  LDAP_ADMIN_NAME         = var.ldap_admin_name
   LDAP_ADMIN_PASSWORD     = var.ldap_admin_password
 }
 

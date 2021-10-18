@@ -14,8 +14,8 @@ variable "entitled_registry_user_email" {
 }
 
 variable "on_vpc" {
-  default = true
-  description = "To determine infrastructure. Options are `true` = installs on VPC, `false`  installs on classic"
+  default = false
+  description = "VPC isn't supported at this time."
 }
 
 variable "config_dir" {
@@ -146,7 +146,9 @@ variable "etcd_password" {
   description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
-variable "force_delete_storage" {}
+variable "force_delete_storage" {
+  default = true
+}
 
 variable "flavors" {
   type    = list(string)
@@ -170,12 +172,9 @@ locals {
 }
 
 locals {
-  entitled_registry_key_secret_name  = "ibm-entitlement-key"
-  docker_secret_name           = "docker-registry"
   docker_server                = "cp.icr.io"
   docker_username              = "cp"
   docker_password              = chomp(var.entitlement_key)
-  docker_email                 = var.entitled_registry_user_email
   enable_cluster               = var.cluster_name_or_id == "" || var.cluster_name_or_id == null
   project_name                 = "cp4ba"
   ibmcloud_api_key             = chomp(var.ibmcloud_api_key)
