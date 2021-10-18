@@ -36,7 +36,7 @@ Besides the access credentials, the Terraform code requires the following input 
 | Name                           | Description    | Default             | Required |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | -------- |
 | `cluster_id`                   | **Optional:** cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned  | No       |
-| `on_vpc`                   | Ignored if `cluster_id` is specified. Type of infrastructure to provision. `true`=VPC, `false`=Classic  | `false`                    | Yes       |
+| `on_vpc`                   | VPC isn't supported at this time.                    |        |
 | `resource_group`               | Ignored if `cluster_id` is specified. Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`   | `cloud-pak-sandbox` | No       |
 | `project_name`                 | Ignored if `cluster_id` is specified. The project name is used to name the cluster with the `environment` name. It's also used to label the cluster and other resources   | `cloud-pack`        | Yes      |
 | `owner`                        | Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources    | `anonymous`         | Yes      |
