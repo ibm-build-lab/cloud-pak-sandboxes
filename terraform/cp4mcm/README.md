@@ -12,7 +12,7 @@ Make sure access to IBM Cloud is set up.  Go [here](../README.md#configure-acces
 
 This Cloud Pak requires an Entitlement Key. It can be retrieved from [here](https://myibm.ibm.com/products-services/containerlibrary).
 
-If running local Terraform client, edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` or save the entitlement key in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key.
+If running local Terraform client, edit the `./terraform.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` or save the entitlement key in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key.
 
 For example:
 
@@ -49,11 +49,6 @@ Besides the access credentials, the Terraform code requires the following input 
 | `vpc_zone_names`                   | **VPC Only**: Ignored if `cluster_id` is specified. Zones in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`   | `us-south-1`             | No       |
 | `entitled_registry_key`        | Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.  |                     | No       |
 | `entitled_registry_user_email` | Email address of the user owner of the Entitled Registry Key   |                     | Yes      |
-| `install_infr_mgt_module`      | Set to `true` to install the Infrastructure Management module   | `false`             | No       |
-| `install_monitoring_module`    | Set to `true` to install the Monitoring module  | `false`             | No       |
-| `install_security_svcs_module` | Set to `true` to install the Security Services module    | `false`             | No       |
-| `install_operations_module`    | Set to `true` to install the Operations module   | `false`             | No       |
-| `install_tech_prev_module`     | Set to `true` to install the Tech Preview module    | `false`             | No       |
 
 If you are using Schematics directly or the Private Catalog, set the variable `entitled_registry_key` with the content of the Entitlement Key, the file `entitlement.key` is not available.
 
@@ -68,10 +63,10 @@ The Terraform code return the following output parameters.
 | `cluster_name`     | The cluster name which should be: `{project_name}-{environment}-cluster`                                                            |
 | `resource_group`   | Resource group where the OpenShift cluster is created                                                                               |
 | `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
-| `cp4mcm_endpoint`  | URL of the CP4MCM dashboard                                                                                                         |
-| `cp4mcm_user`      | Username to login to the CP4MCM dashboard                                                                                           |
-| `cp4mcm_password`  | Password to login to the CP4MCM dashboard                                                                                           |
-| `cp4mcm_namespace` | Kubernetes namespace where all the CP4MCM objects are installed                                                                     |
+| `cp4ba_endpoint`  | URL of the CP4BA dashboard                                                                                                         |
+| `cp4ba_user`      | Username to login to the CP4BA dashboard                                                                                           |
+| `cp4ba_password`  | Password to login to the CP4BA dashboard                                                                                           |
+| `cp4ba_namespace` | Kubernetes namespace where all the CP4BA objects are installed                                                                     |
 
 ## Validation
 
@@ -104,23 +99,24 @@ export KUBECONFIG=$(terraform output config_file_path)
 kubectl cluster-info
 
 # Namespace
-kubectl get namespaces $(terraform output cp4mcm_namespace)
+kubectl get namespaces $(terraform output cp4ba_namespace)
 
 # All resources
-kubectl get all --namespace $(terraform output cp4mcm_namespace)
+kubectl get all --namespace $(terraform output cp4ba_namespace)
 ```
 
 Using the following credentials:
 
 ```bash
-terraform output cp4mcm_user
-terraform output cp4mcm_password
+terraform output cp4ba_user
+terraform output cp4ba_password
 ```
 
 Open the following URL:
 
 ```bash
-open "http://$(terraform output cp4mcm_endpoint)"
+open "http://$(terraform output cp4ba
+_endpoint)"
 ```
 
 ## Uninstall
