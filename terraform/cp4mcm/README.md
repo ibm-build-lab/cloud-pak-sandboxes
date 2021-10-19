@@ -1,131 +1,177 @@
-# Cloud Pak for Multi Cloud Management 
+# Terraform Module to install Cloud Pak for Multi Cloud Management
 
-## Requirements
+This Terraform Module installs the **Multi Cloud Management Cloud Pak** on an Openshift (ROKS) cluster on IBM Cloud.
 
-Make sure all requirements listed [here](../README.md#requirements) are completed.
+**Module Source**: `git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4mcm`
 
-## Configure Access to IBM Cloud
+- [Terraform Module to install Cloud Pak for Multi Cloud Management](#terraform-module-to-install-cloud-pak-for-multi-cloud-management)
+  - [Set up access to IBM Cloud](#set-up-access-to-ibm-cloud)
+  - [Provisioning this module in a Terraform Script](#provisioning-this-module-in-a-terraform-script)
+    - [Setting up the OpenShift cluster](#setting-up-the-openshift-cluster)
+    - [Installing the CP4MCM Module](#installing-the-cp4mcm-module)
+  - [Input Variables](#input-variables)
+  - [Testing](#testing)
+  - [Executing the Terraform Script](#executing-the-terraform-script)
+  - [Output Variables](#output-variables)
+  - [Accessing the Cloud Pak Console](#accessing-the-cloud-pak-console)
+  - [Clean up](#clean-up)
 
-Make sure access to IBM Cloud is set up.  Go [here](../README.md#configure-access-to-ibm-cloud) for details.
+## Set up access to IBM Cloud
 
-## Cloud Pak Entitlement Key
+If running these modules from your local terminal, you need to set the credentials to access IBM Cloud.
 
-This Cloud Pak requires an Entitlement Key. It can be retrieved from [here](https://myibm.ibm.com/products-services/containerlibrary).
+Go [here](../CREDENTIALS.md) for details.
 
-If running local Terraform client, edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user_email` variable and optionally the variable `entitled_registry_key` or save the entitlement key in the file `entitlement.key`. The IBM Cloud user email address is required in the variable `entitled_registry_user_email` to access the IBM Cloud Container Registry (ICR), set the user email address of the account used to generate the Entitlement Key.
+## Provisioning this module in a Terraform Script
 
-For example:
+In your Terraform code define the `ibm` provisioner block with the `region.
 
 ```hcl
-entitled_registry_user_email = "john.smith@ibm.com"
-
-# Optionally:
-entitled_registry_key        = "< Your Entitled Key here >"
+provider "ibm" {
+  region     = "us-south"
+}
 ```
 
-**IMPORTANT**: Make sure to not commit the Entitlement Key file or content to the github repository.
+### Setting up the OpenShift cluster
 
-## Provisioning the Sandbox
+NOTE: an OpenShift cluster is required to install the cloud pak. This can be an existing cluster or can be provisioned in the Terraform script.
 
-For instructions to provision the sandbox, go [here](../README.md#provisioning-the-sandbox).
+To provision a new cluster, refer [here](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks#building-a-new-roks-cluster) for the code to add to your Terraform script. The recommended size for an OpenShift 4.5+ cluster on IBM Cloud Classic contains `5` workers of type `c3c.16x32`, however read the [Cloud Pak for Multi Cloud Management](https://www.ibm.com/docs/en/cloud-paks/cp-management) documentation to confirm these parameters or if you are using IBM Cloud VPC or a different OpenShift version.
 
-## Input Parameters
+Add the following code to get the OpenShift cluster (new or existing) configuration:
 
-Besides the access credentials, the Terraform code requires the following input parameters. For some variables there are instructions to get the possible values using `ibmcloud`.
+```hcl
+data "ibm_resource_group" "group" {
+  name = var.resource_group
+}
 
-| Name                           | Description    | Default             | Required |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | -------- |
-| `cluster_id`                   | **Optional:** cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned  | No       |
-| `on_vpc`                   | Ignored if `cluster_id` is specified. Type of infrastructure to provision. `true`=VPC, `false`=Classic  | `false`                    | Yes       |
-| `resource_group`               | Ignored if `cluster_id` is specified. Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`   | `cloud-pak-sandbox` | No       |
-| `project_name`                 | Ignored if `cluster_id` is specified. The project name is used to name the cluster with the `environment` name. It's also used to label the cluster and other resources   | `cloud-pack`        | Yes      |
-| `owner`                        | Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources    | `anonymous`         | Yes      |
-| `environment`                  | Ignored if `cluster_id` is specified. The environment name is used to name the cluster  | `sandbox`           | No       |
-| `region`                       |Region of the cluster. List all available regions with: `ibmcloud is regions`   | `us-south`          | No       |
-| `datacenter`                   | **Classic only**: Datacenter or Zone in the region of the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`   | `dal10`             | No       |
-| `private_vlan_number`          | **Classic only**: Ignored if `cluster_id` is specified. Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the VLAN type is private and the router begins with **bc**. Use the ID or Number. This value may be empty if there isn't any VLAN in the Zone. A VLAN will be provisioned. |                     | No       |
-| `public_vlan_number`           | **Classic only**: Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the VLAN type is public and the router begins with **fc**. Use the ID or Number. This value may be empty if there isn't an existing VLAN in the Zone. A VLAN will be provisioned.   |                     | No       |
-| `flavors`        | Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic it is only possible to have one worker group, so only list one flavor, example `["b3c.16x64"]`. Example on VPC, `["b2x.16x64", "cx2.4x8"] or ["mx2.4x32"]`   | `["b3c.16x64"]`                  | No       |
-| `vpc_zone_names`                   | **VPC Only**: Ignored if `cluster_id` is specified. Zones in the region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`   | `us-south-1`             | No       |
-| `entitled_registry_key`        | Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.  |                     | No       |
-| `entitled_registry_user_email` | Email address of the user owner of the Entitled Registry Key   |                     | Yes      |
-| `install_infr_mgt_module`      | Set to `true` to install the Infrastructure Management module   | `false`             | No       |
-| `install_monitoring_module`    | Set to `true` to install the Monitoring module  | `false`             | No       |
-| `install_security_svcs_module` | Set to `true` to install the Security Services module    | `false`             | No       |
-| `install_operations_module`    | Set to `true` to install the Operations module   | `false`             | No       |
-| `install_tech_prev_module`     | Set to `true` to install the Tech Preview module    | `false`             | No       |
+resource "null_resource" "mkdir_kubeconfig_dir" {
+  triggers = { always_run = timestamp() }
 
-If you are using Schematics directly or the Private Catalog, set the variable `entitled_registry_key` with the content of the Entitlement Key, the file `entitlement.key` is not available.
+  provisioner "local-exec" {
+    command = "mkdir -p ./kube/config"
+  }
+}
 
-## Output Parameters
+data "ibm_container_cluster_config" "cluster_config" {
+  cluster_name_id   = var.cluster_name_id
+  resource_group_id = data.ibm_resource_group.group.id
+  download          = true
+  config_dir        = "./kube/config"     // Create this directory in advance
+  admin             = false
+  network           = false
+}
+```
+Input:
 
-The Terraform code return the following output parameters.
+- `cluster_name_id`: either the cluster name or ID.
 
-| Name               | Description                                                                                                                         |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `cluster_endpoint` | The URL of the public service endpoint for your cluster                                                                             |
-| `cluster_id`       | The unique identifier of the cluster.                                                                                               |
-| `cluster_name`     | The cluster name which should be: `{project_name}-{environment}-cluster`                                                            |
-| `resource_group`   | Resource group where the OpenShift cluster is created                                                                               |
-| `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl` |
-| `cp4mcm_endpoint`  | URL of the CP4MCM dashboard                                                                                                         |
-| `cp4mcm_user`      | Username to login to the CP4MCM dashboard                                                                                           |
-| `cp4mcm_password`  | Password to login to the CP4MCM dashboard                                                                                           |
-| `cp4mcm_namespace` | Kubernetes namespace where all the CP4MCM objects are installed                                                                     |
+- `ibm_resource_group`:  resource group where the cluster is running
 
-## Validation
+Output:
 
-If you have not setup `kubectl` to access the cluster, execute:
+`ibm_container_cluster_config` used as input for the `cp4mcm` module.
 
-```bash
-# If created with Terraform:
-ibmcloud ks cluster config --cluster $(terraform output cluster_id)
+### Provisioning the CP4MCM Module
 
-# If created with Schematics:
-ibmcloud ks cluster config --cluster $(ibmcloud schematics workspace output --id $WORKSPACE_ID --json | jq -r '.[].output_values[].cluster_id.value')
+Use a `module` block assigning `source` to `git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4mcm`. Then set the [input variables](#input-variables) required to install the Cloud Pak for Multi Cloud Management and submodules.
 
-# If created with IBM Cloud CLI:
-ibmcloud ks cluster config --cluster $CLUSTER_NAME
+```hcl
+module "cp4mcm" {
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4mcm"
+  enable = true
+
+  // ROKS cluster parameters:
+  openshift_version   = local.roks_version
+  cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+
+  entitled_registry_key        = file("${path.cwd}/entitlement.key")
+  entitled_registry_user_email = var.entitled_registry_user_email
+
+  install_infr_mgt_module      = false
+  install_monitoring_module    = false
+  install_security_svcs_module = false
+  install_operations_module    = false
+  install_tech_prev_module     = false
+}
 ```
 
-Verify the cluster is up and running with these commands:
+## Input Variables
+
+| Name                           | Description                                                                                                                                                                                                                | Default | Required |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | -------- |
+| `enable`                       | If set to `false` does not install the cloud pak on the given cluster. Enabled by default                                                                                                      | `true`  | No       |
+| `cluster_config_path`          | The path on your local machine where the cluster configuration file and certificates are downloaded to                                                                                                                     |         | Yes      |
+| `openshift_version`            | Openshift version installed in the cluster                                                                                                                                                                                 |         | Yes      |
+| `entitled_registry_key`        | Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary and assign it to this variable. Optionally you can store the key in a file and use the `file()` function to get the file content/key |         | Yes      |
+| `entitled_registry_user_email` | IBM Container Registry (ICR) username which is the email address of the owner of the Entitled Registry Key                                                                                                                 |         | Yes      |
+| `install_infr_mgt_module`      | Install the Infrastructure Management module                                                                                                                                                                               | `false` | No       |
+| `install_monitoring_module`    | Install the Monitoring module                                                                                                                                                                                              | `false` | No       |
+| `install_security_svcs_module` | Install the Security Services module                                                                                                                                                                                       | `false` | No       |
+| `install_operations_module`    | Install the Operations module                                                                                                                                                                                              | `false` | No       |
+| `install_tech_prev_module`     | Install the Tech Preview module                                                                                                                                                                                            | `false` | No       |
+
+**NOTE** The boolean input variable `enable` is used to enable/disable the module. This parameter may be deprecated when Terraform 0.12 is not longer supported. In Terraform 0.13, the block parameter `count` can be used to define how many instances of the module are needed. If set to zero the module won't be created.
+
+For an example of how to put all this together, refer to our [Cloud Pak for Multi Cloud Management Terraform example](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/examples/cp4mcm).
+
+## Testing
+
+To manually run a module test before committing the code:
+
+- go to the `testing` subdirectory
+- follow instructions [here](testing/README.md)
+
+The testing code provides an example of how to use the module.
+
+## Executing the Terraform Script
+
+Run the following commands to execute the TF script (containing the modules to create/use ROKS and Cloud Pak). Execution may take about 30 minutes:
 
 ```bash
-kubectl cluster-info
-kubectl get nodes
-kubectl get pods --all-namespaces
+terraform init
+terraform plan
+terraform apply -auto-approve
 ```
 
-Execute the following commands to validate this Cloud Pak:
+## Output Variables
+
+Once the Terraform execution completes, use the following output variables to access CP4MCM Dashboard:
+
+| Name        | Description                                                     |
+| ----------- | --------------------------------------------------------------- |
+| `endpoint`  | URL of the dashboard                                     |
+| `user`      | Username to log in to the dashboard                       |
+| `password`  | Password to log in to the dashboard                       |
+| `namespace` | Kubernetes namespace where all the componenents are installed |
+
+## Accessing the Cloud Pak Console
+
+After execution has completed, access the cluster using `kubectl` or `oc`:
 
 ```bash
-export KUBECONFIG=$(terraform output config_file_path)
-
+ibmcloud ks cluster config -cluster $(terraform output cluster_id)
 kubectl cluster-info
 
 # Namespace
-kubectl get namespaces $(terraform output cp4mcm_namespace)
+kubectl get namespaces $(terraform output namespace)
 
 # All resources
-kubectl get all --namespace $(terraform output cp4mcm_namespace)
+kubectl get all --namespace $(terraform output namespace)
 ```
 
-Using the following credentials:
+Then, using the following credentials you can open the dashboard in a browser using the `endpoint` output parameter as URL.
 
 ```bash
-terraform output cp4mcm_user
-terraform output cp4mcm_password
+terraform output user
+terraform output password
+
+open "http://$(terraform output endpoint)"
 ```
 
-Open the following URL:
+## Clean up
 
-```bash
-open "http://$(terraform output cp4mcm_endpoint)"
-```
-
-## Uninstall
-
-To uninstall CP4MCM and its dependencies from a cluster, execute the following commands:
+To clean up or remove CP4MCM and its dependencies from a cluster, execute the following commands:
 
 ```bash
 kubectl delete -n openshift-operators subscription.operators.coreos.com ibm-management-orchestrator
@@ -133,4 +179,10 @@ kubectl delete -n openshift-marketplace catalogsource.operators.coreos.com ibm-m
 kubectl delete namespace cp4mcm
 ```
 
-**Note**: The uninstall/cleanup process is a work in progress at this time, we are identifying the objects that need to be deleted in order to have a successful re-installation.
+**Note**: The uninstall/cleanup up process is a work in progress at this time, we are identifying the objects that need to be deleted in order to have a successfully re-installation. This process will be included in the Terraform code.
+
+When you finish using the cluster, you can release the resources executing the following command, it should finish in about _8 minutes_:
+
+```bash
+terraform destroy
+```
