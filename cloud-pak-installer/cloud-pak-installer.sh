@@ -38,8 +38,8 @@ CLOUD_PAK_REPO_LOCATION_DATA4="https://github.com/ibm-hcbt/cloud-pak-sandboxes/t
 
 CP4D35="false"
 CLOUD_PAK_NAME_DATA_VERSION="Cloud Pak for Data 3.5"
-CLOUD_PAK_TEMPLATE_DATA=./templates/cp4d-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_DATA="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data"
+CLOUD_PAK_TEMPLATE_DATA=./templates/cp4d_3.5-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_DATA="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_3.5"
 
 CP4I="false"
 CLOUD_PAK_NAME_INTEGRATION_VERSION="Cloud Pak for Integration 2021.2.1"
@@ -92,7 +92,9 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA4_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
+
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA4_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_SECURITY_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
+
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -155,16 +157,16 @@ get_cloud_pak_install() {
 #                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
 #                break
 #                ;; 
-#            $CLOUD_PAK_NAME_SECURITY_VERSION)
-#                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
-#                CP4S="true"
-#                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
-#                cp workspace-configuration.json temp.json
-#                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-#                cp workspace-configuration.json temp.json
-#                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
-#                break
-#                ;;
+            $CLOUD_PAK_NAME_SECURITY_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
+                CP4S="true"
+                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;
             $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION)
                 echo "${bold}Selected: $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION"
                 CP4NA="true"
@@ -529,27 +531,9 @@ iaf_modules() {
 
 cp4s_modules() {
 
-    # updates workspace-configuration.json .template_data[.varialbestore.install_infr_mgt_module]
-    echo "${bold}Do you have an LDAP configured? ${green}"
-    yesno=("Yes" "No")
-    select response in "${yesno[@]}"; do
-        case $response in
-            "Yes")
-               read -p "${bold}Provide LDAP admin user id:${normal} " -e LDAP_USER_ID
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "ldap_status") | .value) |= "true"' temp.json > workspace-configuration.json
-               cp ./workspace-configuration.json temp.json
-               jq -r --arg v "$LDAP_USER_ID" '(.template_data[] | .variablestore[] | select(.name == "ldap_user_id") | .value) |= $v' temp.json > workspace-configuration.json
-               break
-               ;;
-            "No")
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "ldap_status") | .value) |= "false"' temp.json > workspace-configuration.json
-               break
-               ;;
-            *) echo "${bold}invalid option $REPLY ${green}";;
-        esac
-    done
+    read -p "${bold}Enter the admin user name for first CP4S instance:${normal} " -e ADMIN_USER
+    cp ./workspace-configuration.json temp.json
+    jq -r --arg v "$ADMIN_USER" '(.template_data[] | .variablestore[] | select(.name == "admin_user") | .value) |= $v' temp.json > workspace-configuration.json
 
 }
 
@@ -2006,7 +1990,8 @@ fi
 
 if $CP4S
 then
-    echo "${bold}Cloud Pak for Security will be available in about 1 hour 30 minutes.${green}"
+    echo "${bold}Cloud Pak for Security will be available in about 1 hour.${green}"
+    echo "${bold}After Cloud Pak for Security is installed, and LDAP will need to be configured to the service before use${green}"
 fi
 
 if $CP4AIOPS
