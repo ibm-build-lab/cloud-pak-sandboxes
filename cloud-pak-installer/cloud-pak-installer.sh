@@ -32,8 +32,8 @@ CLOUD_PAK_REPO_LOCATION_APP="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tre
 
 CP4D35="false"
 CLOUD_PAK_NAME_DATA_VERSION="Cloud Pak for Data 3.5"
-CLOUD_PAK_TEMPLATE_DATA=./templates/cp4d-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_DATA="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data"
+CLOUD_PAK_TEMPLATE_DATA=./templates/cp4d_3.5-workspace-configuration.json
+CLOUD_PAK_REPO_LOCATION_DATA="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_3.5"
 
 CP4D30="false"
 CLOUD_PAK_NAME_DATA2_VERSION="Cloud Pak for Data 3.0"
