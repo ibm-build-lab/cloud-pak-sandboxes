@@ -1,7 +1,7 @@
 {
     "name": "tekton-mcm-sandbox",
     "type": [
-      "terraform_v0.12"
+      "terraform_v0.13"
     ],
     "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Multi Cloud Management Cloud Pak on IBM Cloud Classic",
     "tags": [
@@ -11,17 +11,16 @@
     ],
     "resource_group": "cloud-pak-sandbox-ibm",
     "template_repo": {
-      "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4mcm",
-      "branch": "master"
+      "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraformV0.13/terraform/cp4mcm"
     },
     "template_data": [
       {
         "folder": "terraform/cp4mcm",
-        "type": "terraform_v0.12",
+        "type": "terraform_v0.13",
         "variablestore": [
           {
             "name": "region",
-            "value": "us-south",
+            "value": "us-east",
             "type": "string"
           },
           {
@@ -51,7 +50,7 @@
           },
           {
             "name": "datacenter",
-            "value": "dal12",
+            "value": "wdc07",
             "type": "string"
           },
           {
@@ -71,12 +70,12 @@
           },
           {
             "name": "private_vlan_number",
-            "value": "3048687",
+            "value": "3047740",
             "type": "string"
           },
           {
             "name": "public_vlan_number",
-            "value": "3048689",
+            "value": "3047742",
             "type": "string"
           },
           {
