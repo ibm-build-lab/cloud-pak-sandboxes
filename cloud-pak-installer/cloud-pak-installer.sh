@@ -638,7 +638,6 @@ cp4mcm_modules() {
 # writes cp4d 4.0 module data
 # updates the values across the respective workspace_configuration values
 cp4d40_modules() {
-    # updates workspace-configuration.json .template_data[.varialbestore.install_wsl]
     echo "${bold}Install Watson Studio?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -927,7 +926,6 @@ cp4d40_modules() {
 # writes cp4d 3.5 module data
 # updates the values across the respective workspace_configuration values
 cp4d35_modules() {
-    # updates workspace-configuration.json .template_data[.varialbestore.install_watson_knowledge_catalog]
     echo "${bold}Install Watson knowledge catalog?  ${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
