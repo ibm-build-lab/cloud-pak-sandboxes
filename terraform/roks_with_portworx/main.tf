@@ -12,7 +12,7 @@ locals {
 }
 
 module "cluster" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks?ref=terraform-0.13"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -63,7 +63,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "portworx" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx?ref=terraform-0.13"
   // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
   enable = var.install_portworx
 
