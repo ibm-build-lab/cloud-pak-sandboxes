@@ -1,5 +1,5 @@
 {
-  "name": "tekton-vpc-cp4data40-sandbox",
+  "name": "tekton-vpc-cp4data40-sandbox-dev",
   "type": [
     "terraform_v0.12"
   ],
