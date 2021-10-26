@@ -51,7 +51,7 @@ CLOUD_PAK_TEMPLATE_AUTOMATION=./templates/cp4auto-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4auto"
 
 CP4S="false"
-CLOUD_PAK_NAME_SECURITY_VERSION="Cloud Pak for Security 1.7.0"
+CLOUD_PAK_NAME_SECURITY_VERSION="Cloud Pak for Security 1.8.0"
 CLOUD_PAK_TEMPLATE_SECURITY=./templates/cp4s-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_SECURITY="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4s"
 
@@ -69,6 +69,11 @@ CP4AIOPS="false"
 CLOUD_PAK_NAME_AIOPS_VERSION="Cloud Pak for Watson AIOps 3.1"
 CLOUD_PAK_TEMPLATE_AIOPS=./templates/cp4aiops-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_AIOPS="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4aiops"
+
+ROKS="false"
+ROKS_VERSION="Red Hat OpenShift on IBM Cloud Classic"
+ROKS_TEMPLATE=./templates/roks-workspace-configuration.json
+ROKS_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/roks_with_portworx"
 
 IBM_API_KEY="none"
 EXISTING_CLUSTER="false"
@@ -91,7 +96,7 @@ get_cloud_pak_install() {
     echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
     echo ""
     echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_SECURITY_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION")
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_SECURITY_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION" "$ROKS_VERSION")
     select cloudpak in "${cloudPaks[@]}"; do
         case $cloudpak in
             $CLOUD_PAK_NAME_MCM_VERSION)
@@ -193,7 +198,17 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
                 break
-                ;;  
+                ;;
+            $ROKS_VERSION)
+                echo "${bold}Selected: $ROKS_VERISON"
+                ROKS="true"
+                cp $ROKS_TEMPLATE workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$ROKS_LOCATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;                                  
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
     done
@@ -282,6 +297,10 @@ prompt_license() {
     then
         echo "${red}"  $CLOUD_PAK_NAME_AIOPS_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
     fi
+    if $ROKS
+    then
+        echo "${red}"  $ROKS_VERSION " license agreement ${green}  https://www.ibm.com/legal?lnk=flg-tous-usen${bold}"
+    fi
     licenseAgree=("Yes" "No")
     select licenseAgree in "${licenseAgree[@]}"; do
         case $licenseAgree in
@@ -361,6 +380,11 @@ get_workspace_name() {
         read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-aiops-sandbox${bold}):${normal} " -e WORKSPACE_NAME
         WORKSPACE_NAME=$WORKSPACE_NAME"-aiops-sandbox"
     fi       
+    if $ROKS
+    then
+        read -p "${bold}Enter Sandbox Name (sandbox name will be appended with ${green}-roks-sandbox${bold}):${normal} " -e WORKSPACE_NAME
+        WORKSPACE_NAME=$WORKSPACE_NAME"-roks-sandbox"
+    fi
 }
 
 
@@ -392,6 +416,11 @@ set_vpc_flavors() {
             cp ./workspace-configuration.json temp.json
             jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
         fi
+        if $ROKS
+        then
+            cp ./workspace_configuration.json temp.json
+            jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+        fi            
     fi
 }
 
@@ -1045,6 +1074,12 @@ cp4d30_modules() {
 # Sets cluster id to user input or null
 # user input will use existing cluster for cloud pak install, null will create new cluster.
 get_cluster_info() {
+    if $ROKS
+    then
+        EXISTING_CLUSTER="false"
+        CLUSTER_ID=""
+        return
+    fi
     echo "${bold}Do you have a Pre-existing cluster to install cloud paks to?${green}"
     yesno=("Yes" "No")
     select response in "${yesno[@]}"; do
@@ -1692,6 +1727,127 @@ select_vpc_zone() {
 
 }
 
+get_classic_flavors() {
+    echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
+    echo ""
+    echo "${bold}Select the cloud pack option to install${green}"
+    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_SECURITY_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION" "$ROKS_VERSION")
+    select cloudpak in "${cloudPaks[@]}"; do
+        case $cloudpak in
+            $CLOUD_PAK_NAME_MCM_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_MCM_VERSION"
+                CP4MCM="true"
+                cp $CLOUD_PAK_TEMPLATE_MCM workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_MCM" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;
+            $CLOUD_PAK_NAME_APP_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_APP_VERSION"
+                CP4APP="true"
+                cp $CLOUD_PAK_TEMPLATE_APP workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_APP" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;
+            $CLOUD_PAK_NAME_DATA_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_DATA_VERSION"
+                CP4D35="true"
+                cp $CLOUD_PAK_TEMPLATE_DATA workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_DATA" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;
+            $CLOUD_PAK_NAME_DATA2_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_DATA2_VERSION"
+                CP4D30="true"
+                cp $CLOUD_PAK_TEMPLATE_DATA2 workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_DATA2" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;    
+            $CLOUD_PAK_NAME_INTEGRATION_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_INTEGRATION_VERSION"
+                CP4I="true"
+                cp $CLOUD_PAK_TEMPLATE_INTEGRATION workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_INTEGRATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;
+            $CLOUD_PAK_NAME_SECURITY_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
+                CP4S="true"
+                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;
+            $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION"
+                CP4NA="true"
+                cp $CLOUD_PAK_TEMPLATE_NETWORK_AUTOMATION workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_NETWORK_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;; 
+            $IAF_VERSION)
+                echo "${bold}Selected: $IAF_VERSION"
+                IAF="true"
+                cp $IAF_TEMPLATE workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$IAF_REPO_LOCATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;
+            $CLOUD_PAK_NAME_AIOPS_VERSION)
+                echo "${bold}Selected: $CLOUD_PAK_NAME_AIOPS_VERISON"
+                CP4AIOPS="true"
+                cp $CLOUD_PAK_TEMPLATE_AIOPS workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AIOPS" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;
+            $ROKS_VERSION)
+                echo "${bold}Selected: $ROKS_VERISON"
+                ROKS="true"
+                cp $ROKS_TEMPLATE workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r --arg v "$ROKS_LOCATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
+                cp workspace-configuration.json temp.json
+                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+                break
+                ;;                                  
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+}
+
+get_flavors() {
+    if $CLASSIC
+    then get_classic_flavors
+    fi
+    if $VPC 
+    then get_vpc_flavors
+    fi
+}
 
 # create workspace, keeps a copy of the input and stores in $WORKSPACE_NAME-input.json and a copy of the ouptput in $WORKSPACE_NAME-config.json
 create_workspace() {
@@ -1799,6 +1955,10 @@ fi
 if $IAF
 then iaf_modules
 fi
+if $ROKS
+then get_flavors
+fi
+
 
 # clean up temp
 cp ./workspace-configuration.json ./logs/$WORKSPACE_NAME-input.json
