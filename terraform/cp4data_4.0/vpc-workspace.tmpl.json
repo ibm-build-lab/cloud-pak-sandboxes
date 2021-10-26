@@ -1,0 +1,257 @@
+{
+  "name": "{{ WORKSPACE_NAME }}",
+  "type": [
+    "terraform_v0.12"
+  ],
+  "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox with Portworx on IBM Cloud Classic or Gen2 VPC while installing Cloud Pak for Data",
+  "tags": [
+    "owner:{{ OWNER }}",
+    "env:{{ ENV }}",
+    "project:{{ PROJECT }}"
+  ],
+  "resource_group": "schematics",
+  "template_repo": {
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes",
+    "branch": "{{ BRANCH }}"
+  },
+  "template_data": [
+    {
+      "folder": "terraform/roks",
+      "type": "terraform_v0.12",
+      "variablestore": [
+        { 
+          "name": "on_vpc",
+          "value": "true",
+          "type": "bool"
+        },
+        {
+          "name": "entitlement",
+          "value": "cloud_pak",
+          "type": "string"
+        },
+        {
+          "name": "flavors",
+          "value": "[\"bx2.16x64\"]",
+          "type": "list(string)"
+        },
+        {
+          "name": "install_portworx",
+          "value": "true",
+          "type": "bool"
+        },
+        {
+          "name": "region",
+          "value": "us-east",
+          "type": "string"
+        },
+        {
+          "name": "ibmcloud_api_key",
+          "value": "{{ IC_API_KEY }}", 
+          "type": "string",
+          "secure": true
+        },
+        {
+          "name": "project_name",
+          "value": "{{ PROJECT }}",
+          "type": "string"
+        },
+        {
+          "name": "owner",
+          "value": "{{ OWNER }}",
+          "type": "string"
+        },
+        {
+          "name": "environment",
+          "value": "{{ ENV }}",
+          "type": "string"
+        },
+        {
+          "name": "resource_group",
+          "value": "cloud-pak-sandbox-ibm",
+          "type": "string"
+        },
+        {
+          "name": "cluster_id",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "datacenter",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "vpc_zone_names",
+          "value": "[\"us-east-1\"]",
+          "type": "list(string)"
+        },
+        {
+          "name": "private_vlan_number",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "public_vlan_number",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "roks_version",
+          "value": "4.6",
+          "type": "string"
+        },
+        {
+          "name": "workers_count",
+          "value": "[4]",
+          "type": "list(number)"
+        },
+        {
+          "name": "force_delete_storage",
+          "value": "true",
+          "type": "bool"
+        },
+        {
+          "name": "config_dir",
+          "value": "./.kube/config",
+          "type": "string"
+        },
+        {
+          "name": "storage_capacity",
+          "value": "200",
+          "type": "number"
+        },
+        {
+          "name": "storage_iops",
+          "value": "10",
+          "type": "number"
+        },
+        {
+          "name": "storage_profile",
+          "value": "10iops-tier",
+          "type": "string"
+        },
+        {
+          "name": "create_external_etcd",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "etcd_username",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "etcd_password",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "entitled_registry_key",
+          "value": "{{ ENTITLED_KEY }}",
+          "type": "string",
+          "secure": true
+        },
+        {
+          "name": "entitled_registry_user_email",
+          "value": "{{ ENTITLED_KEY_EMAIL }}",
+          "type": "string"
+        },
+        {
+          "name": "cpd_project_name",
+          "value": "zen",
+          "type": "string"
+        },
+        {
+          "name": "operator_namespace",
+          "value": "ibm-common-services",
+          "type": "string"
+        },
+        {
+          "name": "resource_group_name",
+          "value": "cloud-pak-sandbox-ibm",
+          "type": "string"
+        },
+        {
+          "name": "accept_cpd_license",
+          "value": "true",
+          "type": "bool"
+        },
+        {
+          "name": "install_wsl",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_aiopenscale",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_wml",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_wkc",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_dv",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_spss",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_cde",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_spark",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_dods",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_ca",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_ds",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_db2oltp",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_db2wh",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_big_sql",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_wsruntime",
+          "value": "false",
+          "type": "bool"
+        }
+      ]
+    }
+  ]
+}
