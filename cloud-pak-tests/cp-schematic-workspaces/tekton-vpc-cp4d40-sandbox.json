@@ -1,27 +1,26 @@
 {
-  "name": "tekton-vpc-cp4data35-sandbox",
+  "name": "tekton-vpc-cp4data40-sandbox",
   "type": [
     "terraform_v0.12"
   ],
   "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Data on IBM Cloud Classic",
   "tags": [
     "owner:tekton",
-    "env:vpc-cpd35",
+    "env:vpc-cpd40",
     "project:tekton"
   ],
   "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_3.5",
-    "branch": "master"
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_4.0"
   },
   "template_data": [
     {
-      "folder": "terraform/cp4data_3.5",
+      "folder": "terraform/cp4data_4.0",
       "type": "terraform_v0.12",
       "variablestore": [
         {
           "name": "region",
-          "value": "us-east",
+          "value": "us-south",
           "type": "string"
         },
         {
@@ -36,7 +35,7 @@
         },
         {
           "name": "environment",
-          "value": "vpc-cpd35",
+          "value": "vpc-cpd40",
           "type": "string"
         },
         {
@@ -97,7 +96,7 @@
         },
         {
           "name": "entitled_registry_user_email",
-          "value": "",
+          "value": "cp",
           "type": "string"
         },
         {
@@ -112,7 +111,7 @@
           "type": "number"
         },
         {
-          "name": "storage_iops",
+          "name": "storage_iops", 
           "value": "10",
           "type": "number"
         },
@@ -138,46 +137,56 @@
         },
         {
           "name": "accept_cpd_license",
-          "value": "true",
+          "value": "false",
           "type": "bool"
         },
         {
           "name": "cpd_project_name",
-          "value": "cp4d",
+          "value": "zen",
           "type": "string"
         },
         {
-          "name": "install_watson_knowledge_catalog",
+          "name": "operator_namespace",
+          "value": "ibm-common-services",
+          "type": "string"
+        },
+        {
+          "name": "resource_group_name",
+          "value": "cloud-pak-sandbox-ibm",
+          "type": "string"
+        },
+        {
+          "name": "install_wsl",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_watson_studio",
+          "name": "install_aiopenscale",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_watson_machine_learning",
+          "name": "install_wml",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_watson_open_scale",
+          "name": "install_wkc",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_data_virtualization",
+          "name": "install_dv",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_streams",
+          "name": "install_spss",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_analytics_dashboard",
+          "name": "install_cde",
           "value": "false",
           "type": "bool"
         },
@@ -187,27 +196,37 @@
           "type": "bool"
         },
         {
-          "name": "install_db2_warehouse",
+          "name": "install_dods",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_db2_data_gate",
+          "name": "install_ca",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_rstudio",
+          "name": "install_ds",
           "value": "false",
           "type": "bool"
         },
         {
-          "name": "install_db2_data_management",
+          "name": "install_db2oltp",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_db2wh",
           "value": "false",
           "type": "bool"
         },
         {
           "name": "install_big_sql",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_wsruntime",
           "value": "false",
           "type": "bool"
         }

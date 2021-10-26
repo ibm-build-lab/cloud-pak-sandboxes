@@ -1,27 +1,26 @@
 {
-  "name": "tekton-vpc-cp4data35-sandbox",
+  "name": "tekton-cpd35-sandbox-dev",
   "type": [
-    "terraform_v0.12"
+    "terraform_v0.13"
   ],
   "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Data on IBM Cloud Classic",
   "tags": [
     "owner:tekton",
-    "env:vpc-cpd35",
+    "env:cpd35",
     "project:tekton"
   ],
   "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_3.5",
-    "branch": "master"
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraformV0.13/terraform/cp4data_3.5"
   },
   "template_data": [
     {
-      "folder": "terraform/cp4data_3.5",
-      "type": "terraform_v0.12",
+      "folder": "terraform/cp4data",
+      "type": "terraform_v0.13",
       "variablestore": [
         {
           "name": "region",
-          "value": "us-east",
+          "value": "us-south",
           "type": "string"
         },
         {
@@ -36,7 +35,7 @@
         },
         {
           "name": "environment",
-          "value": "vpc-cpd35",
+          "value": "cpd35-dev",
           "type": "string"
         },
         {
@@ -51,42 +50,42 @@
         },
         {
           "name": "entitlement",
-          "value": "",
+          "value": "cloud_pak",
           "type": "string"
         },
         {
           "name": "datacenter",
-          "value": "dal10",
+          "value": "dal12",
           "type": "string"
         },
         {
           "name": "on_vpc",
-          "value": "true",
+          "value": "false",
           "type": "bool"
         },
         {
           "name": "flavors",
-          "value": "[\"bx2.16x64\"]",
+          "value": "[\"b3c.16x64\"]",
           "type": "list(string)"
         },
         {
           "name": "install_portworx",
-          "value": "true",
+          "value": "false",
           "type": "bool"
         },
         {
           "name": "vpc_zone_names",
-          "value": "[\"us-east-1\"]",
+          "value": "[\"us-south-1\"]",
           "type": "list(string)"
         },
         {
           "name": "private_vlan_number",
-          "value": "",
+          "value": "3048687",
           "type": "string"
         },
         {
           "name": "public_vlan_number",
-          "value": "",
+          "value": "3048689",
           "type": "string"
         },
         {

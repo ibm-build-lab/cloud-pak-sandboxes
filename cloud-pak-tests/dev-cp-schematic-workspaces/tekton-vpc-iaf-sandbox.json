@@ -1,17 +1,18 @@
 {
-  "name": "tekton-iaf-sandbox",
+  "name": "tekton-vpc-iaf-sandbox-dev",
   "type": [
     "terraform_v0.12"
   ],
   "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Multi Cloud Management Cloud Pak on IBM Cloud Classic",
   "tags": [
     "owner:tekton",
-    "env:iaf",
+    "env:vpc-iaf",
     "project:tekton"
   ],
   "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf"
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf",
+    "branch": "master"
   },
   "template_data": [
     {
@@ -35,7 +36,7 @@
         },
         {
           "name": "environment",
-          "value": "iaf",
+          "value": "vpc-iaf-dev",
           "type": "string"
         },
         {
@@ -50,32 +51,32 @@
         },
         {
           "name": "on_vpc",
-          "value": "false",
+          "value": "true",
           "type": "bool"
         },
         {
           "name": "vpc_zone_names",
-          "value": "[\"us-south-1\"]",
+          "value": "[\"us-east-1\"]",
           "type": "list(string)"
         },
         {
           "name": "flavors",
-          "value": "[\"b3c.16x64\"]",
+          "value": "[\"bx2.16x64\"]",
           "type": "list(string)"
         },
         {
           "name": "datacenter",
-          "value": "wdc06",
+          "value": "dal10",
           "type": "string"
         },
         {
           "name": "private_vlan_number",
-          "value": "3062518",
+          "value": "",
           "type": "string"
         },
         {
           "name": "public_vlan_number",
-          "value": "3062520",
+          "value": "",
           "type": "string"
         },
         {

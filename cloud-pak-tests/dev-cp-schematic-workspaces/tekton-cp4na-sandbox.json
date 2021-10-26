@@ -1,22 +1,22 @@
 {
-  "name": "tekton-iaf-sandbox",
+  "name": "tekon-cp4na-sandbox-dev",
   "type": [
-    "terraform_v0.12"
+    "terraform_v0.13"
   ],
-  "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Multi Cloud Management Cloud Pak on IBM Cloud Classic",
+  "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Integration on IBM Cloud Classic",
   "tags": [
     "owner:tekton",
-    "env:iaf",
+    "env:cp4na",
     "project:tekton"
   ],
   "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf"
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraformV0.13/terraform/cp4na"
   },
   "template_data": [
     {
-      "folder": "terraform/iaf",
-      "type": "terraform_v0.12",
+      "folder": "terraform/cp4na",
+      "type": "terraform_v0.13",
       "variablestore": [
         {
           "name": "region",
@@ -35,7 +35,7 @@
         },
         {
           "name": "environment",
-          "value": "iaf",
+          "value": "cp4na-dev",
           "type": "string"
         },
         {
@@ -49,6 +49,11 @@
           "type": "string"
         },
         {
+          "name": "datacenter",
+          "value": "wdc04",
+          "type": "string"
+        },
+        {
           "name": "on_vpc",
           "value": "false",
           "type": "bool"
@@ -59,30 +64,14 @@
           "type": "list(string)"
         },
         {
-          "name": "flavors",
-          "value": "[\"b3c.16x64\"]",
-          "type": "list(string)"
-        },
-        {
-          "name": "datacenter",
-          "value": "wdc06",
-          "type": "string"
-        },
-        {
           "name": "private_vlan_number",
-          "value": "3062518",
+          "value": "3090560",
           "type": "string"
         },
         {
           "name": "public_vlan_number",
-          "value": "3062520",
+          "value": "3090562",
           "type": "string"
-        },
-        {
-          "name": "ibmcloud_api_key",
-          "value": "",
-          "type": "string",
-          "secure": true
         },
         {
           "name": "entitled_registry_key",
