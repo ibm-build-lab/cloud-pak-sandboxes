@@ -71,7 +71,7 @@ CLOUD_PAK_TEMPLATE_AIOPS=./templates/cp4aiops-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_AIOPS="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4aiops"
 
 ROKS="false"
-ROKS_VERSION="Red Hat OpenShift on IBM Cloud Classic"
+ROKS_VERSION="Red Hat OpenShift on IBM Cloud"
 ROKS_TEMPLATE=./templates/roks-workspace-configuration.json
 ROKS_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/roks_with_portworx"
 
@@ -79,6 +79,39 @@ IBM_API_KEY="none"
 EXISTING_CLUSTER="false"
 CLASSIC="false"
 VPC="false"
+
+# CLASSIC FLAVORS
+CLASSIC_B_4x16="[\"b3c.4x16\"]"  #"[\"bx2.16x64\"]"
+CLASSIC_B_16x64="[\"b3c.16x64\"]"
+CLASSIC_B_32x128="[\"b3c.32x128\"]"
+CLASSIC_C_16x16="[\"c3c.16x16\"]"
+CLASSIC_C_16x32="[\"c3c.16x32\"]"
+CLASSIC_C_32x32="[\"c3c.32x32\"]"
+CLASSIC_C_32x64="[\"c3c.32x64\"]"
+CLASSIC_M_4x32="[\"m3c.4x32\"]"
+CLASSIC_M_8x64="[\"m3c.8x64\"]"
+CLASSIC_M_16x128="[\"m3c.16x128\"]"
+
+# jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
+# jq -r --arg v "$CLASSIC_B_4x13" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+
+
+# VPC FLAVORS
+VPC_B_4x16="[\"bx2.4x16\"]"
+VPC_B_8x32="[\"bx2.8x32\"]"
+VPC_B_16x64="[\"bx2.16x64\"]"
+VPC_B_32x128="[\"bx2.32x128\"]"
+VPC_B_48x192="[\"bx2.48x192\"]"
+VPC_C_8x16="[\"cx2.8x16\"]"
+VPC_C_16x32="[\"cx2.16x32\"]"
+VPC_C_32x64="[\"cx2.32x64\"]"
+VPC_C_48x96="[\"cx2.48x96\"]"
+VPC_M_4x32="[\"mx2.4x32\"]"
+VPC_M_8x64="[\"mx2.8x64\"]"
+VPC_M_16x128="[\"mx2.16x128\"]"
+VPC_M_32x256="[\"mx2.32x256\"]"
+VPC_M_48x284="[\"mx2.48x284\"]"
+
 
 # Creats a spinning cursor for user to know program is running
 update_cursor() {
@@ -418,7 +451,7 @@ set_vpc_flavors() {
         fi
         if $ROKS
         then
-            cp ./workspace_configuration.json temp.json
+            cp ./workspace-configuration.json temp.json
             jq -r '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= "[\"bx2.16x64\"]"' temp.json > workspace-configuration.json
         fi            
     fi
@@ -441,17 +474,45 @@ get_vpc() {
                 VPC="true"
                 cp ./workspace-configuration.json temp.json
                 jq -r '(.template_data[] | .variablestore[] | select(.name == "on_vpc") | .value) |= "true"' temp.json > workspace-configuration.json
-                set_vpc_flavors
-                #if [ ! $CP4MCM ] || [ ! $IAF ]
-                #    then get_portworx
-                #fi
-                get_portworx
+                if $ROKS
+                then
+                    get_portworx_roks
+                else
+                    set_vpc_flavors
+                    get_portworx
+                fi
                break
                ;;
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
     done
     
+}
+
+get_portworx_roks() {
+
+    echo "${bold}Would you like to use portworx with your VPC storage ${green}"
+    portworx=("Yes" "No")
+    select response in "${portworx[@]}"; do
+        case $response in
+            "Yes")
+               echo "${bold}Setup Portworx"
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "install_portworx") | .value) |= "true"' temp.json > workspace-configuration.json
+
+               read -p "${bold}Declare Portworx storage capacity in ${green}gb${bold}, default value is ${green}200: ${normal}" -e STORAGE_CAPACITY
+               cp ./workspace-configuration.json temp.json
+               jq -r --arg v "$STORAGE_CAPACITY" '(.template_data[] | .variablestore[] | select(.name == "STORAGE_CAPACITY") | .value) |= $v' temp.json > workspace-configuration.json
+
+               break
+               ;;
+            "No")
+               echo "${bold}No Portworx selected ${green}"
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 }
 
 get_portworx() {
@@ -1728,117 +1789,149 @@ select_vpc_zone() {
 }
 
 get_classic_flavors() {
-    echo "${bold}This script will generate a ROKS cluster and install a specified cloud pak${normal}"
-    echo ""
-    echo "${bold}Select the cloud pack option to install${green}"
-    cloudPaks=("$CLOUD_PAK_NAME_MCM_VERSION" "$CLOUD_PAK_NAME_APP_VERSION" "$CLOUD_PAK_NAME_DATA_VERSION" "$CLOUD_PAK_NAME_DATA2_VERSION" "$CLOUD_PAK_NAME_INTEGRATION_VERSION" "$CLOUD_PAK_NAME_SECURITY_VERSION" "$CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION" "$IAF_VERSION" "$CLOUD_PAK_NAME_AIOPS_VERSION" "$ROKS_VERSION")
-    select cloudpak in "${cloudPaks[@]}"; do
-        case $cloudpak in
-            $CLOUD_PAK_NAME_MCM_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_MCM_VERSION"
-                CP4MCM="true"
-                cp $CLOUD_PAK_TEMPLATE_MCM workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_MCM" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+    echo "${bold}Select the classic cluster flavor(cores/memory) for your cluster.${green}"
+
+    classicFlavors=("4x16" "16x64" "32x128" "16x16" "16x32" "32x32" "32x64" "4x32" "8x64" "16x128")
+    select classicFlavor in "${classicFlavors[@]}"; do
+        case $classicFlavor in
+            "4x16")
+                echo "${bold}Selected: 4x16"
+                jq -r --arg v "$CLASSIC_B_4x16" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
-            $CLOUD_PAK_NAME_APP_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_APP_VERSION"
-                CP4APP="true"
-                cp $CLOUD_PAK_TEMPLATE_APP workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_APP" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+            "16x64")
+                echo "${bold}Selected: 16x64"
+                jq -r --arg v "$CLASSIC_B_16x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
-            $CLOUD_PAK_NAME_DATA_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_DATA_VERSION"
-                CP4D35="true"
-                cp $CLOUD_PAK_TEMPLATE_DATA workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_DATA" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+            "32x128")
+                echo "${bold}Selected: 32x128"
+                jq -r --arg v "$CLASSIC_B_32x128" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
-            $CLOUD_PAK_NAME_DATA2_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_DATA2_VERSION"
-                CP4D30="true"
-                cp $CLOUD_PAK_TEMPLATE_DATA2 workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_DATA2" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
-                break
-                ;;    
-            $CLOUD_PAK_NAME_INTEGRATION_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_INTEGRATION_VERSION"
-                CP4I="true"
-                cp $CLOUD_PAK_TEMPLATE_INTEGRATION workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_INTEGRATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+            "16x16")
+                echo "${bold}Selected: 16x16"
+                jq -r --arg v "$CLASSIC_C_16x16" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
-            $CLOUD_PAK_NAME_SECURITY_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_SECURITY_VERSION"
-                CP4S="true"
-                cp $CLOUD_PAK_TEMPLATE_SECURITY workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+            "16x32")
+                echo "${bold}Selected: 16x32"
+                jq -r --arg v "$CLASSIC_C_16x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
-            $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION"
-                CP4NA="true"
-                cp $CLOUD_PAK_TEMPLATE_NETWORK_AUTOMATION workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_NETWORK_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+            "32x32")
+                echo "${bold}Selected: 32x32"
+                jq -r --arg v "$CLASSIC_C_32x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;; 
-            $IAF_VERSION)
-                echo "${bold}Selected: $IAF_VERSION"
-                IAF="true"
-                cp $IAF_TEMPLATE workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$IAF_REPO_LOCATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+            "32x64")
+                echo "${bold}Selected:32x64"
+                jq -r --arg v "$CLASSIC_C_32x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
-            $CLOUD_PAK_NAME_AIOPS_VERSION)
-                echo "${bold}Selected: $CLOUD_PAK_NAME_AIOPS_VERISON"
-                CP4AIOPS="true"
-                cp $CLOUD_PAK_TEMPLATE_AIOPS workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AIOPS" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+            "4x32")
+                echo "${bold}Selected: 4x32"
+                jq -r --arg v "$CLASSIC_M_4x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
-            $ROKS_VERSION)
-                echo "${bold}Selected: $ROKS_VERISON"
-                ROKS="true"
-                cp $ROKS_TEMPLATE workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r --arg v "$ROKS_LOCATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
-                cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"master\"" temp.json > workspace-configuration.json
+            "8x64")
+                echo "${bold}Selected: 8x64"
+                jq -r --arg v "$CLASSIC_M_8x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
-                ;;                                  
+                ;;
+            "16x128")
+                echo "${bold}Selected: 16x128"
+                jq -r --arg v "$CLASSIC_M_16x128" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;                                                  
             *) echo "${bold}invalid option $REPLY ${green}";;
         esac
     done
 
 }
+
+get_vpc_flavors() {
+    echo "${bold}Select the VPC flavor(cores/memory) for your cluster.${green}"
+
+    vpcFlavors=("4x16" "8x32" "16x64" "32x128" "48x192" "8x16" "16x32" "32x64" "48x96" "4x32" "8x64" "16x128" "32x256" "48x284" )
+    select vpcFlavor in "${vpcFlavors[@]}"; do
+        case $vpcFlavor in
+            "4x16")
+                echo "${bold}Selected: 4x16"
+                jq -r --arg v "$VPC_B_4x16" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;
+            "8x32")
+                echo "${bold}Selected: 8x32"
+                jq -r --arg v "$VPC_B_8x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;
+            "16x64")
+                echo "${bold}Selected: 16x64"
+                jq -r --arg v "$VPC_B_16x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;
+            "32x128")
+                echo "${bold}Selected: 32x128"
+                jq -r --arg v "$VPC_B_32x128" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;
+            "48x192")
+                echo "${bold}Selected: 48x192"
+                jq -r --arg v "$VPC_B_48x192" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;
+            "8x16")
+                echo "${bold}Selected: 8x16"
+                jq -r --arg v "$VPC_C_8x16" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;; 
+            "16x32")
+                echo "${bold}Selected:16x32"
+                jq -r --arg v "$VPC_C_16x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;
+            "32x64")
+                echo "${bold}Selected: 32x64"
+                jq -r --arg v "$VPC_C_32x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;
+            "48x96")
+                echo "${bold}Selected: 48x94"
+                jq -r --arg v "$VPC_C_48x96" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;
+            "4x32")
+                echo "${bold}Selected: 4x32"
+                jq -r --arg v "$VPC_M_4x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;             
+            "8x64")
+                echo "${bold}Selected: 8x64"
+                jq -r --arg v "$VPC_M_8x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;   
+            "16x128")
+                echo "${bold}Selected: 16x128"
+                jq -r --arg v "$VPC_M_16x128" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;   
+            "32x256")
+                echo "${bold}Selected: 32x256"
+                jq -r --arg v "$VPC_M_32x256" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;   
+            "48x284")
+                echo "${bold}Selected: 48x284"
+                jq -r --arg v "$VPC_M_48x284" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
+                break
+                ;;   
+             *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+}
+
+
 
 get_flavors() {
     if $CLASSIC
