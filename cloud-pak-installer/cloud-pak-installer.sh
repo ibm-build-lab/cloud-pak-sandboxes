@@ -504,6 +504,8 @@ get_portworx_roks() {
                cp ./workspace-configuration.json temp.json
                jq -r --arg v "$STORAGE_CAPACITY" '(.template_data[] | .variablestore[] | select(.name == "STORAGE_CAPACITY") | .value) |= $v' temp.json > workspace-configuration.json
 
+               get_ibm_api_key
+
                break
                ;;
             "No")
