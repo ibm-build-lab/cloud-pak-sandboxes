@@ -1,0 +1,126 @@
+{
+    "name": "tekton-mcm-sandbox",
+    "type": [
+      "terraform_v0.12"
+    ],
+    "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Multi Cloud Management Cloud Pak on IBM Cloud Classic",
+    "tags": [
+      "owner:tekton",
+      "env:mcm",
+      "project:tekton-test"
+    ],
+    "resource_group": "cloud-pak-sandbox-ibm",
+    "template_repo": {
+      "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4mcm"
+    },
+    "template_data": [
+      {
+        "folder": "terraform/cp4mcm",
+        "type": "terraform_v0.12",
+        "variablestore": [
+          {
+            "name": "region",
+            "value": "us-east",
+            "type": "string"
+          },
+          {
+            "name": "project_name",
+            "value": "tekton-test",
+            "type": "string"
+          },
+          {
+            "name": "owner",
+            "value": "tekton",
+            "type": "string"
+          },
+          {
+            "name": "environment",
+            "value": "mcm",
+            "type": "string"
+          },
+          {
+            "name": "resource_group",
+            "value": "cloud-pak-sandbox-ibm",
+            "type": "string"
+          },
+          {
+            "name": "cluster_id",
+            "value": "",
+            "type": "string"
+          },
+          {
+            "name": "datacenter",
+            "value": "wdc07",
+            "type": "string"
+          },
+          {
+            "name": "on_vpc",
+            "value": "false",
+            "type": "bool"
+          },
+          {
+            "name": "flavors",
+            "value": "[\"b3c.16x64\"]",
+            "type": "list(string)"
+          },
+          {
+            "name": "vpc_zone_names",
+            "value": "[\"us-south-1\"]",
+            "type": "list(string)"
+          },
+          {
+            "name": "private_vlan_number",
+            "value": "3047740",
+            "type": "string"
+          },
+          {
+            "name": "public_vlan_number",
+            "value": "3047742",
+            "type": "string"
+          },
+          {
+            "name": "entitled_registry_key",
+            "value": "",
+            "type": "string",
+            "secure": true
+          },
+          {
+            "name": "entitled_registry_user_email",
+            "value": "",
+            "type": "string"
+          },
+          {
+            "name": "ibmcloud_api_key",
+            "value": "",
+            "type": "string"
+          },
+          {
+            "name": "install_infr_mgt_module",
+            "value": "false",
+            "type": "bool"
+          },
+          {
+            "name": "install_monitoring_module",
+            "value": "false",
+            "type": "bool"
+          },
+          {
+            "name": "install_security_svcs_module",
+            "value": "false",
+            "type": "bool"
+          },
+          {
+            "name": "install_operations_module",
+            "value": "false",
+            "type": "bool"
+          },
+          {
+            "name": "install_tech_prev_module",
+            "value": "false",
+            "type": "bool"
+          }
+        ]
+      }
+    ]
+  }
+  

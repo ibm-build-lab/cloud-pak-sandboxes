@@ -1,57 +1,56 @@
 {
-    "name": "{{ WORKSPACE_NAME }}",
+    "name": "tekton-mcm-sandbox-dev",
     "type": [
-      "terraform_v0.12"
+      "terraform_v0.13"
     ],
-    "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Data v3.0 on IBM Cloud Classic",
+    "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Multi Cloud Management Cloud Pak on IBM Cloud Classic",
     "tags": [
-      "owner:{{ OWNER }}",
-      "env:{{ ENV }}",
-      "project:{{ PROJECT }}"
+      "owner:tekton",
+      "env:mcm",
+      "project:tekton-test"
     ],
-    "resource_group": "cloud-pak-sandbox",
+    "resource_group": "cloud-pak-sandbox-ibm",
     "template_repo": {
-      "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes",
-      "branch": "{{ BRANCH }}"
+      "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraformV0.13/terraform/cp4mcm"
     },
     "template_data": [
       {
-        "folder": "terraform/cp4data",
-        "type": "terraform_v0.12",
+        "folder": "terraform/cp4mcm",
+        "type": "terraform_v0.13",
         "variablestore": [
           {
             "name": "region",
-            "value": "us-south",
+            "value": "us-east",
             "type": "string"
           },
           {
             "name": "project_name",
-            "value": "{{ PROJECT }}",
+            "value": "tekton-test",
             "type": "string"
           },
           {
             "name": "owner",
-            "value": "{{ OWNER }}",
+            "value": "tekton",
             "type": "string"
           },
           {
             "name": "environment",
-            "value": "{{ ENV }}",
+            "value": "mcm-dev",
             "type": "string"
           },
           {
             "name": "resource_group",
-            "value": "cloud-pak-sandbox",
+            "value": "cloud-pak-sandbox-ibm",
             "type": "string"
           },
           {
             "name": "cluster_id",
-            "value": "{{ CLUSTER_ID }}",
+            "value": "",
             "type": "string"
           },
           {
             "name": "datacenter",
-            "value": "dal10",
+            "value": "wdc07",
             "type": "string"
           },
           {
@@ -60,78 +59,63 @@
             "type": "bool"
           },
           {
+            "name": "flavors",
+            "value": "[\"b3c.16x64\"]",
+            "type": "list(string)"
+          },
+          {
             "name": "vpc_zone_names",
             "value": "[\"us-south-1\"]",
             "type": "list(string)"
           },
           {
             "name": "private_vlan_number",
-            "value": "",
+            "value": "3047740",
             "type": "string"
           },
           {
             "name": "public_vlan_number",
-            "value": "",
+            "value": "3047742",
             "type": "string"
           },
           {
             "name": "entitled_registry_key",
-            "value": "{{ ENTITLED_KEY }}",
+            "value": "",
             "type": "string",
             "secure": true
           },
           {
             "name": "entitled_registry_user_email",
-            "value": "{{ ENTITLED_KEY_EMAIL }}",
-            "type": "string"
-          },
-          {
-            "name": "install_guardium_external_stap",
-            "value": "false",
-            "type": "bool"
-          },
-          {
-            "name": "docker_id",
             "value": "",
             "type": "string"
           },
           {
-            "name": "docker_access_token",
+            "name": "ibmcloud_api_key",
             "value": "",
             "type": "string"
           },
           {
-            "name": "install_watson_assistant",
+            "name": "install_infr_mgt_module",
             "value": "false",
             "type": "bool"
           },
           {
-            "name": "install_watson_assistant_for_voice_interaction",
+            "name": "install_monitoring_module",
             "value": "false",
             "type": "bool"
           },
           {
-            "name": "install_watson_discovery",
+            "name": "install_security_svcs_module",
             "value": "false",
             "type": "bool"
           },
           {
-            "name": "install_watson_knowledge_studio",
+            "name": "install_operations_module",
             "value": "false",
             "type": "bool"
           },
           {
-            "name": "install_watson_language_translator",
-            "value": "false",
-            "type": "bool"
-          },
-          {
-            "name": "install_watson_speech_text",
-            "value": "false",
-            "type": "bool"
-          },
-          {
-            "name": "install_edge_analytics",
+            "name": "install_tech_prev_module",
             "value": "false",
             "type": "bool"
           }

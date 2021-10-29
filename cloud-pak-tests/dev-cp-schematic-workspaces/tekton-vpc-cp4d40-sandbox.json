@@ -1,0 +1,236 @@
+{
+  "name": "tekton-vpc-cp4data40-sandbox-dev",
+  "type": [
+    "terraform_v0.13"
+  ],
+  "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Data on IBM Cloud Classic",
+  "tags": [
+    "owner:tekton",
+    "env:vpc-cpd40",
+    "project:tekton"
+  ],
+  "resource_group": "cloud-pak-sandbox-ibm",
+  "template_repo": {
+    "url": "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/cp4data_4.0"
+  },
+  "template_data": [
+    {
+      "folder": "terraform/cp4data_4.0",
+      "type": "terraform_v0.13",
+      "variablestore": [
+        {
+          "name": "region",
+          "value": "us-south",
+          "type": "string"
+        },
+        {
+          "name": "project_name",
+          "value": "tekton",
+          "type": "string"
+        },
+        {
+          "name": "owner",
+          "value": "tekton",
+          "type": "string"
+        },
+        {
+          "name": "environment",
+          "value": "vpc-cpd40-dev",
+          "type": "string"
+        },
+        {
+          "name": "resource_group",
+          "value": "cloud-pak-sandbox-ibm",
+          "type": "string"
+        },
+        {
+          "name": "cluster_id",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "entitlement",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "datacenter",
+          "value": "dal10",
+          "type": "string"
+        },
+        {
+          "name": "on_vpc",
+          "value": "true",
+          "type": "bool"
+        },
+        {
+          "name": "flavors",
+          "value": "[\"bx2.16x64\"]",
+          "type": "list(string)"
+        },
+        {
+          "name": "install_portworx",
+          "value": "true",
+          "type": "bool"
+        },
+        {
+          "name": "vpc_zone_names",
+          "value": "[\"us-east-1\"]",
+          "type": "list(string)"
+        },
+        {
+          "name": "private_vlan_number",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "public_vlan_number",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "entitled_registry_key",
+          "value": "",
+          "type": "string",
+          "secure": true
+        },
+        {
+          "name": "entitled_registry_user_email",
+          "value": "cp",
+          "type": "string"
+        },
+        {
+          "name": "ibmcloud_api_key",
+          "value": "",
+          "type": "string",
+          "secure": true
+        },
+        {
+          "name": "storage_capacity",
+          "value": "200",
+          "type": "number"
+        },
+        {
+          "name": "storage_iops", 
+          "value": "10",
+          "type": "number"
+        },
+        {
+          "name": "storage_profile",
+          "value": "10iops-tier",
+          "type": "string"
+        },
+        {
+          "name": "create_external_etcd",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "etcd_username",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "etcd_password",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "name": "accept_cpd_license",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "cpd_project_name",
+          "value": "zen",
+          "type": "string"
+        },
+        {
+          "name": "operator_namespace",
+          "value": "ibm-common-services",
+          "type": "string"
+        },
+        {
+          "name": "resource_group_name",
+          "value": "cloud-pak-sandbox-ibm",
+          "type": "string"
+        },
+        {
+          "name": "install_wsl",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_aiopenscale",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_wml",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_wkc",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_dv",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_spss",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_cde",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_spark",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_dods",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_ca",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_ds",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_db2oltp",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_db2wh",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_big_sql",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "install_wsruntime",
+          "value": "false",
+          "type": "bool"
+        }
+      ]
+    }
+  ]
+}
