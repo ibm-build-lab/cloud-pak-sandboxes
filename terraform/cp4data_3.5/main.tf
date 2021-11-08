@@ -47,8 +47,16 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
   }
 }
 
+resource "null_resource" "roks_wait_buffer" {
+  depends_on = [module.cluster.id]
+  provisioner "local-exec" {
+    command = "echo \"Sleeping 5 minutes\" && sleep 300"
+  }
+}
+
 data "ibm_container_cluster_config" "cluster_config" {
-  depends_on = [null_resource.mkdir_kubeconfig_dir]
+  depends_on = [null_resource.mkdir_kubeconfig_dir,
+                null_resource.roks_wait_buffer]
 
   cluster_name_id   = local.enable_cluster ? module.cluster.id : var.cluster_id
   resource_group_id = module.cluster.resource_group.id
