@@ -86,7 +86,7 @@ variable "vpc_zone_names" {
 }
 
 variable "config_dir" {
-  default     = ".kube/config"
+  default     = "./.kube/config"
   description = "Directory to store the kubeconfig file, set the value to empty string to not download the config"
 }
 
