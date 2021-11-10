@@ -106,7 +106,7 @@ module "install_db2" {
 //  etcd_secret_name      = "px-etcd-certs"
 //}
 
-module "cp4ba"{
+module "install_cp4ba"{
     source = "git::https://github.com/jgod1360/terraform-ibm-cloud-pak/tree/cp4ba/modules/cp4ba"
 
   CLUSTER_NAME_OR_ID     = var.cluster_id
@@ -135,6 +135,21 @@ module "cp4ba"{
   # ----- LDAP Settings -----
   LDAP_ADMIN_NAME         = local.ldap_admin_name
   LDAP_ADMIN_PASSWORD     = var.ldap_admin_password
+}
+
+data "external" "get_endpoints" {
+  count = var.enable ? 1 : 0
+
+  depends_on = [
+    module.install_cp4ba
+  ]
+
+  program = ["/bin/bash", "${path.module}/scripts/get_endpoints.sh"]
+
+  query = {
+    kubeconfig = var.cluster_config_path
+    namespace  = var.cp4ba_project_name
+  }
 }
 
 

@@ -1,4 +1,3 @@
-
 variable "ibmcloud_api_key" {
   description = "IBM Cloud API key (https://cloud.ibm.com/docs/account?topic=account-userapikey#create_user_key)"
 }
@@ -12,10 +11,6 @@ variable "entitled_registry_user_email" {
   type = string
   description = "Email address of the user owner of the Entitled Registry Key"
 }
-
-//variable "iaas_classic_api_key" {}
-//variable "iaas_classic_username" {}
-//variable "classic_datacenter" {}
 
 variable "config_dir" {
   default     = "./.kube/config"
@@ -68,12 +63,6 @@ variable "data_center" {
   description = "**Classic Only**. Ignored if `cluster_id` is specified. Datacenter or Zone in the IBM Cloud Classic region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`"
 }
 
-//variable "vpc_zone_names" {
-//  type        = list(string)
-//  default     = ["us-south-1"]
-//  description = "**VPC Only**: Ignored if `cluster_id` is specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`."
-//}
-
 variable "private_vlan_number" {
   default     = ""
   description = "**Classic Only**. Ignored if `cluster_id` is specified. Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number. Leave blank if Private VLAN does not exist, one will be created"
@@ -83,42 +72,6 @@ variable "public_vlan_number" {
   default     = ""
   description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Leave blank if Public VLAN does not exist, one will be created"
 }
-
-//variable "storage_capacity"{
-//    type = number
-//    default = 200
-//    description = "Ignored if Portworx is not enabled: Storage capacity in GBs"
-//}
-//
-//variable "storage_db2" {
-//    type = number
-//    default = 10
-//    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
-//}
-//
-//variable "storage_profile" {
-//    type = string
-//    default = "10iops-tier"
-//    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
-//}
-//
-//variable "create_external_etcd" {
-//    type = bool
-//    default = false
-//    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
-//}
-//
-//# These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
-//# You may override these for additional security.
-//variable "etcd_username" {
-//  default = ""
-//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
-//}
-//
-//variable "etcd_password" {
-//  default = ""
-//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
-//}
 
 variable "cluster_config_path" {
   default     = "./.kube/config"
@@ -150,47 +103,16 @@ variable "docker_secret_name" {
   description = "Enter the name of the docker registry's image."
 }
 
-//variable "storage_capacity"{
-//    type = number
-//    default = 200
-//    description = "Ignored if Portworx is not enabled: Storage capacityin GBs"
-//}
-//
-//variable "storage_profile" {
-//    type = string
-//    default = "10iops-tier"
-//    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
-//}
-//
-//variable "storage_iops" {
-//    type = number
-//    default = 10
-//    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
-//}
-//
-//variable "create_external_etcd" {
-//    type = bool
-//    default = false
-//    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
-//}
-//
-//# These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
-//# You may override these for additional security.
-//variable "etcd_username" {
-//  default = ""
-//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
-//}
-//
-//variable "etcd_password" {
-//  default = ""
-//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
-//}
-
 // OpenShift cluster specific input parameters and default values:
 variable "flavors" {
   type    = list(string)
   default = ["b3c.16x64"]
   description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"bx2.16x64\"]`"
+}
+
+variable "enable" {
+  default = true
+  description = "If set to true installs Cloud-Pak for Integration on the given cluster"
 }
 
 # Password for LDAP Admin User (ldapAdminName name see below), for example passw0rd - use the password that you specified when setting up LDAP
@@ -208,15 +130,7 @@ locals {
   db2_project_name              = "ibm-db2"
 }
 
-// Portworx Module Variables
-//variable "install_portworx" {
-//  type        = bool
-//  default     = false
-//  description = "Install Portworx on the ROKS cluster. `true` or `false`"
-//}
-
 locals {
-//  cp4ba_namespace              = "cp4ba"
   docker_secret_name           = "docker-registry"
   docker_server                = "cp.icr.io"
   docker_username              = "cp"
@@ -255,21 +169,116 @@ variable "db2_port_number" {
 }
 
 locals {
-  //  cp4ba_namespace              = "cp4ba"
   entitled_registry_key_secret_name  = "ibm-entitlement-key"
   docker_server                = "cp.icr.io"
   docker_username              = "cp"
   docker_email                 = var.entitled_registry_user_email
   enable_cluster               = var.cluster_id == "" || var.cluster_id == null
-//  use_entitlement              = "yes"
   ibmcloud_api_key             = chomp(var.ibmcloud_api_key)
 }
 
-//# --- LDAP SETTINGS ---
+# --- LDAP SETTINGS ---
 locals {
+  ldap_admin_name = "cn=root"
+}
+
+# --- HA Settings ---
+locals {
+  cp4ba_replica_count = 1
+  cp4ba_bai_job_parallelism = 1
+}
+
+
+//variable "storage_capacity"{
+//    type = number
+//    default = 200
+//    description = "Ignored if Portworx is not enabled: Storage capacityin GBs"
+//}
+//
+//variable "storage_profile" {
+//    type = string
+//    default = "10iops-tier"
+//    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
+//}
+//
+//variable "storage_iops" {
+//    type = number
+//    default = 10
+//    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
+//}
+//
+//variable "create_external_etcd" {
+//    type = bool
+//    default = false
+//    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
+//}
+//
+//# These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
+//# You may override these for additional security.
+//variable "etcd_username" {
+//  default = ""
+//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+//}
+//
+//variable "etcd_password" {
+//  default = ""
+//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+//}
+
+//variable "vpc_zone_names" {
+//  type        = list(string)
+//  default     = ["us-south-1"]
+//  description = "**VPC Only**: Ignored if `cluster_id` is specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`."
+//}
+
+//variable "storage_capacity"{
+//    type = number
+//    default = 200
+//    description = "Ignored if Portworx is not enabled: Storage capacity in GBs"
+//}
+//
+//variable "storage_db2" {
+//    type = number
+//    default = 10
+//    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
+//}
+//
+//variable "storage_profile" {
+//    type = string
+//    default = "10iops-tier"
+//    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
+//}
+//
+//variable "create_external_etcd" {
+//    type = bool
+//    default = false
+//    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
+//}
+//
+//# These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
+//# You may override these for additional security.
+//variable "etcd_username" {
+//  default = ""
+//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+//}
+//
+//variable "etcd_password" {
+//  default = ""
+//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
+//}
+
+// Portworx Module Variables
+//variable "install_portworx" {
+//  type        = bool
+//  default     = false
+//  description = "Install Portworx on the ROKS cluster. `true` or `false`"
+//}
+
+//# --- LDAP SETTINGS ---
+//locals {
 //  # LDAP name - don't use dashes (-), only use underscores
 //  ldap_name = "ldap_custom"
-  ldap_admin_name = "cn=root"
+//  ldap_admin_name = "cn=root"
 //  ldap_type = "IBM Security Directory Server"
 //  ldap_port = "389"
 //  ldap_server = "150.238.92.26"
@@ -287,10 +296,4 @@ locals {
 //  ldap_ad_group_filter = "(\\&(samAccountName=%v)(objectclass=group))"
 //  ldap_tds_user_filter = "(\\&(cn=%v)(objectclass=person))"
 //  ldap_tds_group_filter = "(\\&(cn=%v)(\\|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"
-}
-
-# --- HA Settings ---
-locals {
-  cp4ba_replica_count = 1
-  cp4ba_bai_job_parallelism = 1
-}
+//}
