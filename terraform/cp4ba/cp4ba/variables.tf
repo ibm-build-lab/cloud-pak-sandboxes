@@ -40,7 +40,7 @@ variable "entitled_registry_key" {
 variable "cp4ba_project_name" {
   type        = string
   default     = "cp4ba"
-  description = "namespace for cp4ba"
+  description = "namespace/project for cp4ba"
 }
 
 variable "environment" {
@@ -50,10 +50,12 @@ variable "environment" {
 
 variable "on_vpc" {
   default = false
+  description = "Select 'true' to install on a VPC cluster and it's using VPC Gen2. Note: CP4BA does not currently support VPC cluster."
 }
 
 variable "platform_version" {
   default = 4.6
+  description = ""
 }
 variable "workers_count" {
   type    = list(number)
@@ -192,10 +194,14 @@ variable "flavors" {
 }
 
 # Password for LDAP Admin User (ldapAdminName name see below), for example passw0rd - use the password that you specified when setting up LDAP
-variable "ldap_admin_password" {}
+variable "ldap_admin_password" {
+  description = "LDAP Admin password"
+}
 
 # LDAP instance access information - hostname or IP
-variable "ldap_server" {}
+variable "ldap_server" {
+  description = "LDAP server "
+}
 
 # --------- DB2 SETTINGS ----------
 locals {
@@ -228,17 +234,25 @@ locals {
 # -------- DB2 Variables ---------
 variable "db2_admin_user_password" {
   default = "passw0rd"
+  description = "Db2 admin user password defined in LDAP"
 }
 
 variable "db2_admin_username" {
   default = "db2inst1"
+  description = "Db2 admin username defined in LDAP"
 }
 
-variable "db2_host_name" {}
+variable "db2_host_name" {
+  description = "Host name of Db2 instance"
+}
 
-variable "db2_host_ip" {}
+variable "db2_host_ip" {
+  description = "IP address for the Db2"
+}
 
-variable "db2_port_number" {}
+variable "db2_port_number" {
+  description = "Port for Db2 instance"
+}
 
 locals {
   //  cp4ba_namespace              = "cp4ba"

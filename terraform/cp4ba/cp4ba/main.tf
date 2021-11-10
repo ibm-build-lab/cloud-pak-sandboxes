@@ -17,7 +17,6 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
   }
 }
 
-
 module "cluster" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
   enable = local.enable_cluster
@@ -106,7 +105,6 @@ module "install_db2" {
 //  // Defaulted.  Don't change
 //  etcd_secret_name      = "px-etcd-certs"
 //}
-
 
 module "cp4ba"{
     source = "git::https://github.com/jgod1360/terraform-ibm-cloud-pak/tree/cp4ba/modules/cp4ba"
