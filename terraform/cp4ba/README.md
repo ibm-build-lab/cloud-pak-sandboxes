@@ -36,7 +36,7 @@ Besides the access credentials, the Terraform code requires the following input 
 | Name                           | Description    | Default             | Required |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | -------- |
 | `cluster_id`                   | **Optional:** cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned  | No       |
-| `on_vpc`                   | VPC isn't supported at this time.                    |        |
+| `on_vpc`                   | Ignored if `cluster_id` is specified. Type of infrastructure to provision. `true`=VPC, `false`=Classic  | `false`                    | Yes       |
 | `resource_group`               | Ignored if `cluster_id` is specified. Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`   | `cloud-pak-sandbox` | No       |
 | `project_name`                 | Ignored if `cluster_id` is specified. The project name is used to name the cluster with the `environment` name. It's also used to label the cluster and other resources   | `cloud-pack`        | Yes      |
 | `owner`                        | Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources    | `anonymous`         | Yes      |
@@ -121,12 +121,13 @@ _endpoint)"
 
 ## Uninstall
 
-To uninstall CP4MCM and its dependencies from a cluster, execute the following commands:
+To uninstall CP4BA and its dependencies from a cluster, execute the following commands:
 
 ```bash
-kubectl delete -n openshift-operators subscription.operators.coreos.com ibm-management-orchestrator
-kubectl delete -n openshift-marketplace catalogsource.operators.coreos.com ibm-management-orchestrator opencloud-operators
-kubectl delete namespace cp4mcm
+kubectl get ICP4ACluster
+kubectl get subscription ibm-common-service-operator -n openshift-operators
+kubectl get subscription ibm-common-service-operator -n opencloud-operators
+kubectl delete namespace cp4ba
 ```
 
 **Note**: The uninstall/cleanup process is a work in progress at this time, we are identifying the objects that need to be deleted in order to have a successful re-installation.
