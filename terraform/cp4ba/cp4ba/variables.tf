@@ -13,9 +13,9 @@ variable "entitled_registry_user_email" {
   description = "Email address of the user owner of the Entitled Registry Key"
 }
 
-variable "iaas_classic_api_key" {}
-variable "iaas_classic_username" {}
-variable "classic_datacenter" {}
+//variable "iaas_classic_api_key" {}
+//variable "iaas_classic_username" {}
+//variable "classic_datacenter" {}
 
 variable "config_dir" {
   default     = "./.kube/config"
