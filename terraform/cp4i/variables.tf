@@ -47,8 +47,8 @@ variable "flavors" {
 }
 
 variable "workers_count" {
-  type    = list(number)
-  default = [4]
+  type        = list(number)
+  default     = [4]
   description = "Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
 }
 
@@ -82,43 +82,43 @@ variable "public_vlan_number" {
 
 // Portworx Module Variables
 variable "ibmcloud_api_key" {
-  default = ""
+  default     = ""
   description = "**VPC Only**. For Portworx setup. IBMCloud API Key for the account the resources will be provisioned on. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
 }
 
-variable "storage_capacity"{
-    type = number
-    default = 200
-    description = "**VPC Only**. For Portworx setup. Storage capacity in GBs"
+variable "storage_capacity" {
+  type        = number
+  default     = 200
+  description = "**VPC Only**. For Portworx setup. Storage capacity in GBs"
 }
 
 variable "storage_profile" {
-    type = string
-    default = "10iops-tier"
-    description = "**VPC Only**. For Portworx setup. Optional, Storage profile used for creating storage"
+  type        = string
+  default     = "10iops-tier"
+  description = "**VPC Only**. For Portworx setup. Optional, Storage profile used for creating storage"
 }
 
 variable "storage_iops" {
-    type = number
-    default = 10
-    description = "**VPC Only**. For Portworx setup. Optional, Used only if a user provides a custom storage_profile"
+  type        = number
+  default     = 10
+  description = "**VPC Only**. For Portworx setup. Optional, Used only if a user provides a custom storage_profile"
 }
 
 variable "create_external_etcd" {
-    type = bool
-    default = false
-    description = "**VPC Only**. For Portworx setup. Do you want to create an external etcd database? `true` or `false`"
+  type        = bool
+  default     = false
+  description = "**VPC Only**. For Portworx setup. Do you want to create an external etcd database? `true` or `false`"
 }
 
 # These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
 # You may override these for additional security.
 variable "etcd_username" {
-  default = ""
+  default     = ""
   description = "**VPC Only**. For Portworx setup. This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
 variable "etcd_password" {
-  default = ""
+  default     = ""
   description = "**VPC Only**. For Portworx setup. This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 

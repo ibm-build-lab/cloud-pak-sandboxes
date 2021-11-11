@@ -114,5 +114,5 @@ locals {
   roks_version   = "4.6"
   kubeconfig_dir = "./.kube/config"
   // MCM variables
-  namespace                  = "cp4mcm"
+  namespace = "cp4mcm"
 }

@@ -93,7 +93,7 @@ module "cp4i" {
 
   // Assumption that if on vpc, Portworx has been configured
   storageclass = module.portworx.portworx_is_ready == null ? "ibmc-file-gold-gid" : "portworx-rwx-gp3-sc"
-  
+
   // ROKS cluster parameters:
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
 
