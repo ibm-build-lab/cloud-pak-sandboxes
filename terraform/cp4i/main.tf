@@ -9,7 +9,7 @@ locals {
 
 module "cluster" {
   //source = "../../../terraform-ibm-cloud-pak/modules/roks"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks?ref=terraform-0.13"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks?ref=terraform-0.13"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
