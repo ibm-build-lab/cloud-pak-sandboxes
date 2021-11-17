@@ -1,7 +1,7 @@
 {
   "name": "tekton-vpc-cp4i-sandbox",
   "type": [
-    "terraform_v0.12"
+    "terraform_v0.13"
   ],
   "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Cloud Pak for Integration on IBM Cloud Classic or VPC Gen2",
   "tags": [
@@ -17,7 +17,7 @@
   "template_data": [
     {
       "folder": "terraform/cp4i",
-      "type": "terraform_v0.12",
+      "type": "terraform_v0.13",
       "variablestore": [
         {
           "name": "region",
