@@ -13,7 +13,7 @@ locals {
 
 module "cluster" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/roks"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git/modules/roks?ref=terraform-0.13"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks?ref=terraform-0.13"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -58,7 +58,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4mcm" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4mcm"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git/modules/cp4mcm?ref=terraform-0.13"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4mcm?ref=terraform-0.13"
   enable = true
   on_vpc = var.on_vpc
   region = var.region
