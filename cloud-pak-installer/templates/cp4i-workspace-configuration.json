@@ -70,11 +70,6 @@
           "type": "list(string)"
         },
         {
-          "name": "install_portworx",
-          "value": "false",
-          "type": "bool"
-        },
-        {
           "name": "private_vlan_number",
           "value": "",
           "type": "string"
