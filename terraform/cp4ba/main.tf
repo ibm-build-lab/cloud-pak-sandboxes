@@ -62,7 +62,7 @@ module "install_db2" {
   KUBECONFIG = var.cluster_config_path
 
   # ----- Platform -----
-  DB2_PROJECT_NAME        = local.db2_project_name
+  DB2_PROJECT_NAME        = var.db2_project_name
   DB2_ADMIN_USER_NAME     = var.db2_admin_username
   DB2_ADMIN_USER_PASSWORD = var.db2_admin_user_password
 
@@ -73,39 +73,7 @@ module "install_db2" {
   DOCKER_USERNAME                 = local.docker_username
 }
 
-//module "portworx" {
-//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
-//  // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
-//  enable = var.install_portworx
-//
-//  ibmcloud_api_key = var.ibmcloud_api_key
-//
-//  // Cluster parameters
-//  kube_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-//  worker_nodes     = var.workers_count[0]  // Number of workers
-//
-//  // Storage parameters
-//  install_storage      = true
-//  storage_capacity     = var.storage_capacity  // In GBs
-//  storage_iops         = var.storage_iops   // Must be a number, it will not be used unless a storage_profile is set to a custom profile
-//  storage_profile      = var.storage_profile
-//
-//  // Portworx parameters
-//  resource_group_name   = var.resource_group
-//  region                = var.region
-//  cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
-//  unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
-//
-//  // These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
-//  // You may override these for additional security.
-//  create_external_etcd  = var.create_external_etcd
-//  etcd_username         = var.etcd_username
-//  etcd_password         = var.etcd_password
-//
-//  // Defaulted.  Don't change
-//  etcd_secret_name      = "px-etcd-certs"
-//}
-
+#
 module "install_cp4ba"{
     source = "git::https://github.com/jgod1360/terraform-ibm-cloud-pak/tree/cp4ba/modules/cp4ba"
 
