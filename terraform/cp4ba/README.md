@@ -125,7 +125,7 @@ Each Cloud Pak subdirectory contains the following files:
 
 # Terraform Modules to create a ROKS Cluster, install Db2 and Cloud Pak for Business Automation
 
-This Terraform modules creates a ROKS Cluster if there is not
+If there is not an existing ROKS cluster, this Terraform modules will create a new ROKS Cluster, then install Db2 and Cloud Pak for Business Automation. 
 
 installs **Cloud Pak for Business Automation** on an Openshift (ROKS)
 cluster on IBM Cloud.
