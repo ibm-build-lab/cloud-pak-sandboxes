@@ -123,9 +123,12 @@ Each Cloud Pak subdirectory contains the following files:
 - `Makefile`: most of the Makefile logic is located in the `terraform/` makefiles (`Makefile` and `*.mk` files) however some specific actions for the Cloud Pak are required, for example, the Cloud Pak validations. All these specific actions are in this `Makefile`.
 
 
-# Terraform Module to install Cloud Pak for Business Automation
+# Terraform Modules to create a ROKS Cluster, install Db2 and Cloud Pak for Business Automation
 
-This Terraform Module installs **Cloud Pak for Business Automation** on an Openshift (ROKS) cluster on IBM Cloud.
+This Terraform modules creates a ROKS Cluster if there is not
+
+installs **Cloud Pak for Business Automation** on an Openshift (ROKS)
+cluster on IBM Cloud.
 
 **Module Source**: `git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba`
 
