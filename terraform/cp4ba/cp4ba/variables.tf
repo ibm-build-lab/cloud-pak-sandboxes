@@ -112,7 +112,7 @@ variable "flavors" {
 
 variable "enable" {
   default = true
-  description = "If set to true installs Cloud-Pak for Integration on the given cluster"
+  description = "If set to true, it will install DB2 on the given cluster"
 }
 
 # Password for LDAP Admin User (ldapAdminName name see below), for example passw0rd - use the password that you specified when setting up LDAP
@@ -126,9 +126,11 @@ variable "ldap_server" {
 }
 
 # --------- DB2 SETTINGS ----------
-locals {
-  db2_project_name              = "ibm-db2"
-}
+ variable "db2_project_name" {
+   default = "ibm-db2"
+   description = "The namespace/project for Db2"
+ }
+
 
 locals {
   docker_secret_name           = "docker-registry"
@@ -168,12 +170,16 @@ variable "db2_port_number" {
   description = "Port for Db2 instance"
 }
 
+variable "db2_standard_license_key" {
+  description = "The standard license key for the Db2 database product"
+}
+
 locals {
   entitled_registry_key_secret_name  = "ibm-entitlement-key"
   docker_server                = "cp.icr.io"
   docker_username              = "cp"
   docker_email                 = var.entitled_registry_user_email
-  enable_cluster               = var.cluster_id == "" || var.cluster_id == null
+  enable_cluster               = var.cluster_id
   ibmcloud_api_key             = chomp(var.ibmcloud_api_key)
 }
 
@@ -182,118 +188,4 @@ locals {
   ldap_admin_name = "cn=root"
 }
 
-# --- HA Settings ---
-locals {
-  cp4ba_replica_count = 1
-  cp4ba_bai_job_parallelism = 1
-}
 
-
-//variable "storage_capacity"{
-//    type = number
-//    default = 200
-//    description = "Ignored if Portworx is not enabled: Storage capacityin GBs"
-//}
-//
-//variable "storage_profile" {
-//    type = string
-//    default = "10iops-tier"
-//    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
-//}
-//
-//variable "storage_iops" {
-//    type = number
-//    default = 10
-//    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
-//}
-//
-//variable "create_external_etcd" {
-//    type = bool
-//    default = false
-//    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
-//}
-//
-//# These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
-//# You may override these for additional security.
-//variable "etcd_username" {
-//  default = ""
-//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
-//}
-//
-//variable "etcd_password" {
-//  default = ""
-//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
-//}
-
-//variable "vpc_zone_names" {
-//  type        = list(string)
-//  default     = ["us-south-1"]
-//  description = "**VPC Only**: Ignored if `cluster_id` is specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`."
-//}
-
-//variable "storage_capacity"{
-//    type = number
-//    default = 200
-//    description = "Ignored if Portworx is not enabled: Storage capacity in GBs"
-//}
-//
-//variable "storage_db2" {
-//    type = number
-//    default = 10
-//    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
-//}
-//
-//variable "storage_profile" {
-//    type = string
-//    default = "10iops-tier"
-//    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
-//}
-//
-//variable "create_external_etcd" {
-//    type = bool
-//    default = false
-//    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
-//}
-//
-//# These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
-//# You may override these for additional security.
-//variable "etcd_username" {
-//  default = ""
-//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
-//}
-//
-//variable "etcd_password" {
-//  default = ""
-//  description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
-//}
-
-// Portworx Module Variables
-//variable "install_portworx" {
-//  type        = bool
-//  default     = false
-//  description = "Install Portworx on the ROKS cluster. `true` or `false`"
-//}
-
-//# --- LDAP SETTINGS ---
-//locals {
-//  # LDAP name - don't use dashes (-), only use underscores
-//  ldap_name = "ldap_custom"
-//  ldap_admin_name = "cn=root"
-//  ldap_type = "IBM Security Directory Server"
-//  ldap_port = "389"
-//  ldap_server = "150.238.92.26"
-//  ldap_base_dn = "dc=example,dc=com"
-//  ldap_user_name_attribute = "*:cn"
-//  ldap_user_display_name_attr = "cn"
-//  ldap_group_base_dn = "dc=example,dc=com"
-//  ldap_group_name_attribute = "*:cn"
-//  ldap_group_display_name_attr = "cn"
-//  ldap_group_membership_search_filter = "('\\|(\\&(objectclass=groupOfNames)(member={0}))(\\&(objectclass=groupOfUniqueNames)(uniqueMember={0})))"
-//  ldap_group_member_id_map = "groupofnames:member"
-//  ldap_ad_gc_host = ""
-//  ldap_ad_gc_port = ""
-//  ldap_ad_user_filter = "(\\&(samAccountName=%v)(objectClass=user))"
-//  ldap_ad_group_filter = "(\\&(samAccountName=%v)(objectclass=group))"
-//  ldap_tds_user_filter = "(\\&(cn=%v)(objectclass=person))"
-//  ldap_tds_group_filter = "(\\&(cn=%v)(\\|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"
-//}
