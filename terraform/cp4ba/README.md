@@ -1,18 +1,5 @@
-# Creation of a Partner Sandbox
-
-This documentation is **<u>only for developers or advanced users</u>**. Sandbox **users** please refer to [Installer Script](../installer/README.md) documentation.
-
-This folder contains the Infrastructure as Code or Terraform code to create a **Sandbox** with an **Openshift** (ROKS) cluster on IBM Cloud and additional Cloud Paks. At this time the supported components are:
-
-- ROKS stand alone cluster in either VPC or Classic
-- Automation Foundation (IAF)
-- Cloud Pak for Applications (CP4App)
-- Cloud Pak for Automation (CP4Auto)
-- Cloud Pak for Data (CP4Data)
-- Cloud Pak for Integration (CP4Int)
-- Cloud Pak for Multi Cloud Management (CP4MCM)
-
-Everything is automated with Makefiles. However, instructions to get the same results manually are provided.
+Everything is automated with Makefiles. However, instructions to get the
+same results manually are provided.
 
 - [Creation of a Partner Sandbox](#creation-of-a-partner-sandbox)
   - [Requirements](#requirements)
