@@ -3,10 +3,6 @@ provider "ibm" {
   ibmcloud_api_key = var.ibmcloud_api_key
 }
 
-provider "kubernetes" {
-  config_path = var.config_dir
-}
-
 locals {
   enable_cluster = var.cluster_id == null || var.cluster_id == ""
 }
@@ -64,7 +60,6 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 module "portworx" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx?ref=terraform-0.13"
-  // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
   enable = var.install_portworx
 
   ibmcloud_api_key = var.ibmcloud_api_key
