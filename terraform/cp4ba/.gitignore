@@ -1,0 +1,22 @@
+# Terraform & Schematics files to ignore
+.terraform
+terraform.tfstate*
+terraform.tfvars
+tmp
+.workspace_id
+
+# Credentials or sensitive information files used by Terraform to ignore
+.terraform_key.json
+credentials.sh
+workspace.json
+*.key
+*.auto.tfvars
+removed_variables.tf
+*.tfvars.*
+# Output files from Terraform and modules to ignore
+.kube
+
+# Catalog Product files to ignore
+*.tgz
+product
+product_tmp
