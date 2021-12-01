@@ -12,11 +12,6 @@ variable "entitled_registry_user" {
   description = "Email address of the user owner of the Entitled Registry Key"
 }
 
-//variable "config_dir" {
-//  default     = "./.kube/config"
-//  description = "directory to store the kubeconfig file"
-//}
-
 variable "region" {
   default = "us-south"
   description = "Region where the cluster is created"
@@ -73,11 +68,6 @@ variable "public_vlan_number" {
   description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Leave blank if Public VLAN does not exist, one will be created"
 }
 
-//variable "cluster_config_path" {
-//  default     = "./.kube/config"
-//  description = "directory to store the kubeconfig file"
-//}
-
 variable "registry_server" {
   description = "Enter the public image registry or route (e.g., default-route-openshift-image-registry.apps.<hostname>).\nThis is required for docker/podman login validation:"
 }
@@ -87,18 +77,6 @@ variable "entitlement_key" {
   description = "Do you have a Cloud Pak for Business Automation Entitlement Registry key? If not, Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
 }
 
-variable "docker_password" {
-  description = "Enter the password for your docker registry: "
-}
-
-variable "docker_username" {
-  description = "Docker username for creating the secret."
-}
-
-variable "docker_secret_name" {
-  description = "Enter the name of the docker registry's image."
-}
-
 // OpenShift cluster specific input parameters and default values:
 variable "flavors" {
   type    = list(string)
@@ -106,19 +84,40 @@ variable "flavors" {
   description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"bx2.16x64\"]`"
 }
 
+variable "ingress_subdomain" {
+  default     = ""
+  description = "Run the command `ibmcloud ks cluster get -c <cluster_name_or_id>` to get the Ingress Subdomain value"
+}
+
 variable "enable" {
   default = true
   description = "If set to true, it will install DB2 on the given cluster"
 }
 
-# Password for LDAP Admin User (ldapAdminName name see below), for example passw0rd - use the password that you specified when setting up LDAP
-variable "ldap_admin_password" {
+# -------- LDAP Variables ---------
+# Use the id and password that you specified when setting up LDAP
+variable "ldap_admin" {
+  default     = "cn=root"
+  description = "LDAP Admin user name"
+}
+
+variable "ldap_password" {
+  default     = "Passw0rd"
   description = "LDAP Admin password"
 }
 
-# LDAP instance access information - hostname or IP
-variable "ldap_server" {
-  description = "LDAP server "
+variable "ldap_host_ip" {
+  default     = ""
+  description = "LDAP server IP address"
+}
+
+locals {
+  docker_server                = "cp.icr.io"
+  docker_username              = "cp"
+  docker_password              = chomp(var.entitlement_key)
+  docker_email                 = var.entitled_registry_user
+  enable_cluster               = var.cluster_name_or_id
+  cluster_config_path          = "./.kube/config"
 }
 
 # --------- DB2 SETTINGS ----------
@@ -127,45 +126,35 @@ variable "ldap_server" {
    description = "The namespace/project for Db2"
  }
 
-locals {
-  entitled_registry_key_secret_name  = "ibm-entitlement-key"
-  docker_server                = "cp.icr.io"
-  docker_username              = "cp"
-  docker_password              = chomp(var.entitlement_key)
-  docker_email                 = var.entitled_registry_user
-  enable_cluster               = var.cluster_name_or_id
-}
-
 # -------- DB2 Variables ---------
-variable "db2_admin_user_password" {
-  default = "passw0rd"
-  description = "Db2 admin user password defined in LDAP"
+variable "db2_admin" {
+  default     = "cpadmin"
+  description = "Admin user name defined in LDAP"
 }
 
-variable "db2_admin_username" {
-  default = "db2inst1"
-  description = "Db2 admin username defined in LDAP"
+variable "db2_user" {
+  default     = "db2inst1"
+  description = "User name defined in LDAP"
+}
+
+variable "db2_password" {
+  default     = "passw0rd"
+  description = "Password defined in LDAP"
 }
 
 variable "db2_host_name" {
-  description = "Host name of Db2 instance"
+  default     = ""
+  description = "Host for DB2 instance"
 }
 
-variable "db2_host_ip" {
-  description = "IP address for the Db2"
+variable "db2_host_port" {
+  default     = ""
+  description = "Port for DB2 instance"
 }
 
-variable "db2_port_number" {
-  description = "Port for Db2 instance"
-}
+//variable "db2_standard_license_key" {
+//  description = "The standard license key for the Db2 database product"
+//}
 
-variable "db2_standard_license_key" {
-  description = "The standard license key for the Db2 database product"
-}
-
-# --- LDAP SETTINGS ---
-locals {
-  ldap_admin_name = "cn=root"
-}
 
 
