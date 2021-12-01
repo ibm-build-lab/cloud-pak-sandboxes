@@ -2,27 +2,27 @@ variable "ibmcloud_api_key" {
   description = "IBM Cloud API key (https://cloud.ibm.com/docs/account?topic=account-userapikey#create_user_key)"
 }
 
-variable "cluster_id" {
+variable "cluster_name_or_id" {
   default     = ""
   description = "Enter your cluster id or name to install the Cloud Pak. Leave blank to provision a new Openshift cluster."
 }
 
-variable "entitled_registry_user_email" {
+variable "entitled_registry_user" {
   type = string
   description = "Email address of the user owner of the Entitled Registry Key"
 }
 
-variable "config_dir" {
-  default     = "./.kube/config"
-  description = "directory to store the kubeconfig file"
-}
+//variable "config_dir" {
+//  default     = "./.kube/config"
+//  description = "directory to store the kubeconfig file"
+//}
 
 variable "region" {
   default = "us-south"
   description = "Region where the cluster is created"
 }
 
-variable "resource_group" {
+variable "resource_group_name" {
   default     = "cloud-pak-sandbox-ibm"
   description = "Resource group name where the cluster will be hosted."
 }
@@ -73,10 +73,10 @@ variable "public_vlan_number" {
   description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Leave blank if Public VLAN does not exist, one will be created"
 }
 
-variable "cluster_config_path" {
-  default     = "./.kube/config"
-  description = "directory to store the kubeconfig file"
-}
+//variable "cluster_config_path" {
+//  default     = "./.kube/config"
+//  description = "directory to store the kubeconfig file"
+//}
 
 variable "registry_server" {
   description = "Enter the public image registry or route (e.g., default-route-openshift-image-registry.apps.<hostname>).\nThis is required for docker/podman login validation:"
@@ -85,10 +85,6 @@ variable "registry_server" {
 variable "entitlement_key" {
   type        = string
   description = "Do you have a Cloud Pak for Business Automation Entitlement Registry key? If not, Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
-}
-
-variable "registry_user" {
-  description = "Enter the user name for your docker registry: "
 }
 
 variable "docker_password" {
@@ -131,21 +127,14 @@ variable "ldap_server" {
    description = "The namespace/project for Db2"
  }
 
-
 locals {
-  docker_secret_name           = "docker-registry"
+  entitled_registry_key_secret_name  = "ibm-entitlement-key"
   docker_server                = "cp.icr.io"
   docker_username              = "cp"
   docker_password              = chomp(var.entitlement_key)
-  docker_email                 = var.entitled_registry_user_email
-  enable_cluster               = var.cluster_id == "" || var.cluster_id == null
-  ibmcloud_api_key             = chomp(var.ibmcloud_api_key)
- }
-
-locals {
-  storage_class_name               = "cp4a-file-retain-gold-gid"
+  docker_email                 = var.entitled_registry_user
+  enable_cluster               = var.cluster_name_or_id
 }
-
 
 # -------- DB2 Variables ---------
 variable "db2_admin_user_password" {
@@ -172,15 +161,6 @@ variable "db2_port_number" {
 
 variable "db2_standard_license_key" {
   description = "The standard license key for the Db2 database product"
-}
-
-locals {
-  entitled_registry_key_secret_name  = "ibm-entitlement-key"
-  docker_server                = "cp.icr.io"
-  docker_username              = "cp"
-  docker_email                 = var.entitled_registry_user_email
-  enable_cluster               = var.cluster_id
-  ibmcloud_api_key             = chomp(var.ibmcloud_api_key)
 }
 
 # --- LDAP SETTINGS ---

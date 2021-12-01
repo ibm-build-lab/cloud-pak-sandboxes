@@ -1,13 +1,17 @@
 # Provider block
 provider "ibm" {
   region           = var.region
+<<<<<<< Updated upstream
   version          = "~> 1.12"
+=======
+>>>>>>> Stashed changes
   ibmcloud_api_key = var.ibmcloud_api_key
 }
 
+
 # Getting the OpenShift cluster configuration
 data "ibm_resource_group" "group" {
-  name = var.resource_group
+  name = var.resource_group_name
 }
 
 resource "null_resource" "mkdir_kubeconfig_dir" {
@@ -23,10 +27,10 @@ module "cluster" {
   on_vpc = var.on_vpc
 
   project_name             = var.cp4ba_project_name
-  owner                    = var.entitled_registry_user_email
+  owner                    = var.entitled_registry_user
   environment              = var.environment
 
-  resource_group       = var.resource_group
+  resource_group       = var.resource_group_name
   roks_version         = var.platform_version
   flavors              = var.flavors
   workers_count        = var.workers_count
@@ -46,7 +50,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
-  cluster_name_id   = var.cluster_id
+  cluster_name_id   = var.cluster_name_or_id
   resource_group_id = data.ibm_resource_group.group.id
   download          = true
   config_dir        = "./kube/config"
@@ -68,7 +72,7 @@ module "install_db2" {
 
   # ------ Docker Information ----------
   ENTITLED_REGISTRY_KEY           = var.entitlement_key
-  ENTITLEMENT_REGISTRY_USER_EMAIL = var.entitled_registry_user_email
+  ENTITLEMENT_REGISTRY_USER_EMAIL = var.entitled_registry_user
   DOCKER_SERVER                   = local.docker_server
   DOCKER_USERNAME                 = local.docker_username
 }
@@ -77,14 +81,14 @@ module "install_db2" {
 module "install_cp4ba"{
     source = "git::https://github.com/jgod1360/terraform-ibm-cloud-pak/tree/cp4ba/modules/cp4ba"
 
-  CLUSTER_NAME_OR_ID     = var.cluster_id
+  CLUSTER_NAME_OR_ID     = var.cluster_name_or_id
 
   # ---- IBM Cloud API Key ----
-  IBMCLOUD_API_KEY = var.ibmcloud_api_key
+  IBMCLOUD_API_KEY = chomp(var.ibmcloud_api_key)
 
   # ---- Platform ----
   CP4BA_PROJECT_NAME            = var.cp4ba_project_name
-  USER_NAME_EMAIL               = var.entitled_registry_user_email
+  USER_NAME_EMAIL               = var.entitled_registry_user
   ENTITLED_REGISTRY_KEY         = var.entitlement_key
 
   # ---- Registry Images ----
