@@ -152,7 +152,7 @@ variable "db2_host_port" {
   description = "Port for DB2 instance"
 }
 
-variable "db2_standard_license_key" {
+variable "db2_license" {
   description = "The standard license key for the Db2 database product"
 }
 
