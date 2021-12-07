@@ -49,7 +49,7 @@ variable "on_vpc" {
 }
 
 variable "platform_version" {
-  default = 4.6
+  default = 4.7
   description = ""
 }
 variable "workers_count" {
