@@ -74,12 +74,6 @@ In order for the script to run it requires a resource group to work out of as we
 
 Note: Be sure that you have permission to the resource group you are using.  If you do not have permission this is the same as the resource group not existing to the cloud-pak-installer.sh
 
-### CP4S Requirements
-
-Cloud Pak for Security requires docker images running locally to install the cloud pak.  Due to this when installing CP4S you must run the installer from a local machine with docker permissions.  In addition you will need to be sure the following command line tools are enabled.
-
-[CP4S Requirements](https://www.ibm.com/docs/en/cloud-paks/cp-security/1.6.0?topic=tasks-installing-developer-tools)
-
 ## Run installer
 
 To run the installer, do the following in the **IBM Cloud Shell** terminal:
