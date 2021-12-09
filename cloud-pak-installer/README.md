@@ -2,13 +2,13 @@
 
 - [Cloud Pak Sandbox User Installation Script](#cloud-pak-sandbox-user-installation-script)
   - [Introduction](#introduction)
-  - [Requirments](#requirments)
+  - [Requirements](#requirments)
     - [Understanding the IBM Cloud Shell](#understanding-the-ibm-cloud-shell)
     - [Generate an IBM API key](#generate-an-IBM-API-key)
     - [Get Registry Key](#get-registry-key)
     - [Download the Script](#download-the-script)
     - [Create a resource group](#create-a-resource-group)
-    - [CP4S requirments](#cp4s-requirments)
+    - [CP4S requirements](#cp4s-requirements)
   - [Runing the Installer](#run-installer)
   - [Installing From Personal Device](#install-from-personal-device)
   - [VLAN Usage](#vlan-usage)
@@ -29,13 +29,13 @@ Currently you can run the script to install:
 - Cloud Pak for Data
 - Cloud Pak for Integration
 - Cloud Pak for AIOps
-- Cloud Pak for Security (local runtime installer only)
-- Cloud Pak for Busincess Automation (under development)
-- Cloud Pak for Network Automation (under development)
+- Cloud Pak for Security
+- Cloud Pak for Business Automation (under development)
+- Cloud Pak for Network Automation
 
-## Requirments
+## Requirements
 
-In order to run the cloud-pak-installer.sh script you must have a series of required input values, these are discussed below in the requirments.  Some modules may require additional requirments.  Cloud Pak for Security will require additional requirments which are listed below.
+In order to run the `cloud-pak-installer.sh` script you must have a series of required input values, these are discussed below in the requirements.  Some modules may require additional requirements.  Cloud Pak for Security will require additional requirements which are listed below.
 
 After the input values and tools are gathered you will need decide to run the cloud pak installer from your local machine or the IBM Cloud Shell.  CP4S must be run from your local machine.  In either case you will clone the repo, add permission to the script if needed, and run cloud-pak-installer.sh
 
@@ -46,18 +46,18 @@ Running the cloud-pak-installer on IBM Cloud Shell is a simple process and has a
 
 ### Generate an IBM API key
 
-When install cloud paks, some require an api key and any type of VPC, IAF, and Portworx combination will also require an api key.  To generate the API key you can log into your IBM account and go to this link.
+When creating clusters and installing cloud paks an api key may be required.  To generate the API key you can log into your IBM account and go to this link.
 
 [IBM Cloud IAM API key](https://cloud.ibm.com/iam/apikeys)
 
 ### Get registry key
 
-Each Cloud Pak requires an entitlement key. The script will prompt for this key and the email associated with it to install any of the Cloud Paks.
+Each Cloud Pak also requires an entitlement key. The script will prompt for this key and the email associated with it to install any of the Cloud Paks.
 
 If you do not have the key visit this link to generate one:
 [Generate Cloud Pak Entitlement Key](https://myibm.ibm.com/products-services/containerlibrary)
 
-NOTE: For Cloud Pak for Data you will also need your docker credentials if installing the Guardium External Strap module.
+NOTE: For `Cloud Pak for Data` you will also need your docker credentials if installing the Guardium External Strap module.
 
 ### Download the script
 
@@ -74,11 +74,11 @@ In order for the script to run it requires a resource group to work out of as we
 
 Note: Be sure that you have permission to the resource group you are using.  If you do not have permission this is the same as the resource group not existing to the cloud-pak-installer.sh
 
-### CP4S Requirments
+### CP4S Requirements
 
 Cloud Pak for Security requires docker images running locally to install the cloud pak.  Due to this when installing CP4S you must run the installer from a local machine with docker permissions.  In addition you will need to be sure the following command line tools are enabled.
 
-[CP4S Requirments](https://www.ibm.com/docs/en/cloud-paks/cp-security/1.6.0?topic=tasks-installing-developer-tools)
+[CP4S Requirements](https://www.ibm.com/docs/en/cloud-paks/cp-security/1.6.0?topic=tasks-installing-developer-tools)
 
 ## Run installer
 
@@ -88,7 +88,7 @@ To run the installer, do the following in the **IBM Cloud Shell** terminal:
     chmod +x cloud-pak-installer.sh
     ./cloud-pak-installer.sh
 
-From here the Installer will ask you a set of questions pertaining to the cluster you wish to create.  The cloud-pak-installer.sh will take about 15 minutes to run, when it is finished a workspace schematic will be created to manage the creation of an openshift cluster and cloud pak install.  Depending on selection the creation of the resources can take anywhere from 1-3 hours this can go even longer when choosing mutiple modules.
+From here the Installer will ask you a set of questions pertaining to the cluster you wish to create.  The `cloud-pak-installer.sh` will take about 15 minutes to run, when it is finished a workspace schematic will be created to manage the creation of an openshift cluster and cloud pak install.  Depending on your selection, the creation of the resources can take anywhere from 1-3 hours or longer when choosing mutiple modules.
 
 The cloud-pak-installer.sh will return a link that you can go to and monitor the install.
 
@@ -101,9 +101,11 @@ To run this Installer on your local machine:
 2. Ensure that the [IBM Schematics Plug-in](https://cloud.ibm.com/docs/schematics?topic=schematics-setup-cli) is installed
 
    `ibmcloud plugin install schematics`
-3. Log into the ibm cloud
+  
+3. Log into the IBM cloud
 
    `ibmcloud login -sso`
+   
 4. Ensure that you are in the desired account and resource group
 
    `ibmcloud target`
@@ -116,11 +118,9 @@ To run this Installer on your local machine:
 
 ## VLAN Usage
 
-In order for the Installer to create a ROKS cluster there must be a public and private VLAN available to the Datacenters you plan to build to.  No worries if you do not know how to manage VLANS becuase the installer script will handle that for you.  
-
 While running the installer you will be prompted for region and datacenter. Once selected the installer will automatically check available VLANs for use.  If there are not existing VLANS, script will prompt to create them.
 
-Finally, once a VLAN is created it will take some time until it is ready for use. This time varies based of the availablity of resources at the datacenter and can take anywhere from a few seconds to several minutes.
+If a VLAN is created it will take some time until it is ready for use. This time varies based of the availablity of resources at the datacenter and can take anywhere from a few seconds to several minutes.
 
 ## Checking Progress
 
@@ -188,10 +188,6 @@ Cloud Pak Sandbox Installer [README](https://github.com/ibm-hcbt/cloud-pak-sandb
 Cloud Pak Sandbox environment [Terraform modules](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak)
 
 Cloud Pak Sandbox environment [Terraform scripts](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform)
-
-Cloud Pak for Applications [Documentation](https://www.ibm.com/cloud/cloud-pak-for-applications) 
-
-Cloud Pak for Applications [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4app/README.md) 
 
 Cloud Pak for Data [Documentation](https://www.ibm.com/products/cloud-pak-for-data) 
 
