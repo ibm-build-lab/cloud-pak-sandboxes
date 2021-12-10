@@ -557,16 +557,30 @@ get_meta_data() {
     PROJECT_OWNER_NAME_TAG="owner:$PROJECT_OWNER_NAME"
     if [ -z $CLUSTER_ID ]
     then
-      read -p "${bold}Enter Environment Name:${normal} " -e ENV_NAME
-      ENV_NAME_TAG="env:$ENV_NAME"
-      read -p "${bold}Enter Project Name (new clusters will be named starting with ${green}Project Name)${bold}:${normal} " -e PROJECT_NAME
-      PROJECT_NAME_TAG="project:$PROJECT_NAME"
+        while true; do
+            echo "${red} Must start with an alphanumeric character and can contain '.' '-' and '_'"
+            read -p "${bold}Enter Environment Name:${normal} " -e ENV_NAME
+            ENV_NAME_TAG="env:$ENV_NAME"
+            echo "${red} Must start with an alphanumeric character and can contain '.' '-' and '_'"
+            read -p "${bold}Enter Project Name (new clusters will be named starting with ${green}Project Name)${bold}:${normal} " -e PROJECT_NAME
+            PROJECT_NAME_TAG="project:$PROJECT_NAME"
+
+            stringCheck="${PROJECT_NAME}-${ENV_NAME}-cluster"
+            if [ "${stringCheck//[A-Za-z0-9_.-]}" ] || [[ ${stringCheck::1} != [A-Za-z0-9] ]] || [ ${#stringCheck} -gt 31 ];  then
+                echo ""
+                echo "${red} Please rename the ${green}Project Name ${red}and the ${green}Environment Name ${red}so it's within 21 alphanumeric characters split between both names with no special symbols except dashes, dots, and underscores."
+                echo ""
+            else
+                break
+            fi
+        done
     else
-      ENV_NAME=""
-      ENV_NAME_TAG=""
-      PROJECT_NAME=""
-      PROJECT_NAME_TAG=""
+    ENV_NAME=""
+    ENV_NAME_TAG=""
+    PROJECT_NAME=""
+    PROJECT_NAME_TAG=""
     fi
+
     read -s -p "${bold}Enter Entitled Registry key (retrieve from ${green}https://myibm.ibm.com/products-services/containerlibrary${bold}):${normal} " -e ENTITLED_KEY
     echo " "
     read -p "${bold}Enter Entitled Registry Email:${normal} " -e ENTITLED_EMAIL
