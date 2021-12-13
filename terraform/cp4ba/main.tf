@@ -67,32 +67,12 @@ module "install_db2" {
   ENTITLEMENT_REGISTRY_USER_EMAIL = var.entitled_registry_user
 }
 
-  # ------ D
-module "install_cp4ba"{
-  source = "git::https://github.com/jgod1360/terraform-ibm-cloud-pak/tree/cp4ba/modules/cp4ba"
-
-  CLUSTER_NAME_OR_ID      = var.cluster_name_or_id
-  cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
-
-  # ---- Platform ----
-  CP4BA_PROJECT_NAME      = var.cp4ba_project_name
-  USER_NAME_EMAIL         = var.entitled_registry_user
-  ENTITLED_REGISTRY_KEY   = var.entitlement_key
-
-  # ----- LDAP Settings -----
-  LDAP_ADMIN_NAME         = local.ldap_admin_name
-  LDAP_ADMIN_PASSWORD     = var.ldap_admin_password
-
-  # ----- DB2 Settings -----
-  DB2_PORT_NUMBER         = var.db2_port_number
-  DB2_HOST_NAME           = var.db2_host_name
-  DB2_HOST_IP             = var.db2_host_ip
-  DB2_ADMIN_USERNAME      = var.db2_admin_username
-  DB2_ADMIN_USER_PASSWORD = var.db2_admin_password
-}
-
 resource "null_resource" "create_DB_Schema" {
 
+  depends_on = [
+    module.install_db2
+  ]
+  
   provisioner "local-exec" {
     command = "${path.module}/db2_schema/createAPPDB.sh"
   }
@@ -124,6 +104,30 @@ resource "null_resource" "create_DB_Schema" {
   provisioner "local-exec" {
     command = "${path.module}/db2_schema/createUMSDB.sh"
   }
+}
+
+  # ------ D
+module "install_cp4ba"{
+  source = "git::https://github.com/jgod1360/terraform-ibm-cloud-pak/tree/cp4ba/modules/cp4ba"
+
+  CLUSTER_NAME_OR_ID      = var.cluster_name_or_id
+  cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
+
+  # ---- Platform ----
+  CP4BA_PROJECT_NAME      = var.cp4ba_project_name
+  USER_NAME_EMAIL         = var.entitled_registry_user
+  ENTITLED_REGISTRY_KEY   = var.entitlement_key
+
+  # ----- LDAP Settings -----
+  LDAP_ADMIN_NAME         = local.ldap_admin_name
+  LDAP_ADMIN_PASSWORD     = var.ldap_admin_password
+
+  # ----- DB2 Settings -----
+  DB2_PORT_NUMBER         = var.db2_port_number
+  DB2_HOST_NAME           = var.db2_host_name
+  DB2_HOST_IP             = var.db2_host_ip
+  DB2_ADMIN_USERNAME      = var.db2_admin_username
+  DB2_ADMIN_USER_PASSWORD = var.db2_admin_password
 }
 
 data "external" "get_endpoints" {
