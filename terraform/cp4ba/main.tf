@@ -42,7 +42,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
-  cluster_name_id   = var.cluster_name_or_id
+  cluster_name_or_id   = var.cluster_name_or_id
   resource_group_id = data.ibm_resource_group.group.id
   download          = true
   config_dir        = var.cluster_config_path
@@ -72,9 +72,7 @@ module "install_cp4ba"{
   source = "git::https://github.com/jgod1360/terraform-ibm-cloud-pak/tree/cp4ba/modules/cp4ba"
 
   CLUSTER_NAME_OR_ID     = var.cluster_name_or_id
-
-  # ---- IBM Cloud API Key ----
-  IBMCLOUD_API_KEY        = var.ibmcloud_api_key
+  cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
 
   # ---- Platform ----
   CP4BA_PROJECT_NAME      = var.cp4ba_project_name
