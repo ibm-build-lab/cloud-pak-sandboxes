@@ -91,7 +91,7 @@ module "install_cp4ba"{
   DB2_ADMIN_USER_PASSWORD = var.db2_admin_password
 }
 
-data "external" "createAPPDB" {
+data "external" "DB_Schema" {
   count = var.enable ? 1 : 0
 
   depends_on = [
