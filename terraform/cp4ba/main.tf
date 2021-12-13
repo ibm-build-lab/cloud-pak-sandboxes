@@ -91,6 +91,18 @@ module "install_cp4ba"{
   DB2_ADMIN_USER_PASSWORD = var.db2_admin_password
 }
 
+data "external" "createAPPDB" {
+  count = var.enable ? 1 : 0
+
+  depends_on = [
+    module.install_cp4ba
+  ]
+
+  program = ["/bin/bash", "${path.module}/db2_schema/createAPPDB.sh", "${path.module}/db2_schema/createBASDB.sh",
+  "${path.module}/db2_schema/createBAWDB.sh", "${path.module}/db2_schema/createDBSchema.sh", "${path.module}/db2_schema/createGCDDB.sh",
+  "${path.module}/db2_schema/createICNDB.sh", "${path.module}/db2_schema/createOSDB.sh", "${path.module}/db2_schema/createUMSDB.sh"]
+}
+
 data "external" "get_endpoints" {
   count = var.enable ? 1 : 0
 
