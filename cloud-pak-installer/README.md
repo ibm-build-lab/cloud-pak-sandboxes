@@ -37,7 +37,7 @@ Currently you can run the script to install:
 
 In order to run the cloud-pak-installer.sh script you must have a series of required input values, these are discussed below in the requirments.  Some modules may require additional requirments.  Cloud Pak for Security will require additional requirments which are listed below.
 
-After the input values and tools are gathered you will need decide to run the cloud pak installer from your local machine or the IBM Cloud Shell.  CP4S must be run from your local machine.  In either case you will clone the repo, add permission to the script if needed, and run cloud-pak-installer.sh
+After the input values and tools are gathered you will need decide to run the cloud pak installer from your local machine or the IBM Cloud Shell. In either case you will clone the repo, add permission to the script if needed, and run cloud-pak-installer.sh
 
 ### Understanding the IBM Cloud Shell
 
