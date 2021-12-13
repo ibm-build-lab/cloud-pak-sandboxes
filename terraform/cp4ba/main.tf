@@ -91,16 +91,39 @@ module "install_cp4ba"{
   DB2_ADMIN_USER_PASSWORD = var.db2_admin_password
 }
 
-data "external" "DB_Schema" {
-  count = var.enable ? 1 : 0
+resource "null_resource" "create_DB_Schema" {
 
-  depends_on = [
-    module.install_cp4ba
-  ]
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createAPPDB.sh"
+  }
 
-  program = ["/bin/bash", "${path.module}/db2_schema/createAPPDB.sh", "${path.module}/db2_schema/createBASDB.sh",
-  "${path.module}/db2_schema/createBAWDB.sh", "${path.module}/db2_schema/createDBSchema.sh", "${path.module}/db2_schema/createGCDDB.sh",
-  "${path.module}/db2_schema/createICNDB.sh", "${path.module}/db2_schema/createOSDB.sh", "${path.module}/db2_schema/createUMSDB.sh"]
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createBASDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createBAWDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createDBSchema.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createGCDDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createICNDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createOSDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createUMSDB.sh"
+  }
 }
 
 data "external" "get_endpoints" {
