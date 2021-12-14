@@ -9,15 +9,16 @@ data "ibm_resource_group" "group" {
   name = var.resource_group
 }
 
-resource "null_resource" "mkdir_kubeconfig_dir" {
-  triggers = { always_run = timestamp() }
-  provisioner "local-exec" {
-    command = "mkdir -p ${var.cluster_config_path}"
-  }
-}
+//resource "null_resource" "mkdir_kubeconfig_dir" {
+//  triggers = { always_run = timestamp() }
+//  provisioner "local-exec" {
+//    command = "mkdir -p ${var.cluster_config_path}"
+//  }
+//}
 
 module "create_cluster" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
+  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
   owner                = var.entitled_registry_user
@@ -56,7 +57,8 @@ module "install_db2" {
   depends_on = [
     module.create_cluster
   ]
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/blob/main/modules/Db2"
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/Db2"
+  source = "../../../terraform-ibm-cloud-pak/modules/Db2"
 
   # ----- Cluster -----
   KUBECONFIG = var.cluster_config_path
@@ -115,7 +117,8 @@ module "install_cp4ba"{
   depends_on = [
     null_resource.create_DB_Schema
   ]
-  source = "git::https://github.com/jgod1360/terraform-ibm-cloud-pak/tree/cp4ba/modules/cp4ba"
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_0.13/modules/cp4ba"
+  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
 
   CLUSTER_NAME_OR_ID      = var.cluster_name_or_id
   cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
