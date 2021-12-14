@@ -16,7 +16,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
   }
 }
 
-module "cluster" {
+module "create_cluster" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
@@ -52,6 +52,10 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
+
+  depends_on = [
+    module.create_cluster
+  ]
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/blob/main/modules/Db2"
 
   # ----- Cluster -----
@@ -72,7 +76,7 @@ resource "null_resource" "create_DB_Schema" {
   depends_on = [
     module.install_db2
   ]
-  
+
   provisioner "local-exec" {
     command = "${path.module}/db2_schema/createAPPDB.sh"
   }
@@ -108,6 +112,9 @@ resource "null_resource" "create_DB_Schema" {
 
   # ------ D
 module "install_cp4ba"{
+  depends_on = [
+    null_resource.create_DB_Schema
+  ]
   source = "git::https://github.com/jgod1360/terraform-ibm-cloud-pak/tree/cp4ba/modules/cp4ba"
 
   CLUSTER_NAME_OR_ID      = var.cluster_name_or_id
