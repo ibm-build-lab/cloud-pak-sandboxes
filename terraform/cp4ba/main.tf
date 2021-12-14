@@ -17,7 +17,7 @@ data "ibm_resource_group" "group" {
 //}
 
 module "create_cluster" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/roks"
 //  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
@@ -57,7 +57,7 @@ module "install_db2" {
   depends_on = [
     module.create_cluster
   ]
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/Db2"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/Db2"
 //  source = "../../../terraform-ibm-cloud-pak/modules/Db2"
 
   # ----- Cluster -----
@@ -117,7 +117,7 @@ module "install_cp4ba"{
   depends_on = [
     null_resource.create_DB_Schema
   ]
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_0.13/modules/cp4ba"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/cp4ba"
 //  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
 
   CLUSTER_NAME_OR_ID      = var.cluster_name_or_id
