@@ -17,7 +17,7 @@ data "ibm_resource_group" "group" {
 //}
 
 module "create_cluster" {
-  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/roks"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/roks"
 //  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
@@ -53,12 +53,11 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
-
-  depends_on = [
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/Db2"
+//  source = "../../../terraform-ibm-cloud-pak/modules/Db2"
+    depends_on = [
     module.create_cluster
   ]
-  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/Db2"
-//  source = "../../../terraform-ibm-cloud-pak/modules/Db2"
 
   # ----- Cluster -----
   KUBECONFIG = var.cluster_config_path
@@ -114,11 +113,11 @@ resource "null_resource" "create_DB_Schema" {
 
   # ------ D
 module "install_cp4ba"{
-  depends_on = [
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/cp4ba"
+//  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
+    depends_on = [
     null_resource.create_DB_Schema
   ]
-  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/cp4ba"
-//  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
 
   CLUSTER_NAME_OR_ID      = var.cluster_name_or_id
   cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
