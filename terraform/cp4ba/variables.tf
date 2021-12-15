@@ -12,14 +12,14 @@ variable "resource_group" {
   description = "Resource group name where the cluster will be hosted."
 }
 
-variable "platform_version" {
-  default = 4.6
-  description = "The OpenShift Container Platform version"
-}
-
 variable "cluster_name_or_id" {
   default     = ""
   description = "Enter your cluster id or name to install the Cloud Pak. Leave blank to provision a new Openshift cluster."
+}
+
+variable "platform_version" {
+  default = 4.7
+  description = ""
 }
 
 variable "workers_count" {
