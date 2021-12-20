@@ -17,7 +17,8 @@ data "ibm_resource_group" "group" {
 //}
 
 module "create_cluster" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
 //  source = "../../../joel_cloud_pak_terraform_issue220/modules/roks"
 //  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable               = local.enable_cluster
