@@ -24,7 +24,7 @@ The Cloud Pak Sandbox Installer is an easy to use script that allows you to prov
 
 Currently you can run the script to install:
 
-- Automation Foundation
+- IBM Automation Foundation
 - Cloud Pak for Multi Cloud Management
 - Cloud Pak for Data
 - Cloud Pak for Integration
