@@ -32,6 +32,7 @@ Currently you can run the script to install:
 - Cloud Pak for Security
 - Cloud Pak for Business Automation (under development)
 - Cloud Pak for Network Automation
+- Create a ROKS classic or VPC cluster
 
 ## Requirements
 
