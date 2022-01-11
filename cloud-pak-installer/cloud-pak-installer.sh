@@ -1742,7 +1742,7 @@ select_vpc_zone() {
                             ;;
                         "eu-de-3")
                             echo "${bold}Chosen vpc zone: eu-de-3"
-                            cp workspace-configuration.json temp.json
+                            cp ./workspace-configuration.json temp.json
                             jq -r '(.template_data[] | .variablestore[] | select(.name == "vpc_zone_names") | .value) |= "[\"eu-de-3\"]"' temp.json > workspace-configuration.json
                             break
                             ;;
@@ -1915,51 +1915,61 @@ get_classic_flavors() {
         case $classicFlavor in
             "4x16")
                 echo "${bold}Selected: 4x16"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$CLASSIC_B_4x16" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "16x64")
                 echo "${bold}Selected: 16x64"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$CLASSIC_B_16x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "32x128")
                 echo "${bold}Selected: 32x128"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$CLASSIC_B_32x128" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "16x16")
                 echo "${bold}Selected: 16x16"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$CLASSIC_C_16x16" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "16x32")
                 echo "${bold}Selected: 16x32"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$CLASSIC_C_16x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "32x32")
                 echo "${bold}Selected: 32x32"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$CLASSIC_C_32x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;; 
             "32x64")
                 echo "${bold}Selected:32x64"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$CLASSIC_C_32x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "4x32")
                 echo "${bold}Selected: 4x32"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$CLASSIC_M_4x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "8x64")
                 echo "${bold}Selected: 8x64"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$CLASSIC_M_8x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "16x128")
                 echo "${bold}Selected: 16x128"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$CLASSIC_M_16x128" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;                                                  
@@ -1977,71 +1987,85 @@ get_vpc_flavors() {
         case $vpcFlavor in
             "4x16")
                 echo "${bold}Selected: 4x16"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_B_4x16" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "8x32")
                 echo "${bold}Selected: 8x32"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_B_8x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "16x64")
                 echo "${bold}Selected: 16x64"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_B_16x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "32x128")
                 echo "${bold}Selected: 32x128"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_B_32x128" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "48x192")
                 echo "${bold}Selected: 48x192"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_B_48x192" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "8x16")
                 echo "${bold}Selected: 8x16"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_C_8x16" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;; 
             "16x32")
                 echo "${bold}Selected:16x32"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_C_16x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "32x64")
                 echo "${bold}Selected: 32x64"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_C_32x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "48x96")
                 echo "${bold}Selected: 48x94"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_C_48x96" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;
             "4x32")
                 echo "${bold}Selected: 4x32"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_M_4x32" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;             
             "8x64")
                 echo "${bold}Selected: 8x64"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_M_8x64" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;   
             "16x128")
                 echo "${bold}Selected: 16x128"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_M_16x128" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;   
             "32x256")
                 echo "${bold}Selected: 32x256"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_M_32x256" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;   
             "48x284")
                 echo "${bold}Selected: 48x284"
+                cp ./workspace-configuration.json temp.json
                 jq -r --arg v "$VPC_M_48x284" '(.template_data[] | .variablestore[] | select(.name == "flavors") | .value) |= $v' temp.json > workspace-configuration.json
                 break
                 ;;   
