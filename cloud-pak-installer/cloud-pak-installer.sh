@@ -244,7 +244,7 @@ check_resource_groups() {
 
     if ! $FOUND_GROUP
     then echo "Resource group ${green}$RESOURCE_GROUP${bold} is not found."
-        echo "Please check that you are signed into the corrent ibmcloud cli account"
+        echo "Please check that you are signed into the correct ibmcloud cli account"
         echo "in addition ensure your resource group and permissions are accessible via login"
         echo "for more information please refer to the resource group documentation"
         exit
