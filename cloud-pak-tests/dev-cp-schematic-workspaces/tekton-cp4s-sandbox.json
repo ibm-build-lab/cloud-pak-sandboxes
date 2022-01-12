@@ -9,7 +9,7 @@
     "env:cp4s",
     "project:tekton"
   ],
-  "resource_group": "cloud-pak-sandbox",
+  "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
     "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4s"
   },
@@ -40,7 +40,7 @@
         },
         {
           "name": "resource_group",
-          "value": "cloud-pak-sandbox",
+          "value": "cloud-pak-sandbox-ibm",
           "type": "string"
         },
         {
@@ -65,12 +65,12 @@
         },
         {
           "name": "private_vlan_number",
-          "value": "3063422",
+          "value": "3131280",
           "type": "string"
         },
         {
           "name": "public_vlan_number",
-          "value": "3063424",
+          "value": "3131278",
           "type": "string"
         },
         {

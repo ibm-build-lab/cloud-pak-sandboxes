@@ -70,12 +70,12 @@
         },
         {
           "name": "private_vlan_number",
-          "value": "3063422",
+          "value": "3131280",
           "type": "string"
         },
         {
           "name": "public_vlan_number",
-          "value": "3063424",
+          "value": "3131278",
           "type": "string"
         },
         {
