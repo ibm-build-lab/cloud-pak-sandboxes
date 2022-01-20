@@ -140,11 +140,32 @@ Go [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/
 
 ## Provisioning this module in a Terraform Script
 
-In your Terraform script define the `ibm` provisioner block with the `version`.
+In your Terraform version script (`versions.tf`), define `terraform`
+block as follow:
+```hcl
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
+    ibm = {
+      source  = "ibm-cloud/ibm"
+      version = "1.34"
+    }
+    external = {
+      source = "hashicorp/external"
+    }
+    null = {
+      source = "hashicorp/null"
+    }
+  }
+}
+```
 
+Then in the `main.tf` Terraform script, define the `ibm` provider block
+as follow:
 ```hcl
 provider "ibm" {
-  version          = "~> 1.12"
+  region           = "us-south"
+  ibmcloud_api_key = "*************************"
 }
 ```
 
