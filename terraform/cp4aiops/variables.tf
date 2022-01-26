@@ -132,11 +132,11 @@ variable "etcd_password" {
 }
 
 // CP4AIOPS Module Variables
-variable "entitled_registry_key" {
+variable "entitlement_key" {
   default     = ""
   description = "Required: Cloud Pak Entitlement Key. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable"
 }
-variable "entitled_registry_user_email" {
+variable "entitled_registry_user" {
   description = "Required: Email address of the user owner of the Entitled Registry Key"
 }
 variable "namespace" {

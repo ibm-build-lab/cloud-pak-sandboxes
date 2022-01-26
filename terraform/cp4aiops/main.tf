@@ -8,7 +8,8 @@ locals {
 }
 
 module "cluster" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks?ref=terraform-0.13"
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks?ref=terraform-0.13"
+  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -25,12 +26,6 @@ module "cluster" {
   datacenter           = var.datacenter
   force_delete_storage = true
   vpc_zone_names       = var.vpc_zone_names
-
-  // Kubernetes Config parameters:
-  // download_config = false
-  // config_dir      = local.kubeconfig_dir
-  // config_admin    = false
-  // config_network  = false
 
   // Debugging
   private_vlan_number = var.private_vlan_number
@@ -57,7 +52,8 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "portworx" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx?ref=terraform-0.13"
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx?ref=terraform-0.13"
+  source = "../../../terraform-ibm-cloud-pak/modules/portworx"
   // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
   enable = var.install_portworx
 
@@ -91,19 +87,14 @@ module "portworx" {
 
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4aiops" {
-  // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/modules/cp4aiops"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops?ref=terraform-0.13"
-  enable = true
-
-  on_vpc            = var.on_vpc
-  portworx_is_ready = module.portworx.portworx_is_ready
-
-  // ROKS cluster parameters:
-  cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-
-  // Entitled Registry parameters:
-  entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
-  entitled_registry_user_email = var.entitled_registry_user_email
-
-  namespace = var.namespace
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops?ref=terraform-0.13"
+  source = "../../../terraform-ibm-cloud-pak/modules/cp4aiops"
+  enable    = true
+  portworx_is_ready       = 1
+  ibmcloud_api_key        = var.ibmcloud_api_key
+  cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
+  on_vpc                  = var.on_vpc
+  entitlement_key         = var.entitlement_key
+  entitled_registry_user  = var.entitled_registry_user
+  namespace               = var.namespace
 }
