@@ -1,15 +1,15 @@
 Everything is automated with Makefiles. However, instructions to get the
 same results manually are provided.
 
-- [Creation of a Partner Sandbox](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#creation-of-a-partner-sandbox)
-  - [Requirements](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#requirements)
-  - [Configure Access to IBM Cloud](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#configure-access-to-ibm-cloud)
-    - [Create an IBM Cloud API Key](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#create-an-ibm-cloud-api-key)
-    - [Create an IBM Cloud Classic Infrastructure API Key](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#create-an-ibm-cloud-classic-infrastructure-api-key)
-    - [Create the credentials file](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#create-the-credentials-file)
-  - [Provisioning the Sandbox](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#provisioning-the-sandbox)
-  - [Design](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#design)
-    - [External Terraform Modules](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#external-terraform-modules)
+- [Creation of a Partner Sandbox](#creation-of-a-partner-sandbox)
+  - [Requirements](#requirements)
+  - [Configure Access to IBM Cloud](#configure-access-to-ibm-cloud)
+    - [Create an IBM Cloud API Key](#create-an-ibm-cloud-api-key)
+    - [Create an IBM Cloud Classic Infrastructure API Key](#create-an-ibm-cloud-classic-infrastructure-api-key)
+    - [Create the credentials file](#create-the-credentials-file)
+  - [Provisioning the Sandbox](#provisioning-the-sandbox)
+  - [Design](#design)
+    - [External Terraform Modules](#external-terraform-modules)
 
 ## Requirements
 
@@ -21,7 +21,7 @@ The development and testing of the sandbox setup code requires the following ele
 - [Login to IBM Cloud with the CLI](https://ibm.github.io/cloud-enterprise-examples/iac/setup-environment#login-to-ibm-cloud)
 - [Install Terraform](https://ibm.github.io/cloud-enterprise-examples/iac/setup-environment#install-terraform) **version 0.12**
 - [Install IBM Cloud Terraform Provider](https://ibm.github.io/cloud-enterprise-examples/iac/setup-environment#configure-access-to-ibm-cloud)
-- [Configure Access to IBM Cloud](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#configure-access-to-ibm-cloud)
+- [Configure Access to IBM Cloud](#configure-access-to-ibm-cloud)
 - Install some utility tools such as:
   - [jq](https://stedolan.github.io/jq/download/) (optional)
   - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
@@ -115,7 +115,7 @@ This directory contains the Terraform HCL code to execute/apply by Terraform eit
 
 Each Cloud Pak subdirectory contains the following files:
 
-- `main.tf`: contains the code provision the Cloud Pak, you should start here to know what Terraform does. This uses two Terraform modules: the ROKS module and a Cloud Pak module. The ROKS module is used to provision an OpenShift cluster where the Cloud Pak will be installed. Then the Cloud Pak module is applied to install the Cloud Pak. To know more about these Terraform modules refer to the following section [Cloud Pak External Terraform Modules](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#cloud-pak-external-terraform-modules).
+- `main.tf`: contains the code provision the Cloud Pak, you should start here to know what Terraform does. This uses two Terraform modules: the ROKS module and a Cloud Pak module. The ROKS module is used to provision an OpenShift cluster where the Cloud Pak will be installed. Then the Cloud Pak module is applied to install the Cloud Pak. To know more about these Terraform modules refer to the following section [Cloud Pak External Terraform Modules](#cloud-pak-external-terraform-modules).
 - `variables.tf`: contains all the input parameters. The input parameters are explained below but you can get additional information about them in the README of each Cloud Pak directory.
 - `outputs.tf`: contains all the output parameters. The output parameters are explained below but you can get additional information about them in the README of each Cloud Pak directory.
 - `terraform.tfvars`: although the `variables.tf` defines the input variables and the default values, the `terraform.tfvars` also contains default values to access and modify. If you'd like to customize your resources try to modify the values in this file first.
@@ -125,7 +125,7 @@ Each Cloud Pak subdirectory contains the following files:
 
 # Terraform Modules to create a ROKS Cluster, install Db2 and Cloud Pak for Business Automation
 
-If there is not an existing ROKS cluster, this Terraform modules will create a new ROKS Cluster, then install Db2 and Cloud Pak for Business Automation.
+If there is not an existing ROKS cluster, this Terraform modules will create a new ROKS Cluster, then install Db2 and Cloud Pak for Business Automation. 
 
 installs **Cloud Pak for Business Automation** on an Openshift (ROKS)
 cluster on IBM Cloud.
@@ -136,7 +136,7 @@ cluster on IBM Cloud.
 
 If running these modules from your local terminal, you need to set the credentials to access IBM Cloud.
 
-Go [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/CREDENTIALS.md) for details.
+Go [here](../CREDENTIALS.md) for details.
 
 ## Provisioning this module in a Terraform Script
 
@@ -188,7 +188,7 @@ Output:
 
 ### Using the CP4BA Module
 
-Use a `module` block assigning the `source` parameter to the location of this module `git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba`. Then set the [input variables](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#input-variables) required to install the Cloud Pak for Business Automation.
+Use a `module` block assigning the `source` parameter to the location of this module `git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba`. Then set the [input variables](#input-variables) required to install the Cloud Pak for Business Automation.
 
 ```hcl
 module "cp4ba" {
