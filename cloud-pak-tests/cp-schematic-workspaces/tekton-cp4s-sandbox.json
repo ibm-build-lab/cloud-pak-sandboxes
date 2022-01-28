@@ -1,5 +1,5 @@
 {
-  "name": "tekton-cp4s-sandbox",
+  "name": "tekton-cp4s-sandbox-dev",
   "type": [
     "terraform_v0.13"
   ],
@@ -11,7 +11,7 @@
   ],
   "resource_group": "cloud-pak-sandbox",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4s"
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4s"
   },
   "template_data": [
     {
@@ -35,7 +35,7 @@
         },
         {
           "name": "environment",
-          "value": "cp4s",
+          "value": "cp4s-dev",
           "type": "string"
         },
         {
@@ -86,7 +86,7 @@
         },
         {
           "name": "admin_user",
-          "value": "jadmin",
+          "value": "",
           "type": "string"
         }
       ]

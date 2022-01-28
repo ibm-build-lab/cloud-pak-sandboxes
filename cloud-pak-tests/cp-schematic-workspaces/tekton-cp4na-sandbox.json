@@ -1,5 +1,5 @@
 {
-  "name": "tekon-cp4na-sandbox",
+  "name": "tekon-cp4na-sandbox-dev",
   "type": [
     "terraform_v0.13"
   ],
@@ -11,7 +11,7 @@
   ],
   "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4na"
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4na"
   },
   "template_data": [
     {
@@ -35,7 +35,7 @@
         },
         {
           "name": "environment",
-          "value": "cp4na",
+          "value": "cp4na-dev",
           "type": "string"
         },
         {
