@@ -1,5 +1,5 @@
 {
-  "name": "tekton-cpd40-sandbox",
+  "name": "tekton-cpd40-sandbox-dev",
   "type": [
     "terraform_v0.13"
   ],
@@ -11,7 +11,7 @@
   ],
   "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_4.0"
+    "url": "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/cp4data_4.0"
   },
   "template_data": [
     {
@@ -35,7 +35,7 @@
         },
         {
           "name": "environment",
-          "value": "cpd40",
+          "value": "cpd40-dev",
           "type": "string"
         },
         {

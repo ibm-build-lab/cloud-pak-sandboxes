@@ -1,5 +1,5 @@
 {
-  "name": "tekton-cpd35-sandbox",
+  "name": "tekton-cpd35-sandbox-dev",
   "type": [
     "terraform_v0.13"
   ],
@@ -11,11 +11,11 @@
   ],
   "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4data_3.5"
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4data_3.5"
   },
   "template_data": [
     {
-      "folder": "terraform/cp4data_3.5",
+      "folder": "terraform/cp4data",
       "type": "terraform_v0.13",
       "variablestore": [
         {
@@ -35,7 +35,7 @@
         },
         {
           "name": "environment",
-          "value": "cpd35",
+          "value": "cpd35-dev",
           "type": "string"
         },
         {

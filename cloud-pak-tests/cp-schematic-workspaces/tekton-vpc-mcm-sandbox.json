@@ -1,5 +1,5 @@
 {
-  "name": "tekton-vpc-mcm-sandbox",
+  "name": "tekton-vpc-mcm-sandbox-dev",
   "type": [
     "terraform_v0.13"
   ],
@@ -36,7 +36,7 @@
         },
         {
           "name": "environment",
-          "value": "vpc-mcm",
+          "value": "vpc-mcm-dev",
           "type": "string"
         },
         {
