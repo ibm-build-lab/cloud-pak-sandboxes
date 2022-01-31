@@ -81,6 +81,7 @@ variable "cp4ba_project_name" {
   description = "namespace/project for cp4ba"
 }
 
+# --- LDAP SETTINGS ---
 # Password for LDAP Admin User (ldapAdminName name see below), for example passw0rd - use the password that you specified when setting up LDAP
 variable "ldap_admin_password" {
   description = "LDAP Admin password"
@@ -90,8 +91,6 @@ variable "ldap_admin_password" {
 variable "ldap_server" {
   description = "LDAP server "
 }
-
-# --- LDAP SETTINGS ---
 locals {
   ldap_admin_name = "cn=root"
 }
