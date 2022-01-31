@@ -17,7 +17,7 @@ variable "platform_version" {
   description = "The OpenShift Container Platform version"
 }
 
-variable "cluster_name_or_id" {
+variable "cluster_id" {
   default     = ""
   description = "Enter your cluster id or name to install the Cloud Pak. Leave blank to provision a new Openshift cluster."
 }
@@ -97,12 +97,8 @@ locals {
 }
 
 locals {
-  enable_cluster = var.cluster_name_or_id
+  enable_cluster = var.cluster_id
  }
-
-locals {
-  storage_class_name = "cp4a-file-retain-gold-gid"
-}
 
 # --------- DB2 SETTINGS ----------
 variable "enable" {

@@ -19,8 +19,8 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 module "create_cluster" {
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
 //  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
-//  source = "../../../joel_cloud_pak_terraform_issue220/modules/roks"
-  source = "../../../terraform-ibm-cloud-pak/modules/roks"
+  source = "../../../joel_cloud_pak_terraform_issue220/modules/roks"
+
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
   owner                = var.entitled_registry_user
@@ -45,7 +45,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
-  cluster_name_or_id   = var.cluster_name_or_id
+  cluster_name_or_id   = var.cluster_id
   resource_group_id    = data.ibm_resource_group.group.id
   download             = true
   config_dir           = var.cluster_config_path
@@ -121,7 +121,7 @@ module "install_cp4ba"{
     null_resource.create_DB_Schema
   ]
 
-  CLUSTER_NAME_OR_ID      = var.cluster_name_or_id
+  CLUSTER_NAME_OR_ID      = var.cluster_id
   cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
 
   # ---- Platform ----
