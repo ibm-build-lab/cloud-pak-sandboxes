@@ -61,11 +61,8 @@ module "cp4s" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4data"
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4s?ref=terraform-0.13"
   enable = true
-  force  = true
-
 
   // ROKS cluster parameters:
-  openshift_version   = local.roks_version
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
 
   // Entitled Registry parameters:
