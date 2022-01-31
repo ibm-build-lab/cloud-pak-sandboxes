@@ -5,7 +5,7 @@ same results manually are provided.
   - [Requirements](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#requirements)
   - [Configure Access to IBM Cloud](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#configure-access-to-ibm-cloud)
     - [Create an IBM Cloud API Key](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#create-an-ibm-cloud-api-key)
-    - [Create an IBM Cloud Classic Infrastructure API Key](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#create-an-ibm-cloud-classic-infrastructure-api-key)
+      - [Create an IBM Cloud Classic Infrastructure API Key](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#create-an-ibm-cloud-classic-infrastructure-api-key)
     - [Create the credentials file](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#create-the-credentials-file)
   - [Provisioning the Sandbox](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#provisioning-the-sandbox)
   - [Design](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4ba/README.md#design)
@@ -243,20 +243,23 @@ module "cp4ba" {
 
 | Name                               | Description                                                                                                                                                                                                                | Default                     | Required |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | -------- |
-| `enable`                           | If set to `false` does not install the cloud pak on the given cluster. By default it's enabled  | `true`                      | No       |
-| `cluster_config_path`              | Path to the Kubernetes configuration file to access your cluster | `./.kube/config`                      | No       |
-| `ingress_subdomain`                | Run the command `ibmcloud ks cluster get -c <cluster_name_or_id>` to get the Ingress Subdomain value |  | No       |
-| `cp4ba_project_name`               | Namespace to install for Cloud Pak for Integration | `cp4ba`                      | No       |
+| `ibmcloud_api_key`                 | IBM Cloud API key (https://cloud.ibm.com/docs/account?topic=account-userapikey#create_user_key)                                                                                                                            |                             | Yes      |
+| `resource_group`                   | Region where the cluster is created. Managing resource groups: (https://cloud.ibm.com/docs/account?topic=account-rgs&interface=ui)                                                                                         | 'default`                   | Yes      |
+| `region`                           | Region code (https://cloud.ibm.com/docs/codeengine?topic=codeengine-regions)                                                                                                                                               | `us-south`                  | Yes      |
+| `enable`                           | If set to `false` does not install the cloud pak on the given cluster. By default it's enabled                                                                                                                             | `true`                      | No       |
+| `cluster_config_path`              | Path to the Kubernetes configuration file to access your cluster                                                                                                                                                           | `./.kube/config`            | No       |
+| `ingress_subdomain`                | Run the command `ibmcloud ks cluster get -c <cluster_name_or_id>` to get the Ingress Subdomain value                                                                                                                       |                             | No       |
+| `cp4ba_project_name`               | Namespace to install for Cloud Pak for Integration                                                                                                                                                                         | `cp4ba`                     | No       |
 | `entitled_registry_key`            | Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary and assign it to this variable. Optionally you can store the key in a file and use the `file()` function to get the file content/key |                             | Yes      |
-| `entitled_registry_user_email`     | IBM Container Registry (ICR) username which is the email address of the owner of the Entitled Registry Key |  | Yes      |
-| `ldap_admin`     | LDAP Admin user name | `cn=root`  | Yes      |
-| `ldap_password`     | LDAP Admin password | `Passw0rd` | Yes      |
-| `ldap_host_ip`     | LDAP server IP address |  | Yes      |
-| `db2_host_name`     | Host for DB2 instance |  | Yes      |
-| `db2_host_port`     | Port for DB2 instance |  | Yes      |
-| `db2_admin`     | Admin user name defined in associated LDAP| `cpadmin` | Yes      |
-| `db2_user`     | User name defined in associated LDAP | `db2inst1` | Yes      |
-| `db2_password`     | Password defined in associated LDAP | `passw0rd` | Yes      |
+| `entitled_registry_user_email`     | IBM Container Registry (ICR) username which is the email address of the owner of the Entitled Registry Key                                                                                                                 |                             | Yes      |
+| `ldap_admin`                       | LDAP Admin user name                                                                                                                                                                                                       | `cn=root`                   | Yes      |
+| `ldap_password`                    | LDAP Admin password                                                                                                                                                                                                        | `Passw0rd`                  | Yes      |
+| `ldap_host_ip`                     | LDAP server IP address                                                                                                                                                                                                     |                             | Yes      |
+| `db2_host_name`                    | Host for DB2 instance                                                                                                                                                                                                      |                             | Yes      |
+| `db2_host_port`                    | Port for DB2 instance                                                                                                                                                                                                      |                             | Yes      |
+| `db2_admin`                        | Admin user name defined in associated LDAP                                                                                                                                                                                 | `cpadmin`                   | Yes      |
+| `db2_user`                         | User name defined in associated LDAP                                                                                                                                                                                       | `db2inst1`                  | Yes      |
+| `db2_password`                     | Password defined in associated LDAP                                                                                                                                                                                        | `passw0rd`                  | Yes      |
 
 For an example of how to put all this together, refer to our [Cloud Pak for Business Automation Terraform example](https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4ba).
 

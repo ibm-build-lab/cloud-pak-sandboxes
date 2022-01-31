@@ -8,7 +8,7 @@ variable "region" {
 }
 
 variable "resource_group" {
-  default     = "cloud-pak-sandbox-ibm"
+  default     = "default"
   description = "Resource group name where the cluster will be hosted."
 }
 
