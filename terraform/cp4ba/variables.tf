@@ -50,13 +50,22 @@ variable "public_vlan_number" {
   description = "**Classic Only**. Ignored if `cluster_name_or_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Leave blank if Public VLAN does not exist, one will be created"
 }
 
+variable "project_name" {
+  description = "Ignored if `cluster_id` is specified. The project_name is combined with `environment` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
+}
+
 variable "environment" {
   default     = "dev"
   description = "Ignored if `cluster_id` is specified. The environment is combined with `project_name` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'env:{environment}'"
 }
 
+variable "owner" {
+  default     = ""
+  description = "Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources with the tag 'owner:{owner}'"
+}
+
 variable "on_vpc" {
-  default = false
+  default     = false
   description = "Select 'true' to install on a VPC cluster and it's using VPC Gen2. Note: CP4BA does not currently support VPC cluster."
 }
 
@@ -66,7 +75,7 @@ variable "cluster_config_path" {
 }
 
 variable "entitled_registry_user_email" {
-  type = string
+  type        = string
   description = "Email address of the user owner of the Entitled Registry Key"
 }
 
@@ -91,21 +100,23 @@ variable "ldap_admin_password" {
 variable "ldap_server" {
   description = "LDAP server "
 }
-locals {
-  ldap_admin_name = "cn=root"
+
+variable "ldap_admin_name" {
+  default = "cn=root"
+  description = "The LDAP root administrator account to access the directory. To learn more: https://www.ibm.com/docs/en/sva/7.0.0?topic=tuning-ldap-root-administrator-account-cnroot"
 }
 
 locals {
-  enable_cluster = var.cluster_id
- }
+  enable_cluster = var.cluster_id == null || var.cluster_id == ""
+}
 
 # --------- DB2 SETTINGS ----------
-variable "enable" {
-  default = true
+variable "enable_db2" {
+  default = false
   description = "If set to true, it will install DB2 on the given cluster"
 }
 
- variable "db2_project_name" {
+variable "db2_project_name" {
    default = "ibm-db2"
    description = "The namespace/project for Db2"
  }

@@ -21,8 +21,9 @@ module "create_cluster" {
 
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
-  owner                = var.entitled_registry_user
+  project_name         = var.project_name
   environment          = var.environment
+  owner                = var.owner
   resource_group       = var.resource_group
   roks_version         = var.platform_version
   flavors              = var.flavors
@@ -59,16 +60,17 @@ module "install_db2" {
   ]
 
   # ----- Cluster -----
-  KUBECONFIG = var.cluster_config_path
+  kubeconfig = var.cluster_config_path
 
   # ----- Platform -----
-  DB2_PROJECT_NAME        = var.db2_project_name
-  DB2_ADMIN_USER_NAME     = var.db2_admin_username
-  DB2_ADMIN_USER_PASSWORD = var.db2_admin_password
+  enable_db2              = var.enable_db2
+  db2_project_name        = var.db2_project_name
+  db2_admin_username      = var.db2_admin_username
+  db2_admin_ser_password  = var.db2_admin_password
 
-  # ------ Docker Information ----------
-  ENTITLED_REGISTRY_KEY           = var.entitled_registry_key
-  ENTITLEMENT_REGISTRY_USER_EMAIL = var.entitled_registry_user_email
+  # -------- Docker Information ----------
+  entiteled_registry_key          = var.entitled_registry_key
+  entitlement_registry_user_email = var.entitled_registry_user_email
 }
 
 resource "null_resource" "create_DB_Schema" {
@@ -123,8 +125,8 @@ module "install_cp4ba"{
 
   # ---- Platform ----
   CP4BA_PROJECT_NAME      = var.cp4ba_project_name
-  USER_NAME_EMAIL         = var.entitled_registry_user
-  ENTITLED_REGISTRY_KEY   = var.entitlement_key
+  USER_NAME_EMAIL         = var.entitled_registry_user_email
+  ENTITLED_REGISTRY_KEY   = var.entitled_registry_key
 
   # ----- LDAP Settings -----
   LDAP_ADMIN_NAME         = local.ldap_admin_name
@@ -139,7 +141,7 @@ module "install_cp4ba"{
 }
 
 data "external" "get_endpoints" {
-  count = var.enable ? 1 : 0
+  count = var.enable_db2 ? 1 : 0
 
   depends_on = [
     module.install_cp4ba

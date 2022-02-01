@@ -9,7 +9,7 @@ output "cluster_name" {
   depends_on = [
     data.external.get_endpoints,
   ]
-  value = var.cp4ba_project_name + var.environment + "-cluster"
+  value = var.project_name + var.environment + "-cluster"
 }
 
 output "resource_group" {
