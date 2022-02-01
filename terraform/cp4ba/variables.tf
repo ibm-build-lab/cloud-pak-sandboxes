@@ -65,12 +65,12 @@ variable "cluster_config_path" {
   description = "directory to store the kubeconfig file"
 }
 
-variable "entitled_registry_user" {
+variable "entitled_registry_user_email" {
   type = string
   description = "Email address of the user owner of the Entitled Registry Key"
 }
 
-variable "entitlement_key" {
+variable "entitled_registry_key" {
   type        = string
   description = "Do you have a Cloud Pak for Business Automation Entitlement Registry key? If not, Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
 }

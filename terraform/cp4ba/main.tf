@@ -17,9 +17,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 }
 
 module "create_cluster" {
-//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
-//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
-  source = "../../../joel_cloud_pak_terraform_issue220/modules/roks"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
 
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
@@ -55,8 +53,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/Db2"
-//  source = "../../../terraform-ibm-cloud-pak/modules/Db2"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/Db2"
     depends_on = [
     module.create_cluster
   ]
@@ -70,8 +67,8 @@ module "install_db2" {
   DB2_ADMIN_USER_PASSWORD = var.db2_admin_password
 
   # ------ Docker Information ----------
-  ENTITLED_REGISTRY_KEY           = var.entitlement_key
-  ENTITLEMENT_REGISTRY_USER_EMAIL = var.entitled_registry_user
+  ENTITLED_REGISTRY_KEY           = var.entitled_registry_key
+  ENTITLEMENT_REGISTRY_USER_EMAIL = var.entitled_registry_user_email
 }
 
 resource "null_resource" "create_DB_Schema" {
@@ -115,7 +112,7 @@ resource "null_resource" "create_DB_Schema" {
 
   # ------ DB2 -------
 module "install_cp4ba"{
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cloud_pak_terraform_issue220/modules/cp4ba"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/cp4ba"
 //  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
     depends_on = [
     null_resource.create_DB_Schema
