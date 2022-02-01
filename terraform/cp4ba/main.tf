@@ -129,7 +129,7 @@ module "install_cp4ba"{
   ENTITLED_REGISTRY_KEY   = var.entitled_registry_key
 
   # ----- LDAP Settings -----
-  LDAP_ADMIN_NAME         = local.ldap_admin_name
+  LDAP_ADMIN_NAME         = var.ldap_admin_name
   LDAP_ADMIN_PASSWORD     = var.ldap_admin_password
 
   # ----- DB2 Settings -----
