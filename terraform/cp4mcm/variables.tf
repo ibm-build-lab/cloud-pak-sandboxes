@@ -112,7 +112,7 @@ locals {
   // ROKS variables
   workers_count  = [5]
   roks_version   = "4.7"
-  kubeconfig_dir = "./.kube/config"
+  kubeconfig_dir = "/tmp/.schematics/.kube/config"
   // MCM variables
   namespace = "cp4mcm"
 }
