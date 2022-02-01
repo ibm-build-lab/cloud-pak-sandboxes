@@ -69,6 +69,10 @@ The Terraform code return the following output parameters.
 | `cluster_name`     | The cluster name which should be: `{project_name}-{environment}-cluster`                                                           |
 | `resource_group`   | Resource group where the OpenShift cluster is created                                                                              |
 | `kubeconfig`       | File path to the kubernetes cluster configuration file. Execute `export KUBECONFIG=$(terraform output kubeconfig)` to use `kubectl`|
+| `db2_host_name`    | Host name of Db2 instance                                                                                                          |
+| `db2_host_ip`      | IP address for the Db2                                                                                                             |
+| `db2_port_number`  | Port for Db2 instance                                                                                                              |
+| `db2_standard_license_key`  | The standard license key for the Db2 database product                                                                     |
 | `cp4ba_endpoint`   | URL of the CP4BA dashboard                                                                                                         |
 | `cp4ba_user`       | Username to login to the CP4BA dashboard                                                                                           |
 | `cp4ba_password`   | Password to login to the CP4BA dashboard                                                                                           |
