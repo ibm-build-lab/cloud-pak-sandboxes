@@ -81,6 +81,6 @@ variable "entitled_registry_user_email" {
 locals {
   workers_count              = [5]
   roks_version               = "4.7"
-  kubeconfig_dir             = "./.kube/config"
+  kubeconfig_dir             = "/tmp/.schematics/.kube/config"
   entitled_registry_key_file = "./entitlement.key"
 }
