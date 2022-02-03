@@ -120,12 +120,11 @@ module "install_cp4ba"{
     null_resource.create_DB_Schema
   ]
 
-  CLUSTER_NAME_OR_ID      = var.cluster_id
-  cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
+  KUBECONFIG              = data.ibm_container_cluster_config.cluster_config.config_file_path
 
   # ---- Platform ----
   CP4BA_PROJECT_NAME      = var.cp4ba_project_name
-  USER_NAME_EMAIL         = var.entitled_registry_user_email
+  ENTITLED_REGISTRY_EMAIL = var.entitled_registry_user_email
   ENTITLED_REGISTRY_KEY   = var.entitled_registry_key
 
   # ----- LDAP Settings -----
