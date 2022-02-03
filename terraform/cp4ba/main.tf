@@ -66,10 +66,10 @@ module "install_db2" {
   enable_db2              = var.enable_db2
   db2_project_name        = var.db2_project_name
   db2_admin_username      = var.db2_admin_username
-  db2_admin_ser_password  = var.db2_admin_password
+  db2_admin_user_password  = var.db2_admin_password
 
   # -------- Docker Information ----------
-  entiteled_registry_key          = var.entitled_registry_key
+  entitled_registry_key          = var.entitled_registry_key
   entitlement_registry_user_email = var.entitled_registry_user_email
 }
 

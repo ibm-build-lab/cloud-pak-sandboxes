@@ -12,20 +12,25 @@ variable "resource_group" {
   description = "Resource group name where the cluster will be hosted."
 }
 
+variable "project_name" {
+  default     = "cloud-pack"
+  description = "Ignored if `cluster_id` is specified. The project_name is combined with `environment` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
+}
+
 variable "platform_version" {
-  default = 4.6
+  default = 4.7
   description = "The OpenShift Container Platform version"
 }
 
 variable "cluster_id" {
   default     = ""
-  description = "Enter your cluster id or name to install the Cloud Pak. Leave blank to provision a new Openshift cluster."
+  description = "Set your cluster ID to install the Cloud Pak for Business Automation. Leave blank to provision a new OpenShift cluster."
 }
 
 variable "workers_count" {
   type    = list(number)
   default = [5]
-  description = "Ignored if `cluster_name_or_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
+  description = "Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
 }
 
 // OpenShift cluster specific input parameters and default values:
@@ -37,21 +42,17 @@ variable "flavors" {
 
 variable "data_center" {
   default     = "dal10"
-  description = "**Classic Only**. Ignored if `cluster_name_or_id` is specified. Datacenter or Zone in the IBM Cloud Classic region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Datacenter or Zone in the IBM Cloud Classic region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider classic`"
 }
 
 variable "private_vlan_number" {
   default     = ""
-  description = "**Classic Only**. Ignored if `cluster_name_or_id` is specified. Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number. Leave blank if Private VLAN does not exist, one will be created"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is private and the router begins with bc. Use the ID or Number. Leave blank if Private VLAN does not exist, one will be created"
 }
 
 variable "public_vlan_number" {
   default     = ""
-  description = "**Classic Only**. Ignored if `cluster_name_or_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Leave blank if Public VLAN does not exist, one will be created"
-}
-
-variable "project_name" {
-  description = "Ignored if `cluster_id` is specified. The project_name is combined with `environment` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Leave blank if Public VLAN does not exist, one will be created"
 }
 
 variable "environment" {
@@ -113,7 +114,7 @@ locals {
 # --------- DB2 SETTINGS ----------
 variable "enable_db2" {
   default = false
-  description = "If set to true, it will install DB2 on the given cluster"
+  description = "Set to 'true' if you want to install Db2 for your Cloud Pak for Business Automation. If leave 'false', it will not install Db2."
 }
 
 variable "db2_project_name" {
