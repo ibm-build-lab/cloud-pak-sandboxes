@@ -94,8 +94,7 @@ module "portworx" {
 
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4data" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4data_4.0?ref=fix-cpd40-reencrypt"
-  # source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4data_4.0?ref=terraform-0.13"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4data_4.0?ref=terraform-0.13"
   enable = true
 
   // ROKS cluster parameters:
