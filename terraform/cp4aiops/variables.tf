@@ -58,7 +58,7 @@ variable "vpc_zone_names" {
   description = "**VPC Only**: Ignored if `cluster_id` is specified. Zones in the IBM Cloud VPC region to provision the cluster. List all available zones with: `ibmcloud ks zone ls --provider vpc-gen2`."
 }
 
-variable "config_dir" {
+variable "cluster_config_path" {
   default     = "./.kube/config"
   description = "Directory to store the kubeconfig file, set the value to empty string to not download the config"
 }
@@ -147,4 +147,8 @@ variable "namespace" {
 // Local Variables and constants
 locals {
   entitled_registry_key_file = "./entitlement.key"
+}
+
+locals {
+  enable_cluster = var.cluster_id == null || var.cluster_id == ""
 }

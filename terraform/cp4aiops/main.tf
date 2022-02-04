@@ -1,16 +1,24 @@
+# Provider block
 provider "ibm" {
-  version    = "~> 1.12"
-  region     = var.region
+  region           = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
 }
 
-locals {
-  enable_cluster = var.cluster_id == null || var.cluster_id == ""
+# Getting the OpenShift cluster configuration
+data "ibm_resource_group" "group" {
+  name = var.resource_group
 }
 
-module "cluster" {
-  // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/roks"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+resource "null_resource" "mkdir_kubeconfig_dir" {
+  triggers = { always_run = timestamp() }
+  provisioner "local-exec" {
+    command = "mkdir -p ${var.cluster_config_path}"
+  }
+}
+
+module "create_cluster" {
+   source = "../../../terraform-ibm-cloud-pak/modules/roks"
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -43,24 +51,25 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
   triggers = { always_run = timestamp() }
 
   provisioner "local-exec" {
-    command = "mkdir -p ${var.config_dir}"
+    command = "mkdir -p ${var.cluster_config_path}"
   }
 }
 
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
 
-  cluster_name_id   = local.enable_cluster ? module.cluster.id : var.cluster_id
-  resource_group_id = module.cluster.resource_group.id
-  config_dir        = var.config_dir
+  cluster_name_id   = local.enable_cluster ? module.create_cluster.id : var.cluster_id
+  resource_group_id = module.create_cluster.resource_group.id
+  config_dir        = var.cluster_config_path
   download          = true
   admin             = false
   network           = false
 }
 
-module "portworx" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
-  // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
+module "install_portworx" {
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/portworx"
+  source = "../../../terraform-ibm-cloud-pak/modules/portworx"
+//   TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
   enable = var.install_portworx
 
   ibmcloud_api_key = var.ibmcloud_api_key
@@ -92,13 +101,13 @@ module "portworx" {
 }
 
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
-module "cp4aiops" {
-  // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/modules/cp4aiops"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops"
+module "install_cp4aiops" {
+   source = "../../../terraform-ibm-cloud-pak/modules/cp4aiops"
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/cp4aiops"
   enable = true
 
   on_vpc              = var.on_vpc
-  portworx_is_ready   = module.portworx.portworx_is_ready
+  portworx_is_ready   = module.install_portworx.portworx_is_ready
 
   // ROKS cluster parameters:
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
