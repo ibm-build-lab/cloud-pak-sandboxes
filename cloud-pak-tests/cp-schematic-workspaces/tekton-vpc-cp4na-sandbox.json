@@ -1,5 +1,5 @@
 {
-  "name": "tekton-vpc-cp4na-sandbox",
+  "name": "tekton-vpc-cp4na-sandbox-dev",
   "type": [
     "terraform_v0.13"
   ],
@@ -36,7 +36,7 @@
         },
         {
           "name": "environment",
-          "value": "vpc-cp4na",
+          "value": "vpc-cp4na-dev",
           "type": "string"
         },
         {

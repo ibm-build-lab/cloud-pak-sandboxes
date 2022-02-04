@@ -1,5 +1,5 @@
 {
-    "name": "tekton-mcm-sandbox",
+    "name": "tekton-mcm-sandbox-dev",
     "type": [
       "terraform_v0.13"
     ],
@@ -11,7 +11,7 @@
     ],
     "resource_group": "cloud-pak-sandbox-ibm",
     "template_repo": {
-      "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/cp4mcm"
+      "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4mcm"
     },
     "template_data": [
       {
@@ -35,7 +35,7 @@
           },
           {
             "name": "environment",
-            "value": "mcm",
+            "value": "mcm-dev",
             "type": "string"
           },
           {

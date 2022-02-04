@@ -4,7 +4,7 @@ This project contains assets to create and manage Cloud Pak Sandboxes on IBM Clo
 
 ## Installer
 
-The [installer/](./installer) directory contains a bash script for the users to install any Cloud Pak on IBM Cloud Classic. This script can be run either from an IBM Cloud Shell window, or locally on your machine if you have all the requirements.
+The [installer/](./cloud-pak-installer) directory contains a bash script for the users to install any Cloud Pak on IBM Cloud Classic. This script can be run either from an IBM Cloud Shell window, or locally on your machine if you have all the requirements.
 
 The bash script and support files interact with the Schematics service on IBM Public Cloud using the Terraform scripts located in the [terraform/](./terraform) directory.
 

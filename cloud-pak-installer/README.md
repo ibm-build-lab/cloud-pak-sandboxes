@@ -24,7 +24,7 @@ The Cloud Pak Sandbox Installer is an easy to use script that allows you to prov
 
 Currently you can run the script to install:
 
-- Automation Foundation
+- IBM Automation Foundation
 - Cloud Pak for Multi Cloud Management
 - Cloud Pak for Data
 - Cloud Pak for Integration
@@ -32,12 +32,13 @@ Currently you can run the script to install:
 - Cloud Pak for Security
 - Cloud Pak for Business Automation (under development)
 - Cloud Pak for Network Automation
+- Create a ROKS classic or VPC cluster
 
 ## Requirements
 
-In order to run the `cloud-pak-installer.sh` script you must have a series of required input values, these are discussed below in the requirements.  Some modules may require additional requirements.  Cloud Pak for Security will require additional requirements which are listed below.
+In order to run the `cloud-pak-installer.sh` script you must have a series of required input values, these are discussed below in the requirements.  Some modules may require additional requirements.  Cloud Pak for Security and Cloud Pak for Business Automation require an LDAP to be set up independently. For details on setting up an LDAP, refer to [Example to provision LDAP Terraform Module](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/examples/ldap)
 
-After the input values and tools are gathered you will need decide to run the cloud pak installer from your local machine or the IBM Cloud Shell.  CP4S must be run from your local machine.  In either case you will clone the repo, add permission to the script if needed, and run cloud-pak-installer.sh
+After the input values and tools are gathered you will need decide to run the cloud pak installer from your local machine or the IBM Cloud Shell. In either case you will clone the repo, add permission to the script if needed, and run cloud-pak-installer.sh
 
 ### Understanding the IBM Cloud Shell
 

@@ -153,9 +153,3 @@ data "external" "get_endpoints" {
     namespace      = var.cp4ba_project_name
   }
 }
-
-
-
-
-
-
