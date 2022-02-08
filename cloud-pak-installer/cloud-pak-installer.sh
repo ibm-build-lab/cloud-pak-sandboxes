@@ -22,47 +22,47 @@ red=$(tput setaf 1; tput bold)
 CP4MCM="false"
 CLOUD_PAK_NAME_MCM_VERSION="Cloud Pak for Multicloud Management 2.3"
 CLOUD_PAK_TEMPLATE_MCM=./templates/cpmcm-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_MCM="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4mcm"
+CLOUD_PAK_REPO_LOCATION_MCM="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/cp4mcm"
 
 CP4D40="false"
 CLOUD_PAK_NAME_DATA4_VERSION="Cloud Pak for Data 4.0"
 CLOUD_PAK_TEMPLATE_DATA4=./templates/cp4d_4.0-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_DATA4="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4data_4.0"
+CLOUD_PAK_REPO_LOCATION_DATA4="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/cp4data_4.0"
 
 CP4D35="false"
 CLOUD_PAK_NAME_DATA_VERSION="Cloud Pak for Data 3.5"
 CLOUD_PAK_TEMPLATE_DATA=./templates/cp4d_3.5-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_DATA="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4data_3.5"
+CLOUD_PAK_REPO_LOCATION_DATA="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/cp4data_3.5"
 
 CP4I="false"
 CLOUD_PAK_NAME_INTEGRATION_VERSION="Cloud Pak for Integration 2021.2.1"
 CLOUD_PAK_TEMPLATE_INTEGRATION=./templates/cp4i-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_INTEGRATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4i"
+CLOUD_PAK_REPO_LOCATION_INTEGRATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/cp4i"
 
 CP4S="false"
 CLOUD_PAK_NAME_SECURITY_VERSION="Cloud Pak for Security 1.8.0"
 CLOUD_PAK_TEMPLATE_SECURITY=./templates/cp4s-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_SECURITY="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4s"
+CLOUD_PAK_REPO_LOCATION_SECURITY="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/cp4s"
 
 CP4NA="false"
 CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION="Cloud Pak for Network Automation 2.1.1"
 CLOUD_PAK_TEMPLATE_NETWORK_AUTOMATION=./templates/cp4na-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_NETWORK_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4na"
+CLOUD_PAK_REPO_LOCATION_NETWORK_AUTOMATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/cp4na"
 
 IAF="false"
 IAF_VERSION="IBM Automation Foundation 1.0"
 IAF_TEMPLATE=./templates/iaf-workspace-configuration.json
-IAF_REPO_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/iaf"
+IAF_REPO_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/iaf"
 
 CP4AIOPS="false"
 CLOUD_PAK_NAME_AIOPS_VERSION="Cloud Pak for Watson AIOps 3.1"
 CLOUD_PAK_TEMPLATE_AIOPS=./templates/cp4aiops-workspace-configuration.json
-CLOUD_PAK_REPO_LOCATION_AIOPS="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4aiops"
+CLOUD_PAK_REPO_LOCATION_AIOPS="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/cp4aiops"
 
 ROKS="false"
 ROKS_VERSION="Red Hat OpenShift on IBM Cloud"
 ROKS_TEMPLATE=./templates/roks-workspace-configuration.json
-ROKS_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/roks_with_portworx"
+ROKS_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/roks_with_portworx"
 
 IBM_API_KEY="none"
 EXISTING_CLUSTER="false"
@@ -128,7 +128,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_MCM" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"terraform-0.13\"" temp.json > workspace-configuration.json
+                jq -r ".template_repo.branch |= \"main\"" temp.json > workspace-configuration.json
                 break
                 ;;
             $CLOUD_PAK_NAME_DATA4_VERSION)
@@ -138,7 +138,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_DATA4" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"terraform-0.13\"" temp.json > workspace-configuration.json
+                jq -r ".template_repo.branch |= \"main\"" temp.json > workspace-configuration.json
                 break
                 ;;
             $CLOUD_PAK_NAME_DATA_VERSION)
@@ -148,7 +148,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_DATA" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"terraform-0.13\"" temp.json > workspace-configuration.json
+                jq -r ".template_repo.branch |= \"main\"" temp.json > workspace-configuration.json
                 break
                 ;;      
             $CLOUD_PAK_NAME_INTEGRATION_VERSION)
@@ -158,7 +158,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_INTEGRATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"terraform-0.13\"" temp.json > workspace-configuration.json
+                jq -r ".template_repo.branch |= \"main\"" temp.json > workspace-configuration.json
                 break
                 ;;
             $CLOUD_PAK_NAME_SECURITY_VERSION)
@@ -168,7 +168,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_SECURITY" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"terraform-0.13\"" temp.json > workspace-configuration.json
+                jq -r ".template_repo.branch |= \"main\"" temp.json > workspace-configuration.json
                 break
                 ;;
             $CLOUD_PAK_NAME_NETWORK_AUTOMATION_VERSION)
@@ -178,7 +178,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_NETWORK_AUTOMATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"terraform-0.13\"" temp.json > workspace-configuration.json
+                jq -r ".template_repo.branch |= \"main\"" temp.json > workspace-configuration.json
                 break
                 ;; 
             $IAF_VERSION)
@@ -188,7 +188,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$IAF_REPO_LOCATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"terraform-0.13\"" temp.json > workspace-configuration.json
+                jq -r ".template_repo.branch |= \"main\"" temp.json > workspace-configuration.json
                 break
                 ;;
             $CLOUD_PAK_NAME_AIOPS_VERSION)
@@ -198,7 +198,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$CLOUD_PAK_REPO_LOCATION_AIOPS" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"terraform-0.13\"" temp.json > workspace-configuration.json
+                jq -r ".template_repo.branch |= \"main\"" temp.json > workspace-configuration.json
                 break
                 ;;
             $ROKS_VERSION)
@@ -208,7 +208,7 @@ get_cloud_pak_install() {
                 cp workspace-configuration.json temp.json
                 jq -r --arg v "$ROKS_LOCATION" '.template_repo.url |= $v' temp.json  > workspace-configuration.json
                 cp workspace-configuration.json temp.json
-                jq -r ".template_repo.branch |= \"terraform-0.13\"" temp.json > workspace-configuration.json
+                jq -r ".template_repo.branch |= \"main\"" temp.json > workspace-configuration.json
                 break
                 ;;                                  
             *) echo "${bold}invalid option $REPLY ${green}";;
@@ -495,7 +495,7 @@ get_portworx() {
 
 get_ibm_api_key() {
     echo "${bold}Enter IBM Cloud API Key, for more instructions go to"
-    read -s -p "${green}https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform#create-an-ibm-cloud-api-key${bold}:${normal} " -e IBM_API_KEY
+    read -s -p "${green}https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform#create-an-ibm-cloud-api-key${bold}:${normal} " -e IBM_API_KEY
     echo " "
     cp workspace-configuration.json temp.json
     jq -r --arg v "$IBM_API_KEY" '(.template_data[] | .variablestore[] | select(.name == "ibmcloud_api_key") | .value) |= $v' temp.json > workspace-configuration.json    

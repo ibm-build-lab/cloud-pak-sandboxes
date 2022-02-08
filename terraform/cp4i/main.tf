@@ -9,7 +9,7 @@ locals {
 
 module "cluster" {
   //source = "../../../terraform-ibm-cloud-pak/modules/roks"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks?ref=terraform-0.13"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -53,7 +53,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 module "portworx" {
   //source = "../../../terraform-ibm-cloud-pak/modules/portworx"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx?ref=terraform-0.13"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
   // TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
   enable = var.on_vpc
 
@@ -88,7 +88,7 @@ module "portworx" {
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4i" {
   //source = "../../../terraform-ibm-cloud-pak/modules/cp4i"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4i?ref=terraform-0.13"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4i"
   enable = true
 
   // Assumption that if on vpc, Portworx has been configured
