@@ -17,8 +17,8 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 }
 
 module "create_cluster" {
-  source = "../../../terraform-ibm-cloud-pak/modules/roks" # terraform-ibm-cloud-pak/modules/roks
-//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
+//  source = "../../../terraform-ibm-cloud-pak/modules/roks" # terraform-ibm-cloud-pak/modules/roks
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
 
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
@@ -35,19 +35,10 @@ module "create_cluster" {
   public_vlan_number   = var.public_vlan_number
 }
 
-//# getting and creation a directory for the cluster config file
-//resource "null_resource" "mkdir_kubeconfig_dir" {
-//  triggers = { always_run = timestamp() }
-//    provisioner "local-exec" {
-//    command = "mkdir -p ${var.cluster_config_path}"
-//  }
-//}
-//
-
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
 
-  cluster_id   = local.enable_cluster ? module.create_cluster.id : var.cluster_id
+  cluster_name_id   = local.enable_cluster ? module.create_cluster.id : var.cluster_id
   resource_group_id = module.create_cluster.resource_group.id
   config_dir        = var.cluster_config_path
   download          = true
@@ -56,8 +47,8 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "install_portworx" {
-//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/portworx"
-  source = "../../../terraform-ibm-cloud-pak/modules/portworx"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/portworx"
+//  source = "../../../terraform-ibm-cloud-pak/modules/portworx"
 //   TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
   enable = var.install_portworx
 
@@ -76,8 +67,8 @@ module "install_portworx" {
   // Portworx parameters
   resource_group_name   = var.resource_group
   region                = var.region
-  cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_id
-  unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_id}"
+  cluster_id       = data.ibm_container_cluster_config.cluster_config.cluster_name_id
+  unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
 
   // These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
   // You may override these for additional security.
@@ -89,10 +80,10 @@ module "install_portworx" {
   etcd_secret_name      = "px-etcd-certs"
 }
 
-//// TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
+////// TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "install_cp4aiops" {
-   source = "../../../terraform-ibm-cloud-pak/modules/cp4aiops"
-  //  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/cp4aiops"
+//   source = "../../../terraform-ibm-cloud-pak/modules/cp4aiops"
+    source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/cp4aiops"
     enable = true
 
     on_vpc              = var.on_vpc
