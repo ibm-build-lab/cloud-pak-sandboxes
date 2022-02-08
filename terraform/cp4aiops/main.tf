@@ -4,13 +4,10 @@ provider "ibm" {
   region           = var.region
 }
 
-
 # Getting the OpenShift cluster configuration
 data "ibm_resource_group" "group" {
   name = var.resource_group
 }
-
-
 
 resource "null_resource" "mkdir_kubeconfig_dir" {
   triggers = { always_run = timestamp() }
@@ -18,7 +15,6 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
     command = "mkdir -p ${var.cluster_config_path}"
   }
 }
-
 
 module "create_cluster" {
 //  source = "../../../terraform-ibm-cloud-pak/modules/roks" # terraform-ibm-cloud-pak/modules/roks
@@ -38,7 +34,6 @@ module "create_cluster" {
   public_vlan_number   = var.public_vlan_number
 }
 
-
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
   cluster_name_id   = local.enable_cluster ? module.create_cluster.id : var.cluster_id
@@ -48,7 +43,6 @@ data "ibm_container_cluster_config" "cluster_config" {
   admin             = false
   network           = false
 }
-
 
 module "install_portworx" {
   source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/portworx"
@@ -77,7 +71,6 @@ module "install_portworx" {
   // Defaulted.  Don't change
   etcd_secret_name      = "px-etcd-certs"
 }
-
 
 ////// TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "install_cp4aiops" {
