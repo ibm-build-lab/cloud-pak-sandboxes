@@ -2,11 +2,11 @@
 
 ## Requirements
 
-Make sure all requirements listed [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/README.md#requirements) are completed.
+Make sure all requirements listed [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#requirements) are completed.
 
 ## Configure Access to IBM Cloud
 
-Make sure access to IBM Cloud is set up.  Go [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/README.md#configure-access-to-ibm-cloud) for details.
+Make sure access to IBM Cloud is set up.  Go [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#configure-access-to-ibm-cloud) for details.
 
 ## Cloud Pak Entitlement Key
 
@@ -28,7 +28,7 @@ entitled_registry_key        = "< Your Entitled Key here >"
 ## Provisioning the Sandbox
 
 For instructions to provision the sandbox, go
-[here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/README.md#provisioning-the-sandbox).
+[here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#provisioning-the-sandbox).
 
 ## Input Parameters
 In addition, the Terraform code requires the following input parameters,
