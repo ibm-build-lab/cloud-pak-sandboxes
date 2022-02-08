@@ -1,5 +1,5 @@
 {
-  "name": "tekton-vpc-aiops-sandbox",
+  "name": "tekton-vpc-aiops-sandbox-dev",
   "type": [
     "terraform_v0.13"
   ],
@@ -36,7 +36,7 @@
         },
         {
           "name": "environment",
-          "value": "vpc-aiops",
+          "value": "vpc-aiops-dev",
           "type": "string"
         },
         {

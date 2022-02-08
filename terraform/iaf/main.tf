@@ -1,6 +1,5 @@
 provider "ibm" {
-  version    = "~> 1.12"
-  region     = var.region
+  region           = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
 }
 
@@ -13,7 +12,7 @@ locals {
 }
 
 module "cluster" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -22,7 +21,7 @@ module "cluster" {
   owner        = var.owner
   environment  = var.environment
   // OCP entitlement not from Cloud Pak
-  entitlement  = ""
+  entitlement = ""
 
   // Openshift parameters:
   resource_group       = var.resource_group
@@ -64,11 +63,11 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "iaf" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/iaf"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/iaf"
   enable = true
 
   cluster_name_id = local.enable_cluster ? module.cluster.id : var.cluster_id
-  on_vpc = var.on_vpc
+  on_vpc          = var.on_vpc
 
   // ROKS cluster parameters:
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
@@ -76,7 +75,7 @@ module "iaf" {
   resource_group      = var.resource_group
 
   // IBM Cloud API Key
-  ibmcloud_api_key    = var.ibmcloud_api_key
+  ibmcloud_api_key = var.ibmcloud_api_key
 
   // Entitled Registry parameters:
   entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
