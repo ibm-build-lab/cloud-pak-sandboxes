@@ -67,14 +67,14 @@ module "install_portworx" {
 }
 
 module "install_cp4aiops" {
-    source              = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/cp4aiops"
-    enable               = true
-    on_vpc              = var.on_vpc
-    portworx_is_ready   = module.install_portworx.portworx_is_ready
-    // ROKS cluster parameters:
-    cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-    // Entitled Registry parameters:
-    entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
-    entitled_registry_user_email = var.entitled_registry_user_email
-    namespace                    = var.namespace
+  source              = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/cp4aiops"
+  enable              = true
+  on_vpc              = var.on_vpc
+  portworx_is_ready   = module.install_portworx.portworx_is_ready
+  // ROKS cluster parameters:
+  cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+  // Entitled Registry parameters:
+  entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
+  entitled_registry_user_email = var.entitled_registry_user_email
+  namespace                    = var.namespace
 }

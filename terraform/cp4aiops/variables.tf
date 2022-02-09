@@ -21,7 +21,7 @@ variable "resource_group" {
 }
 
 variable "roks_version" {
-  default     = "4.6"
+  default     = "4.7"
   description = "Ignored if `cluster_id` is specified. List available versions: `ibmcloud ks versions`"
 }
 
@@ -46,8 +46,8 @@ variable "flavors" {
 }
 
 variable "workers_count" {
-  type    = list(number)
-  default = [5]
+  type        = list(number)
+  default     = [5]
   description = "Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
 }
 
@@ -87,7 +87,7 @@ variable "install_portworx" {
 }
 
 variable "portworx_is_ready" {
-  type = any
+  type    = any
   default = null
 }
 
@@ -95,39 +95,39 @@ variable "ibmcloud_api_key" {
   description = "Ignored if Portworx is not enabled: IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
 }
 
-variable "storage_capacity"{
-    type = number
-    default = 200
-    description = "Ignored if Portworx is not enabled: Storage capacityin GBs"
+variable "storage_capacity" {
+  type        = number
+  default     = 200
+  description = "Ignored if Portworx is not enabled: Storage capacityin GBs"
 }
 
 variable "storage_profile" {
-    type = string
-    default = "10iops-tier"
-    description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
+  type        = string
+  default     = "10iops-tier"
+  description = "Ignored if Portworx is not enabled. Optional, Storage profile used for creating storage"
 }
 
 variable "storage_iops" {
-    type = number
-    default = 10
-    description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
+  type        = number
+  default     = 10
+  description = "Ignored if Portworx is not enabled. Optional, Used only if a user provides a custom storage_profile"
 }
 
 variable "create_external_etcd" {
-    type = bool
-    default = false
-    description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
+  type        = bool
+  default     = false
+  description = "Ignored if Portworx is not enabled: Do you want to create an external etcd database? `true` or `false`"
 }
 
 # These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
 # You may override these for additional security.
 variable "etcd_username" {
-  default = ""
+  default     = ""
   description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 
 variable "etcd_password" {
-  default = ""
+  default     = ""
   description = "Ignored if Portworx is not enabled: This has been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.  Override these for additional security."
 }
 

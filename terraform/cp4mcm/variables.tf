@@ -110,9 +110,9 @@ variable "install_tech_prev_module" {
 // Local Variables and constants
 locals {
   // ROKS variables
-  workers_count              = [5]
-  roks_version               = "4.6"
-  kubeconfig_dir             = "./.kube/config"
+  workers_count  = [5]
+  roks_version   = "4.7"
+  kubeconfig_dir = "./.kube/config"
   // MCM variables
-  namespace                  = "cp4mcm"
+  namespace = "cp4mcm"
 }

@@ -141,7 +141,7 @@ The Input and Output parameters, as well as basic validations and uninstall proc
 - [Automation Foundation](./iaf/README.md)
 - [Cloud Pak for Applications](./cp4app/README.md)
 - [Cloud Pak for Automation](./cp4auto/README.md)
-- [Cloud Pak for Data](./cp4data/README.md)
+- [Cloud Pak for Data](cp4data_3.5/README.md)
 - [Cloud Pak for Integration](./cp4int/README.md)
 - [Cloud Pak for Multi Cloud Management](./cp4mcm/README.md)
 

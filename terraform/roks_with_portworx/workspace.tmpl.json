@@ -1,6 +1,6 @@
 {
   "name": "{{ WORKSPACE_NAME }}",
-  "type": ["terraform_v0.12"],
+  "type": ["terraform_v0.13"],
   "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox with Portworx on IBM Cloud Classic or Gen2 VPC",
   "tags": [
     "owner:{{ OWNER }}",
@@ -15,7 +15,7 @@
   "template_data": [
     {
       "folder": "terraform/roks",
-      "type": "terraform_v0.12",
+      "type": "terraform_v0.13",
       "variablestore": [
         { 
           "name": "on_vpc",
