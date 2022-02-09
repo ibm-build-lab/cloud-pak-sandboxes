@@ -74,7 +74,7 @@ module "install_cp4aiops" {
     // ROKS cluster parameters:
     cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
     // Entitled Registry parameters:
-    entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
+    entitled_registry_key        = var.entitled_registry_key
     entitled_registry_user_email = var.entitled_registry_user_email
     namespace                    = var.namespace
 

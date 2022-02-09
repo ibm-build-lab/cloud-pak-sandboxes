@@ -144,11 +144,6 @@ variable "namespace" {
   description = "Namespace for CP4AIOPS"
 }
 
-// Local Variables and constants
-locals {
-  entitled_registry_key_file = "./entitlement.key"
-}
-
 locals {
   enable_cluster = var.cluster_id == null || var.cluster_id == ""
 }
