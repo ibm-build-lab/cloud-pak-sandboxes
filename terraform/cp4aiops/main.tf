@@ -17,8 +17,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 }
 
 module "create_cluster" {
-//  source = "../../../terraform-ibm-cloud-pak/modules/roks" # terraform-ibm-cloud-pak/modules/roks
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/roks"
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
   project_name         = var.project_name
@@ -45,37 +44,30 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "install_portworx" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/portworx"
-//  source = "../../../terraform-ibm-cloud-pak/modules/portworx"
-//   TODO: With Terraform 0.13 replace the parameter 'enable' or the conditional expression using 'with_iaf' with 'count'
+  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/portworx"
   enable = var.install_portworx
   ibmcloud_api_key = var.ibmcloud_api_key
-  // Cluster parameters
+  # Cluster parameters
   kube_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-  worker_nodes     = var.workers_count[0]  // Number of workers
-  // Storage parameters
+  worker_nodes     = var.workers_count[0]
+  # Storage parameters
   install_storage       = true
-  storage_capacity      = var.storage_capacity  // In GBs
-  storage_iops          = var.storage_iops   // Must be a number, it will not be used unless a storage_profile is set to a custom profile
+  storage_capacity      = var.storage_capacity
+  storage_iops          = var.storage_iops
   storage_profile       = var.storage_profile
-  // Portworx parameters
+  # Portworx parameters
   resource_group_name   = var.resource_group
   region                = var.region
   cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
   unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
-  // These credentials have been hard-coded because the 'Databases for etcd' service instance is not configured to have a publicly accessible endpoint by default.
-  // You may override these for additional security.
   create_external_etcd  = var.create_external_etcd
   etcd_username         = var.etcd_username
   etcd_password         = var.etcd_password
-  // Defaulted.  Don't change
   etcd_secret_name      = "px-etcd-certs"
 }
 
-////// TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "install_cp4aiops" {
-//   source = "../../../terraform-ibm-cloud-pak/modules/cp4aiops"
-    source              = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/terraform-0.13/modules/cp4aiops"
+    source              = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/cp4aiops"
     enable               = true
     on_vpc              = var.on_vpc
     portworx_is_ready   = module.install_portworx.portworx_is_ready
