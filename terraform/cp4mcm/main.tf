@@ -1,6 +1,5 @@
 provider "ibm" {
-  version    = "~> 1.12"
-  region     = var.region
+  region           = var.region
   ibmcloud_api_key = var.ibmcloud_api_key
 }
 
@@ -14,7 +13,7 @@ locals {
 
 module "cluster" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/roks"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -59,18 +58,18 @@ data "ibm_container_cluster_config" "cluster_config" {
 // TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4mcm" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4mcm"
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4mcm"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4mcm"
   enable = true
   on_vpc = var.on_vpc
   region = var.region
   zone   = var.on_vpc ? var.vpc_zone_names[0] : var.datacenter
-  
+
   // IBM Cloud API Key
-  ibmcloud_api_key          = var.ibmcloud_api_key
+  ibmcloud_api_key = var.ibmcloud_api_key
 
   // ROKS cluster parameters:
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-  cluster_name_id = local.enable_cluster ? module.cluster.id : var.cluster_id
+  cluster_name_id     = local.enable_cluster ? module.cluster.id : var.cluster_id
 
   // Entitled Registry parameters:
   entitled_registry_key        = var.entitled_registry_key

@@ -77,4 +77,5 @@ module "install_cp4aiops" {
     entitled_registry_key        = length(var.entitled_registry_key) > 0 ? var.entitled_registry_key : file(local.entitled_registry_key_file)
     entitled_registry_user_email = var.entitled_registry_user_email
     namespace                    = var.namespace
+
 }

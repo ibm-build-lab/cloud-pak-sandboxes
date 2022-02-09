@@ -2,7 +2,7 @@
 
 ## Cloud Pak Entitlement Key and IBM Cloud API Key
 
-This Cloud Pak requires an [IBM Cloud API key](https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform#create-an-ibm-cloud-api-key) and an [Entitlement Key](https://myibm.ibm.com/products-services/containerlibrary)
+This Cloud Pak requires an [IBM Cloud API key](https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform#create-an-ibm-cloud-api-key) and an [Entitlement Key](https://myibm.ibm.com/products-services/containerlibrary)
 
 If running locally, edit the `./my_variables.auto.tfvars` file to define the `ic_api_key`, `entitled_registry_user_email` and `entitled_registry_key` or save the entitlement key in the file `entitlement.key`. The `entitled_registry_user_email` is set to the user email address of the account used to generate the Entitlement Key.
 

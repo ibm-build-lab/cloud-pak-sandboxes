@@ -1,7 +1,7 @@
 {
-  "name": "tekton-iaf-sandbox",
+  "name": "tekton-iaf-sandbox-dev",
   "type": [
-    "terraform_v0.12"
+    "terraform_v0.13"
   ],
   "description": "IBM Cloud Schematics Workspace to deploy an OpenShift cluster sandbox for Multi Cloud Management Cloud Pak on IBM Cloud Classic",
   "tags": [
@@ -11,12 +11,12 @@
   ],
   "resource_group": "cloud-pak-sandbox-ibm",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/master/terraform/iaf"
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/iaf"
   },
   "template_data": [
     {
       "folder": "terraform/iaf",
-      "type": "terraform_v0.12",
+      "type": "terraform_v0.13",
       "variablestore": [
         {
           "name": "region",
@@ -35,7 +35,7 @@
         },
         {
           "name": "environment",
-          "value": "iaf",
+          "value": "iaf-dev",
           "type": "string"
         },
         {

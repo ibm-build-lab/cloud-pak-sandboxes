@@ -11,7 +11,8 @@ credentials.sh
 workspace.json
 *.key
 *.auto.tfvars
-
+removed_variables.tf
+*.tfvars.*
 # Output files from Terraform and modules to ignore
 .kube
 
