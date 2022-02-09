@@ -68,7 +68,7 @@ module "install_portworx" {
 
 module "install_cp4aiops" {
     source              = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/cp4aiops"
-    enable               = true
+    enable              = true
     on_vpc              = var.on_vpc
     portworx_is_ready   = module.install_portworx.portworx_is_ready
     // ROKS cluster parameters:
