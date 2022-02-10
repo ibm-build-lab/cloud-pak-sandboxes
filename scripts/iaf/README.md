@@ -151,7 +151,7 @@ In a browser window - paste the URL for the route and accept any improperly sign
 
 [IBM Automation Foundation Installation links](https://www.ibm.com/support/knowledgecenter/SSUJN4_ent/install/installation-links.html)
 
-[Enabling IBM Operator Catalog](https://github.com/IBM/cloud-pak/blob/master/reference/operator-catalog-enablement.md)
+[Enabling IBM Operator Catalog](https://github.com/IBM/cloud-pak/blob/main/reference/operator-catalog-enablement.md)
 
 [Installing Common Services](https://www.ibm.com/support/knowledgecenter/SSHKN6/installer/3.x.x/install_cs_cli.html)
 

@@ -2,55 +2,42 @@ variable "ibmcloud_api_key" {
   description = "IBM Cloud API key (https://cloud.ibm.com/docs/account?topic=account-userapikey#create_user_key)"
 }
 
-variable "cluster_name_or_id" {
-  default     = ""
-  description = "Enter your cluster id or name to install the Cloud Pak. Leave blank to provision a new Openshift cluster."
-}
-
-variable "entitled_registry_user" {
-  type = string
-  description = "Email address of the user owner of the Entitled Registry Key"
-}
-
 variable "region" {
   default = "us-south"
   description = "Region where the cluster is created"
 }
 
-variable "resource_group_name" {
-  default     = "cloud-pak-sandbox-ibm"
+variable "resource_group" {
+  default     = "default"
   description = "Resource group name where the cluster will be hosted."
 }
 
-variable "entitled_registry_key" {
-  type        = string
-  description = "Do you have a Cloud Pak for Business Automation Entitlement Registry key? If not, Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
-}
-
-variable "cp4ba_project_name" {
-  type        = string
-  default     = "cp4ba"
-  description = "namespace/project for cp4ba"
-}
-
-variable "environment" {
-  default     = "dev"
-  description = "Ignored if `cluster_id` is specified. The environment is combined with `project_name` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'env:{environment}'"
-}
-
-variable "on_vpc" {
-  default = false
-  description = "Select 'true' to install on a VPC cluster and it's using VPC Gen2. Note: CP4BA does not currently support VPC cluster."
+variable "project_name" {
+  default     = "cloud-pack"
+  description = "Ignored if `cluster_id` is specified. The project_name is combined with `environment` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
 }
 
 variable "platform_version" {
-  default = 4.6
-  description = ""
+  default = 4.7
+  description = "The OpenShift Container Platform version"
 }
+
+variable "cluster_id" {
+  default     = ""
+  description = "Set your cluster ID to install the Cloud Pak for Business Automation. Leave blank to provision a new OpenShift cluster."
+}
+
 variable "workers_count" {
   type    = list(number)
   default = [5]
   description = "Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. Classic only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
+}
+
+// OpenShift cluster specific input parameters and default values:
+variable "flavors" {
+  type    = list(string)
+  default = ["b3c.16x64"]
+  description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"bx2.16x64\"]`"
 }
 
 variable "data_center" {
@@ -68,103 +55,98 @@ variable "public_vlan_number" {
   description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone <zone>`, make sure the the VLAN type is public and the router begins with fc. Use the ID or Number. Leave blank if Public VLAN does not exist, one will be created"
 }
 
-variable "registry_server" {
-  description = "Enter the public image registry or route (e.g., default-route-openshift-image-registry.apps.<hostname>).\nThis is required for docker/podman login validation:"
+variable "environment" {
+  default     = "dev"
+  description = "Ignored if `cluster_id` is specified. The environment is combined with `project_name` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'env:{environment}'"
 }
 
-variable "entitlement_key" {
+variable "owner" {
+  default     = ""
+  description = "Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources with the tag 'owner:{owner}'"
+}
+
+variable "on_vpc" {
+  default     = false
+  description = "Select 'true' to install on a VPC cluster and it's using VPC Gen2. Note: CP4BA does not currently support VPC cluster."
+}
+
+variable "cluster_config_path" {
+  default     = "./.kube/config"
+  description = "directory to store the kubeconfig file"
+}
+
+variable "entitled_registry_user_email" {
+  type        = string
+  description = "Email address of the user owner of the Entitled Registry Key"
+}
+
+variable "entitled_registry_key" {
   type        = string
   description = "Do you have a Cloud Pak for Business Automation Entitlement Registry key? If not, Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
 }
 
-// OpenShift cluster specific input parameters and default values:
-variable "flavors" {
-  type    = list(string)
-  default = ["b3c.16x64"]
-  description = "Ignored if `cluster_id` is specified. Array with the flavors or machine types of each of the workers. List all flavors for each zone with: `ibmcloud ks flavors --zone us-south-1 --provider vpc-gen2` or `ibmcloud ks flavors --zone dal10 --provider classic`. On Classic only list one flavor, i.e. `[\"b3c.16x64\"]`. On VPC can list multiple flavors `[\"mx2.4x32\", \"mx2.8x64\", \"cx2.4x8\"] or [\"bx2.16x64\"]`"
+variable "cp4ba_project_name" {
+  type        = string
+  default     = "cp4ba"
+  description = "namespace/project for cp4ba"
 }
 
-variable "ingress_subdomain" {
-  default     = ""
-  description = "Run the command `ibmcloud ks cluster get -c <cluster_name_or_id>` to get the Ingress Subdomain value"
-}
-
-variable "enable" {
-  default = true
-  description = "If set to true, it will install DB2 on the given cluster"
-}
-
-# -------- LDAP Variables ---------
-# Use the id and password that you specified when setting up LDAP
-variable "ldap_admin" {
-  default     = "cn=root"
-  description = "LDAP Admin user name"
-}
-
-variable "ldap_password" {
-  default     = "Passw0rd"
+# --- LDAP SETTINGS ---
+# Password for LDAP Admin User (ldapAdminName name see below), for example passw0rd - use the password that you specified when setting up LDAP
+variable "ldap_admin_password" {
   description = "LDAP Admin password"
 }
 
-variable "ldap_host_ip" {
-  default     = ""
-  description = "LDAP server IP address"
+# LDAP instance access information - hostname or IP
+variable "ldap_server" {
+  description = "LDAP server "
+}
+
+variable "ldap_admin_name" {
+  default = "cn=root"
+  description = "The LDAP root administrator account to access the directory. To learn more: https://www.ibm.com/docs/en/sva/7.0.0?topic=tuning-ldap-root-administrator-account-cnroot"
 }
 
 locals {
-  docker_server                = "cp.icr.io"
-  docker_username              = "cp"
-  docker_password              = chomp(var.entitlement_key)
-  docker_email                 = var.entitled_registry_user
-  enable_cluster               = var.cluster_name_or_id
-  cluster_config_path          = "./.kube/config"
+  enable_cluster = var.cluster_id == null || var.cluster_id == ""
 }
 
 # --------- DB2 SETTINGS ----------
- variable "db2_project_name" {
+variable "enable_db2" {
+  default = false
+  description = "Set to 'true' if you want to install Db2 for your Cloud Pak for Business Automation. If leave 'false', it will not install Db2."
+}
+
+variable "db2_project_name" {
    default = "ibm-db2"
    description = "The namespace/project for Db2"
  }
-
-# -------- DB2 Variables ---------
-variable "db2_admin" {
-  default     = "cpadmin"
-  description = "Admin user name defined in LDAP"
+variable "db2_admin_password" {
+  description = "Db2 admin user password defined in LDAP"
 }
 
-variable "db2_user" {
-  default     = "db2inst1"
-  description = "User name defined in LDAP"
-}
-
-variable "db2_password" {
-  default     = "passw0rd"
-  description = "Password defined in LDAP"
+variable "db2_admin_username" {
+  default = "db2inst1"
+  description = "Db2 admin username defined in LDAP"
 }
 
 variable "db2_host_name" {
-  default     = ""
-  description = "Host for DB2 instance"
+  description = "Host name of Db2 instance"
 }
 
-variable "db2_host_port" {
-  default     = ""
-  description = "Port for DB2 instance"
+variable "db2_host_ip" {
+  description = "IP address for the Db2"
 }
 
-variable "db2_license" {
+variable "db2_port_number" {
+  description = "Port for Db2 instance"
+}
+
+variable "db2_standard_license_key" {
   description = "The standard license key for the Db2 database product"
 }
 
 
 
-# --- LDAP SETTINGS ---
-locals {
-  ldap_admin_name = "cn=root"
-}
 
-# --- HA Settings ---
-locals {
-  cp4ba_replica_count = 1
-  cp4ba_bai_job_parallelism = 1
-}
+

@@ -178,23 +178,23 @@ This does not have a catch and will immediatly delete selected options. Be caref
 
 Here is some additional documentation pertaining to the various technologies involved with the Sandbox environment
 
-Cloud Pak Sandbox Installer [README](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/installer/README.md) (this document)
+Cloud Pak Sandbox Installer [README](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/installer/README.md) (this document)
 
 Cloud Pak Sandbox environment [Terraform modules](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak)
 
-Cloud Pak Sandbox environment [Terraform scripts](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform)
+Cloud Pak Sandbox environment [Terraform scripts](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform)
 
 Cloud Pak for Data [Documentation](https://www.ibm.com/products/cloud-pak-for-data) 
 
-Cloud Pak for Data [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4data/README.md) 
+Cloud Pak for Data [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/cp4data/README.md) 
 
 Cloud Pak for Integration [Documentation](https://www.ibm.com/cloud/cloud-pak-for-integration) 
 
-Cloud Pak for Integration [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4int/README.md) 
+Cloud Pak for Integration [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/cp4int/README.md) 
 
 Cloud Pak for Multi Cloud Management [Documentation](https://www.ibm.com/cloud/cloud-pak-for-management) 
 
-Cloud Pak for Multi Cloud Management [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/master/terraform/cp4mcm/README.md) 
+Cloud Pak for Multi Cloud Management [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/cp4mcm/README.md) 
 
 [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli)
 

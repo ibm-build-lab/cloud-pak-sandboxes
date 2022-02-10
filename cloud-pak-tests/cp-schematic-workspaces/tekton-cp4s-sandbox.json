@@ -11,7 +11,7 @@
   ],
   "resource_group": "cloud-pak-sandbox",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/terraform-0.13/terraform/cp4s"
+    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/cp4s"
   },
   "template_data": [
     {
