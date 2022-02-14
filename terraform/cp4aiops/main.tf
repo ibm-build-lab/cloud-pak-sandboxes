@@ -29,7 +29,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 module "create_cluster" {
 //  source = "../../../terraform-ibm-cloud-pak/modules/roks"
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
-  source = "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/joel_cp4aiops_sandbox_url_update/terraform/roks"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//joel_cp4aiops_issue_205/modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -66,7 +66,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 module "install_portworx" {
 //  source = "../../../terraform-ibm-cloud-pak/modules/portworx"
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
-  source = "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/joel_cp4aiops_sandbox_url_update/terraform/portworx"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//joel_cp4aiops_issue_205/modules/portworx"
   enable = var.install_portworx
   ibmcloud_api_key = var.ibmcloud_api_key
   # Cluster parameters
@@ -91,7 +91,7 @@ module "install_portworx" {
 module "install_cp4aiops" {
 //    source = "../../../terraform-ibm-cloud-pak/modules/cp4aiops"
 //    source              = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops"
-  source = "https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/joel_cp4aiops_sandbox_url_update/terraform/cp4aiops"
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//joel_cp4aiops_issue_205/modules/cp4aiops"
 
   enable    = true
   portworx_is_ready       = 1
