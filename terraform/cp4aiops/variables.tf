@@ -139,9 +139,10 @@ variable "entitled_registry_key" {
 variable "entitled_registry_user_email" {
   description = "Required: Email address of the user owner of the Entitled Registry Key"
 }
-variable "namespace" {
-  default     = "cp4aiops"
-  description = "Namespace for CP4AIOPS"
+
+variable "cp4aiops_namespace" {
+  default = "cp4aiops"
+  description = "Namespace for Cloud Pak for AIOps"
 }
 
 locals {

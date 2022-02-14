@@ -17,7 +17,8 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 }
 
 module "create_cluster" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "../../../terraform-ibm-cloud-pak/modules/roks"
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
   project_name         = var.project_name
@@ -44,7 +45,8 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "install_portworx" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
+  source = "../../../terraform-ibm-cloud-pak/modules/portworx"
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
   enable = var.install_portworx
   ibmcloud_api_key = var.ibmcloud_api_key
   # Cluster parameters
@@ -67,15 +69,25 @@ module "install_portworx" {
 }
 
 module "install_cp4aiops" {
-    source              = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops"
-    enable              = true
-    on_vpc              = var.on_vpc
-    portworx_is_ready   = module.install_portworx.portworx_is_ready
-    // ROKS cluster parameters:
-    cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-    // Entitled Registry parameters:
-    entitled_registry_key        = var.entitled_registry_key
-    entitled_registry_user_email = var.entitled_registry_user_email
-    namespace                    = var.namespace
+    source = "../../../terraform-ibm-cloud-pak/modules/cp4aiops"
+//    source              = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops"
+//    enable              = true
+//    on_vpc              = var.on_vpc
+//    portworx_is_ready   = module.install_portworx.portworx_is_ready
+//    // ROKS cluster parameters:
+//    cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+//    // Entitled Registry parameters:
+//    entitled_registry_key        = var.entitled_registry_key
+//    entitled_registry_user_email = var.entitled_registry_user_email
+//    namespace                    = var.namespace
+
+  enable    = true
+  portworx_is_ready       = 1
+  ibmcloud_api_key        = var.ibmcloud_api_key
+  cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
+  on_vpc                  = var.on_vpc
+  entitled_registry_key   = var.entitled_registry_key
+  entitled_registry_user_email = var.entitled_registry_user_email
+  cp4aiops_namespace      = var.cp4aiops_namespace
 
 }
