@@ -229,6 +229,11 @@
           "name": "install_wsruntime",
           "value": "false",
           "type": "bool"
+        },
+        {
+          "name": "config_dir",
+          "value": "/tmp/.schematics/.kube/config",
+          "type": "string"
         }
       ]
     }

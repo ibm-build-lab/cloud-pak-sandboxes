@@ -118,6 +118,11 @@
             "name": "install_tech_prev_module",
             "value": "false",
             "type": "bool"
+          },
+          {
+            "name": "kubeconfig_dir",
+            "value": "/tmp/.schematics/.kube/config",
+            "type": "string"
           }
         ]
       }

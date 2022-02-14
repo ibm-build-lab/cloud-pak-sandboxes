@@ -85,8 +85,8 @@ variable "vpc_zone_names" {
 }
 
 variable "config_dir" {
-  default     = "/tmp/.schematics/.kube/config"
-  description = "Directory to store the kubeconfig file, set the value to empty string to not download the config"
+  default     = "./.kube/config"
+  description = "Directory to store the kubeconfig file, set the value to empty string to not download the config. If running on Schematics, use `/tmp/.schematics/.kube/config`"
 }
 
 // Portworx Variables
