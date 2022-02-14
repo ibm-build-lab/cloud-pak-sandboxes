@@ -41,5 +41,5 @@ output "cp4aiops_password" {
 
 // Namespace
 output "namespace" {
-  value = var.namespace
+  value = var.cp4aiops_namespace
 }

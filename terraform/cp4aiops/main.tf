@@ -16,22 +16,54 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
   }
 }
 
+//data "ibm_container_cluster_config" "cluster_config" {
+//  depends_on = [null_resource.mkdir_kubeconfig_dir]
+//  cluster_name_id   = local.enable_cluster ? module.create_cluster.id : var.cluster_id
+//  resource_group_id = module.create_cluster.resource_group.id
+//  config_dir        = var.cluster_config_path
+//  download          = true
+//  admin             = false
+//  network           = false
+//}
+
 module "create_cluster" {
   source = "../../../terraform-ibm-cloud-pak/modules/roks"
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
-  enable               = local.enable_cluster
-  on_vpc               = var.on_vpc
+//  enable               = local.enable_cluster
+//  on_vpc               = var.on_vpc
+//  project_name         = var.project_name
+//  environment          = var.environment
+//  owner                = var.owner
+//  resource_group       = var.resource_group
+//  roks_version         = var.roks_version
+//  flavors              = var.flavors
+//  workers_count        = var.workers_count
+//  datacenter           = var.datacenter
+//  force_delete_storage = true
+//  private_vlan_number  = var.private_vlan_number
+//  public_vlan_number   = var.public_vlan_number
+
+  enable = local.enable_cluster
+  on_vpc = var.on_vpc
+
+  // General
   project_name         = var.project_name
-  environment          = var.environment
   owner                = var.owner
+  environment          = var.environment
   resource_group       = var.resource_group
   roks_version         = var.roks_version
-  flavors              = var.flavors
-  workers_count        = var.workers_count
-  datacenter           = var.datacenter
+  entitlement          = var.entitled_registry_key
   force_delete_storage = true
-  private_vlan_number  = var.private_vlan_number
-  public_vlan_number   = var.public_vlan_number
+
+  // Parameters for the Workers
+  flavors       = var.flavors
+  workers_count = var.workers_count
+  // Classic only
+  datacenter          = var.datacenter
+  private_vlan_number = var.private_vlan_number
+  public_vlan_number  = var.public_vlan_number
+  // VPC only
+  vpc_zone_names = var.vpc_zone_names
 }
 
 data "ibm_container_cluster_config" "cluster_config" {
