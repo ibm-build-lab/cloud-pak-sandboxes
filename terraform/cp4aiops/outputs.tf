@@ -38,8 +38,3 @@ output "cp4aiops_password" {
   description = "Password for your Cloud Pak for AIOPS deployment."
   value = module.install_cp4aiops.cp4aiops_password
 }
-
-// Namespace
-output "namespace" {
-  value = var.cp4aiops_namespace
-}

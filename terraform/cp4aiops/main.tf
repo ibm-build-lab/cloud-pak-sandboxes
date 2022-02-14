@@ -28,7 +28,7 @@ module "create_cluster" {
   environment          = var.environment
   resource_group       = var.resource_group
   roks_version         = var.roks_version
-  entitlement          = var.entitled_registry_key
+  entitlement          = var.entitlement
   force_delete_storage = true
 
   // Parameters for the Workers
@@ -77,8 +77,8 @@ module "install_portworx" {
 
 module "install_cp4aiops" {
   source              = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops"
-  enable    = true
-  portworx_is_ready       = 1
+  enable              = true
+  portworx_is_ready       = module.install_portworx.portworx_is_ready
   ibmcloud_api_key        = var.ibmcloud_api_key
   cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
   on_vpc                  = var.on_vpc
