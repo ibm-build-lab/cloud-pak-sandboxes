@@ -57,3 +57,4 @@ installer/vlan-public-jah-test12-mcm-sandbox.json
 installer/test3.sh
 installer/test3.sh
 installer
+terraform/cp4aiops/terraform.tfvars
