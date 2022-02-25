@@ -17,7 +17,8 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 }
 
 module "create_cluster" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
+  source = "../../../terraform-ibm-cloud-pak/modules/roks"
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
 
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
@@ -34,17 +35,11 @@ module "create_cluster" {
   public_vlan_number   = var.public_vlan_number
 }
 
-# getting and creation a directory for the cluster config file
-resource "null_resource" "mkdir_kubeconfig_dir" {
-  triggers = { always_run = timestamp() }
-    provisioner "local-exec" {
-    command = "mkdir -p ${var.cluster_config_path}"
-  }
-}
 
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
-  cluster_name_or_id   = var.cluster_id
+  # Use var.cluster_id if it is NOT blank else use module.create_cluster.id
+  cluster_name_id      = var.cluster_id != null ? var.cluster_id : module.create_cluster.id
   resource_group_id    = data.ibm_resource_group.group.id
   download             = true
   config_dir           = var.cluster_config_path
@@ -54,23 +49,29 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/Db2"
+  source     = "../../../terraform-ibm-cloud-pak/modules/Db2"
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/Db2"
     depends_on = [
     module.create_cluster
   ]
 
+  enable_db2 = var.enable_db2
+
   # ----- Cluster -----
-  kubeconfig = var.cluster_config_path
-
-  # ----- Platform -----
-  enable_db2              = var.enable_db2
-  db2_project_name        = var.db2_project_name
-  db2_admin_username      = var.db2_admin_username
-  db2_admin_user_password  = var.db2_admin_password
-
-  # -------- Docker Information ----------
-  entitled_registry_key          = var.entitled_registry_key
-  entitlement_registry_user_email = var.entitled_registry_user_email
+  cluster_config_path      = data.ibm_container_cluster_config.cluster_config.config_file_path
+  db2_project_name         = var.db2_project_name
+  db2_admin_username       = var.db2_admin_username
+  db2_admin_user_password  = var.db2_admin_user_password
+  db2_standard_license_key = var.db2_standard_license_key
+  operatorVersion          = var.operatorVersion
+  operatorChannel          = var.operatorChannel
+  db2_instance_version     = var.db2_instance_version
+  db2_cpu                  = var.db2_cpu
+  db2_memory               = var.db2_memory
+  db2_storage_size         = var.db2_storage_size
+  db2_storage_class        = var.db2_storage_class
+  entitled_registry_user_email = var.entitled_registry_user_email
+  entitled_registry_key    = var.entitled_registry_key
 }
 
 resource "null_resource" "create_DB_Schema" {
@@ -112,31 +113,28 @@ resource "null_resource" "create_DB_Schema" {
   }
 }
 
-  # ------ DB2 -------
+  # ------ CP4BA -------
 module "install_cp4ba"{
-  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/cp4ba"
-//  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
+  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/cp4ba"
     depends_on = [
     null_resource.create_DB_Schema
   ]
-
-  KUBECONFIG              = data.ibm_container_cluster_config.cluster_config.config_file_path
-
+  enable_cp4ba           = var.enable_db2
+  cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_file_path
+  ingress_subdomain      = var.cluster_ingress_subdomain != null ? var.cluster_ingress_subdomain : module.create_cluster.ingress_hostname
   # ---- Platform ----
-  CP4BA_PROJECT_NAME      = var.cp4ba_project_name
-  ENTITLED_REGISTRY_EMAIL = var.entitled_registry_user_email
-  ENTITLED_REGISTRY_KEY   = var.entitled_registry_key
-
+  cp4ba_project_name     = var.cp4ba_project_name
+  entitled_registry_user = var.entitled_registry_user_email
+  entitlement_key        = var.entitled_registry_key
   # ----- LDAP Settings -----
-  LDAP_ADMIN_NAME         = var.ldap_admin_name
-  LDAP_ADMIN_PASSWORD     = var.ldap_admin_password
-
+  ldap_admin             = var.ldap_admin_name
+  ldap_password          = var.ldap_admin_password
   # ----- DB2 Settings -----
-  DB2_PORT_NUMBER         = var.db2_port_number
-  DB2_HOST_NAME           = var.db2_host_name
-  DB2_HOST_IP             = var.db2_host_ip
-  DB2_ADMIN_USERNAME      = var.db2_admin_username
-  DB2_ADMIN_USER_PASSWORD = var.db2_admin_password
+  db2_host_port           = var.db2_ports != null ? var.db2_ports : module.install_db2.db2_ports # var.db2_port_number
+  db2_host_address        = var.db2_host_address
+  db2_admin_username      = var.db2_admin_username
+  db2_admin_user_password = var.db2_admin_user_password
 }
 
 data "external" "get_endpoints" {

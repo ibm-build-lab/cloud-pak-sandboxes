@@ -1,7 +1,5 @@
 # Terraform & Schematics files to ignore
 .terraform
-terraform.tfstate*
-terraform.tfvars
 tmp
 .workspace_id
 
@@ -10,9 +8,7 @@ tmp
 credentials.sh
 workspace.json
 *.key
-*.auto.tfvars
 removed_variables.tf
-*.tfvars.*
 # Output files from Terraform and modules to ignore
 .kube
 

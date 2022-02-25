@@ -1,3 +1,4 @@
+# --- IBM CLOUD SETTINGS ---
 variable "ibmcloud_api_key" {
   description = "IBM Cloud API key (https://cloud.ibm.com/docs/account?topic=account-userapikey#create_user_key)"
 }
@@ -12,6 +13,8 @@ variable "resource_group" {
   description = "Resource group name where the cluster will be hosted."
 }
 
+
+# --- ROKS SETTINGS ---
 variable "project_name" {
   default     = "cloud-pack"
   description = "Ignored if `cluster_id` is specified. The project_name is combined with `environment` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
@@ -23,7 +26,7 @@ variable "platform_version" {
 }
 
 variable "cluster_id" {
-  default     = ""
+  default     = null
   description = "Set your cluster ID to install the Cloud Pak for Business Automation. Leave blank to provision a new OpenShift cluster."
 }
 
@@ -75,21 +78,11 @@ variable "cluster_config_path" {
   description = "directory to store the kubeconfig file"
 }
 
-variable "entitled_registry_user_email" {
-  type        = string
-  description = "Email address of the user owner of the Entitled Registry Key"
+variable "cluster_ingress_subdomain" {
+  default     = null
+  description = "The Ingress of your cluster. Ignore if there is not an existing cluster. Otherwise, for help, run the command `ibmcloud ks cluster get -c <cluster_name_or_id>` to get the Ingress Subdomain value"
 }
 
-variable "entitled_registry_key" {
-  type        = string
-  description = "Do you have a Cloud Pak for Business Automation Entitlement Registry key? If not, Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
-}
-
-variable "cp4ba_project_name" {
-  type        = string
-  default     = "cp4ba"
-  description = "namespace/project for cp4ba"
-}
 
 # --- LDAP SETTINGS ---
 # Password for LDAP Admin User (ldapAdminName name see below), for example passw0rd - use the password that you specified when setting up LDAP
@@ -97,9 +90,9 @@ variable "ldap_admin_password" {
   description = "LDAP Admin password"
 }
 
-# LDAP instance access information - hostname or IP
-variable "ldap_server" {
-  description = "LDAP server "
+variable "hostname" {
+  default     = "ldapvm"
+  description = "Hostname of the virtual Server"
 }
 
 variable "ldap_admin_name" {
@@ -111,41 +104,100 @@ locals {
   enable_cluster = var.cluster_id == null || var.cluster_id == ""
 }
 
+
 # --------- DB2 SETTINGS ----------
 variable "enable_db2" {
-  default = false
-  description = "Set to 'true' if you want to install Db2 for your Cloud Pak for Business Automation. If leave 'false', it will not install Db2."
+  default     = true
+  description = "If set to true, it will install DB2 on the given cluster"
 }
 
-variable "db2_project_name" {
-   default = "ibm-db2"
+ variable "db2_project_name" {
+   default     = "ibm-db2"
    description = "The namespace/project for Db2"
  }
-variable "db2_admin_password" {
+
+variable "db2_admin_user_password" {
   description = "Db2 admin user password defined in LDAP"
 }
 
 variable "db2_admin_username" {
-  default = "db2inst1"
-  description = "Db2 admin username defined in LDAP"
-}
-
-variable "db2_host_name" {
-  description = "Host name of Db2 instance"
-}
-
-variable "db2_host_ip" {
-  description = "IP address for the Db2"
-}
-
-variable "db2_port_number" {
-  description = "Port for Db2 instance"
+  default     = "db2inst1"
+  description = "Db2 default admin username."
 }
 
 variable "db2_standard_license_key" {
-  description = "The standard license key for the Db2 database product"
+  default     = ""
+  description = "The standard license key for the Db2 database product. Note: the license key is required only for Advanced DB2 installation."
 }
 
+variable "operatorVersion" {
+  default     = "db2u-operator.v1.1.11"
+  description = "Operator version"
+}
+
+variable "operatorChannel" {
+  default     = "v1.1"
+  description = "The Operator Channel performs rollout update when new release is available."
+}
+
+variable "db2_instance_version" {
+  default     = "11.5.6.0"
+  description = "DB2 version to be installed"
+}
+
+variable "db2_cpu" {
+  default     = "4"
+  description = "CPU setting for the pod requests and limits"
+}
+
+variable "db2_memory" {
+  default     = "16Gi"
+  description = "Memory setting for the pod requests and limits"
+}
+
+variable "db2_storage_size" {
+  default     = "150Gi"
+  description = "Storage size for the db2 databases"
+}
+
+variable "db2_storage_class" {
+  default     = "ibmc-file-gold-gid"
+  description = "Name for the Storage Class"
+}
+
+variable "db2_ports" {
+  description = "Port number for DB2 instance. Ignore if there is not an existing Db2."
+  default = null
+}
+
+variable "db2_host_address" {
+  description = "Host name for DB2 instance. Ignore if there is not an existing Db2."
+  default     = null
+}
+
+
+
+# --------- CP4BA SETTINGS ----------
+variable "entitled_registry_user_email" {
+  type        = string
+  description = "Email address of the user owner of the Entitled Registry Key"
+}
+
+variable "entitled_registry_key" {
+  type        = string
+  description = "Do you have a Cloud Pak for Business Automation Entitlement Registry key? If not, Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
+}
+
+variable "cp4ba_project_name" {
+  default     = "cp4ba"
+  description = "Namespace or project for cp4ba"
+}
+
+variable "enable_cp4ba" {
+  description = "If set to true, it will install CP4BA on the given cluster"
+  type = bool
+  default = true
+}
 
 
 
