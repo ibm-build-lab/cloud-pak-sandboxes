@@ -4,6 +4,11 @@ variable "cluster_id" {
   description = "If you have an existing cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned"
 }
 
+variable "entitlement" {
+  default     = ""
+  description = "OCP entitlement: leave blank if OCP, set it to `cloud_pak` if cloud pak entitlement"
+}
+
 variable "on_vpc" {
   type        = bool
   default     = false
@@ -136,17 +141,14 @@ variable "entitled_registry_key" {
   default     = ""
   description = "Required: Cloud Pak Entitlement Key. Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable"
 }
+
 variable "entitled_registry_user_email" {
   description = "Required: Email address of the user owner of the Entitled Registry Key"
 }
-variable "namespace" {
-  default     = "cp4aiops"
-  description = "Namespace for CP4AIOPS"
-}
 
-// Local Variables and constants
-locals {
-  entitled_registry_key_file = "./entitlement.key"
+variable "cp4aiops_namespace" {
+  default = "cp4aiops"
+  description = "Namespace for Cloud Pak for AIOps"
 }
 
 locals {
