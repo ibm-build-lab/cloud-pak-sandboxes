@@ -9,7 +9,7 @@ output "cluster_name" {
   depends_on = [
     data.external.get_endpoints,
   ]
-  value = join("", [var.project_name, "-", var.environment, "-cluster"])
+  value = join("", [var.roks_project, "-", var.environment, "-cluster"])
 }
 
 output "kubeconfig" {

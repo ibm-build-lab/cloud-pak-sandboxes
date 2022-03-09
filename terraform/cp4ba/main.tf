@@ -16,24 +16,24 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
   }
 }
 
-//module "create_cluster" {
-//  source = "../../../terraform-ibm-cloud-pak/modules/roks"
-////  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
-//
-//  enable               = local.enable_cluster
-//  on_vpc               = var.on_vpc
-//  project_name         = var.roks_project
-//  environment          = var.environment
-//  owner                = var.owner
-//  resource_group       = var.resource_group
-//  roks_version         = var.platform_version
-//  flavors              = var.flavors
-//  workers_count        = var.workers_count
-//  datacenter           = var.data_center
-//  force_delete_storage = true
-//  private_vlan_number  = var.private_vlan_number
-//  public_vlan_number   = var.public_vlan_number
-//}
+module "create_cluster" {
+  source = "../../../terraform-ibm-cloud-pak/modules/roks"
+//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
+
+  enable               = local.enable_cluster
+  on_vpc               = var.on_vpc
+  project_name         = var.roks_project
+  environment          = var.environment
+  owner                = var.owner
+  resource_group       = var.resource_group
+  roks_version         = var.platform_version
+  flavors              = var.flavors
+  workers_count        = var.workers_count
+  datacenter           = var.data_center
+  force_delete_storage = true
+  private_vlan_number  = var.private_vlan_number
+  public_vlan_number   = var.public_vlan_number
+}
 
 
 data "ibm_container_cluster_config" "cluster_config" {
@@ -51,9 +51,9 @@ data "ibm_container_cluster_config" "cluster_config" {
 module "install_db2" {
   source     = "../../../terraform-ibm-cloud-pak/modules/Db2"
 //  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/Db2"
-//    depends_on = [
-//    module.create_cluster
-//  ]
+    depends_on = [
+    module.create_cluster
+  ]
 
   enable_db2 = var.enable_db2
 
@@ -74,53 +74,53 @@ module "install_db2" {
   entitled_registry_key    = var.entitled_registry_key
 }
 
-//resource "null_resource" "create_DB_Schema" {
-//
-//  depends_on = [
-//    module.install_db2
-//  ]
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createAPPDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createBASDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createBAWDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createDBSchema.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createGCDDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createICNDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createOSDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createUMSDB.sh"
-//  }
-//}
+resource "null_resource" "create_DB_Schema" {
+
+  depends_on = [
+    module.install_db2
+  ]
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createAPPDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createBASDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createBAWDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createDBSchema.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createGCDDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createICNDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createOSDB.sh"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/db2_schema/createUMSDB.sh"
+  }
+}
 
   # ------ CP4BA -------
 module "install_cp4ba"{
   source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
 //  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/cp4ba"
-//    depends_on = [
-//    null_resource.create_DB_Schema
-//  ]
-//  enable_cp4ba           = var.enable_cp4ba
+    depends_on = [
+    null_resource.create_DB_Schema
+  ]
+  enable_cp4ba           = var.enable_cp4ba
   ibmcloud_api_key       = var.ibmcloud_api_key
   region                 = var.region
   cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_file_path
