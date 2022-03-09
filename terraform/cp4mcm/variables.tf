@@ -106,13 +106,16 @@ variable "install_tech_prev_module" {
   type        = bool
   description = "Set to 'true' to install the Tech Preview module"
 }
+variable "kubeconfig_dir" {
+  default     = "./.kube/config"
+  description = "Directory to store the kubeconfig file, set the value to empty string to not download the config. If running on Schematics, use `/tmp/.schematics/.kube/config`"
+}
 
 // Local Variables and constants
 locals {
   // ROKS variables
   workers_count  = [5]
   roks_version   = "4.7"
-  kubeconfig_dir = "./.kube/config"
   // MCM variables
   namespace = "cp4mcm"
 }

@@ -94,6 +94,11 @@
           "name": "entitled_registry_user_email",
           "value": "",
           "type": "string"
+        },
+        {
+          "name": "kubeconfig_dir",
+          "value": "/tmp/.schematics/.kube/config",
+          "type": "string"
         }
       ]
     }

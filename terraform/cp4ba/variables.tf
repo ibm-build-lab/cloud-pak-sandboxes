@@ -72,7 +72,7 @@ variable "on_vpc" {
 
 variable "cluster_config_path" {
   default     = "./.kube/config"
-  description = "directory to store the kubeconfig file"
+  description = "directory to store the kubeconfig file. If running on Schematics, use `/tmp/.schematics/.kube/config`"
 }
 
 variable "entitled_registry_user_email" {

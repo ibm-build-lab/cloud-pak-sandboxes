@@ -130,6 +130,11 @@
           "name": "etcd_password",
           "value": "",
           "type": "string"
+        },
+        {
+          "name": "cluster_config_path",
+          "value": "/tmp/.schematics/.kube/config",
+          "type": "string"
         }
       ]
     }

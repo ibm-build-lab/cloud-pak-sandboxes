@@ -65,7 +65,7 @@ variable "vpc_zone_names" {
 
 variable "cluster_config_path" {
   default     = "./.kube/config"
-  description = "Directory to store the kubeconfig file, set the value to empty string to not download the config"
+  description = "Directory to store the kubeconfig file, set the value to empty string to not download the config. If running on Schematics, use `/tmp/.schematics/.kube/config`"
 }
 
 

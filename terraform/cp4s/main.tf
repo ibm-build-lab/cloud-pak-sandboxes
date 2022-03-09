@@ -28,7 +28,7 @@ module "cluster" {
 
   // Kubernetes Config parameters:
   // download_config = false
-  // config_dir      = local.kubeconfig_dir
+  // config_dir      = var.kubeconfig_dir
   // config_admin    = false
   // config_network  = false
 
@@ -41,7 +41,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
   triggers = { always_run = timestamp() }
 
   provisioner "local-exec" {
-    command = "mkdir -p ${local.kubeconfig_dir}"
+    command = "mkdir -p ${var.kubeconfig_dir}"
   }
 }
 
@@ -50,7 +50,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 
   cluster_name_id   = local.enable_cluster ? module.cluster.id : var.cluster_id
   resource_group_id = module.cluster.resource_group.id
-  config_dir        = local.kubeconfig_dir
+  config_dir        = var.kubeconfig_dir
   download          = true
   admin             = false
   network           = false

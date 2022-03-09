@@ -81,11 +81,14 @@ variable "entitled_registry_key" {
 variable "entitled_registry_user_email" {
   description = "Required: Email address of the user owner of the Entitled Registry Key"
 }
+variable "kubeconfig_dir" {
+  default     = "./.kube/config"
+  description = "Directory to store the kubeconfig file, set the value to empty string to not download the config. If running on Schematics, use `/tmp/.schematics/.kube/config`"
+}
 
 // ROKS Module : Local Variables and constants
 locals {
   workers_count              = [4]
   roks_version               = "4.7"
-  kubeconfig_dir             = "./.kube/config"
   entitled_registry_key_file = "./entitlement.key"
 }
