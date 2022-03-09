@@ -16,30 +16,30 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
   }
 }
 
-module "create_cluster" {
-  source = "../../../terraform-ibm-cloud-pak/modules/roks"
-//  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
-
-  enable               = local.enable_cluster
-  on_vpc               = var.on_vpc
-  project_name         = var.project_name
-  environment          = var.environment
-  owner                = var.owner
-  resource_group       = var.resource_group
-  roks_version         = var.platform_version
-  flavors              = var.flavors
-  workers_count        = var.workers_count
-  datacenter           = var.data_center
-  force_delete_storage = true
-  private_vlan_number  = var.private_vlan_number
-  public_vlan_number   = var.public_vlan_number
-}
+//module "create_cluster" {
+//  source = "../../../terraform-ibm-cloud-pak/modules/roks"
+////  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/roks"
+//
+//  enable               = local.enable_cluster
+//  on_vpc               = var.on_vpc
+//  project_name         = var.roks_project
+//  environment          = var.environment
+//  owner                = var.owner
+//  resource_group       = var.resource_group
+//  roks_version         = var.platform_version
+//  flavors              = var.flavors
+//  workers_count        = var.workers_count
+//  datacenter           = var.data_center
+//  force_delete_storage = true
+//  private_vlan_number  = var.private_vlan_number
+//  public_vlan_number   = var.public_vlan_number
+//}
 
 
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
   # Use var.cluster_id if it is NOT blank else use module.create_cluster.id
-  cluster_name_id      = var.cluster_id != null ? var.cluster_id : module.create_cluster.id
+  cluster_name_id      = var.cluster_id # != null ? var.cluster_id : module.create_cluster.id
   resource_group_id    = data.ibm_resource_group.group.id
   download             = true
   config_dir           = var.cluster_config_path
@@ -51,9 +51,9 @@ data "ibm_container_cluster_config" "cluster_config" {
 module "install_db2" {
   source     = "../../../terraform-ibm-cloud-pak/modules/Db2"
 //  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/Db2"
-    depends_on = [
-    module.create_cluster
-  ]
+//    depends_on = [
+//    module.create_cluster
+//  ]
 
   enable_db2 = var.enable_db2
 
@@ -74,64 +74,66 @@ module "install_db2" {
   entitled_registry_key    = var.entitled_registry_key
 }
 
-resource "null_resource" "create_DB_Schema" {
-
-  depends_on = [
-    module.install_db2
-  ]
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createAPPDB.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createBASDB.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createBAWDB.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createDBSchema.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createGCDDB.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createICNDB.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createOSDB.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createUMSDB.sh"
-  }
-}
+//resource "null_resource" "create_DB_Schema" {
+//
+//  depends_on = [
+//    module.install_db2
+//  ]
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createAPPDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createBASDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createBAWDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createDBSchema.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createGCDDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createICNDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createOSDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createUMSDB.sh"
+//  }
+//}
 
   # ------ CP4BA -------
 module "install_cp4ba"{
   source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
 //  source = "git::https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/modules/cp4ba"
-    depends_on = [
-    null_resource.create_DB_Schema
-  ]
-  enable_cp4ba           = var.enable_db2
+//    depends_on = [
+//    null_resource.create_DB_Schema
+//  ]
+//  enable_cp4ba           = var.enable_cp4ba
+  ibmcloud_api_key       = var.ibmcloud_api_key
+  region                 = var.region
   cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_file_path
   ingress_subdomain      = var.cluster_ingress_subdomain != null ? var.cluster_ingress_subdomain : module.create_cluster.ingress_hostname
   # ---- Platform ----
   cp4ba_project_name     = var.cp4ba_project_name
-  entitled_registry_user = var.entitled_registry_user_email
-  entitlement_key        = var.entitled_registry_key
+  entitled_registry_user_email = var.entitled_registry_user_email
+  entitled_registry_key        = var.entitled_registry_key
   # ----- LDAP Settings -----
-  ldap_admin             = var.ldap_admin_name
-  ldap_password          = var.ldap_admin_password
+  ldap_admin_name         = var.ldap_admin_name
+  ldap_admin_password     = var.ldap_admin_password
   # ----- DB2 Settings -----
-  db2_host_port           = var.db2_ports != null ? var.db2_ports : module.install_db2.db2_ports # var.db2_port_number
+  db2_host_port           = var.db2_ports # != null ? var.db2_ports : module.install_db2.db2_ports # var.db2_port_number
   db2_host_address        = var.db2_host_address
   db2_admin_username      = var.db2_admin_username
   db2_admin_user_password = var.db2_admin_user_password

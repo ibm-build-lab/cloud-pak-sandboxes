@@ -15,7 +15,7 @@ variable "resource_group" {
 
 
 # --- ROKS SETTINGS ---
-variable "project_name" {
+variable "roks_project" {
   default     = "cloud-pack"
   description = "Ignored if `cluster_id` is specified. The project_name is combined with `environment` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
 }
@@ -26,7 +26,7 @@ variable "platform_version" {
 }
 
 variable "cluster_id" {
-  default     = null
+  default     = ""
   description = "Set your cluster ID to install the Cloud Pak for Business Automation. Leave blank to provision a new OpenShift cluster."
 }
 
@@ -79,7 +79,7 @@ variable "cluster_config_path" {
 }
 
 variable "cluster_ingress_subdomain" {
-  default     = null
+  default     = ""
   description = "The Ingress of your cluster. Ignore if there is not an existing cluster. Otherwise, for help, run the command `ibmcloud ks cluster get -c <cluster_name_or_id>` to get the Ingress Subdomain value"
 }
 
@@ -116,13 +116,18 @@ variable "enable_db2" {
    description = "The namespace/project for Db2"
  }
 
-variable "db2_admin_user_password" {
-  description = "Db2 admin user password defined in LDAP"
+variable "db2_admin_username" {
+  default     = "cpadmin"
+  description = "Admin user name defined in LDAP"
 }
 
-variable "db2_admin_username" {
+variable "db2_user" {
   default     = "db2inst1"
-  description = "Db2 default admin username."
+  description = "User name defined in LDAP"
+}
+
+variable "db2_admin_user_password" {
+  description = "Db2 admin user password defined in LDAP"
 }
 
 variable "db2_standard_license_key" {
@@ -167,12 +172,12 @@ variable "db2_storage_class" {
 
 variable "db2_ports" {
   description = "Port number for DB2 instance. Ignore if there is not an existing Db2."
-  default = null
+  default = ""
 }
 
 variable "db2_host_address" {
   description = "Host name for DB2 instance. Ignore if there is not an existing Db2."
-  default     = null
+  default     = ""
 }
 
 
