@@ -89,6 +89,11 @@
           "name": "admin_user",
           "value": "",
           "type": "string"
+        },
+        {
+          "name": "kubeconfig_dir",
+          "value": "/tmp/.schematics/.kube/config",
+          "type": "string"
         }
       ]
     }

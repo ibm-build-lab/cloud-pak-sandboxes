@@ -210,6 +210,11 @@
           "name": "install_big_sql",
           "value": "false",
           "type": "bool"
+        },
+        {
+          "name": "config_dir",
+          "value": "/tmp/.schematics/.kube/config",
+          "type": "string"
         }
       ]
     }

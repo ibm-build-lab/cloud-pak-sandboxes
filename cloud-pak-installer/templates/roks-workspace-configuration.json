@@ -117,6 +117,11 @@
             "name": "etcd_password",
             "value": "",
             "type": "string"
+          },
+          {
+            "name": "config_dir",
+            "value": "/tmp/.schematics/.kube/config",
+            "type": "string"
           }
         ]
       }
