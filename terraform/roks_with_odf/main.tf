@@ -58,33 +58,10 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 # Install ODF if the rocks version is v4.7 or newer
-resource "null_resource" "enable_odf" {
+module "odf" {
+  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/odf"
+
   count = var.is_enable ? 1 : 0
-
-  triggers = {
-    IC_API_KEY = var.ibmcloud_api_key
-    CLUSTER = var.cluster
-  }
-
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    command = "${path.module}/scripts/install_odf.sh"
-
-    environment = {
-      IC_API_KEY = var.ibmcloud_api_key
-      CLUSTER = var.module.cluster.id
-    }
-  }
-
-  provisioner "local-exec" {
-    when        = destroy
-
-    interpreter = ["/bin/bash", "-c"]
-    command = "${path.module}/scripts/uninstall_odf.sh"
-
-    environment = {
-      IC_API_KEY = self.triggers.IC_API_KEY
-      CLUSTER  = self.triggers.CLUSTER
-    }
-  }
+  cluster = var.cluster_id
+  kube_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
 }
