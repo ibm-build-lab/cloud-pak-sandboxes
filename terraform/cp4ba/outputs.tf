@@ -30,7 +30,7 @@ output "db2_port_number" {
     depends_on = [
     data.external.get_endpoints,
   ]
-  value = var.db2_ports
+  value = var.db2_host_port
 }
 
 output "cp4ba_endpoint" {

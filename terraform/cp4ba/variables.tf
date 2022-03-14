@@ -83,9 +83,12 @@ variable "cluster_ingress_subdomain" {
   description = "The Ingress of your cluster. Ignore if there is not an existing cluster. Otherwise, for help, run the command `ibmcloud ks cluster get -c <cluster_name_or_id>` to get the Ingress Subdomain value"
 }
 
-
 # --- LDAP SETTINGS ---
 # Password for LDAP Admin User (ldapAdminName name see below), for example passw0rd - use the password that you specified when setting up LDAP
+variable "ldap_host_ip" {
+  description = "The IP address of your LDAP."
+}
+
 variable "ldap_admin_password" {
   description = "LDAP Admin password"
 }
@@ -103,7 +106,6 @@ variable "ldap_admin_name" {
 locals {
   enable_cluster = var.cluster_id == null || var.cluster_id == ""
 }
-
 
 # --------- DB2 SETTINGS ----------
 variable "enable_db2" {
@@ -170,7 +172,7 @@ variable "db2_storage_class" {
   description = "Name for the Storage Class"
 }
 
-variable "db2_ports" {
+variable "db2_host_port" {
   description = "Port number for DB2 instance. Ignore if there is not an existing Db2."
   default = ""
 }
@@ -179,8 +181,6 @@ variable "db2_host_address" {
   description = "Host name for DB2 instance. Ignore if there is not an existing Db2."
   default     = ""
 }
-
-
 
 # --------- CP4BA SETTINGS ----------
 variable "entitled_registry_user_email" {

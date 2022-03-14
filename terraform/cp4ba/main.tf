@@ -56,7 +56,7 @@ module "install_db2" {
   ]
 
   enable_db2 = var.enable_db2
-
+  resource_group           = var.resource_group
   # ----- Cluster -----
   cluster_config_path      = data.ibm_container_cluster_config.cluster_config.config_file_path
   db2_project_name         = var.db2_project_name
@@ -133,7 +133,7 @@ module "install_cp4ba"{
   ldap_admin_name         = var.ldap_admin_name
   ldap_admin_password     = var.ldap_admin_password
   # ----- DB2 Settings -----
-  db2_host_port           = var.db2_ports # != null ? var.db2_ports : module.install_db2.db2_ports # var.db2_port_number
+  db2_host_port           = var.db2_host_port # != null ? var.db2_ports : module.install_db2.db2_ports # var.db2_port_number
   db2_host_address        = var.db2_host_address
   db2_admin_username      = var.db2_admin_username
   db2_admin_user_password = var.db2_admin_user_password
