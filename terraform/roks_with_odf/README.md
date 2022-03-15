@@ -27,7 +27,7 @@ The Terraform script requires the following list of input variables. Here are so
 | `workers_count`        | Ignored if `cluster_id` is specified. Array with the amount of workers on each workers group. On Classic it's only possible to have one workers group, so only the first number in the list is taken for the cluster size. Example: `[1, 3, 5]` or `[2]`   | `[2]`            | Yes       |
 | `force_delete_storage` | Ignored if `cluster_id` is specified. If set to `true`, force the removal of persistent storage associated with the cluster during cluster deletion. Default value is `false`.                                                             | `false`          | Yes       |
 | `is_enable`               | Install ODF on cluster  | false           | No       |
-| `ibmcloud_api_key`               | Ignored if Portworx is not enabled: IBMCloud API Key for the account the resources will be provisioned on. This is need for Portworx. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys  | ""           | No       |
+| `ibmcloud_api_key`               | Ignored if ODF is not enabled: IBMCloud API Key for the account the resources will be provisioned on. This is need for ODF. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys  | ""           | No       |
 
 
 ## Output Parameters
@@ -84,7 +84,10 @@ export KUBECONFIG=$(terraform output config_file_path)
 kubectl cluster-info
 ```
 
-For more information on Portworx Validation, go [here](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/portworx/testing#3-verify).
+To verify that ODF is installed, run the command:
+```bash
+ibmcloud oc cluster addon ls -c $(terraform output cluster_id)
+```
 
 ## Clean up
 
