@@ -61,7 +61,7 @@ variable "flavors" {
 variable "workers_count" {
   type    = list(number)
   default = [5]
-  description = "Array with the amount of workers on each workers group. Classic and Portworx set up only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
+  description = "Array with the amount of workers on each workers group. Classic set up only takes the first number of the list. Example: [1, 3, 5]. Note: number of elements must equal number of elements in flavors array"
 }
 
 variable "private_vlan_number" {
