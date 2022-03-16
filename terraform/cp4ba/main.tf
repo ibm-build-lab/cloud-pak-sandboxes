@@ -39,7 +39,7 @@ module "create_cluster" {
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
   # Use var.cluster_id if it is NOT blank else use module.create_cluster.id
-  cluster_name_id      = var.cluster_id # != null ? var.cluster_id : module.create_cluster.id
+  cluster_name_id      = var.cluster_id != null ? var.cluster_id : module.create_cluster.id
   resource_group_id    = data.ibm_resource_group.group.id
   download             = true
   config_dir           = var.cluster_config_path
@@ -133,8 +133,8 @@ module "install_cp4ba"{
   ldap_admin_name         = var.ldap_admin_name
   ldap_admin_password     = var.ldap_admin_password
   # ----- DB2 Settings -----
-  db2_host_port           = var.db2_host_port # != null ? var.db2_ports : module.install_db2.db2_ports # var.db2_port_number
-  db2_host_address        = var.db2_host_address
+  db2_host_port           = var.db2_host_port != null ? var.db2_host_port : module.install_db2.db2_ports # var.db2_port_number
+  db2_host_address        = var.db2_host_address != null ? var.db2_host_address : module.install_db2.db2_host_address
   db2_admin_username      = var.db2_admin_username
   db2_admin_user_password = var.db2_admin_user_password
 }
