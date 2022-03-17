@@ -17,8 +17,8 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 }
 
 module "create_cluster" {
-//  source = "../../../terraform-ibm-cloud-pak/modules/roks"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "../../../terraform-ibm-cloud-pak/modules/roks"
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
 
   enable               = local.enable_cluster
   on_vpc               = var.on_vpc
@@ -27,12 +27,14 @@ module "create_cluster" {
   owner                = var.owner
   resource_group       = var.resource_group
   roks_version         = var.platform_version
+  entitlement          = var.entitlement
   flavors              = var.flavors
   workers_count        = var.workers_count
   datacenter           = var.data_center
   force_delete_storage = true
   private_vlan_number  = var.private_vlan_number
   public_vlan_number   = var.public_vlan_number
+  vpc_zone_names       = var.vpc_zone_names
 }
 
 
@@ -49,8 +51,8 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
-//  source     = "../../../terraform-ibm-cloud-pak/modules/Db2"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
+  source     = "../../../terraform-ibm-cloud-pak/modules/Db2"
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
     depends_on = [
     module.create_cluster
   ]
@@ -115,8 +117,8 @@ resource "null_resource" "create_DB_Schema" {
 
   # ------ CP4BA -------
 module "install_cp4ba"{
-//  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
+  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
     depends_on = [
     null_resource.create_DB_Schema
   ]

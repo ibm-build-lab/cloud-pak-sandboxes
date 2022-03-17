@@ -73,6 +73,17 @@ variable "on_vpc" {
   description = "Select 'true' to install on a VPC cluster and it's using VPC Gen2. Note: CP4BA does not currently support VPC cluster."
 }
 
+variable "entitlement" {
+  default     = ""
+  description = "OCP entitlement: leave blank if OCP, set it to `cloud-pak` if cloud pak entitlement"
+}
+
+variable "vpc_zone_names" {
+  type        = list(string)
+  default     = ["us-south-1"]
+  description = "**VPC only:** Array with the subzones in the region to create the workers groups. List all the zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
+}
+
 variable "cluster_config_path" {
   default     = "./.kube/config"
   description = "directory to store the kubeconfig file"
