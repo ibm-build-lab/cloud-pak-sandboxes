@@ -94,6 +94,12 @@ variable "cluster_ingress_subdomain" {
   description = "The Ingress of your cluster. Ignore if there is not an existing cluster. Otherwise, for help, run the command `ibmcloud ks cluster get -c <cluster_name_or_id>` to get the Ingress Subdomain value"
 }
 
+# --- PORTWORX ---
+variable "etcd_username" {
+  default     = "portworxuser"
+  description = "Ignored if `create_external_etcd` is `false`"
+}
+
 # --- LDAP SETTINGS ---
 # Password for LDAP Admin User (ldapAdminName name see below), for example passw0rd - use the password that you specified when setting up LDAP
 variable "ldap_host_ip" {
