@@ -99,7 +99,6 @@ module "portworx" {
   etcd_secret_name = "px-etcd-certs"
 }
 
-// TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4data" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4data_3.5"
   enable = true
