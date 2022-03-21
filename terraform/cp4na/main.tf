@@ -56,7 +56,6 @@ data "ibm_container_cluster_config" "cluster_config" {
   network           = false
 }
 
-// TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4na" {
   // source = "../../../../ibm-hcbt/terraform-ibm-cloud-pak/cp4data"
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4na"
