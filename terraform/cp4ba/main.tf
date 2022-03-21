@@ -10,7 +10,6 @@ data "ibm_resource_group" "group" {
 }
 
 module "create_cluster" {
-//  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
 
   enable               = local.enable_cluster
@@ -41,7 +40,7 @@ data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
   # Use var.cluster_id if it is NOT blank else use module.create_cluster.id
 //  cluster_name_id      = var.cluster_id != null ? var.cluster_id : module.create_cluster.id
-  cluster_name_id      = local.enable_cluster ? module.create_cluster.id : var.cluster_id
+  cluster_name_id      = local.enable_cluster ? module.create_cluster.name : var.cluster_id
   resource_group_id    = data.ibm_resource_group.group.id
   download             = true
   config_dir           = var.cluster_config_path
@@ -51,7 +50,6 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
-//  source     = "../../../terraform-ibm-cloud-pak/modules/Db2"
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
     depends_on = [
     module.create_cluster
@@ -117,7 +115,6 @@ resource "null_resource" "create_DB_Schema" {
 
   # ------ CP4BA -------
 module "install_cp4ba"{
-//  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
     depends_on = [
     null_resource.create_DB_Schema
