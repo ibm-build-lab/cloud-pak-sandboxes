@@ -1,100 +1,10 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
-
-@jgod1360
-ibm-hcbt
-/
-cloud-pak-sandboxes
-Public
-Code
-Issues
-2
-Pull requests
-1
-Actions
-Projects
-Wiki
-Security
-Insights
-cloud-pak-sandboxes/.gitignore
-@jgod1360
-jgod1360 Updating modules' urls (#70)
-…
-Latest commit ef02d34 3 days ago
- History
- 4 contributors
-@logicJohn@vyomkumar3-ibm@bwoolf1@jgod1360
-60 lines (51 sloc)  1.3 KB
-
-# Credentials or sensitive information files used by Terraform to ignore
-credentials*.properties
-credentials*.sh
-.terraform_key*.json
-.token
-*.key
-
-# Output files from Terraform and modules to ignore
 **/.kube
-**/.cp4app_data
-**/.helm
-
-# Local .terraform directories
 **/.terraform
-
-# Terraform & Schematics files
 *.tfstate*
 crash.log
 .temp/
 tmp/
 /workspace
-dist/
 workspace.json
-.terraform.d/
-
-
-# Ignore override files as they are usually used to override resources locally and so
-# are not checked in
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-
-# Include override files you do wish to add to version control using negated pattern
-#
-# !example_override.tf
-
-# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
-# example: *tfplan*
-
-# Catalog Product files to ignore
-*.token
-*.tgz
-product
-product_tmp
-
-# macOS files
-.DS_Store
-installer/test3.sh
-installer/vlan-public-jah-test01-mcm-sandbox.json
-installer/vlan-public-jah-test1-mcm-sandbox.json
-installer/vlan-public-jah-test12-mcm-sandbox.json
-installer/test3.sh
-installer/test3.sh
-installer
-© 2022 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete
+.terraform
+dockerconfig_merged

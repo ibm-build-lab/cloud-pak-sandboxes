@@ -68,21 +68,21 @@ variable "owner" {
   description = "Ignored if `cluster_id` is specified. Use your user name or team name. The owner is used to label the cluster and other resources with the tag 'owner:{owner}'"
 }
 
-variable "on_vpc" {
-  default     = false
-  description = "Select 'true' to install on a VPC cluster and it's using VPC Gen2. Note: CP4BA does not currently support VPC cluster."
-}
+//variable "on_vpc" {
+//  default     = false
+//  description = "Select 'true' to install on a VPC cluster and it's using VPC Gen2. Note: CP4BA does not currently support VPC cluster."
+//}
 
-variable "entitlement" {
-  default     = ""
-  description = "OCP entitlement: leave blank if OCP, set it to `cloud-pak` if cloud pak entitlement"
-}
+//variable "entitlement" {
+//  default     = ""
+//  description = "OCP entitlement: leave blank if OCP, set it to `cloud-pak` if cloud pak entitlement"
+//}
 
-variable "vpc_zone_names" {
-  type        = list(string)
-  default     = ["us-south-1"]
-  description = "**VPC only:** Array with the subzones in the region to create the workers groups. List all the zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
-}
+//variable "vpc_zone_names" {
+//  type        = list(string)
+//  default     = ["us-south-1"]
+//  description = "**VPC only:** Array with the subzones in the region to create the workers groups. List all the zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
+//}
 
 variable "cluster_config_path" {
   default     = "./.kube/config"
@@ -92,12 +92,6 @@ variable "cluster_config_path" {
 variable "cluster_ingress_subdomain" {
   default     = ""
   description = "The Ingress of your cluster. Ignore if there is not an existing cluster. Otherwise, for help, run the command `ibmcloud ks cluster get -c <cluster_name_or_id>` to get the Ingress Subdomain value"
-}
-
-# --- PORTWORX ---
-variable "etcd_username" {
-  default     = "portworxuser"
-  description = "Ignored if `create_external_etcd` is `false`"
 }
 
 # --- LDAP SETTINGS ---

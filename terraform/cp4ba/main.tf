@@ -13,20 +13,20 @@ module "create_cluster" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
 
   enable               = local.enable_cluster
-  on_vpc               = var.on_vpc
+  on_vpc               = false
   project_name         = var.roks_project
   environment          = var.environment
   owner                = var.owner
   resource_group       = var.resource_group
   roks_version         = var.platform_version
-  entitlement          = var.entitlement
+  entitlement          = "cloud_pak"
   flavors              = var.flavors
   workers_count        = var.workers_count
   datacenter           = var.data_center
   force_delete_storage = true
   private_vlan_number  = var.private_vlan_number
   public_vlan_number   = var.public_vlan_number
-  vpc_zone_names       = var.vpc_zone_names
+  vpc_zone_names       = ["us-south-1"]
 }
 
 resource "null_resource" "mkdir_kubeconfig_dir" {
@@ -39,7 +39,6 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
   # Use var.cluster_id if it is NOT blank else use module.create_cluster.id
-//  cluster_name_id      = var.cluster_id != null ? var.cluster_id : module.create_cluster.id
   cluster_name_id      = local.enable_cluster ? module.create_cluster.name : var.cluster_id
   resource_group_id    = data.ibm_resource_group.group.id
   download             = true
