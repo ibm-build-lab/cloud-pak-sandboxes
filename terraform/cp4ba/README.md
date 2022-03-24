@@ -8,6 +8,27 @@ Make sure all requirements listed [here](https://github.com/ibm-hcbt/cloud-pak-s
 
 Make sure access to IBM Cloud is set up.  Go [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#configure-access-to-ibm-cloud) for details.
 
+## [To provision LDAP Terraform Module](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/examples/ldap)
+Note that Ldap is required before installing CP4BA. [Click here to provision LDAP Terraform Module](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/examples/ldap).
+You will be performing the follwing tasks: 
+
+1. Download required license files from [IBM Internal Software Download](https://w3-03.ibm.com/software/xl/download/ticket.wss) or [IBM Passport Advantage](https://www.ibm.com/software/passportadvantage/) into the  `../../modules/ldap/files` folder
+
+    ```console
+    DB2:
+    Part Number : CNB21ML
+    Filename : DB2_AWSE_Restricted_Activation_11.1.zip
+
+    IBM SDS:
+    Part Number : CRV3IML
+    Filename : sds64-premium-feature-act-pkg.zip
+    ```
+
+ 2. Update the ldif file
+
+    Update the `../../modules/files/cp.ldif` file as needed to change the Directory Structure and user information.  For information on LDIF format, go [here](https://www.ibm.com/docs/en/i/7.4?topic=reference-ldap-data-interchange-format-ldif)
+
+
 ## Cloud Pak Entitlement Key
 
 This Cloud Pak requires an Entitlement Key. It can be retrieved from https://myibm.ibm.com/products-services/containerlibrary.
@@ -33,13 +54,13 @@ For instructions to provision the sandbox, go
 ## Provisioning this module in a Terraform Script
 
 ```hcl
-###################### CLOUD ######################
+# --------------------- CLOUD ---------------------- 
 ibmcloud_api_key      = "******************"
 iaas_classic_username = "******************"
 resource_group        = "******************"
 region                = "******************"
 
-###################### LDAP ######################
+# --------------------- LDAP ---------------------- 
 datacenter            = "dal12"
 hostname              = "ldapvm"
 ibmcloud_domain       = "ibm.cloud"
@@ -50,7 +71,7 @@ hourly_billing        = true
 local_disk            = true
 private_network_only  = false
 
-###################### ROKS ######################
+# --------------------- ROKS ---------------------- 
 on_vpc              = false
 entitlement         = "cloud_pak"
 project_name        = "******************"
@@ -61,16 +82,7 @@ private_vlan_number = "******************"
 public_vlan_number  = "******************"
 data_center         = "******************"
 
-###################### DB2 ######################
-db2_user                 = "db2inst1"
-db2_admin_user_password  = "******************"
-db2_admin_username       = "******************"
-db2_host_address         = ""
-db2_host_port            = ""
-db2_standard_license_key = ""
-operatorVersion          = "db2u-operator.v1.1.10"
-
-###################### CP4BA ######################
+# --------------------- CP4BA ----------------------
 entitled_registry_key        = "******************"
 entitled_registry_user_email = "******************"
 ldap_admin                   = "cn=root"
@@ -79,10 +91,29 @@ ldap_admin_password          = "******************"
 ldap_host_ip                 = "******************"
 ```
 
-## Input Parameters
-In addition, the Terraform code requires the following input parameters,
-for some variables are instructions to get the possible values using
-`ibmcloud`.
+Note: If you enable the installation of Db2 (`enable_db2` is set to `true`), you will need to add the following variables to your `terraform.tfvars` file. 
+```hcl
+# --------------------- DB2 ---------------------- 
+db2_user                 = "db2inst1"
+db2_admin_user_password  = "******************"
+db2_admin_username       = "******************"
+db2_standard_license_key = ""
+operatorVersion          = "db2u-operator.v1.1.10"
+```
+
+Otherwise, if your Db2 has already been provisioned, set the variable `enable_db2` to `false` (`enable_db2 = false`) and add the following variables to your `terraform.tfvars` file. 
+```hcl
+# --------------------- DB2 ---------------------- 
+db2_user                 = "db2inst1"
+db2_admin_user_password  = "******************"
+db2_admin_username       = "******************"
+db2_host_address         = ""
+db2_host_port            = ""
+db2_standard_license_key = ""
+operatorVersion          = "db2u-operator.v1.1.10"
+```
+
+## Input Parameters and their Descriptions
 
 | Name                               | Description                                                                                                                                                                                                                | Default                     | Required |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | -------- |
