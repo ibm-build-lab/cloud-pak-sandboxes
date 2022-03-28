@@ -65,7 +65,7 @@ module "install_portworx" {
   storage_iops          = var.storage_iops
   storage_profile       = var.storage_profile
   # Portworx parameters
-  resource_group        = var.resource_group
+  resource_group_name   = var.resource_group
   region                = var.region
   cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
   unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
