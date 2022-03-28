@@ -4,14 +4,14 @@
 
 Make sure all requirements listed [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#requirements) are completed.
 
-## Configure Access to IBM Cloud
+### Configure Access to IBM Cloud
 
 Make sure access to IBM Cloud is set up.  Go [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#configure-access-to-ibm-cloud) for details.
 
-## LDAP Virtual Machine Requirement
+### LDAP Virtual Machine Requirement
 Note that an LDAP Virtual Machine to manage usernames and passwords is required before installing CP4BA. [Click here to provision LDAP Terraform Module](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/examples/ldap).
 
-## Cloud Pak Entitlement Key
+### Cloud Pak Entitlement Key
 
 This Cloud Pak requires an Entitlement Key. It can be retrieved from https://myibm.ibm.com/products-services/containerlibrary.
 
