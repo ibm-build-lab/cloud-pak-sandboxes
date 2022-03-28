@@ -33,7 +33,9 @@ entitled_registry_key        = "< Your Entitled Key here >"
 For instructions to provision the sandbox, go
 [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#provisioning-the-sandbox).
 
-## Provisioning this module in a Terraform Script
+## Running this script locally
+
+If you plan to run this script using your local Terraform client, you will need to set the following variables in your ./terraform.tfvars file:
 
 ```hcl
 # --------------------- CLOUD ---------------------- 
@@ -54,7 +56,6 @@ local_disk            = true
 private_network_only  = false
 
 # --------------------- ROKS ---------------------- 
-on_vpc              = false
 entitlement         = "cloud_pak"
 project_name        = "******************"
 roks_project        = "******************"
@@ -67,34 +68,28 @@ data_center         = "******************"
 # --------------------- CP4BA ----------------------
 entitled_registry_key        = "******************"
 entitled_registry_user_email = "******************"
+
+# --------------------- LDAP ----------------------
 ldap_admin                   = "cn=root"
 ldap_server                  = ""
 ldap_admin_password          = "******************"
 ldap_host_ip                 = "******************"
-```
 
-Note: If you enable the installation of Db2 (`enable_db2` is set to `true`), you will need to add the following variables to your `terraform.tfvars` file. 
-```hcl
 # --------------------- DB2 ---------------------- 
-db2_user                 = "db2inst1"
-db2_admin_user_password  = "******************"
-db2_admin_username       = "******************"
-db2_standard_license_key = ""
-operatorVersion          = "db2u-operator.v1.1.10"
-```
-
-Otherwise, if your Db2 has already been provisioned, set the variable `enable_db2` to `false` (`enable_db2 = false`) and add the following variables to your `terraform.tfvars` file. 
+If you choose not to have this script provision DB2 and to use an existing DB2 service, set the variable `enable_db2` to `false` (`enable_db2 = false`) and add the following variables to your `terraform.tfvars` file. 
 ```hcl
-# --------------------- DB2 ---------------------- 
-db2_user                 = "db2inst1"
-db2_admin_user_password  = "******************"
-db2_admin_username       = "******************"
+enable_db2               = false
 db2_host_address         = ""
 db2_host_port            = ""
+```
+Regardless of whether this script provisions DB2, you will need to set the following:
+```hcl
+db2_user                 = "db2inst1"
+db2_admin_user_password  = "******************"
+db2_admin_username       = "******************"
 db2_standard_license_key = ""
 operatorVersion          = "db2u-operator.v1.1.10"
 ```
-
 ## Input Parameters and their Descriptions
 
 | Name                               | Description                                                                                                                                                                                                                | Default                     | Required |
