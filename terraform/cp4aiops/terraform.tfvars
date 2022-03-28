@@ -12,7 +12,7 @@ project_name        = "cloud-pack"
 owner               = "anonymous"
 environment         = "sandbox"
 region              = "us-south"
-resource_group_name = "cloud-pak-sandbox"
+resource_group = "cloud-pak-sandbox"
 // resource_group = "cloud-pak-sandbox-ibm"
 datacenter = "dal10"
 

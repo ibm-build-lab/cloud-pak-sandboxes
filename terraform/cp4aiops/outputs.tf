@@ -1,6 +1,6 @@
 // General output parameters
 output "resource_group" {
-  value = var.resource_group_name
+  value = var.resource_group
 }
 
 // ROKS output parameters
@@ -8,7 +8,7 @@ output "cluster_endpoint" {
   value = module.create_cluster.endpoint
 }
 output "cluster_id" {
-  value = local.enable_cluster ? module.create_cluster.id : var.cluster_name_or_id
+  value = local.enable_cluster ? module.create_cluster.id : var.cluster_id
 }
 output "cluster_name" {
   value = local.enable_cluster ? module.create_cluster.name : ""
