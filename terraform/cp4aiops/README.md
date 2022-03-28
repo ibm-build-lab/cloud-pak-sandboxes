@@ -47,6 +47,9 @@ In addition, the Terraform code requires the following input parameters, for som
 | `entitled_registry_key`            | Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.   |                             | No       |
 | `entitled_registry_user_email`     | Email address of the user owner of the Entitled Registry Key   |                             | Yes      |
 If you are using Schematics directly or the Private Catalog, set the variable `entitled_registry_key` with the content of the Entitlement Key, the file `entitlement.key` is not available.
+| `accept_aiops_license` | Do you accept the licensing agreements? `T/F` | `false`    | yes      |
+| `enable_aimanager`     | Install AIManager? `T/F`                      | `true`     | no       |
+| `enable_event_manager` | Install Event Manager? `T/F`                  | `true`     | no       |
 
 ## Output Parameters
 

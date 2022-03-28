@@ -65,7 +65,7 @@ module "install_portworx" {
   storage_iops          = var.storage_iops
   storage_profile       = var.storage_profile
   # Portworx parameters
-  resource_group_name   = var.resource_group
+  resource_group        = var.resource_group
   region                = var.region
   cluster_id            = data.ibm_container_cluster_config.cluster_config.cluster_name_id
   unique_id             = "px-roks-${data.ibm_container_cluster_config.cluster_config.cluster_name_id}"
@@ -78,12 +78,17 @@ module "install_portworx" {
 module "install_cp4aiops" {
   source              = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops"
   enable              = true
-  portworx_is_ready       = module.install_portworx.portworx_is_ready
-  ibmcloud_api_key        = var.ibmcloud_api_key
-  cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
-  on_vpc                  = var.on_vpc
-  entitled_registry_key   = var.entitled_registry_key
-  entitled_registry_user_email = var.entitled_registry_user_email
-  cp4aiops_namespace      = var.cp4aiops_namespace
+  cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+  on_vpc              = var.on_vpc
+  portworx_is_ready   = module.install_portworx.portworx_is_ready
 
+  // Entitled Registry parameters:
+  entitled_registry_key        = var.entitled_registry_key
+  entitled_registry_user_email = var.entitled_registry_user_email
+
+  // AIOps specific parameters:
+  accept_aiops_license = var.accept_aiops_license
+  namespace            = var.cp4aiops_namespace
+  enable_aimanager     = var.enable_aimanager
+  enable_event_manager = var.enable_event_manager
 }
