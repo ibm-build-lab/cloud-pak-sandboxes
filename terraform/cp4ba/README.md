@@ -8,26 +8,8 @@ Make sure all requirements listed [here](https://github.com/ibm-hcbt/cloud-pak-s
 
 Make sure access to IBM Cloud is set up.  Go [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#configure-access-to-ibm-cloud) for details.
 
-## [To provision LDAP Terraform Module](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/examples/ldap)
-Note that Ldap is required before installing CP4BA. [Click here to provision LDAP Terraform Module](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/examples/ldap).
-You will be performing the follwing tasks: 
-
-1. Download required license files from [IBM Internal Software Download](https://w3-03.ibm.com/software/xl/download/ticket.wss) or [IBM Passport Advantage](https://www.ibm.com/software/passportadvantage/) into the  `../../modules/ldap/files` folder
-
-    ```console
-    DB2:
-    Part Number : CNB21ML
-    Filename : DB2_AWSE_Restricted_Activation_11.1.zip
-
-    IBM SDS:
-    Part Number : CRV3IML
-    Filename : sds64-premium-feature-act-pkg.zip
-    ```
-
- 2. Update the ldif file
-
-    Update the `../../modules/files/cp.ldif` file as needed to change the Directory Structure and user information.  For information on LDIF format, go [here](https://www.ibm.com/docs/en/i/7.4?topic=reference-ldap-data-interchange-format-ldif)
-
+## LDAP Virtual Machine Requirement
+Note that an LDAP Virtual Machine to manage usernames and passwords is required before installing CP4BA. [Click here to provision LDAP Terraform Module](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/examples/ldap).
 
 ## Cloud Pak Entitlement Key
 
