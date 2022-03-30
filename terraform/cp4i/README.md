@@ -38,7 +38,7 @@ In addition, the Terraform code requires the following input parameters, for som
 | `project_name`                     | The project name is used to name the cluster with the environment name. It's also used to label the cluster and other resources    | `cloud-pack`                | Yes      |
 | `owner`                            | Use your user name or team name. The owner is used to label the cluster and other resources  | `anonymous`                 | Yes      |
 | `environment`                      | The environment name is used to label the cluster and other resources    | `sandbox`                   | No       |
-| `region`                           | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud is regions`    | `us-south`                  | No       |
+| `region`                           | IBM Cloud region to host the cluster. List all available zones with: `ibmcloud regions`    | `us-south`                  | No       |
 | `resource_group`                   | Resource Group in your account to host the cluster. List all available resource groups with: `ibmcloud resource groups`     | `cloud-pak-sandbox`         | No       |
 | `cluster_id`                       | If you have an existing cluster to install the Cloud Pak, use the cluster ID or name. If left blank, a new Openshift cluster will be provisioned   |                             | No       |
 | `datacenter`                       | Datacenter or Zone in the region to provision the cluster. List all available zones with: `ibmcloud ks locations`   | `dal10`                     | No       |
