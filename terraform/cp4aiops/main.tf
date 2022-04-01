@@ -75,7 +75,19 @@ module "install_portworx" {
   etcd_secret_name      = "px-etcd-certs"
 }
 
+resource "null_resource" "cluster_wait" {
+  depends_on = [
+    module.create_cluster,
+    module.install_portworx
+  ]
+  triggers = { always_run = timestamp() }
+  provisioner "local-exec" {
+    command = "sleep 300"
+  }
+}
+
 module "install_cp4aiops" {
+  depends_on = [null_resource.cluster_wait]
   source              = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops"
   enable              = true
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
