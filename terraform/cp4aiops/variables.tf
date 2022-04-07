@@ -146,9 +146,27 @@ variable "entitled_registry_user_email" {
   description = "Required: Email address of the user owner of the Entitled Registry Key"
 }
 
+variable "accept_aiops_license" {
+  type        = bool
+  default     = false
+  description = "You must accept the CP4AIOps licensing agreement in order to install this. `T/F`"  
+}
+
 variable "cp4aiops_namespace" {
   default = "cp4aiops"
   description = "Namespace for Cloud Pak for AIOps"
+}
+
+variable "enable_aimanager" {
+  type        = bool
+  default     = true
+  description = "Enables the installation of the AIManager resource. `T/F`" 
+}
+
+variable "enable_event_manager" {
+  type        = bool
+  default     = true
+  description = "Enables the installation of the Event Manager resource. `T/F`" 
 }
 
 locals {

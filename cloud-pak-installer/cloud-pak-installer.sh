@@ -55,7 +55,7 @@ IAF_TEMPLATE=./templates/iaf-workspace-configuration.json
 IAF_REPO_LOCATION="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/iaf"
 
 CP4AIOPS="false"
-CLOUD_PAK_NAME_AIOPS_VERSION="Cloud Pak for Watson AIOps 3.1"
+CLOUD_PAK_NAME_AIOPS_VERSION="Cloud Pak for Watson AIOps 3.2.1"
 CLOUD_PAK_TEMPLATE_AIOPS=./templates/cp4aiops-workspace-configuration.json
 CLOUD_PAK_REPO_LOCATION_AIOPS="https://github.com/ibm-hcbt/cloud-pak-sandboxes/tree/main/terraform/cp4aiops"
 
@@ -303,13 +303,18 @@ prompt_license() {
             echo "${green}License accepted:${bold}"
             if $CP4D35
             then 
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "accept_cpd_license") | .value) |= "true"' temp.json > workspace-configuration.json
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "accept_cpd_license") | .value) |= "true"' temp.json > workspace-configuration.json
             fi
             if $CP4D40
             then 
-               cp ./workspace-configuration.json temp.json
-               jq -r '(.template_data[] | .variablestore[] | select(.name == "accept_cpd_license") | .value) |= "true"' temp.json > workspace-configuration.json
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "accept_cpd_license") | .value) |= "true"' temp.json > workspace-configuration.json
+            fi
+            if $CP4AIOPS
+            then
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "accept_aiops_license") | .value) |= "true"' temp.json > workspace-configuration.json
             fi
             break
             ;;
@@ -610,6 +615,50 @@ cp4s_modules() {
     cp ./workspace-configuration.json temp.json
     jq -r --arg v "$ADMIN_USER" '(.template_data[] | .variablestore[] | select(.name == "admin_user") | .value) |= $v' temp.json > workspace-configuration.json
 
+}
+
+cp4aiops_modules() {
+    echo "${bold}You must choose at a minimum AIManager or EventManager to install CP4AIOps${normal}"
+
+    
+    # updates workspace-configuration.json .template_data[.varialbestore.install_infr_mgt_module]
+    echo "${bold}Install AIManager? ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+
+                cp ./workspace-configuration.json temp.json
+                jq -r '(.template_data[] | .variablestore[] | select(.name == "enable_aimanager") | .value) |= "true"' temp.json > workspace-configuration.json
+                break
+                ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "enable_aimanager") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
+
+    # updates workspace-configuration.json .template_data[.varialbestore.installing_monitoring_module]
+    echo "${bold}Install EventManager? ${green}"
+    yesno=("Yes" "No")
+    select response in "${yesno[@]}"; do
+        case $response in
+            "Yes")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "enable_event_manager") | .value) |= "true"' temp.json > workspace-configuration.json
+               break
+               ;;
+            "No")
+               cp ./workspace-configuration.json temp.json
+               jq -r '(.template_data[] | .variablestore[] | select(.name == "enable_event_manager") | .value) |= "false"' temp.json > workspace-configuration.json
+               break
+               ;;
+            *) echo "${bold}invalid option $REPLY ${green}";;
+        esac
+    done
 }
 
 # writes cp4mcm module values if needed
@@ -2185,6 +2234,9 @@ then cp4d40_modules
 fi
 if $CP4D35
 then cp4d35_modules
+fi
+if $CP4AIOPS
+then cp4aiops_modules
 fi
 if $CP4S
 then cp4s_modules

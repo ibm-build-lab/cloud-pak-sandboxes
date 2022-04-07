@@ -11,7 +11,7 @@ credentials*.sh
 **/.helm
 
 # Local .terraform directories
-**/.terraform
+**/.terraform*
 
 # Terraform & Schematics files
 *.tfstate*
