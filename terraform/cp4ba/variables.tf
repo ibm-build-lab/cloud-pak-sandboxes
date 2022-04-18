@@ -175,7 +175,7 @@ variable "db2_storage_class" {
 
 locals {
   db2_host_address = ""
-  db2_host_port    = ""
+  db2_ports        = ""
 }
 
 # --------- CP4BA SETTINGS ----------

@@ -13,7 +13,7 @@ module "create_cluster" {
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
   source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable               = local.enable_cluster
-//  on_vpc               = false
+  on_vpc               = false
   project_name         = var.roks_project
   environment          = var.environment
   owner                = var.owner
@@ -26,7 +26,7 @@ module "create_cluster" {
   force_delete_storage = true
   private_vlan_number  = var.private_vlan_number
   public_vlan_number   = var.public_vlan_number
-//  vpc_zone_names       = ["us-south-1"]
+  vpc_zone_names       = ["us-south-1"]
 }
 
 resource "null_resource" "mkdir_kubeconfig_dir" {
@@ -42,8 +42,8 @@ data "ibm_container_cluster_config" "cluster_config" {
   cluster_name_id      = local.enable_cluster ? module.create_cluster.name : var.cluster_id
   resource_group_id    = data.ibm_resource_group.group.id
   download             = true
-  cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
-//  config_dir           = var.cluster_config_path
+//  cluster_config_path  = data.ibm_container_cluster_config.cluster_config.config_file_path
+  config_dir           = var.cluster_config_path
   admin                = false
   network              = false
 }
@@ -124,7 +124,7 @@ module "install_cp4ba"{
   enable_cp4ba           = local.enable_cp4ba
   ibmcloud_api_key       = var.ibmcloud_api_key
   region                 = var.region
-  resource_group         = data.ibm_resource_group
+  resource_group         = data.ibm_resource_group.group.name
   cluster_id             = data.ibm_container_cluster_config.cluster_config.cluster_name_id
   cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_file_path
   ingress_subdomain      = var.cluster_ingress_subdomain != null ? var.cluster_ingress_subdomain : module.create_cluster.ingress_hostname
@@ -142,7 +142,7 @@ module "install_cp4ba"{
   db2_admin_username      = var.db2_admin_username
   db2_admin_user_password = var.db2_admin_user_password
   db2_host_address        = var.enable_db2 == false ? local.db2_host_address : module.install_db2.db2_host_address
-  db2_ports               = var.enable_db2 == false ? local.db2_host_port : module.install_db2.db2_ports
+  db2_ports               = var.enable_db2 == false ? local.db2_ports : module.install_db2.db2_ports
 }
 
 data "external" "get_endpoints" {
