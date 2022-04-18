@@ -17,7 +17,7 @@ variable "resource_group" {
 # --- ROKS SETTINGS ---
 variable "roks_project" {
   default     = "cloud-pack"
-  description = "Ignored if `cluster_id` is specified. The project_name is combined with `environment` to name the cluster. The cluster name will be '{project_name}-{environment}-cluster' and all the resources will be tagged with 'project:{project_name}'"
+  description = "Ignored if `cluster_id` is specified. The roks_name is combined with `environment` to name the cluster. The cluster name will be '{roks_name}-{environment}-cluster' and all the resources will be tagged with 'project:{roks_name}'"
 }
 
 variable "platform_version" {
@@ -72,11 +72,6 @@ variable "owner" {
 //  default     = false
 //  description = "Select 'true' to install on a VPC cluster and it's using VPC Gen2. Note: CP4BA does not currently support VPC cluster."
 //}
-
-variable "entitlement" {
-  default     = ""
-  description = "OCP entitlement: leave blank if OCP, set it to `cloud-pak` if cloud pak entitlement"
-}
 
 //variable "vpc_zone_names" {
 //  type        = list(string)
@@ -140,7 +135,7 @@ variable "db2_admin_user_password" {
 
 variable "db2_standard_license_key" {
   default     = ""
-  description = "The standard license key for the Db2 database product. Note: the license key is required only for Advanced DB2 installation."
+  description = "The standard license key for the Db2 database product. Note: the license key is required only for Advanced DB2 installation. Click here to download it: (https://w3-03.ibm.com/software/xl/download/ticket.wss) or [IBM Passport Advantage](https://www.ibm.com/software/passportadvantage/)"
 }
 
 variable "operatorVersion" {
@@ -178,14 +173,9 @@ variable "db2_storage_class" {
   description = "Name for the Storage Class"
 }
 
-variable "db2_host_port" {
-  description = "Port number for DB2 instance. Ignore if there is not an existing Db2."
-  default = ""
-}
-
-variable "db2_host_address" {
-  description = "Host name for DB2 instance. Ignore if there is not an existing Db2."
-  default     = ""
+locals {
+  db2_host_address = ""
+  db2_host_port    = ""
 }
 
 # --------- CP4BA SETTINGS ----------
@@ -204,11 +194,16 @@ variable "cp4ba_project_name" {
   description = "Namespace or project for cp4ba"
 }
 
-variable "enable_cp4ba" {
-  description = "If set to true, it will install CP4BA on the given cluster"
-  type = bool
-  default = true
+//variable "enable_cp4ba" {
+//  description = "If set to true, it will install CP4BA on the given cluster"
+//  type = bool
+//  default = true
+//}
+
+locals {
+  enable_cp4ba = true
 }
+
 
 
 

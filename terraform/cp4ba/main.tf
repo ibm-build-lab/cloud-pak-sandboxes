@@ -10,8 +10,8 @@ data "ibm_resource_group" "group" {
 }
 
 module "create_cluster" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
-
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable               = local.enable_cluster
 //  on_vpc               = false
   project_name         = var.roks_project
@@ -50,7 +50,8 @@ data "ibm_container_cluster_config" "cluster_config" {
 
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
+  source = "../../../terraform-ibm-cloud-pak/modules/Db2"
     depends_on = [
     module.create_cluster
   ]
@@ -116,13 +117,15 @@ resource "null_resource" "create_DB_Schema" {
   # ------ CP4BA -------
 module "install_cp4ba"{
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
-  source = "../c"
+  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
     depends_on = [
     null_resource.create_DB_Schema
   ]
-  enable_cp4ba           = var.enable_cp4ba
+  enable_cp4ba           = local.enable_cp4ba
   ibmcloud_api_key       = var.ibmcloud_api_key
   region                 = var.region
+  resource_group         = data.ibm_resource_group
+  cluster_id             = data.ibm_container_cluster_config.cluster_config.cluster_name_id
   cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_file_path
   ingress_subdomain      = var.cluster_ingress_subdomain != null ? var.cluster_ingress_subdomain : module.create_cluster.ingress_hostname
   # ---- Platform ----
@@ -132,11 +135,14 @@ module "install_cp4ba"{
   # ----- LDAP Settings -----
   ldap_admin_name         = var.ldap_admin_name
   ldap_admin_password     = var.ldap_admin_password
+  ldap_host_ip            = var.ldap_host_ip
   # ----- DB2 Settings -----
-  db2_host_port           = var.enable_db2 == false ? var.db2_host_port : module.install_db2.db2_ports
-  db2_host_address        = var.enable_db2 == false ? var.db2_host_address : module.install_db2.db2_host_address
+  enable_db2              = var.enable_db2
+  db2_project_name        = var.db2_project_name
   db2_admin_username      = var.db2_admin_username
   db2_admin_user_password = var.db2_admin_user_password
+  db2_host_address        = var.enable_db2 == false ? local.db2_host_address : module.install_db2.db2_host_address
+  db2_ports               = var.enable_db2 == false ? local.db2_host_port : module.install_db2.db2_ports
 }
 
 data "external" "get_endpoints" {
