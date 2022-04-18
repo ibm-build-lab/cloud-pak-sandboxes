@@ -13,7 +13,7 @@ module "create_cluster" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
 
   enable               = local.enable_cluster
-  on_vpc               = false
+//  on_vpc               = false
   project_name         = var.roks_project
   environment          = var.environment
   owner                = var.owner
@@ -26,7 +26,7 @@ module "create_cluster" {
   force_delete_storage = true
   private_vlan_number  = var.private_vlan_number
   public_vlan_number   = var.public_vlan_number
-  vpc_zone_names       = ["us-south-1"]
+//  vpc_zone_names       = ["us-south-1"]
 }
 
 resource "null_resource" "mkdir_kubeconfig_dir" {
@@ -42,7 +42,8 @@ data "ibm_container_cluster_config" "cluster_config" {
   cluster_name_id      = local.enable_cluster ? module.create_cluster.name : var.cluster_id
   resource_group_id    = data.ibm_resource_group.group.id
   download             = true
-  config_dir           = var.cluster_config_path
+  cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+//  config_dir           = var.cluster_config_path
   admin                = false
   network              = false
 }
@@ -114,7 +115,8 @@ resource "null_resource" "create_DB_Schema" {
 
   # ------ CP4BA -------
 module "install_cp4ba"{
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
+  source = "../c"
     depends_on = [
     null_resource.create_DB_Schema
   ]

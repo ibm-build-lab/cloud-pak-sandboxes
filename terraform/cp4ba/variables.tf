@@ -73,10 +73,10 @@ variable "owner" {
 //  description = "Select 'true' to install on a VPC cluster and it's using VPC Gen2. Note: CP4BA does not currently support VPC cluster."
 //}
 
-//variable "entitlement" {
-//  default     = ""
-//  description = "OCP entitlement: leave blank if OCP, set it to `cloud-pak` if cloud pak entitlement"
-//}
+variable "entitlement" {
+  default     = ""
+  description = "OCP entitlement: leave blank if OCP, set it to `cloud-pak` if cloud pak entitlement"
+}
 
 //variable "vpc_zone_names" {
 //  type        = list(string)
@@ -95,23 +95,18 @@ variable "cluster_ingress_subdomain" {
 }
 
 # --- LDAP SETTINGS ---
-# Password for LDAP Admin User (ldapAdminName name see below), for example passw0rd - use the password that you specified when setting up LDAP
-variable "ldap_host_ip" {
-  description = "The IP address of your LDAP."
+variable "ldap_admin_name" {
+  default = "cn=root"
+  description = "The LDAP root administrator account to access the directory. To learn more: https://www.ibm.com/docs/en/sva/7.0.0?topic=tuning-ldap-root-administrator-account-cnroot"
 }
 
 variable "ldap_admin_password" {
   description = "LDAP Admin password"
 }
 
-variable "hostname" {
-  default     = "ldapvm"
-  description = "Hostname of the virtual Server"
-}
 
-variable "ldap_admin_name" {
-  default = "cn=root"
-  description = "The LDAP root administrator account to access the directory. To learn more: https://www.ibm.com/docs/en/sva/7.0.0?topic=tuning-ldap-root-administrator-account-cnroot"
+variable "ldap_host_ip" {
+  description = "The IP address of your LDAP."
 }
 
 locals {
