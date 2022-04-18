@@ -35,7 +35,7 @@ db2_admin_username       = "db2inst1"
 //db2_host_address         = ""
 //db2_ports            = ""
 db2_standard_license_key = ""
-operatorVersion          = "db2u-operator.v1.1.10"
+db2_operator_version          = "db2u-operator.v1.1.10"
 
 ###################### CP4BA ######################
 entitled_registry_user_email = "joel.goddot@ibm.com"

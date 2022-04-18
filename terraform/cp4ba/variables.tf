@@ -133,17 +133,22 @@ variable "db2_admin_user_password" {
   description = "Db2 admin user password defined in LDAP"
 }
 
+variable "db2_name" {
+  description = "A name you would like to attribute to your Database. i.e: sample-db2"
+  default     = "sample-db2"
+}
+
 variable "db2_standard_license_key" {
   default     = ""
   description = "The standard license key for the Db2 database product. Note: the license key is required only for Advanced DB2 installation. Click here to download it: (https://w3-03.ibm.com/software/xl/download/ticket.wss) or [IBM Passport Advantage](https://www.ibm.com/software/passportadvantage/)"
 }
 
-variable "operatorVersion" {
+variable "db2_operator_version" {
   default     = "db2u-operator.v1.1.11"
   description = "Operator version"
 }
 
-variable "operatorChannel" {
+variable "db2_operator_channel" {
   default     = "v1.1"
   description = "The Operator Channel performs rollout update when new release is available."
 }
