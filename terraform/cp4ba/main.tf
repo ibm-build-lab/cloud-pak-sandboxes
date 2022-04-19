@@ -11,7 +11,8 @@ data "ibm_resource_group" "group" {
 
 module "create_cluster" {
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
-  source = "../../../terraform-ibm-cloud-pak/modules/roks"
+//  source = "../../../terraform-ibm-cloud-pak/modules/roks"
+  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/roks"
   enable               = local.enable_cluster
   on_vpc               = false
   project_name         = var.roks_project
@@ -40,7 +41,7 @@ data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
   # Use var.cluster_id if it is NOT blank else use module.create_cluster.id
   cluster_name_id      = local.enable_cluster ? module.create_cluster.name : var.cluster_id
-  resource_group_id    = module.create_cluster.resource_group
+  resource_group_id    = module.create_cluster.resource_group.id
   download             = true
 //  cluster_config_path  = data.ibm_container_cluster_config.cluster_config.config_file_path
   config_dir           = var.cluster_config_path
@@ -51,7 +52,8 @@ data "ibm_container_cluster_config" "cluster_config" {
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
-  source = "../../../terraform-ibm-cloud-pak/modules/Db2"
+//  source = "../../../terraform-ibm-cloud-pak/modules/Db2"
+  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/Db2"
     depends_on = [
     module.create_cluster
   ]
@@ -67,6 +69,7 @@ module "install_db2" {
   entitled_registry_key    = var.entitled_registry_key
   enable_db2               = var.enable_db2
   db2_project_name         = var.db2_project_name
+  db2_name                 = var.db2_name
   db2_admin_username       = var.db2_admin_username
   db2_admin_user_password  = var.db2_admin_user_password
   db2_standard_license_key = var.db2_standard_license_key
@@ -121,7 +124,8 @@ resource "null_resource" "create_DB_Schema" {
   # ------ CP4BA -------
 module "install_cp4ba"{
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
-  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
+//  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
+  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/cp4ba"
     depends_on = [
     null_resource.create_DB_Schema
   ]
