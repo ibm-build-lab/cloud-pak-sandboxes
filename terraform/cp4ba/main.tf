@@ -89,36 +89,47 @@ resource "null_resource" "create_DB_Schema" {
   ]
 
   provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createAPPDB.sh"
+    command = "${path.module}/db2_schema/create_db2_schemas.sh"
+
+    environment = {
+      db2_default_name = var.db2_name
+      DB2_USER         = var.db2_user
+      DB2_PROJECT_NAME = var.db2_project_name
+    }
   }
 
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createBASDB.sh"
-  }
 
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createBAWDB.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createDBSchema.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createGCDDB.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createICNDB.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createOSDB.sh"
-  }
-
-  provisioner "local-exec" {
-    command = "${path.module}/db2_schema/createUMSDB.sh"
-  }
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createAPPDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createBASDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createBAWDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createDBSchema.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createGCDDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createICNDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createOSDB.sh"
+//  }
+//
+//  provisioner "local-exec" {
+//    command = "${path.module}/db2_schema/createUMSDB.sh"
+//  }
 }
 
   # ------ CP4BA -------
