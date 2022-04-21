@@ -12,14 +12,13 @@
 ###############################################################################
 CUR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-
-#ibmcloud login --apikey $IC_API_KEY
-#ibmcloud ks cluster config -c $CLUSTER_ID
-
 # CP4BA Database Name information
-db2_default_name=sample-db2
-DB2_USER=db2inst1
-DB2_PROJECT_NAME=ibm-db2
+DB2_PROJECT_NAME=$1 #ibm-db2
+DB2_USER=$2 #db2inst1
+DB2_DEFAULT_NAME=$3 # sample-db2
+
+
+
 
 echo
 echo -e "\x1B[1mThis script CREATES all needed CP4BA databases (assumes Db2u is running in project ibm-db2). \n \x1B[0m"
@@ -208,13 +207,11 @@ function activate_database() {
 
 for name in umsdb appdb basdb bawdb gcddb icndb devos1 aeos bawdocs bawtos bawdos aedb osdb;
 do
-  dbname="${db2_default_name}-${name}"
+  dbname="${DB2_DEFAULT_NAME}-${name}"
   if [ $name == umsdb ]
   then
       kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_umsdb "${dbname}"
       activate_database "${dbname}"
-  #    kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- /bin/sh -c chmod a+x ./create_db2_schemas.sh | create_umsdb "${dbname}"
-  #    echo $dbname
       echo
   elif [ $name == appdb ]; then
       kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_appdb "${dbname}"
@@ -278,20 +275,4 @@ oc exec c-db2ucluster-db2u-0 -it -- su - "${DB2_USER}" -c "db2start"
 sleep 5
 
 
-# **************************** WILL BE REMOVED
-#echo "File path:"
-#echo $CUR_DIR/createUMSDB.sh
-#dbname=umsdb
-#echo "Creating database ${dbname}"
-#kubectl -n "${DB2_PROJECT_NAME}" cp createUMSDB.sh c-db2ucluster-db2u-0:/tmp/
-#kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- /bin/sh -c "chmod a+x /tmp/createUMSDB.sh"
-#kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ${"${DB2_USER}"} -c "/tmp/createUMSDB.sh ${dbname} ${"${DB2_USER}"}"
-#kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- /bin/sh -c "rm /tmp/createUMSDB.sh"
-
-#
-#kubectl -n "${DB2_PROJECT_NAME}" cp createUMSDB.sh c-db2ucluster-db2u-0:/tmp/
-#kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- /bin/sh -c "chmod a+x $CUR_DIR/createUMSDB.sh"
-#kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ${"${DB2_USER}"} -c "$CUR_DIR/createUMSDB.sh ${dbname} ${"${DB2_USER}"}"
-#kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- /bin/sh -c "rm $CUR_DIR/createUMSDB.sh"
-# ****************************
 

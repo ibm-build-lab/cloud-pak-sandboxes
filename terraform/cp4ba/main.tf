@@ -10,7 +10,6 @@ data "ibm_resource_group" "group" {
 }
 
 module "create_cluster" {
-//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
 //  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/roks"
   enable               = local.enable_cluster
@@ -27,7 +26,7 @@ module "create_cluster" {
   force_delete_storage = true
   private_vlan_number  = var.private_vlan_number
   public_vlan_number   = var.public_vlan_number
-  vpc_zone_names       = ["us-south-1"]
+//  vpc_zone_names       = ["us-south-1"] # Try to replace this with an empty array
 }
 
 resource "null_resource" "mkdir_kubeconfig_dir" {
@@ -52,8 +51,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
-//  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/Db2"
+  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/Db2"
     depends_on = [
     module.create_cluster
   ]
@@ -64,7 +62,7 @@ module "install_db2" {
   resource_group           = var.resource_group
   # ----- Cluster -----
   cluster_id               = local.enable_cluster ? module.create_cluster.id : var.cluster_id
-  cluster_config_path      = data.ibm_container_cluster_config.cluster_config.config_file_path
+  cluster_config_path      = data.ibm_container_cluster_config.cluster_config.config_dir
   entitled_registry_user_email = var.entitled_registry_user_email
   entitled_registry_key    = var.entitled_registry_key
   enable_db2               = var.enable_db2
@@ -89,54 +87,21 @@ resource "null_resource" "create_DB_Schema" {
   ]
 
   provisioner "local-exec" {
-    command = "${path.module}/db2_schema/create_db2_schemas.sh"
+    command = "${path.module}/db2_schema/exec_db2_pod.sh"
 
     environment = {
-      db2_default_name = var.db2_name
+      DB2_DEFAULT_NAME = var.db2_name
       DB2_USER         = var.db2_user
       DB2_PROJECT_NAME = var.db2_project_name
+      DB2_POD_NAME     = module.install_db2.db2_pod_name
     }
   }
-
-
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createAPPDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createBASDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createBAWDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createDBSchema.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createGCDDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createICNDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createOSDB.sh"
-//  }
-//
-//  provisioner "local-exec" {
-//    command = "${path.module}/db2_schema/createUMSDB.sh"
-//  }
 }
 
   # ------ CP4BA -------
 module "install_cp4ba"{
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
-//  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/cp4ba"
+  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/cp4ba"
     depends_on = [
     null_resource.create_DB_Schema
   ]
@@ -145,7 +110,7 @@ module "install_cp4ba"{
   region                 = var.region
   resource_group         = data.ibm_resource_group.group.name
   cluster_id             = local.enable_cluster ? module.create_cluster.id : var.cluster_id
-  cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_file_path
+  cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_dir # config_file_path
   ingress_subdomain      = var.cluster_ingress_subdomain != null ? var.cluster_ingress_subdomain : module.create_cluster.ingress_hostname
   # ---- CP4BA ----
   enable_cp4ba           = local.enable_cp4ba
@@ -166,17 +131,3 @@ module "install_cp4ba"{
   db2_ports               = var.enable_db2 == false ? local.db2_ports : module.install_db2.db2_ports
 }
 
-data "external" "get_endpoints" {
-  count = var.enable_db2 ? 1 : 0
-
-  depends_on = [
-    module.install_cp4ba
-  ]
-
-  program = ["/bin/bash", "${path.module}/scripts/get_endpoints.sh"]
-
-  query = {
-    kubeconfig     = var.cluster_config_path
-    namespace      = var.cp4ba_project_name
-  }
-}
