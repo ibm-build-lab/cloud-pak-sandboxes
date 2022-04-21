@@ -17,9 +17,9 @@ CUR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 #ibmcloud ks cluster config -c $CLUSTER_ID
 
 # CP4BA Database Name information
-#db2_default_name=sample-db2
-#DB2_USER=db2inst1
-#DB2_PROJECT_NAME=ibm-db2
+db2_default_name=sample-db2
+DB2_USER=db2inst1
+DB2_PROJECT_NAME=ibm-db2
 
 echo
 echo -e "\x1B[1mThis script CREATES all needed CP4BA databases (assumes Db2u is running in project ibm-db2). \n \x1B[0m"
@@ -211,57 +211,57 @@ do
   dbname="${db2_default_name}-${name}"
   if [ $name == umsdb ]
   then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_umsdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_umsdb "${dbname}"
       activate_database "${dbname}"
   #    kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- /bin/sh -c chmod a+x ./create_db2_schemas.sh | create_umsdb "${dbname}"
   #    echo $dbname
       echo
   elif [ $name == appdb ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_appdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_appdb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == basdb ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_basdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_basdb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == bawdb ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_bawdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_bawdb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == gcddb ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_gcddb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_gcddb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == icndb ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_icndb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_icndb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == osdb ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_osdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_osdb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == devos1 ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_osdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_osdb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == aeos ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_osdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_osdb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == bawdocs ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_osdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_osdb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == bawtos ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_osdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_osdb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == bawdos ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_osdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_osdb "${dbname}"
       activate_database "${dbname}"
       echo
   elif [ $name == aedb ]; then
-      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su ""| create_appdb "${dbname}"
+      kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_appdb "${dbname}"
       activate_database "${dbname}"
       echo
   else
