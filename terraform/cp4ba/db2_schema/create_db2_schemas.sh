@@ -26,7 +26,7 @@ echo -e "\x1B[1mThis script CREATES all needed CP4BA databases (assumes Db2u is 
 function create_appdb() {
     dbname=$1
 
-    echo "*** Creating DB named: ${dbname} ***"
+    echo "*** Creating ${dbname} database ... ***"
 
     db2 create database "${dbname}" automatic storage yes  using codeset UTF-8 territory US pagesize 32768;
     db2 connect to "${dbname}";
@@ -46,7 +46,7 @@ function create_appdb() {
 function create_basdb() {
     dbname=$1
 
-    echo "*** Creating DB named: ${dbname} ***"
+    echo "*** Creating ${dbname} database ... ***"
 
     db2 create database "${dbname}" automatic storage yes using codeset UTF-8 territory US pagesize 32768;
     db2 connect to "${dbname}";
@@ -62,7 +62,7 @@ function create_basdb() {
 function create_bawdb() {
     dbname=$1
 
-    echo "*** Creating DB named: ${dbname} ***"
+    echo "*** Creating ${dbname} database ... ***"
 
     db2 create database "${dbname}" automatic storage yes using codeset UTF-8 territory US pagesize 32768;
     db2 connect to "${dbname}";
@@ -77,7 +77,7 @@ function create_bawdb() {
 function create_gcddb() {
     dbname=$1
 
-    echo "*** Creating DB named: ${dbname} ***"
+    echo "*** Creating ${dbname} database ... ***"
 
     db2 create database "${dbname}" automatic storage yes using codeset UTF-8 territory US pagesize 32 K
 
@@ -125,7 +125,7 @@ function create_gcddb() {
 function create_icndb() {
     dbname=$1
 
-    echo "*** Creating DB named: ${dbname} ***"
+    echo "*** Creating ${dbname} database ... ***"
 
     db2 create database "${dbname}" automatic storage yes using codeset UTF-8 territory US pagesize 32 K
     db2 connect to "${dbname}";
@@ -137,7 +137,7 @@ function create_icndb() {
 function create_osdb() {
     dbname=$1
 
-    echo "*** Creating DB named: $dbname ***"
+    echo "*** Creating ${dbname} database ... ***"
 
     db2 create database "${dbname}" automatic storage yes using codeset UTF-8 territory US pagesize 32 K
 
@@ -186,7 +186,7 @@ function create_osdb() {
 function create_umsdb() {
   dbname=$1
 
-  echo "*** Creating DB named: ${dbname} ***"
+  echo "*** Creating ${dbname} database ... ***"
 
   db2 create database "${dbname}" automatic storage yes using codeset UTF-8 territory US pagesize 32768;
   db2 connect to "${dbname}";
@@ -200,14 +200,14 @@ function activate_database() {
 
     echo "Activating ${dbname} database ..."
     echo
-    oc exec c-db2ucluster-db2u-0 -it -- su - "${DB2_USER}" -c "db2 activate database ${dbname}"
+    kubectl exec c-db2ucluster-db2u-0 -it -- su - "${DB2_USER}" -c "db2 activate database ${dbname}"
     sleep 5
     echo
 }
 
 for name in umsdb appdb basdb bawdb gcddb icndb devos1 aeos bawdocs bawtos bawdos aedb osdb;
 do
-  dbname="${DB2_DEFAULT_NAME}-${name}"
+  dbname="${name}" #${DB2_DEFAULT_NAME}-
   if [ $name == umsdb ]
   then
       kubectl -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -it -- su "${DB2_USER}" | create_umsdb "${dbname}"
@@ -269,9 +269,9 @@ done
 
 echo
 echo "Restarting Db2..."
-oc exec c-db2ucluster-db2u-0 -it -- su - "${DB2_USER}" -c "db2stop"
+kubectl exec c-db2ucluster-db2u-0 -it -- su - "${DB2_USER}" -c "db2stop"
 sleep 5
-oc exec c-db2ucluster-db2u-0 -it -- su - "${DB2_USER}" -c "db2start"
+kubectl exec c-db2ucluster-db2u-0 -it -- su - "${DB2_USER}" -c "db2start"
 sleep 5
 
 

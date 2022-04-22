@@ -4,7 +4,7 @@ output "cluster_id" {
 }
 
 output "cluster_name" {
-  value = local.enable_cluster ? module.create_cluster.name : ""
+  value = local.enable_cluster ? module.create_cluster.name : data.ibm_container_cluster_config.cluster_config.cluster_name_id
 }
 
 output "kubeconfig" {

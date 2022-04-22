@@ -10,8 +10,9 @@ data "ibm_resource_group" "group" {
 }
 
 module "create_cluster" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+//  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
 //  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/roks"
+  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable               = local.enable_cluster
   on_vpc               = false
   project_name         = var.roks_project
@@ -51,7 +52,8 @@ data "ibm_container_cluster_config" "cluster_config" {
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
-  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/Db2"
+//  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/Db2"
+    source = "../../../terraform-ibm-cloud-pak/modules/Db2"
     depends_on = [
     module.create_cluster
   ]
@@ -62,7 +64,7 @@ module "install_db2" {
   resource_group           = var.resource_group
   # ----- Cluster -----
   cluster_id               = local.enable_cluster ? module.create_cluster.id : var.cluster_id
-  cluster_config_path      = data.ibm_container_cluster_config.cluster_config.config_dir
+  cluster_config_path      = data.ibm_container_cluster_config.cluster_config.config_file_path # config_dir
   entitled_registry_user_email = var.entitled_registry_user_email
   entitled_registry_key    = var.entitled_registry_key
   enable_db2               = var.enable_db2
@@ -101,7 +103,8 @@ resource "null_resource" "create_DB_Schema" {
   # ------ CP4BA -------
 module "install_cp4ba"{
 //  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
-  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/cp4ba"
+//  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/cp4ba"
+    source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
     depends_on = [
     null_resource.create_DB_Schema
   ]
@@ -110,7 +113,7 @@ module "install_cp4ba"{
   region                 = var.region
   resource_group         = data.ibm_resource_group.group.name
   cluster_id             = local.enable_cluster ? module.create_cluster.id : var.cluster_id
-  cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_dir # config_file_path
+  cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_file_path # config_dir
   ingress_subdomain      = var.cluster_ingress_subdomain != null ? var.cluster_ingress_subdomain : module.create_cluster.ingress_hostname
   # ---- CP4BA ----
   enable_cp4ba           = local.enable_cp4ba

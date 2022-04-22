@@ -26,6 +26,7 @@ environment        = "local-1"
 private_vlan_number = "2138"
 public_vlan_number = "959"
 data_center        = "dal12"
+cluster_id         = "c9cqlb3d0bbgkrbogim0"
 
 ###################### DB2 ######################
 db2_admin = "cpadmin"

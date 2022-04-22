@@ -11,8 +11,20 @@
 #
 ###############################################################################
 CUR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DB2_DEFAULT_NAME="sample-db"
+DB2_USER="db2inst1"
+DB2_PROJECT_NAME="ibm-db2"
+DB2_POD_NAME="c-db2ucluster-db2u-0"
+echo
+echo
+echo "*********************************************************************************"
+echo "**************************** Creating DB2 Schemas ... ***************************"
+echo "*********************************************************************************"
 
-kubectl cp "${CUR_DIR}"/db2_schema/create_db2_schemas.sh "${DB2_POD_NAME}":/tmp/;
+echo
+kubectl cp create_db2_schemas.sh "${DB2_POD_NAME}":/tmp/;
+echo
+sleep 5
 kubectl exec "${DB2_POD_NAME}" -it -- /bin/sh -c "chmod a+x /tmp/create_db2_schemas.sh"
 
 #./"${CUR_DIR}"
