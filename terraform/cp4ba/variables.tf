@@ -114,6 +114,11 @@ variable "enable_db2" {
   description = "If set to true, it will install DB2 on the given cluster"
 }
 
+variable "enable_db2_schema" {
+  default     = true
+  description = "If set to true, it will install DB2 on the given cluster"
+}
+
  variable "db2_project_name" {
    default     = "ibm-db2"
    description = "The namespace/project for Db2"

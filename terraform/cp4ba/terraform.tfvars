@@ -29,9 +29,11 @@ data_center        = "dal12"
 cluster_id         = "c9cqlb3d0bbgkrbogim0"
 
 ###################### DB2 ######################
-db2_admin = "cpadmin"
-db2_user = "db2inst1"
-db2_admin_user_password = "Passw0rd"
+enable_db2         = false
+enable_db2_schema  = true
+db2_admin          = "cpadmin"
+db2_user           = "db2inst1"
+db2_admin_user_password  = "Passw0rd"
 db2_admin_username       = "db2inst1"
 //db2_host_address         = ""
 //db2_ports            = ""
@@ -40,7 +42,7 @@ db2_operator_version          = "db2u-operator.v1.1.10"
 
 ###################### CP4BA ######################
 entitled_registry_user_email = "joel.goddot@ibm.com"
-entitled_registry_key     = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJQk0gTWFya2V0cGxhY2UiLCJpYXQiOjE2NTAzMDIzNzUsImp0aSI6ImFmZDhjY2NlMzRlYTRiNWQ5MTg5NDAwNjgxMjlmMTA4In0.ju00TvMl-ofHpF4f958EOC-E-bDyUi62CY61v8hORhg"
+entitled_registry_key     = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJQk0gTWFya2V0cGxhY2UiLCJpYXQiOjE2NTA4MjQxNzAsImp0aSI6IjBhYTYwNDAzZWQxODQ0NGVhYzJhOWVkMzdkNWMwZTFiIn0.XElaKUi3OjUHQtQinh1iUM5iklQ3ouhn2KLc91cUPW0"
 ldap_admin = "cn=root"
 ldap_server = ""
 ldap_admin_password = "Passw0rd"

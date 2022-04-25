@@ -88,6 +88,8 @@ resource "null_resource" "create_DB_Schema" {
     module.install_db2
   ]
 
+  count = var.enable_db2_schema ? 1 : 0
+
   provisioner "local-exec" {
     command = "${path.module}/db2_schema/exec_db2_pod.sh"
 
