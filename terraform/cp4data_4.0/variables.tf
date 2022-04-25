@@ -268,9 +268,36 @@ variable "install_wsruntime" {
   description = "Install WS Runtime. Only for Cloud Pak for Data v4.0"
 }
 
+variable "storage_option" {
+  type    = string
+  default = "portworx"
+}
+
+variable "cpd_storageclass" {
+  type = map(any)
+
+  default = {
+    "portworx" = "portworx-shared-gp3"
+    "ocs"      = "ocs-storagecluster-cephfs"
+    "nfs"      = "nfs"
+  }
+}
+
+variable "rwo_cpd_storageclass" {
+  type = map(any)
+
+  default = {
+    "portworx" = "portworx-metastoredb-sc"
+    "ocs"      = "ocs-storagecluster-ceph-rbd"
+    "nfs"      = "nfs"
+  }
+}
+
 
 // ROKS Module : Local Variables and constansts
 
 locals {
   entitled_registry_key_file = "./entitlement.key"
+  storage_class      = lookup(var.cpd_storageclass, var.storage_option)
+  rwo_storage_class  = lookup(var.rwo_cpd_storageclass, var.storage_option)
 }
