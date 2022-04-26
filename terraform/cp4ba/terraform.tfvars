@@ -22,11 +22,11 @@ entitlement        = "cloud_pak"
 project_name       = "joel"
 roks_project       = "joel-cp4ba-sndbx"
 owner              = "joel"
-environment        = "local-1"
+environment        = "local-2"
 private_vlan_number = "2138"
 public_vlan_number = "959"
 data_center        = "dal12"
-cluster_id         = "c9cqlb3d0bbgkrbogim0"
+cluster_id         = "c9j9gksd0qcgpp04h5fg"
 
 ###################### DB2 ######################
 enable_db2         = false

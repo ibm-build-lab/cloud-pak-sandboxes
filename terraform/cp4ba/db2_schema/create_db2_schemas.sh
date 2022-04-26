@@ -12,10 +12,9 @@
 ###############################################################################
 CUR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# CP4BA Database Name information
-DB2_PROJECT_NAME=$1 #ibm-db2
-DB2_USER=$2 #db2inst1
-DB2_DEFAULT_NAME=$3 # sample-db2
+DB2_PROJECT_NAME=$1
+DB2_USER=$2
+DB2_DEFAULT_NAME=$3
 
 
 
@@ -86,7 +85,6 @@ function create_gcddb() {
     db2 drop tablespace USERSPACE1
 
     echo "*** Create bufferpool ***"
-    # Create 1GB fixed bufferpool for performance, automatic tuning for platform
 
     db2 create bufferpool "${dbname}"_32K immediate size 32768 pagesize 32k
 
@@ -109,11 +107,6 @@ function create_gcddb() {
     echo "*** Apply DB tunings ***"
     db2 update db cfg for "${dbname}" using LOCKTIMEOUT 30
     db2 update db cfg for "${dbname}" using APPLHEAPSZ 2560
-
-    # Let Db2 ootb container settings stay
-    #db2 update db cfg for ${dbname} using LOGBUFSZ 212
-    #db2 update db cfg for ${dbname} using LOGFILSIZ 6000
-    # db2 update db cfg for ${dbname} using LOGPRIMARY 10
 
     db2 connect reset
     db2 deactivate db "${dbname}"
@@ -146,7 +139,6 @@ function create_osdb() {
     db2 drop tablespace USERSPACE1
 
     echo "*** Create bufferpool ***"
-    # Create 1GB fixed bufferpool for performance, automatic tuning for platform
 
     db2 create bufferpool "${dbname}"_32K immediate size 32768 pagesize 32k
 
@@ -171,11 +163,6 @@ function create_osdb() {
     db2 update db cfg for "${dbname}" using APPLHEAPSZ 2560
     db2 update db cfg using cur_commit ON
 
-    # Let Db2 ootb container settings stay
-    #db2 update db cfg for ${dbname} using LOGBUFSZ 212
-    #db2 update db cfg for ${dbname} using LOGFILSIZ 6000
-    # db2 update db cfg for ${dbname} using LOGPRIMARY 10
-
     db2 connect reset
     db2 deactivate db "${dbname}"
 
@@ -195,85 +182,48 @@ function create_umsdb() {
 }
 
 
-#function activate_database() {
-#    dbname=$1
-#
-#    echo "Activating ${dbname} database ..."
-#    echo
-#    oc exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" -c "db2 activate database ${dbname}"
-#    sleep 5
-#    echo
-#}
-
-
 for name in umsdb appdb basdb bawdb gcddb icndb devos1 aeos bawdocs bawtos bawdos aedb osdb;
 do
-  dbname="${name}" #${DB2_DEFAULT_NAME}-
+  dbname="${name}"
   if [ $name == umsdb ]
   then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_umsdb "${dbname}"
       create_umsdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == appdb ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_appdb "${dbname}"
       create_appdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == basdb ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_basdb "${dbname}"
       create_basdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == bawdb ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_bawdb "${dbname}"
       create_bawdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == gcddb ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_gcddb "${dbname}"
       create_gcddb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == icndb ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_icndb "${dbname}"
       create_icndb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == osdb ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_osdb "${dbname}"
       create_osdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == devos1 ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_osdb "${dbname}"
       create_osdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == aeos ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_osdb "${dbname}"
       create_osdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == bawdocs ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_osdb "${dbname}"
       create_osdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == bawtos ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_osdb "${dbname}"
       create_osdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == bawdos ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_osdb "${dbname}"
       create_osdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   elif [ $name == aedb ]; then
-#      oc -n "${DB2_PROJECT_NAME}" exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" | create_appdb "${dbname}"
       create_appdb "${dbname}"
-#      activate_database "${dbname}"
       echo
   else
       continue
@@ -281,12 +231,6 @@ do
 done
 
 
-#echo
-#echo "Restarting Db2..."
-#oc exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" -c "db2stop"
-#sleep 5
-#oc exec c-db2ucluster-db2u-0 -- su - "${DB2_USER}" -c "db2start"
-#sleep 5
 
 
 

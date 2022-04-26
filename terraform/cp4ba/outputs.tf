@@ -16,7 +16,7 @@ output "cluster_endpoint" {
 }
 
 # --- Db2 outputs
-output "db2_host_name" {
+output "db2_host_address" {
   value = module.install_db2.db2_host_address
 }
 

@@ -184,6 +184,7 @@ variable "db2_storage_class" {
 }
 
 locals {
+  db2_pod_name     = "c-db2ucluster-db2u-0"
   db2_host_address = ""
   db2_ports        = ""
 }
