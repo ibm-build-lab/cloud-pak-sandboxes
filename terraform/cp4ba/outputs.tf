@@ -26,7 +26,7 @@ output "db2_ports" {
 
 output "db2_pod_name" {
   description = "This is the pod running Db2 for executing Db2 commands."
-  value = module.install_db2.db2_pod_name
+  value = local.db2_pod_name
 }
 
 # --- CP4BA Outputs

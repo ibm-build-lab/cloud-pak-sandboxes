@@ -82,7 +82,7 @@ module "install_db2" {
   db2_storage_class        = var.db2_storage_class
 }
 
-resource "null_resource" "create_DB_Schema" {
+resource "null_resource" "create_DB_Schemas" {
 
   depends_on = [
     module.install_db2
@@ -97,11 +97,11 @@ resource "null_resource" "create_DB_Schema" {
     db2_user   = var.db2_user
   }
 
-  count = var.enable_db2_schema ? 1 : 0
+  count = var.enable_db2_schemas ? 1 : 0
 
   provisioner "local-exec" {
     command = "./exec_db2_pod.sh"
-    working_dir = "${path.module}/db2_schema/"
+    working_dir = "${path.module}/db2_schemas/"
 
     environment = {
       IC_API_KEY       = var.ibmcloud_api_key
@@ -111,7 +111,7 @@ resource "null_resource" "create_DB_Schema" {
       DB2_USER         = var.db2_user
       DB2_PROJECT_NAME = var.db2_project_name
       DB2_POD_NAME     = local.db2_pod_name
-      PATHS            = "${path.module}/db2_schema/exec_db2_pod.sh"
+      PATHS            = "${path.module}/db2_schemas/exec_db2_pod.sh"
     }
   }
 }
@@ -122,7 +122,7 @@ module "install_cp4ba"{
 //  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/cp4ba"
     source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
     depends_on = [
-    null_resource.create_DB_Schema
+    null_resource.create_DB_Schemas
   ]
 
   ibmcloud_api_key       = var.ibmcloud_api_key

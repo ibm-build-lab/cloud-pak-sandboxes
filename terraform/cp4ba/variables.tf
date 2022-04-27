@@ -114,7 +114,7 @@ variable "enable_db2" {
   description = "If set to true, it will install DB2 on the given cluster"
 }
 
-variable "enable_db2_schema" {
+variable "enable_db2_schemas" {
   default     = true
   description = "If set to true, it will install DB2 on the given cluster"
 }

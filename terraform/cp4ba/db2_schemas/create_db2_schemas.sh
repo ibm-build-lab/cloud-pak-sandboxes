@@ -14,7 +14,7 @@ CUR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 DB2_PROJECT_NAME=$1
 DB2_USER=$2
-DB2_DEFAULT_NAME=$3
+
 
 
 
