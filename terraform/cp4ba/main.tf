@@ -30,6 +30,14 @@ module "create_cluster" {
 //  vpc_zone_names       = ["us-south-1"] # Try to replace this with an empty array
 }
 
+
+resource "time_sleep" "wait_30_min" {
+  depends_on = [module.create_cluster]
+
+  create_duration = "1800s"
+}
+
+
 resource "null_resource" "mkdir_kubeconfig_dir" {
   triggers = { always_run = timestamp() }
   provisioner "local-exec" {
@@ -49,14 +57,13 @@ data "ibm_container_cluster_config" "cluster_config" {
   network              = false
 }
 
+
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
 //  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/Db2"
 //    source = "../../../terraform-ibm-cloud-pak/modules/Db2"
-    depends_on = [
-    module.create_cluster
-  ]
+    depends_on = [time_sleep.wait_30_min]
 
 
   ibmcloud_api_key         = var.ibmcloud_api_key
@@ -81,6 +88,7 @@ module "install_db2" {
   db2_storage_size         = var.db2_storage_size
   db2_storage_class        = var.db2_storage_class
 }
+
 
 resource "null_resource" "create_DB_Schemas" {
 
@@ -111,7 +119,7 @@ resource "null_resource" "create_DB_Schemas" {
       DB2_USER         = var.db2_user
       DB2_PROJECT_NAME = var.db2_project_name
       DB2_POD_NAME     = local.db2_pod_name
-      PATHS            = "${path.module}/db2_schemas/exec_db2_pod.sh"
+//      PATHS            = "${path.module}/db2_schemas/exec_db2_pod.sh"
     }
   }
 }
