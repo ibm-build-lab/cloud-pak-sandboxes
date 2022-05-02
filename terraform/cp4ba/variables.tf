@@ -159,7 +159,7 @@ variable "db2_operator_channel" {
 }
 
 variable "db2_instance_version" {
-  default     = "11.5.6.0"
+  default     = "11.5.7.0-cn3"
   description = "DB2 version to be installed"
 }
 
