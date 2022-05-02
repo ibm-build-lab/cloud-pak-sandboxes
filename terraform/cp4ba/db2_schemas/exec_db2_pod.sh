@@ -33,17 +33,18 @@ echo
 
 echo
 echo "Copying the Db2 Schema file to the pod ..."
-kubectl cp db2_schemas/create_db2_schemas.sh "${DB2_PROJECT_NAME}/${DB2_POD_NAME}":/tmp/;
+#kubectl cp db2_schemas/create_db2_schemas.sh "${DB2_PROJECT_NAME}/${DB2_POD_NAME}":/tmp/;
+kubectl cp create_db2_schemas.sh "${DB2_PROJECT_NAME}/${DB2_POD_NAME}":/tmp/;
 echo
 sleep 5
 
 echo
 echo "Updating create_db2_schemas.sh file permission ..."
-kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -ti -- /bin/sh -c "chmod a+x /tmp/create_db2_schemas.sh"
+kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -i -- /bin/sh -c "chmod a+x /tmp/create_db2_schemas.sh"
 
 echo
 echo "Executing the pod ..."
-kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -ti -- su - "${DB2_USER}" /bin/sh -c "/tmp/create_db2_schemas.sh ${DB2_PROJECT_NAME} ${DB2_USER}" # ${DB2_DEFAULT_NAME}" # "/tmp/create_db2_schemas.sh ${DB2_PROJECT_NAME} ${DB2_USER} ${DB2_DEFAULT_NAME}"
+kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -i -- su - "${DB2_USER}" /bin/sh -c "/tmp/create_db2_schemas.sh ${DB2_PROJECT_NAME} ${DB2_USER}" # ${DB2_DEFAULT_NAME}" # "/tmp/create_db2_schemas.sh ${DB2_PROJECT_NAME} ${DB2_USER} ${DB2_DEFAULT_NAME}"
 
 
 function activate_database() {
@@ -51,7 +52,7 @@ function activate_database() {
 
     echo "Activating ${dbname} database ..."
     echo
-    kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -ti -- su - "${DB2_USER}" -c "db2 activate database ${dbname}"
+    kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -i -- su - "${DB2_USER}" -c "db2 activate database ${dbname}"
     sleep 5
     echo
 }
@@ -63,11 +64,11 @@ done
 
 echo
 echo "Removing the Db2 Schema file from the pod ..."
-kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -ti -- /bin/sh -c "rm /tmp/create_db2_schemas.sh" # "rm /tmp/create_db2_schemas.sh"
+kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -i -- /bin/sh -c "rm /tmp/create_db2_schemas.sh" # "rm /tmp/create_db2_schemas.sh"
 
 echo
 echo "Restarting Db2..."
-kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -ti -- su - "${DB2_USER}" -c "db2stop"
+kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -i -- su - "${DB2_USER}" -c "db2stop"
 sleep 5
-kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -ti -- su - "${DB2_USER}" -c "db2start"
+kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -i -- su - "${DB2_USER}" -c "db2start"
 sleep 5
