@@ -33,7 +33,6 @@ echo
 
 echo
 echo "Copying the Db2 Schema file to the pod ..."
-#kubectl cp db2_schemas/create_db2_schemas.sh "${DB2_PROJECT_NAME}/${DB2_POD_NAME}":/tmp/;
 kubectl cp create_db2_schemas.sh "${DB2_PROJECT_NAME}/${DB2_POD_NAME}":/tmp/;
 echo
 sleep 5
@@ -44,7 +43,7 @@ kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -i -- /bin/sh -c "chmod 
 
 echo
 echo "Executing the pod ..."
-kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -i -- su - "${DB2_USER}" /bin/sh -c "/tmp/create_db2_schemas.sh ${DB2_PROJECT_NAME} ${DB2_USER}" # ${DB2_DEFAULT_NAME}" # "/tmp/create_db2_schemas.sh ${DB2_PROJECT_NAME} ${DB2_USER} ${DB2_DEFAULT_NAME}"
+kubectl -n "${DB2_PROJECT_NAME}" exec "${DB2_POD_NAME}" -i -- su - "${DB2_USER}" /bin/sh -c "/tmp/create_db2_schemas.sh ${DB2_PROJECT_NAME} ${DB2_USER}"
 
 
 function activate_database() {

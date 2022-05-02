@@ -11,8 +11,6 @@ data "ibm_resource_group" "group" {
 
 module "create_cluster" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
-//  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/roks"
-//  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable               = local.enable_cluster
   on_vpc               = false
   project_name         = var.roks_project
@@ -27,7 +25,6 @@ module "create_cluster" {
   force_delete_storage = true
   private_vlan_number  = var.private_vlan_number
   public_vlan_number   = var.public_vlan_number
-//  vpc_zone_names       = ["us-south-1"] # Try to replace this with an empty array
 }
 
 
@@ -47,11 +44,9 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 
 data "ibm_container_cluster_config" "cluster_config" {
   depends_on = [null_resource.mkdir_kubeconfig_dir]
-  # Use var.cluster_id if it is NOT blank else use module.create_cluster.id
   cluster_name_id      = local.enable_cluster ? module.create_cluster.name : var.cluster_id
   resource_group_id    = module.create_cluster.resource_group.id
   download             = true
-//  cluster_config_path  = data.ibm_container_cluster_config.cluster_config.config_file_path
   config_dir           = var.cluster_config_path
   admin                = false
   network              = false
@@ -61,9 +56,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
-//  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/Db2"
-//    source = "../../../terraform-ibm-cloud-pak/modules/Db2"
-    depends_on = [time_sleep.wait_30_min]
+  depends_on = [time_sleep.wait_30_min]
 
 
   ibmcloud_api_key         = var.ibmcloud_api_key
@@ -99,8 +92,6 @@ resource "null_resource" "create_DB_Schemas" {
   triggers = {
     ic_api_key = var.ibmcloud_api_key
     cluster_id = data.ibm_container_cluster_config.cluster_config.cluster_name_id
-//    kubeconfig = data.ibm_container_cluster_config.cluster_config.config_dir
-//    kubeconfig = data.ibm_container_cluster_config.cluster_config.config_dir
     db2_name   = var.db2_name
     db2_user   = var.db2_user
   }
@@ -119,7 +110,6 @@ resource "null_resource" "create_DB_Schemas" {
       DB2_USER         = var.db2_user
       DB2_PROJECT_NAME = var.db2_project_name
       DB2_POD_NAME     = local.db2_pod_name
-//      PATHS            = "${path.module}/db2_schemas/exec_db2_pod.sh"
     }
   }
 }
@@ -127,8 +117,7 @@ resource "null_resource" "create_DB_Schemas" {
   # ------ CP4BA -------
 module "install_cp4ba"{
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
-//  source = "https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/joel_cp4ba_related_to_issue_276/modules/cp4ba"
-//    source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
+
     depends_on = [
     null_resource.create_DB_Schemas
   ]
@@ -137,7 +126,7 @@ module "install_cp4ba"{
   region                 = var.region
   resource_group         = data.ibm_resource_group.group.name
   cluster_id             = local.enable_cluster ? module.create_cluster.id : var.cluster_id
-  cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_file_path # config_dir
+  cluster_config_path    = data.ibm_container_cluster_config.cluster_config.config_file_path
   ingress_subdomain      = var.cluster_ingress_subdomain != null ? var.cluster_ingress_subdomain : module.create_cluster.ingress_hostname
   # ---- CP4BA ----
   enable_cp4ba           = local.enable_cp4ba
