@@ -82,7 +82,7 @@ variable "datacenter" {
 variable "vpc_zone_names" {
   type    = list(string)
   default = ["ca-tor-1"]  //["us-south-1"]
-  description = "Ignored if `cluster_id` is specified. VPC only. Array with the subzones in the region to create the workers groups. List all the zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
+  description = "**VPC only**. Ignored if `cluster_id` is specified. Array with the subzones in the region to create the workers groups. List all the zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
 }
 
 variable "config_dir" {
