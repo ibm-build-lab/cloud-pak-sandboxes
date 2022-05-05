@@ -5,8 +5,8 @@ variable "cluster_id" {
 }
 
 variable "entitlement" {
-  default     = ""
-  description = "Ignored if `cluster_id` is specified. Enter 'cloud_pak' if using a Cloud Pak entitlement.  Leave blank if OCP entitlement"
+  default     = "cloud_pak"
+  description = "Ignored if `cluster_id` is specified. Enter `cloud_pak` if using a Cloud Pak entitlement.  Leave blank if not installing a cloud pak"
 }
 
 variable "on_vpc" {
