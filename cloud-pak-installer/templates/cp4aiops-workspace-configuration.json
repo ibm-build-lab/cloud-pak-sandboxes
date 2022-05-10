@@ -135,6 +135,26 @@
           "name": "cluster_config_path",
           "value": "/tmp/.schematics/.kube/config",
           "type": "string"
+        },
+        {
+          "name": "accept_aiops_license",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "enable_aimanager",
+          "value": "true",
+          "type": "bool"
+        },
+        {
+          "name": "enable_event_manager",
+          "value": "true",
+          "type": "bool"
+        },
+        {
+          "name": "entitlement",
+          "value": "cloud_pak",
+          "type": "string"
         }
       ]
     }

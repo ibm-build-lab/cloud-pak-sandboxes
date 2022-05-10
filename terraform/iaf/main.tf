@@ -61,7 +61,6 @@ data "ibm_container_cluster_config" "cluster_config" {
   network           = false
 }
 
-// TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "iaf" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/iaf"
   enable = true

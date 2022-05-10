@@ -232,8 +232,13 @@ delete_gateway() {
     done    
 }
 
-delete_vpc
 
+if [ ! -d "/temp" ];
+then
+    mkdir ./temp
+fi
+
+delete_vpc
 
 rm -rf temp/balance-list.json
 rm -rf temp/gateway-list.json

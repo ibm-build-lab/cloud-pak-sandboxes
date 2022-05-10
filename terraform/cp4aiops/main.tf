@@ -75,15 +75,32 @@ module "install_portworx" {
   etcd_secret_name      = "px-etcd-certs"
 }
 
+resource "null_resource" "cluster_wait" {
+  depends_on = [
+    module.create_cluster,
+    module.install_portworx
+  ]
+  triggers = { always_run = timestamp() }
+  provisioner "local-exec" {
+    command = "sleep 300"
+  }
+}
+
 module "install_cp4aiops" {
+  depends_on = [null_resource.cluster_wait]
   source              = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops"
   enable              = true
-  portworx_is_ready       = module.install_portworx.portworx_is_ready
-  ibmcloud_api_key        = var.ibmcloud_api_key
-  cluster_config_path     = data.ibm_container_cluster_config.cluster_config.config_file_path
-  on_vpc                  = var.on_vpc
-  entitled_registry_key   = var.entitled_registry_key
-  entitled_registry_user_email = var.entitled_registry_user_email
-  cp4aiops_namespace      = var.cp4aiops_namespace
+  cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+  on_vpc              = var.on_vpc
+  portworx_is_ready   = module.install_portworx.portworx_is_ready
 
+  // Entitled Registry parameters:
+  entitled_registry_key        = var.entitled_registry_key
+  entitled_registry_user_email = var.entitled_registry_user_email
+
+  // AIOps specific parameters:
+  accept_aiops_license = var.accept_aiops_license
+  namespace            = var.cp4aiops_namespace
+  enable_aimanager     = var.enable_aimanager
+  enable_event_manager = var.enable_event_manager
 }
