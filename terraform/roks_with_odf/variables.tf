@@ -26,6 +26,7 @@ variable "resource_group" {
 }
 
 variable "roks_version" {
+  default     = "4.7"
   type = string
   description = "Ignored if `cluster_id` is specified. List available versions: `ibmcloud ks versions`"
 }
