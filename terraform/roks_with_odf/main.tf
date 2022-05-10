@@ -30,9 +30,9 @@ module "cluster" {
   public_vlan_number  = var.public_vlan_number
   // VPC only
   vpc_zone_names = var.vpc_zone_names
-  
 }
 
+  
 # Install ODF if the rocks version is v4.7 or newer
 module "odf" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/odf"

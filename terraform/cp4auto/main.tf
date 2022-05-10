@@ -55,7 +55,6 @@ data "ibm_container_cluster_config" "cluster_config" {
   network           = false
 }
 
-// TODO: With Terraform 0.13 replace the parameter 'enable' with 'count'
 module "cp4auto" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4auto"
   enable = true
