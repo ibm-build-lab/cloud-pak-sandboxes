@@ -26,7 +26,7 @@ variable "resource_group" {
 }
 
 variable "roks_version" {
-  default     = "4.7"
+  type = string
   description = "Ignored if `cluster_id` is specified. List available versions: `ibmcloud ks versions`"
 }
 
@@ -92,13 +92,55 @@ variable "config_dir" {
 
 // ODF Variables
 
-variable "is_enable" {
-  type        = bool
-  default     = true
-  description = "Install ODF on the ROKS cluster. `true` or `false`"
-}
-
 variable "ibmcloud_api_key" {
   default = ""
   description = "Ignored if not installing ODF. IBMCloud API Key for the account the resources will be provisioned on. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
+}
+
+variable "osdStorageClassName" {
+  description = "Storage class that you want to use for your OSD devices"
+  type = string
+  default = "ibmc-vpc-block-10iops-tier"
+}
+
+variable "osdSize" {
+  description = "Size of your storage devices. The total storage capacity of your ODF cluster is equivalent to the osdSize x 3 divided by the numOfOsd."
+  type = string
+  default = "100Gi"
+}
+
+variable "numOfOsd" {
+  description = "Number object storage daemons (OSDs) that you want to create. ODF creates three times the numOfOsd value."
+  default = 1
+}
+
+variable "billingType" {
+  description = "Billing Type for your ODF deployment (`essentials` or `advanced`)."
+  type = string
+  default = "advanced"
+}
+
+variable "ocsUpgrade" {
+  description = "Whether to upgrade the major version of your ODF deployment."
+  type = bool
+  default = false
+}
+
+variable "clusterEncryption" {
+  description = "Enable encryption of storage cluster"
+  type = bool
+  default = false
+}
+
+# Options required for Openshift 4.7 only
+variable "monSize" {
+  description = "Size of the storage devices that you want to provision for the monitor pods. The devices must be at least 20Gi each"
+  type = string
+  default = "20Gi"
+}
+
+variable "monStorageClassName" {
+  description = "Storage class to use for your Monitor pods. For VPC clusters you must specify a block storage class"
+  type = string
+  default = "ibmc-vpc-block-10iops-tier"
 }
