@@ -11,6 +11,7 @@ data "ibm_resource_group" "group" {
 
 module "create_cluster" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+//  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable               = local.enable_cluster
   on_vpc               = false
   project_name         = var.roks_project
@@ -32,6 +33,12 @@ resource "time_sleep" "wait_30_min" {
   depends_on = [module.create_cluster]
 
   create_duration = "1800s"
+}
+
+resource "time_sleep" "wait_10_min" {
+  depends_on = [module.create_cluster]
+
+  create_duration = "600s"
 }
 
 
@@ -56,6 +63,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
+//  source = "../../../terraform-ibm-cloud-pak/modules/Db2"
   depends_on = [time_sleep.wait_30_min]
 
 
@@ -86,7 +94,7 @@ module "install_db2" {
 resource "null_resource" "create_DB_Schemas" {
 
   depends_on = [
-    module.install_db2
+    module.install_db2, [time_sleep.wait_10_min]
   ]
 
   triggers = {
@@ -109,14 +117,15 @@ resource "null_resource" "create_DB_Schemas" {
       DB2_DEFAULT_NAME = var.db2_name
       DB2_USER         = var.db2_user
       DB2_PROJECT_NAME = var.db2_project_name
-      DB2_POD_NAME     = local.db2_pod_name
+      DB2_POD_NAME     = module.install_db2.db2_pod_name # local.db2_pod_name
     }
   }
 }
 
-  # ------ CP4BA -------
+//  # ------ CP4BA -------
 module "install_cp4ba"{
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
+//  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
 
     depends_on = [
     null_resource.create_DB_Schemas
