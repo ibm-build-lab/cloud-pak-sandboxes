@@ -94,7 +94,7 @@ module "install_db2" {
 resource "null_resource" "create_DB_Schemas" {
 
   depends_on = [
-    module.install_db2, [time_sleep.wait_10_min]
+    module.install_db2, time_sleep.wait_10_min
   ]
 
   triggers = {
@@ -117,7 +117,7 @@ resource "null_resource" "create_DB_Schemas" {
       DB2_DEFAULT_NAME = var.db2_name
       DB2_USER         = var.db2_user
       DB2_PROJECT_NAME = var.db2_project_name
-      DB2_POD_NAME     = module.install_db2.db2_pod_name # local.db2_pod_name
+      DB2_POD_NAME     = module.install_db2.db2_pod_name
     }
   }
 }
