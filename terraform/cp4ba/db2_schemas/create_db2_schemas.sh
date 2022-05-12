@@ -188,42 +188,55 @@ do
   if [ $name == umsdb ]
   then
       create_umsdb "${dbname}"
+      sleep 15
       echo
   elif [ $name == appdb ]; then
       create_appdb "${dbname}"
+      sleep 15
       echo
   elif [ $name == basdb ]; then
       create_basdb "${dbname}"
+      sleep 15
       echo
   elif [ $name == bawdb ]; then
       create_bawdb "${dbname}"
+      sleep 15
       echo
   elif [ $name == gcddb ]; then
       create_gcddb "${dbname}"
+      sleep 15
       echo
   elif [ $name == icndb ]; then
       create_icndb "${dbname}"
+      sleep 15
       echo
   elif [ $name == osdb ]; then
       create_osdb "${dbname}"
+      sleep 15
       echo
   elif [ $name == devos1 ]; then
       create_osdb "${dbname}"
+      sleep 15
       echo
   elif [ $name == aeos ]; then
       create_osdb "${dbname}"
+      sleep 15
       echo
   elif [ $name == bawdocs ]; then
       create_osdb "${dbname}"
+      sleep 15
       echo
   elif [ $name == bawtos ]; then
       create_osdb "${dbname}"
+      sleep 15
       echo
   elif [ $name == bawdos ]; then
       create_osdb "${dbname}"
+      sleep 15
       echo
   elif [ $name == aedb ]; then
       create_appdb "${dbname}"
+      sleep 15
       echo
   else
       continue
