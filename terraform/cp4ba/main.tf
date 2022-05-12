@@ -120,7 +120,7 @@ resource "null_resource" "create_DB_Schemas" {
       DB2_DEFAULT_NAME = var.db2_name
       DB2_USER         = var.db2_user
       DB2_PROJECT_NAME = var.db2_project_name
-      DB2_POD_NAME     = module.install_db2.db2_pod_name
+      DB2_POD_NAME     = var.enable_db2 ? module.install_db2.db2_pod_name : local.db2_pod_name
     }
   }
 }
@@ -154,7 +154,7 @@ module "install_cp4ba"{
   db2_admin_username      = var.db2_admin_username
   db2_user                = var.db2_user
   db2_admin_user_password = var.db2_admin_user_password
-  db2_host_address        = var.enable_db2 == false ? local.db2_host_address : module.install_db2.db2_host_address
-  db2_ports               = var.enable_db2 == false ? local.db2_ports : module.install_db2.db2_ports
+  db2_host_address        = var.enable_db2 ? module.install_db2.db2_host_address : local.db2_host_address
+  db2_ports               = var.enable_db2 ? module.install_db2.db2_ports : local.db2_ports
 }
 

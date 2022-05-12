@@ -12,21 +12,21 @@ output "kubeconfig" {
 }
 
 output "cluster_endpoint" {
-  value = module.create_cluster.endpoint
+  value = local.enable_cluster == false ? var.cluster_ingress_subdomain : module.create_cluster.endpoint
 }
 
 # --- Db2 outputs
 output "db2_host_address" {
-  value = module.install_db2.db2_host_address
+  value = var.db2_host_address ? module.install_db2.db2_host_address : local.db2_host_address
 }
 
 output "db2_ports" {
-  value = module.install_db2.db2_ports
+  value = var.enable_db2 ? module.install_db2.db2_ports : local.db2_ports
 }
 
 output "db2_pod_name" {
   description = "This is the pod running Db2 for executing Db2 commands."
-  value = local.db2_pod_name
+  value = var.enable_db2 ? module.install_db2.db2_pod_name : local.db2_pod_name
 }
 
 # --- CP4BA Outputs

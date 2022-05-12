@@ -172,10 +172,20 @@ variable "db2_storage_class" {
   description = "Name for the Storage Class"
 }
 
+variable "db2_host_address" {
+  description = "Ignore if Db2 is enabled (enable_db2 is true). Otherwise, enter existing Db2 host address. i.e: db2_host_address =  @@@@@@@@@@@@-clust-c0b572361ba41c9eef42d4d51297b04b-0000.us-south.containers.appdomain.cloud"
+  value       = ""
+}
+
+variable "db2_ports" {
+  description = "Ignore if Db2 is enabled (enable_db2 is true). Otherwise, enter existing Db2 ports. i.e: db2_ports = [01234, 56789]"
+  value       = ""
+}
+
 locals {
   db2_pod_name     = "c-db2ucluster-db2u-0"
-  db2_host_address = ""
-  db2_ports        = ""
+  db2_host_address = var.enable_db2 == false ? var.db2_host_address : ""
+  db2_ports        = var.enable_db2 == false ? var.db2_ports : ""
 }
 
 # --------- CP4BA SETTINGS ----------
