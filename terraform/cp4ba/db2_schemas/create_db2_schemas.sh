@@ -16,9 +16,6 @@ DB2_PROJECT_NAME=$1
 DB2_USER=$2
 
 
-
-
-
 echo
 echo -e "\x1B[1mThis script CREATES all needed CP4BA databases (assumes Db2u is running in project ibm-db2). \n \x1B[0m"
 

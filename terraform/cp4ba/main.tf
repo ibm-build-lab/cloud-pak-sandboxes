@@ -11,7 +11,6 @@ data "ibm_resource_group" "group" {
 
 module "create_cluster" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
-//  source = "../../../terraform-ibm-cloud-pak/modules/roks"
   enable               = local.enable_cluster
   on_vpc               = false
   project_name         = var.roks_project
@@ -63,7 +62,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 # --------------- PROVISION DB2  ------------------
 module "install_db2" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/Db2"
-//  source = "../../../terraform-ibm-cloud-pak/modules/Db2"
+
   depends_on = [time_sleep.wait_30_min]
 
 
@@ -126,10 +125,9 @@ resource "null_resource" "create_DB_Schemas" {
   }
 }
 
-//  # ------ CP4BA -------
+# ------ CP4BA -------
 module "install_cp4ba"{
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4ba"
-//  source = "../../../terraform-ibm-cloud-pak/modules/cp4ba"
 
     depends_on = [
     null_resource.create_DB_Schemas
