@@ -98,10 +98,12 @@ resource "null_resource" "create_DB_Schemas" {
   ]
 
   triggers = {
-    ic_api_key = var.ibmcloud_api_key
-    cluster_id = data.ibm_container_cluster_config.cluster_config.cluster_name_id
-    db2_name   = var.db2_name
-    db2_user   = var.db2_user
+    IC_API_KEY     = var.ibmcloud_api_key
+    RESOURCE_GROUP = var.resource_group
+    REGION         = var.region
+    CLUSTER_ID     = data.ibm_container_cluster_config.cluster_config.cluster_name_id
+    DB2_NAME       = var.db2_name
+    DB2_USER       = var.db2_user
   }
 
   count = var.enable_db2_schemas ? 1 : 0
@@ -112,6 +114,8 @@ resource "null_resource" "create_DB_Schemas" {
 
     environment = {
       IC_API_KEY       = var.ibmcloud_api_key
+      RESOURCE_GROUP   = var.resource_group
+      REGION           = var.region
       CLUSTER_ID       = data.ibm_container_cluster_config.cluster_config.cluster_name_id
       KUBECONFIG       = data.ibm_container_cluster_config.cluster_config.config_file_path
       DB2_DEFAULT_NAME = var.db2_name

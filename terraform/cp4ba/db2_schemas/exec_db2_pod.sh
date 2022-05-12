@@ -11,7 +11,8 @@
 #
 ###############################################################################
 CUR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-eval "$(jq -r '@sh "export KUBECONFIG=\(.KUBECONFIG) DB2_PROJECT_NAME=\(.DB2_PROJECT_NAME) IC_API_KEY=\(.IC_API_KEY)"')"
+eval "$(jq -r '@sh "export KUBECONFIG=\(.KUBECONFIG) DB2_PROJECT_NAME=\(.DB2_PROJECT_NAME)"')"
+
 
 echo
 echo
@@ -20,12 +21,11 @@ echo "**************************** Creating DB2 Schemas ... ********************
 echo "*********************************************************************************"
 echo
 
-
-#ibmcloud login -apikey "${IC_API_KEY}"
-#ibmcloud config --check-version=false
-#ibmcloud ks cluster config -c "${CLUSTER_ID}" --admin
-#echo ${KUBECONFIG}
-#echo
+ibmcloud login -r "${REGION}" -g "${RESOURCE_GROUP}" --apikey "${IC_API_KEY}" > /dev/null
+ibmcloud config --check-version=false > /dev/null
+ibmcloud ks cluster config -c "${CLUSTER_ID}" --admin > /dev/null
+sleep 3
+echo
 
 
 echo "Using ${DB2_POD_NAME} pod for creating the DB2 Schemas ..."
