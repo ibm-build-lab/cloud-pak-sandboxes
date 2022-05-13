@@ -34,12 +34,6 @@ resource "time_sleep" "wait_30_min" {
   create_duration = "1800s"
 }
 
-resource "time_sleep" "wait_10_min" {
-  depends_on = [module.create_cluster]
-
-  create_duration = "600s"
-}
-
 
 resource "null_resource" "mkdir_kubeconfig_dir" {
   triggers = { always_run = timestamp() }
@@ -87,6 +81,13 @@ module "install_db2" {
   db2_memory               = var.db2_memory
   db2_storage_size         = var.db2_storage_size
   db2_storage_class        = var.db2_storage_class
+}
+
+
+resource "time_sleep" "wait_10_min" {
+  depends_on = [module.create_cluster]
+
+  create_duration = "600s"
 }
 
 

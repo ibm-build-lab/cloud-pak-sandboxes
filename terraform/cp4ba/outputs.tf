@@ -17,7 +17,7 @@ output "cluster_endpoint" {
 
 # --- Db2 outputs
 output "db2_host_address" {
-  value = var.db2_host_address ? module.install_db2.db2_host_address : local.db2_host_address
+  value = var.enable_db2 ? module.install_db2.db2_host_address : local.db2_host_address
 }
 
 output "db2_ports" {
