@@ -70,7 +70,7 @@ variable "owner" {
 
 variable "cluster_config_path" {
   default     = "./.kube/config"
-  description = "directory to store the kubeconfig file"
+  description = "directory to store the kubeconfig file. If running on Schematics, use `/tmp/.schematics/.kube/config`"
 }
 
 variable "cluster_ingress_subdomain" {
