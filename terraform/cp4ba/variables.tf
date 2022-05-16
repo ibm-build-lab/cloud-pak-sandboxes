@@ -184,8 +184,8 @@ variable "db2_ports" {
 
 locals {
   db2_pod_name     = "c-db2ucluster-db2u-0"
-  db2_host_address = var.enable_db2 == false ? var.db2_host_address : "joel-n2n-ba-test-4-cluste-c0b572361ba41c9eef42d4d51297b04b-0000.us-south.containers.appdomain.cloud"
-  db2_ports        = var.enable_db2 == false ? var.db2_ports : "[32355, 30097]"
+  db2_host_address = var.enable_db2 == false ? var.db2_host_address : ""
+  db2_ports        = var.enable_db2 == false ? var.db2_ports : ""
 }
 
 # --------- CP4BA SETTINGS ----------
@@ -206,7 +206,7 @@ variable "cp4ba_project_name" {
 
 
 locals {
-  enable_cp4ba = false
+  enable_cp4ba = true
 }
 
 
