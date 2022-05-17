@@ -76,7 +76,7 @@ variable "public_vlan_number" {
 }
 
 variable "datacenter" {
-  default = "dal12"
+  default = "tor01"
   description = "**Classic Only**. Ignored if `cluster_id` is specified. Classic Only. List all available datacenters/zones with: `ibmcloud ks zone ls --provider classic`"
 }
 
