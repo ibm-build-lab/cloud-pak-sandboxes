@@ -130,13 +130,13 @@ variable "clusterEncryption" {
 
 # Options required for Openshift 4.7 only
 variable "monSize" {
-  description = "Size of the storage devices that you want to provision for the monitor pods. The devices must be at least 20Gi each"
+  description = "Size of the storage devices that you want to provision for the monitor pods. The devices must be at least 20Gi each. Only used for OpenShift 4.7"
   type = string
   default = "20Gi"
 }
 
 variable "monStorageClassName" {
-  description = "Storage class to use for your Monitor pods. For VPC clusters you must specify a block storage class"
+  description = "Storage class to use for your Monitor pods. For VPC clusters you must specify a block storage class. Only used for OpenShift 4.7"
   type = string
   default = "ibmc-vpc-block-10iops-tier"
 }
