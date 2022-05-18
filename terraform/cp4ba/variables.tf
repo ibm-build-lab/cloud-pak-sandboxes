@@ -174,12 +174,12 @@ variable "db2_storage_class" {
 
 variable "db2_host_address" {
   description = "Ignore if Db2 is enabled (enable_db2 is true). Otherwise, enter existing Db2 host address. i.e: db2_host_address =  @@@@@@@@@@@@-clust-c0b572361ba41c9eef42d4d51297b04b-0000.us-south.containers.appdomain.cloud"
-  value       = ""
+  default     = ""
 }
 
 variable "db2_ports" {
   description = "Ignore if Db2 is enabled (enable_db2 is true). Otherwise, enter existing Db2 ports. i.e: db2_ports = [01234, 56789]"
-  value       = ""
+  default     = ""
 }
 
 locals {
