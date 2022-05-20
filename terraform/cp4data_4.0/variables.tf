@@ -263,7 +263,7 @@ variable "install_wsruntime" {
   description = "Install WS Runtime. Only for Cloud Pak for Data v4.0"
 }
 
-variable "storage_options" {
+variable "storage_option" {
   type    = string
   default = "portworx"
 }
