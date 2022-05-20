@@ -5,7 +5,7 @@ variable "cluster_id" {
 }
 
 variable "entitlement" {
-  default     = ""
+  default     = "cloud_pak"
   description = "Ignored if `cluster_id` is specified. Enter 'cloud_pak' if using a Cloud Pak entitlement.  Leave blank if OCP entitlement"
 }
 
@@ -27,6 +27,7 @@ variable "resource_group" {
 
 variable "roks_version" {
   default     = "4.7"
+  type = string
   description = "Ignored if `cluster_id` is specified. List available versions: `ibmcloud ks versions`"
 }
 
@@ -66,39 +67,76 @@ variable "workers_count" {
 
 variable "private_vlan_number" {
   default     = ""
-  description = "**Classic Only**. Ignored if `cluster_id` is specified. Private VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target <resource_group>; ibmcloud ks vlan ls --zone <zone>`"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Private VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target -g <resource_group>; ibmcloud ks vlan ls --zone <zone>`"
 }
 
 variable "public_vlan_number" {
   default     = ""
-  description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target <resource_group>; ibmcloud ks vlan ls --zone <zone>`"
+  description = "**Classic Only**. Ignored if `cluster_id` is specified. Public VLAN assigned to zone. List available VLANs in the zone: `ibmcloud target -g <resource_group>; ibmcloud ks vlan ls --zone <zone>`"
 }
 
 variable "datacenter" {
-  default = "dal12"
+  default = "tor01"
   description = "**Classic Only**. Ignored if `cluster_id` is specified. Classic Only. List all available datacenters/zones with: `ibmcloud ks zone ls --provider classic`"
 }
 
 variable "vpc_zone_names" {
   type    = list(string)
   default = ["ca-tor-1"]  //["us-south-1"]
-  description = "Ignored if `cluster_id` is specified. VPC only. Array with the subzones in the region to create the workers groups. List all the zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
-}
-
-variable "config_dir" {
-  default     = "./.kube/config"
-  description = "Directory to store the kubeconfig file, set the value to empty string to not download the config"
+  description = "**VPC only**. Ignored if `cluster_id` is specified. Array with the subzones in the region to create the workers groups. List all the zones with: `ibmcloud ks zone ls --provider vpc-gen2`. Example [\"us-south-1\", \"us-south-2\", \"us-south-3\"]"
 }
 
 // ODF Variables
 
-variable "is_enable" {
-  type        = bool
-  default     = true
-  description = "Install ODF on the ROKS cluster. `true` or `false`"
-}
-
 variable "ibmcloud_api_key" {
   default = ""
   description = "Ignored if not installing ODF. IBMCloud API Key for the account the resources will be provisioned on. Go here to create an ibmcloud_api_key: https://cloud.ibm.com/iam/apikeys"
+}
+
+variable "osdStorageClassName" {
+  description = "Storage class that you want to use for your OSD devices"
+  type = string
+  default = "ibmc-vpc-block-10iops-tier"
+}
+
+variable "osdSize" {
+  description = "Size of your storage devices. The total storage capacity of your ODF cluster is equivalent to the osdSize x 3 divided by the numOfOsd."
+  type = string
+  default = "100Gi"
+}
+
+variable "numOfOsd" {
+  description = "Number object storage daemons (OSDs) that you want to create. ODF creates three times the numOfOsd value."
+  default = 1
+}
+
+variable "billingType" {
+  description = "Billing Type for your ODF deployment (`essentials` or `advanced`)."
+  type = string
+  default = "advanced"
+}
+
+variable "ocsUpgrade" {
+  description = "Whether to upgrade the major version of your ODF deployment."
+  type = bool
+  default = false
+}
+
+variable "clusterEncryption" {
+  description = "Enable encryption of storage cluster"
+  type = bool
+  default = false
+}
+
+# Options required for Openshift 4.7 only
+variable "monSize" {
+  description = "Size of the storage devices that you want to provision for the monitor pods. The devices must be at least 20Gi each. Only used for OpenShift 4.7"
+  type = string
+  default = "20Gi"
+}
+
+variable "monStorageClassName" {
+  description = "Storage class to use for your Monitor pods. For VPC clusters you must specify a block storage class. Only used for OpenShift 4.7"
+  type = string
+  default = "ibmc-vpc-block-10iops-tier"
 }

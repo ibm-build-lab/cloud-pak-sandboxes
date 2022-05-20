@@ -1,5 +1,6 @@
 provider "ibm" {
   region           = var.region
+  ibmcloud_api_key = var.ibmcloud_api_key
 }
 
 locals {
@@ -29,39 +30,24 @@ module "cluster" {
   public_vlan_number  = var.public_vlan_number
   // VPC only
   vpc_zone_names = var.vpc_zone_names
+}
 
-  // Parameters for Kubernetes Config
-  // download_config = length(var.config_dir) > 0
-  // config_dir      = var.config_dir
-  // config_admin    = false
-  // config_network  = false
   
-}
-
-resource "null_resource" "mkdir_kubeconfig_dir" {
-  triggers = { always_run = timestamp() }
-
-  provisioner "local-exec" {
-    command = "mkdir -p ${var.config_dir}"
-  }
-}
-
-data "ibm_container_cluster_config" "cluster_config" {
-  depends_on = [null_resource.mkdir_kubeconfig_dir]
-
-  cluster_name_id   = local.enable_cluster ? module.cluster.id : var.cluster_id
-  resource_group_id = module.cluster.resource_group.id
-  config_dir        = var.config_dir
-  download          = true
-  admin             = false
-  network           = false
-}
-
 # Install ODF if the rocks version is v4.7 or newer
 module "odf" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/odf"
 
-  count = var.is_enable ? 1 : 0
-  cluster = var.cluster_id
-  kube_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
+  cluster = local.enable_cluster ? module.cluster.id : var.cluster_id
+  ibmcloud_api_key = var.ibmcloud_api_key
+  roks_version = var.roks_version
+
+  // ODF parameters
+  monSize = var.monSize
+  monStorageClassName = var.monStorageClassName
+  osdStorageClassName = var.osdStorageClassName
+  osdSize = var.osdSize
+  numOfOsd = var.numOfOsd
+  billingType = var.billingType
+  ocsUpgrade = var.ocsUpgrade
+  clusterEncryption = var.clusterEncryption
 }
