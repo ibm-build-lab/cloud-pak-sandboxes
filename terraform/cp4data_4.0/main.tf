@@ -92,6 +92,24 @@ module "portworx" {
   etcd_secret_name = "px-etcd-certs"
 }
 
+// Module:
+module "odf" {
+  source = "./../../modules/odf"
+  cluster = var.cluster
+  ibmcloud_api_key = var.ibmcloud_api_key
+  roks_version = var.roks_version
+
+  // ODF parameters
+  monSize = var.monSize
+  monStorageClassName = var.monStorageClassName
+  osdStorageClassName = var.osdStorageClassName
+  osdSize = var.osdSize
+  numOfOsd = var.numOfOsd
+  billingType = var.billingType
+  ocsUpgrade = var.ocsUpgrade
+  clusterEncryption = var.clusterEncryption
+}
+
 module "cp4data" {
   source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4data_4.0"
   enable = true
