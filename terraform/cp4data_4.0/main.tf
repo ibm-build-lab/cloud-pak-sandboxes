@@ -95,6 +95,7 @@ module "portworx" {
 // Module:
 module "odf" {
   source = "./../../modules/odf"
+  enable_odf = var.enable_odf
   cluster_id       = data.ibm_container_cluster_config.cluster_config.cluster_name_id
   ibmcloud_api_key = var.ibmcloud_api_key
   roks_version     = var.roks_version
