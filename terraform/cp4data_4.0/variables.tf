@@ -263,12 +263,18 @@ variable "install_wsruntime" {
   description = "Install WS Runtime. Only for Cloud Pak for Data v4.0"
 }
 
-variable "storage_option" {
+variable "storage_options" {
   type    = string
   default = "portworx"
 }
 
 // ODF
+
+variable "enable_odf" {
+  type        = bool
+  default     = false
+  description = "Install ODF on the ROKS cluster. `true` or `false`"
+}
 
 variable "osdStorageClassName" {
   description = "Storage class that you want to use for your OSD devices"
