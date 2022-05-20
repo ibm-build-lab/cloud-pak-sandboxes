@@ -95,11 +95,12 @@ module "portworx" {
 // Module:
 module "odf" {
   source = "./../../modules/odf"
-  cluster = var.cluster
+  cluster_id       = data.ibm_container_cluster_config.cluster_config.cluster_name_id
   ibmcloud_api_key = var.ibmcloud_api_key
-  roks_version = var.roks_version
+  roks_version     = var.roks_version
 
   // ODF parameters
+  install_storage = true
   monSize = var.monSize
   monStorageClassName = var.monStorageClassName
   osdStorageClassName = var.osdStorageClassName
@@ -127,7 +128,6 @@ module "cp4data" {
 
   // Entitled Registry parameters:
   entitled_registry_key        = var.entitled_registry_key
-  entitled_registry_user_email = var.entitled_registry_user_email
 
   // CP4D License Acceptance
   accept_cpd_license = var.accept_cpd_license
@@ -141,6 +141,8 @@ module "cp4data" {
   region              = var.region
   resource_group_name = var.resource_group
   cluster_id          = local.enable_cluster ? module.cluster.id : var.cluster_id
+
+  storage_option      = var.storage_option
 
   // Parameters to install submodules
   install_wsl         = var.install_wsl
