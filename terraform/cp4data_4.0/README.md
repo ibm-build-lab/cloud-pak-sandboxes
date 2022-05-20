@@ -9,9 +9,6 @@ Edit the `./my_variables.auto.tfvars` file to define the `entitled_registry_user
 For example:
 
 ```hcl
-entitled_registry_user_email = "john.smith@ibm.com"
-
-# Optionally:
 entitled_registry_key        = "< Your Entitled Key here >"
 ```
 
@@ -33,7 +30,6 @@ In addition, the Terraform code requires the following input parameters, for som
 | `private_vlan_number`              | Private VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the the VLAN type is private and the router begins with **bc**. Use the ID or Number. This value may be empty if there isn't any VLAN in the Zone, however this may cause issues if the code is applied again. |                             | No       |
 | `public_vlan_number`               | Public VLAN assigned to your zone. List available VLANs in the zone: `ibmcloud ks vlan ls --zone`, make sure the the VLAN type is public and the router begins with **fc**. Use the ID or Number. This value may be empty if there isn't any VLAN in the Zone, however this may cause issues if the code is applied again.   |                             | No       |
 | `entitled_registry_key`            | Get the entitlement key from: https://myibm.ibm.com/products-services/containerlibrary, copy and paste the key to this variable or save the key to the file `entitlement.key`.                                                                                                                                               |                             | No       |
-| `entitled_registry_user_email`     | Email address of the user owner of the Entitled Registry Key                                                                                                                                                                                                                                                                 |                             | Yes      |
 | `storage_class_name`               | Storage Class name to use                                                                                                                                                                                                                                                                                                    | `ibmc-file-custom-gold-gid` | No       |
 | `install_watson_knowledge_catalog` | Install Watson Knowledge Catalog module. By default it's not installed.                                                                                                                                                                                                                                                      | `false`                     | No       |
 | `install_watson_studio`            | Install Watson Studio module. By default it's not installed.                                                                                                                                                                                                                                                                 | `false`                     | No       |
