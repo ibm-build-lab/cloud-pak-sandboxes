@@ -266,6 +266,7 @@ variable "install_wsruntime" {
 variable "storage_option" {
   type    = string
   default = "portworx"
+  description = "Choose storage type `portworx`, `odf`, or `nfs`."
 }
 
 // ODF
@@ -277,49 +278,49 @@ variable "enable_odf" {
 }
 
 variable "osdStorageClassName" {
-  description = "Storage class that you want to use for your OSD devices"
+  description = "Ignored if ODF is not enabled. Storage class that you want to use for your OSD devices"
   type = string
   default = "ibmc-vpc-block-10iops-tier"
 }
 
 variable "osdSize" {
-  description = "Size of your storage devices. The total storage capacity of your ODF cluster is equivalent to the osdSize x 3 divided by the numOfOsd."
+  description = "Ignored if ODF is not enabled. Size of your storage devices. The total storage capacity of your ODF cluster is equivalent to the osdSize x 3 divided by the numOfOsd."
   type = string
   default = "100Gi"
 }
 
 variable "numOfOsd" {
-  description = "Number object storage daemons (OSDs) that you want to create. ODF creates three times the numOfOsd value."
+  description = "Ignored if ODF is not enabled. Number object storage daemons (OSDs) that you want to create. ODF creates three times the numOfOsd value."
   default = 1
 }
 
 variable "billingType" {
-  description = "Billing Type for your ODF deployment (`essentials` or `advanced`)."
+  description = "Ignored if ODF is not enabled. Billing Type for your ODF deployment (`essentials` or `advanced`)."
   type = string
   default = "advanced"
 }
 
 variable "ocsUpgrade" {
-  description = "Whether to upgrade the major version of your ODF deployment."
+  description = "Ignored if ODF is not enabled. Whether to upgrade the major version of your ODF deployment."
   type = bool
   default = false
 }
 
 variable "clusterEncryption" {
-  description = "Enable encryption of storage cluster"
+  description = "Ignored if ODF is not enabled. Enable encryption of storage cluster"
   type = bool
   default = false
 }
 
 # Options required for Openshift 4.7 only
 variable "monSize" {
-  description = "Size of the storage devices that you want to provision for the monitor pods. The devices must be at least 20Gi each"
+  description = "Ignored if ODF is not enabled. Size of the storage devices that you want to provision for the monitor pods. The devices must be at least 20Gi each"
   type = string
   default = "20Gi"
 }
 
 variable "monStorageClassName" {
-  description = "Storage class to use for your Monitor pods. For VPC clusters you must specify a block storage class"
+  description = "Ignored if ODF is not enabled. Storage class to use for your Monitor pods. For VPC clusters you must specify a block storage class"
   type = string
   default = "ibmc-vpc-block-10iops-tier"
 }
@@ -331,6 +332,4 @@ variable "monStorageClassName" {
 
 locals {
   entitled_registry_key_file = "./entitlement.key"
-  storage_class      = lookup(var.cpd_storageclass, var.storage_option)
-  rwo_storage_class  = lookup(var.rwo_cpd_storageclass, var.storage_option)
 }
