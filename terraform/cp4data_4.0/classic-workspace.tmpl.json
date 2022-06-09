@@ -152,7 +152,7 @@
           "secure": true
         },
         {
-          "name": "entitled_registry_user_email",
+          "name": "entitled_registry_user",
           "value": "{{ ENTITLED_KEY_EMAIL }}",
           "type": "string"
         },

@@ -325,8 +325,6 @@ variable "monStorageClassName" {
   default = "ibmc-vpc-block-10iops-tier"
 }
 
-}
-
 
 // ROKS Module : Local Variables and constansts
 

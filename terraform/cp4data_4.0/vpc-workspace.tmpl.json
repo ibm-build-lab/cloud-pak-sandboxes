@@ -40,6 +40,51 @@
           "type": "bool"
         },
         {
+          "name": "enable_odf",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "osdStorageClassName",
+          "value": "ibmc-vpc-block-10iops-tier",
+          "type": "string"
+        },
+        {
+          "name": "osdSize",
+          "value": "100Gi",
+          "type": "string"
+        },
+        {
+          "name": "numOfOsd",
+          "value": "1",
+          "type": "string"
+        },
+        {
+          "name": "billingType",
+          "value": "advanced",
+          "type": "string"
+        },
+        {
+          "name": "ocsUpgrade",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "clusterEncryption",
+          "value": "false",
+          "type": "bool"
+        },
+        {
+          "name": "monSize",
+          "value": "20Gi",
+          "type": "string"
+        },
+        {
+          "name": "monStorageClassName",
+          "value": "ibmc-vpc-block-10iops-tier",
+          "type": "string"
+        },
+        {
           "name": "region",
           "value": "us-east",
           "type": "string"
@@ -152,7 +197,7 @@
           "secure": true
         },
         {
-          "name": "entitled_registry_user_email",
+          "name": "entitled_registry_user",
           "value": "{{ ENTITLED_KEY_EMAIL }}",
           "type": "string"
         },
