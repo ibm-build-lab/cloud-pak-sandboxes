@@ -36,7 +36,7 @@ Currently you can run the script to install:
 
 ## Requirements
 
-In order to run the `cloud-pak-installer.sh` script you must have a series of required input values, these are discussed below in the requirements.  Some modules may require additional requirements.  Cloud Pak for Security and Cloud Pak for Business Automation require an LDAP to be set up independently. For details on setting up an LDAP, refer to [Example to provision LDAP Terraform Module](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/examples/ldap)
+In order to run the `cloud-pak-installer.sh` script you must have a series of required input values, these are discussed below in the requirements.  Some modules may require additional requirements.  Cloud Pak for Security and Cloud Pak for Business Automation require an LDAP to be set up independently. For details on setting up an LDAP, refer to [Example to provision LDAP Terraform Module](https://github.com/ibm-build-lab/terraform-ibm-cloud-pak/tree/main/examples/ldap)
 
 After the input values and tools are gathered you will need decide to run the cloud pak installer from your local machine or the IBM Cloud Shell. In either case you will clone the repo, add permission to the script if needed, and run cloud-pak-installer.sh
 
@@ -67,7 +67,7 @@ Log in to your [IBM Cloud](http://cloud.ibm.com) account and click the terminal 
 ![bash-button](./images/bash-symbol.png)
 Within the **IBM Cloud Shell** terminal, clone the following repo:
 
-     git clone https://github.com/ibm-hcbt/cloud-pak-sandboxes
+     git clone https://github.com/ibm-build-lab/cloud-pak-sandboxes
 
 ### Create a resource group
 
@@ -168,7 +168,7 @@ Select `Delete workspace` and `Delete all associated resources` options, type th
 
 ## Clean Up Script
 
-An alternative to deleting cluster and schematics is to use [cloud-pak-sandboxes/scripts/delete-schematics](https://github.com/ibm-hcbt/cloud-pak-sandboxes/scripts/delete-schematics).
+An alternative to deleting cluster and schematics is to use [cloud-pak-sandboxes/scripts/delete-schematics](https://github.com/ibm-build-lab/cloud-pak-sandboxes/scripts/delete-schematics).
 
 To use this script you must first be logged into the IBM cloud bash shell or the IBM cloud cli if running from your computers bash.  After that run the delete-schematics and you will be prompted with instructions on what you would like to delete. Simply choose the options and delete.
 
@@ -178,23 +178,23 @@ This does not have a catch and will immediatly delete selected options. Be caref
 
 Here is some additional documentation pertaining to the various technologies involved with the Sandbox environment
 
-Cloud Pak Sandbox Installer [README](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/installer/README.md) (this document)
+Cloud Pak Sandbox Installer [README](https://github.com/ibm-build-lab/cloud-pak-sandboxes/blob/main/installer/README.md) (this document)
 
-Cloud Pak Sandbox environment [Terraform modules](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak)
+Cloud Pak Sandbox environment [Terraform modules](https://github.com/ibm-build-lab/terraform-ibm-cloud-pak)
 
-Cloud Pak Sandbox environment [Terraform scripts](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform)
+Cloud Pak Sandbox environment [Terraform scripts](https://github.com/ibm-build-lab/cloud-pak-sandboxes/blob/main/terraform)
 
 Cloud Pak for Data [Documentation](https://www.ibm.com/products/cloud-pak-for-data) 
 
-Cloud Pak for Data [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/cp4data/README.md) 
+Cloud Pak for Data [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-build-lab/cloud-pak-sandboxes/blob/main/terraform/cp4data/README.md) 
 
 Cloud Pak for Integration [Documentation](https://www.ibm.com/cloud/cloud-pak-for-integration) 
 
-Cloud Pak for Integration [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/cp4int/README.md) 
+Cloud Pak for Integration [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-build-lab/cloud-pak-sandboxes/blob/main/terraform/cp4int/README.md) 
 
 Cloud Pak for Multi Cloud Management [Documentation](https://www.ibm.com/cloud/cloud-pak-for-management) 
 
-Cloud Pak for Multi Cloud Management [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/cp4mcm/README.md) 
+Cloud Pak for Multi Cloud Management [Sandbox Inputs/Outputs and Validation](https://github.com/ibm-build-lab/cloud-pak-sandboxes/blob/main/terraform/cp4mcm/README.md) 
 
 [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli)
 

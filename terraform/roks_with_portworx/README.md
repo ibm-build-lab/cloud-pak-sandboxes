@@ -89,7 +89,7 @@ export KUBECONFIG=$(terraform output config_file_path)
 kubectl cluster-info
 ```
 
-For more information on Portworx Validation, go [here](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/portworx/testing#3-verify).
+For more information on Portworx Validation, go [here](https://github.com/ibm-build-lab/terraform-ibm-cloud-pak/tree/main/portworx/testing#3-verify).
 
 ## Clean up
 

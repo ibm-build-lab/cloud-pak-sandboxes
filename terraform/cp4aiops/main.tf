@@ -18,7 +18,7 @@ resource "null_resource" "mkdir_kubeconfig_dir" {
 
 
 module "create_cluster" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -53,7 +53,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "install_portworx" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/portworx"
   enable = var.install_portworx
   ibmcloud_api_key = var.ibmcloud_api_key
   # Cluster parameters
@@ -88,7 +88,7 @@ resource "null_resource" "cluster_wait" {
 
 module "install_cp4aiops" {
   depends_on = [null_resource.cluster_wait]
-  source              = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4aiops"
+  source              = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/cp4aiops"
   enable              = true
   cluster_config_path = data.ibm_container_cluster_config.cluster_config.config_file_path
   on_vpc              = var.on_vpc

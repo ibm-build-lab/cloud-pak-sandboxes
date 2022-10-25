@@ -8,7 +8,7 @@ locals {
 }
 
 module "cluster" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -35,7 +35,7 @@ module "cluster" {
   
 # Install ODF if the rocks version is v4.7 or newer
 module "odf" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/odf"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/odf"
 
   cluster = local.enable_cluster ? module.cluster.id : var.cluster_id
   ibmcloud_api_key = var.ibmcloud_api_key

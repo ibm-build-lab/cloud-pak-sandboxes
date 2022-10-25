@@ -8,7 +8,7 @@ locals {
 }
 
 module "cluster" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = local.infra == "vpc"
 
@@ -60,7 +60,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "cp4app" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4app"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/cp4app"
   enable = true
 
   cluster_config_path          = data.ibm_container_cluster_config.cluster_config.config_file_path
