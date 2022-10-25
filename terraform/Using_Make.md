@@ -4,7 +4,7 @@ You can use `make` to get the Cloud Pak using Terraform locally from your comput
 
 Either option you choose, you need first to complete the following steps, then go to the section [Using Terraform](#using-terraform-local-execution) or [Using Schematics](#using-schematics-remote-execution).
 
-1. Clone the repo [ibm-hcbt/cloud-pak-sandboxes](https://github.com/ibm-hcbt/cloud-pak-sandboxes) (if you have not yet) and change to the `terraform/` directory
+1. Clone the repo [ibm-build-lab/cloud-pak-sandboxes](https://github.com/ibm-build-lab/cloud-pak-sandboxes) (if you have not yet) and change to the `terraform/` directory
 
    ```bash
    cd terraform

@@ -6,7 +6,7 @@ To release a new version of the Private Catalog execute the `make` command which
 make build
 ```
 
-Create a [release](https://github.com/ibm-hcbt/cloud-pak-sandboxes/releases) in GitHub, assign a version and upload the created `.tgz` to the attached binaries.
+Create a [release](https://github.com/ibm-build-lab/cloud-pak-sandboxes/releases) in GitHub, assign a version and upload the created `.tgz` to the attached binaries.
 
 Copy the URL to this file.
 

@@ -14,4 +14,4 @@ The [scripts/](./scripts) directory contain additional scripts created to do ins
 
 ## Terraform
 
-The [terraform/](./terraform) directory has all the Terraform code that use [these](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak) modules to install multiple Cloud Paks on an OpenShift cluster on IBM Cloud Classic. This directory is only for developers or advance users that would like to execute the code locally or remotely using IBM Cloud Schematics, either for development, testing or get a custom Cloud Pak in an advance way. The code can be executed using `make` with a set of Makefiles.
+The [terraform/](./terraform) directory has all the Terraform code that use [these](https://github.com/ibm-build-lab/terraform-ibm-cloud-pak) modules to install multiple Cloud Paks on an OpenShift cluster on IBM Cloud Classic. This directory is only for developers or advance users that would like to execute the code locally or remotely using IBM Cloud Schematics, either for development, testing or get a custom Cloud Pak in an advance way. The code can be executed using `make` with a set of Makefiles.
