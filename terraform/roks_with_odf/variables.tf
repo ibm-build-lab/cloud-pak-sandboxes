@@ -102,7 +102,7 @@ variable "osdStorageClassName" {
 variable "osdSize" {
   description = "Size of your storage devices. The total storage capacity of your ODF cluster is equivalent to the osdSize x 3 divided by the numOfOsd."
   type = string
-  default = "100Gi"
+  default = "250Gi"
 }
 
 variable "numOfOsd" {
