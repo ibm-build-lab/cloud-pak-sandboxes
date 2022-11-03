@@ -9,7 +9,7 @@ locals {
 }
 
 module "cluster" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -60,7 +60,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "portworx" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/portworx"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/portworx"
   enable = var.install_portworx
 
   ibmcloud_api_key = var.ibmcloud_api_key
@@ -113,7 +113,7 @@ module "odf" {
 }
 
 module "cp4data" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/cp4data_4.0"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/cp4data_4.0"
   enable = true
 
   // ROKS cluster parameters:

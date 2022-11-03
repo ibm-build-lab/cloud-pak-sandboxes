@@ -12,7 +12,7 @@ locals {
 }
 
 module "cluster" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/roks"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/roks"
   enable = local.enable_cluster
   on_vpc = var.on_vpc
 
@@ -62,7 +62,7 @@ data "ibm_container_cluster_config" "cluster_config" {
 }
 
 module "iaf" {
-  source = "github.com/ibm-hcbt/terraform-ibm-cloud-pak.git//modules/iaf"
+  source = "github.com/ibm-build-lab/terraform-ibm-cloud-pak.git//modules/iaf"
   enable = true
 
   cluster_name_id = local.enable_cluster ? module.cluster.id : var.cluster_id

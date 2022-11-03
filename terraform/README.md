@@ -153,6 +153,6 @@ Both processes will create a set of files to facilitate the provisioning. The Te
 
 ### External Terraform Modules
 
-As mentioned above, the `main.tf` file in each subdirectory uses two Terraform modules: the ROKS and the Cloud Pak module. To know more about these modules refer to their [GitHub repository](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak).
+As mentioned above, the `main.tf` file in each subdirectory uses two Terraform modules: the ROKS and the Cloud Pak module. To know more about these modules refer to their [GitHub repository](https://github.com/ibm-build-lab/terraform-ibm-cloud-pak).
 
 Note: All these modules will be registered in the Terraform Registry so they will be easy to access. This will be part of a future release that will include the Terraform 0.13/0.14 upgrade.

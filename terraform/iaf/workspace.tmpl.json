@@ -5,7 +5,7 @@
   "tags": ["owner:{{ OWNER }}", "env:{{ ENV }}", "project:{{ PROJECT }}"],
   "resource_group": "cloud-pak-sandbox",
   "template_repo": {
-    "url": "https://github.com/ibm-hcbt/cloud-pak-sandboxes",
+    "url": "https://github.com/ibm-build-lab/cloud-pak-sandboxes",
     "branch": "{{ BRANCH }}"
   },
   "template_data": [

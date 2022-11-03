@@ -2,14 +2,14 @@
 
 ## Requirements
 
-Make sure all requirements listed [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#requirements) are completed.
+Make sure all requirements listed [here](https://github.com/ibm-build-lab/cloud-pak-sandboxes/blob/main/terraform/README.md#requirements) are completed.
 
 ### Configure Access to IBM Cloud
 
-Make sure access to IBM Cloud is set up.  Go [here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#configure-access-to-ibm-cloud) for details.
+Make sure access to IBM Cloud is set up.  Go [here](https://github.com/ibm-build-lab/cloud-pak-sandboxes/blob/main/terraform/README.md#configure-access-to-ibm-cloud) for details.
 
 ### LDAP Virtual Machine Requirement
-Note that an LDAP Virtual Machine to manage usernames and passwords is required before installing CP4BA. [Click here to provision LDAP Terraform Module](https://github.com/ibm-hcbt/terraform-ibm-cloud-pak/tree/main/examples/ldap).
+Note that an LDAP Virtual Machine to manage usernames and passwords is required before installing CP4BA. [Click here to provision LDAP Terraform Module](https://github.com/ibm-build-lab/terraform-ibm-cloud-pak/tree/main/examples/ldap).
 
 ### Cloud Pak Entitlement Key
 
@@ -31,7 +31,7 @@ entitled_registry_key        = "< Your Entitled Key here >"
 ## Provisioning the Sandbox
 
 For instructions to provision the sandbox, go
-[here](https://github.com/ibm-hcbt/cloud-pak-sandboxes/blob/main/terraform/README.md#provisioning-the-sandbox).
+[here](https://github.com/ibm-build-lab/cloud-pak-sandboxes/blob/main/terraform/README.md#provisioning-the-sandbox).
 
 ## Running this script locally
 
