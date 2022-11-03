@@ -21,12 +21,12 @@ variable "region" {
 }
 
 variable "resource_group" {
-  default     = "cloud-pak-sandbox"
+  default     = "Default"
   description = "Resource group that the cluster is/will be located. List all available resource groups with: `ibmcloud resource groups`"
 }
 
 variable "roks_version" {
-  default     = "4.7"
+  default     = "4.10"
   type = string
   description = "Ignored if `cluster_id` is specified. List available versions: `ibmcloud ks versions`"
 }
