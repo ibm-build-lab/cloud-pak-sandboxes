@@ -26,7 +26,7 @@ variable "resource_group" {
 
 variable "roks_version" {
   default     = "4.7"
-  description = "Ignored if `cluster_id` is specified. List available versions: `ibmcloud ks versions`"
+  description = "Ignored if `cluster_id` is specified. (4.7 or higher). List available versions: `ibmcloud ks versions`"
 }
 
 variable "project_name" {
@@ -160,11 +160,6 @@ variable "entitled_registry_key" {
   description = "Get the entitlement key from https://myibm.ibm.com/products-services/containerlibrary"
 }
 
-variable "entitled_registry_user_email" {
-  type        = string
-  description = "Docker email address"
-}
-
 variable "cpd_project_name" {
   type        = string
   default     = "zen"
@@ -266,6 +261,68 @@ variable "install_wsruntime" {
   default     = false
   type        = string
   description = "Install WS Runtime. Only for Cloud Pak for Data v4.0"
+}
+
+variable "storage_option" {
+  type    = string
+  default = "portworx"
+  description = "Choose storage type `portworx`, `odf`, or `nfs`."
+}
+
+// ODF
+
+variable "enable_odf" {
+  type        = bool
+  default     = false
+  description = "Install ODF on the ROKS cluster. `true` or `false`"
+}
+
+variable "osdStorageClassName" {
+  description = "Ignored if ODF is not enabled. Storage class that you want to use for your OSD devices"
+  type = string
+  default = "ibmc-vpc-block-10iops-tier"
+}
+
+variable "osdSize" {
+  description = "Ignored if ODF is not enabled. Size of your storage devices. The total storage capacity of your ODF cluster is equivalent to the osdSize x 3 divided by the numOfOsd."
+  type = string
+  default = "100Gi"
+}
+
+variable "numOfOsd" {
+  description = "Ignored if ODF is not enabled. Number object storage daemons (OSDs) that you want to create. ODF creates three times the numOfOsd value."
+  default = 1
+}
+
+variable "billingType" {
+  description = "Ignored if ODF is not enabled. Billing Type for your ODF deployment (`essentials` or `advanced`)."
+  type = string
+  default = "advanced"
+}
+
+variable "ocsUpgrade" {
+  description = "Ignored if ODF is not enabled. Whether to upgrade the major version of your ODF deployment."
+  type = bool
+  default = false
+}
+
+variable "clusterEncryption" {
+  description = "Ignored if ODF is not enabled. Enable encryption of storage cluster"
+  type = bool
+  default = false
+}
+
+# Options required for Openshift 4.7 only
+variable "monSize" {
+  description = "Ignored if ODF is not enabled. Size of the storage devices that you want to provision for the monitor pods. The devices must be at least 20Gi each"
+  type = string
+  default = "20Gi"
+}
+
+variable "monStorageClassName" {
+  description = "Ignored if ODF is not enabled. Storage class to use for your Monitor pods. For VPC clusters you must specify a block storage class"
+  type = string
+  default = "ibmc-vpc-block-10iops-tier"
 }
 
 
